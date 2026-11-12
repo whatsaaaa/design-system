@@ -23,11 +23,12 @@ function codeTitle(md: MarkdownRenderer) {
  * A cell with more characters than this is running text. It is about what one line holds
  * at the width the styles keep for such a cell, so the mark never widens a cell of short values.
  */
-const TEXT_CELL = 24
+const TEXT_CELL = 21
 
 /**
  * Puts every table in a frame that scrolls sideways, so a wide table never widens the page,
- * and marks its cells of running text, which the styles keep from being squeezed.
+ * and marks its cells of running text, which the styles keep from being squeezed and let
+ * wrap where they come first in a row.
  */
 function tableFrame(md: MarkdownRenderer) {
   type Rule = NonNullable<MarkdownRenderer['renderer']['rules'][string]>
@@ -43,7 +44,7 @@ function tableFrame(md: MarkdownRenderer) {
     const text = (tokens[index + 1]?.children ?? [])
       .map((part) => (part.type === 'text' || part.type === 'code_inline' ? part.content : ''))
       .join('')
-    if (text.length > TEXT_CELL) tokens[index]!.attrSet('class', 'ws-table__text')
+    if (text.length > TEXT_CELL) tokens[index]!.attrJoin('class', 'ws-table__text')
     return cell(tokens, index, ...rest)
   }
 }

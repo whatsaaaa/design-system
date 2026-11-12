@@ -253,7 +253,8 @@
     background: none;
   }
 
-  & td:first-child {
+  /* A first cell stays on one line, unless it holds running text. */
+  & td:first-child:not(.ws-table__text) {
     white-space: nowrap;
   }
 

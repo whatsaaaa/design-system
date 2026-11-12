@@ -285,7 +285,13 @@
 }
 
 .vp-doc .custom-block code {
+  color: var(--ws-color-text);
   font-size: 0.8125em;
+}
+
+.vp-doc .custom-block a > code,
+.vp-doc .custom-block a:hover > code {
+  color: inherit;
 }
 
 .vp-doc .custom-block div[class*='language-'] {

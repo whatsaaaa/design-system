@@ -18,7 +18,6 @@
   "type": "module",
   "sideEffects": [
     "**/*.css",
-    "./dist/ghost/define.js",
     "./src/vitepress/**"
   ],
   "exports": {
@@ -35,10 +34,6 @@
     "./ghost": {
       "types": "./dist/ghost/index.d.ts",
       "default": "./dist/ghost/index.js"
-    },
-    "./ghost/define": {
-      "types": "./dist/ghost/define.d.ts",
-      "default": "./dist/ghost/define.js"
     },
     "./theme": {
       "types": "./dist/theme/index.d.ts",

@@ -58,6 +58,20 @@ describe('markdown in the docs theme', () => {
     ])
   })
 
+  it('keeps a class the author gave a cell, whatever the length of its text', async () => {
+    const html = (await renderer()).render(
+      [
+        '| Vrednost | Opis |',
+        '| --- | --- |',
+        '| kratko {.mine} | sto za četvoro u Čačku, u petak u osam {.mine} |',
+      ].join('\n'),
+    )
+    const classes = [...html.matchAll(/<td class="([^"]*)"/g)].map(([, names]) =>
+      names!.split(' ').sort(),
+    )
+    expect(classes).toEqual([['mine'], ['mine', 'ws-table__text']])
+  })
+
   it('can be added to a site that has its own markdown setup', async () => {
     const md = await createMarkdownRenderer(root, {
       config: (instance) => whatsaaaaMarkdown(instance),

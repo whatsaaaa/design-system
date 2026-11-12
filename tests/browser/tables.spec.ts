@@ -106,4 +106,45 @@ test.describe('the two kinds of table on a phone', () => {
       ),
     ).toBe(0)
   })
+
+  for (const [path, heading] of [
+    ['/styles/prose', 'Outside VitePress'],
+    ['/styles/terminal', 'Small pieces'],
+  ] as const) {
+    test(`a long first cell wraps on ${path}, so the text next to it is on screen`, async ({
+      page,
+    }) => {
+      await open(page, path)
+      const { first, outside } = await frameOf(page, heading).evaluate((frame) => {
+        const edge = frame.getBoundingClientRect()
+        const rows = [...frame.querySelectorAll<HTMLTableRowElement>('tbody tr')]
+        const linesOf = (cell: Element) => {
+          const content = document.createRange()
+          content.selectNodeContents(cell)
+          return Math.round(
+            content.getBoundingClientRect().height / parseFloat(getComputedStyle(cell).lineHeight),
+          )
+        }
+        return {
+          // each first cell: its text and the lines it takes
+          first: rows.map((row) => ({
+            text: row.cells[0]!.textContent!.trim(),
+            lines: linesOf(row.cells[0]!),
+          })),
+          // the cells of the text column that reach past the frame before it is scrolled
+          outside: rows
+            .map((row) => row.cells[1]!)
+            .filter((cell) => {
+              const box = cell.getBoundingClientRect()
+              return box.left < edge.left || box.right > edge.right + 0.5
+            })
+            .map((cell) => cell.textContent),
+        }
+      })
+      expect(outside).toEqual([])
+      // a short name stays on one line, the one that reads as a sentence wraps
+      for (const { text, lines } of first) if (!text.includes(' ')) expect(lines, text).toBe(1)
+      expect(Math.max(...first.map(({ lines }) => lines))).toBeGreaterThan(1)
+    })
+  }
 })

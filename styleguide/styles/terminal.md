@@ -95,7 +95,7 @@ Keys typed into a field, and keys pressed with <kbd>Ctrl</kbd>, <kbd>Alt</kbd> o
 | ----------------------------------------------- | ------------------------------------------------- |
 | `ws-kbd`                                        | A key cap                                         |
 | `ws-tag`                                        | A tag on a tint of the interactive color          |
-| `ws-tag ws-tag--outline`                        | An outlined tag, for a plain list such as a stack |
+| `ws-tag`, with `--outline`                      | An outlined tag, for a plain list such as a stack |
 | `ws-state`, with `--active` or `--experimental` | A state as a dot with its word                    |
 | `ws-arrow`                                      | An arrow after a link that leaves the site        |
 | `ws-cursor`                                     | The block cursor                                  |

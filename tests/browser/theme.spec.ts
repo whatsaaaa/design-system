@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { wcagContrast } from 'culori'
 import { open } from './pages.ts'
 
 const color = (page: import('@playwright/test').Page, selector: string, property: string) =>
@@ -65,6 +66,63 @@ test.describe('themes', () => {
       )
     })
   })
+
+  for (const [colorScheme, text, link] of [
+    ['dark', 'rgb(224, 222, 244)', 'rgb(156, 207, 216)'],
+    ['light', 'rgb(87, 82, 121)', 'rgb(40, 105, 131)'],
+  ] as const) {
+    test.describe(`inline code in a callout, ${colorScheme}`, () => {
+      test.use({ colorScheme })
+
+      test('takes the text color in every kind of callout, and reads on its chip', async ({
+        page,
+      }) => {
+        await open(page, '/docs/sample/conditions')
+        // every kind VitePress draws, put on a callout of the page in turn
+        const kinds = [
+          'info',
+          'note',
+          'tip',
+          'important',
+          'warning',
+          'danger',
+          'caution',
+          'details',
+        ]
+        const drawn = await page
+          .locator('.custom-block:has(p > code)')
+          .first()
+          .evaluate((block, names) => {
+            const code = block.querySelector('p > code')!
+            return names.map((kind) => {
+              block.setAttribute('class', `${kind} custom-block`)
+              const style = getComputedStyle(code)
+              return { kind, color: style.color, chip: style.backgroundColor }
+            })
+          }, kinds)
+        expect(drawn.map(({ kind, color }) => [kind, color])).toEqual(
+          kinds.map((kind) => [kind, text]),
+        )
+        for (const { kind, color, chip } of drawn) {
+          expect(chip, kind).toMatch(/^rgb\(/)
+          expect(wcagContrast(color, chip), kind).toBeGreaterThanOrEqual(4.5)
+        }
+      })
+
+      test('keeps the link color when it is a link, also under the pointer', async ({ page }) => {
+        await open(page, '/docs/sample/conditions')
+        const paragraph = page.locator('.custom-block.warning p').last()
+        await paragraph.evaluate((element) =>
+          element.insertAdjacentHTML('beforeend', ' <a href="#effects"><code>affects</code></a>'),
+        )
+        const code = paragraph.locator('a > code')
+        const shown = () => code.evaluate((element) => getComputedStyle(element).color)
+        expect(await shown()).toBe(link)
+        await code.hover()
+        expect(await shown()).toBe(link)
+      })
+    })
+  }
 
   test('a theme chosen by hand wins over the system', async ({ page }) => {
     await open(page, '/')
