@@ -54,7 +54,6 @@ onUnmounted(() => observer?.disconnect())
           height: `${height}px`,
           transform: props.width ? `scale(${scale})` : undefined,
         }"
-        loading="lazy"
         @load="syncTheme"
       />
     </div>

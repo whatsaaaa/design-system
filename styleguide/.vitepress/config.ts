@@ -60,7 +60,10 @@ export default defineConfig<ThemeConfig>({
         },
         {
           text: 'Sample: form-builder',
-          items: [{ text: 'Conditions', link: '/docs/sample/conditions' }],
+          items: [
+            { text: 'A guide page', link: '/docs/sample/conditions' },
+            { text: 'A home page', link: '/docs/sample/home' },
+          ],
         },
       ],
     },

@@ -25,13 +25,13 @@ const label = (value: ColorValue) =>
           <th v-if="group === 'roles'">Dark</th>
           <th v-if="group === 'roles'">Light</th>
           <th v-else>Value</th>
-          <th>Used for</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="role in rows" :key="role.id">
-          <td>
+          <td class="token">
             <code>{{ role.cssVar }}</code>
+            <span v-if="role.description" class="use">{{ role.description }}</span>
           </td>
           <td>
             <span class="value">
@@ -45,7 +45,6 @@ const label = (value: ColorValue) =>
               <span>{{ label(role.light) }}</span>
             </span>
           </td>
-          <td class="use">{{ role.description }}</td>
         </tr>
       </tbody>
     </table>
@@ -53,6 +52,16 @@ const label = (value: ColorValue) =>
 </template>
 
 <style scoped>
+/* the first column holds the name and what it is for, so the table fits its column */
+td.token {
+  white-space: normal;
+}
+
+.use {
+  display: block;
+  margin-top: var(--ws-space-4);
+}
+
 .value {
   display: flex;
   align-items: center;
@@ -67,9 +76,5 @@ const label = (value: ColorValue) =>
   height: 1.25rem;
   border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
   border-radius: var(--ws-radius-sm);
-}
-
-.use {
-  min-width: 14rem;
 }
 </style>

@@ -1,4 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import * as fontkit from 'fontkit'
 import { describe, expect, it } from 'vitest'
 import {
   FAMILIES,
@@ -23,6 +25,20 @@ describe('the web fonts', () => {
       expect(subset, `${family.family} ${letter}`).toBe('latin-ext')
     }
     for (const letter of 'azAZ09') expect(rangeCovers(ranges.latin!, letter)).toBe(true)
+  })
+
+  // the declared range says what a file should have. This reads the file that ships.
+  it.each(FAMILIES)('$family has the glyphs of Serbian Latin in the files it ships', (family) => {
+    for (const style of STYLES) {
+      const file = fileURLToPath(new URL(`fonts/${fontFile(family, 'latin-ext', style)}`, dist))
+      const font = fontkit.openSync(file) as fontkit.Font
+      for (const letter of SERBIAN)
+        expect(
+          font.hasGlyphForCodePoint(letter.codePointAt(0)!),
+          `${family.family} ${style} ${letter}`,
+        ).toBe(true)
+      expect(font.hasGlyphForCodePoint('Ж'.codePointAt(0)!)).toBe(false)
+    }
   })
 
   it.each(FAMILIES)('$family has a face for every style and subset, with its file', (family) => {

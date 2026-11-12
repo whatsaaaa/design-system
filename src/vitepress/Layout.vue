@@ -19,7 +19,10 @@ watchEffect(() => {
 let disableShortcuts: (() => void) | undefined
 onMounted(() => {
   defineGhost()
-  disableShortcuts = enableShortcuts()
+  // the tabs here are the links of the default theme's nav bar, numbered in nav.css
+  disableShortcuts = enableShortcuts({
+    tabs: '.VPNavBarMenu > .VPNavBarMenuLink, .VPNavBarMenu > .VPNavBarMenuGroup .button',
+  })
 })
 onUnmounted(() => disableShortcuts?.())
 </script>

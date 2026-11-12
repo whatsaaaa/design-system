@@ -87,6 +87,19 @@ describe('shortcuts', () => {
     expect(off).not.toHaveBeenCalled()
   })
 
+  it('takes the tabs of another bar when told where they are', () => {
+    disable()
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      '<nav class="menu"><a href="#a" id="a">a</a><a href="#b" id="b">b</a></nav>',
+    )
+    disable = enableShortcuts({ tabs: '.menu > a' })
+    const [b, two] = [clicks('b'), clicks('two')]
+    press('2')
+    expect(b).toHaveBeenCalledOnce()
+    expect(two).not.toHaveBeenCalled()
+  })
+
   it('stops when it is turned off', () => {
     const theme = clicks('theme')
     disable()

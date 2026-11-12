@@ -20,13 +20,15 @@ function verdict(row: ContrastRow, theme: 'dark' | 'light') {
           <th>Bar</th>
           <th>Dark</th>
           <th>Light</th>
-          <th>Used for</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="row in data.contrast" :key="row.foreground + row.background">
-          <td>
+          <td class="pair">
             <code>{{ short(row.foreground) }}</code> on <code>{{ short(row.background) }}</code>
+            <span class="use">{{ row.use }}</span>
+            <span v-if="row.light.note" class="use">{{ row.light.note }}</span>
+            <span v-if="row.dark.note" class="use">{{ row.dark.note }}</span>
           </td>
           <td class="number">{{ row.min }}</td>
           <td v-for="theme in themes" :key="theme">
@@ -40,11 +42,6 @@ function verdict(row: ContrastRow, theme: 'dark' | 'light') {
               <span class="number">{{ row[theme].ratio.toFixed(2) }}</span>
               <span class="verdict" :class="verdict(row, theme)">{{ verdict(row, theme) }}</span>
             </span>
-          </td>
-          <td class="use">
-            {{ row.use }}
-            <template v-if="row.light.note"><br />{{ row.light.note }}</template>
-            <template v-if="row.dark.note"><br />{{ row.dark.note }}</template>
           </td>
         </tr>
       </tbody>
@@ -90,7 +87,13 @@ function verdict(row: ContrastRow, theme: 'dark' | 'light') {
   font-weight: var(--ws-font-weight-bold);
 }
 
+/* the first column holds the pair and what it is for, so the table fits its column */
+td.pair {
+  white-space: normal;
+}
+
 .use {
-  min-width: 16rem;
+  display: block;
+  margin-top: var(--ws-space-4);
 }
 </style>

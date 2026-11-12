@@ -16,8 +16,9 @@
   font-family: var(--ws-font-family-sans);
 }
 
-.VPHome .VPButton,
-.vp-doc .VPButton {
+/* buttons are not pills: the default theme rounds them by size */
+.VPHome .VPButton:is(.medium, .big),
+.vp-doc .VPButton:is(.medium, .big) {
   border-radius: var(--ws-radius-md);
   font-family: var(--ws-font-family-mono);
   font-weight: var(--ws-font-weight-bold);

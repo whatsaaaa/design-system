@@ -2,7 +2,7 @@
 
 A theme for VitePress. It extends VitePress's default theme, so a site keeps its config as it is: nav, sidebar, search, edit links and the rest. What changes is how it looks and what it adds.
 
-This guide runs on it. For a page with real documentation, see the [sample from form-builder](/docs/sample/conditions).
+This guide runs on it. For pages with real documentation, see the samples from form-builder: [a guide page](/docs/sample/conditions) and [a home page](/docs/sample/home).
 
 ## Setting it up
 
@@ -100,4 +100,4 @@ import Theme from '@whatsaaaa/design-system/vitepress'
 ## What it does not do
 
 - It does not replace the default theme's home layout. A hero and features get the colors and type of the system, not a layout of their own.
-- On phones the tabs are behind the default theme's menu button. The framework-free [tab bar](/styles/terminal#tab-bar) wraps into a second row instead.
+- It follows VitePress 1. The class names it styles are the default theme's own, so a new major version of VitePress needs a pass over the theme's stylesheets.

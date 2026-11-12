@@ -52,6 +52,16 @@ describe('the package', () => {
   })
 })
 
+describe('the browser tests', () => {
+  it('run in CI in the container of the Playwright version that is installed', () => {
+    const { version } = JSON.parse(
+      readFileSync(join(root, 'node_modules/@playwright/test/package.json'), 'utf8'),
+    )
+    const workflow = readFileSync(join(root, '.github/workflows/ci.yml'), 'utf8')
+    expect(workflow).toContain(`container: mcr.microsoft.com/playwright:v${version}-noble`)
+  })
+})
+
 describe('the stylesheets', () => {
   const tokens = readFileSync(join(root, 'dist/tokens.css'), 'utf8')
   const sources = [...walk('src'), ...walk('styleguide')].filter(

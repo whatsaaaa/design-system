@@ -7,8 +7,15 @@
  * keep key hints hidden until `enableShortcuts()` has run, so a page never shows a hint
  * for a key that does nothing.
  *
- * The number keys go to the tabs of a .ws-tabs bar, which numbers them.
+ * The number keys go to the tabs of a tab bar, which numbers them.
  */
+
+export interface ShortcutOptions {
+  /** The document the keys are heard in. */
+  root?: Document
+  /** A selector for the tabs the number keys go to, in their order. */
+  tabs?: string
+}
 
 const EDITABLE = 'input, textarea, select, [contenteditable=""], [contenteditable="true"]'
 
@@ -17,7 +24,7 @@ function isVisible(element: Element): boolean {
   return element.getClientRects().length > 0
 }
 
-function targetFor(key: string, root: Document): HTMLElement | undefined {
+function targetFor(key: string, root: Document, tabSelector: string): HTMLElement | undefined {
   const declared = [...root.querySelectorAll<HTMLElement>('[data-ws-key]')].find(
     (element) =>
       element.dataset.wsKey === key &&
@@ -26,7 +33,7 @@ function targetFor(key: string, root: Document): HTMLElement | undefined {
   )
   if (declared) return declared
   if (/^[1-9]$/.test(key)) {
-    const tabs = [...root.querySelectorAll<HTMLElement>('.ws-tabs a')].filter(isVisible)
+    const tabs = [...root.querySelectorAll<HTMLElement>(tabSelector)].filter(isVisible)
     return tabs[Number(key) - 1]
   }
   return undefined
@@ -36,11 +43,14 @@ function targetFor(key: string, root: Document): HTMLElement | undefined {
  * Turns the shortcuts on and reveals the key hints. Returns a function that turns them off.
  * Keys typed into a field, and keys pressed with Ctrl, Alt or Cmd, are left alone.
  */
-export function enableShortcuts(root: Document = document): () => void {
+export function enableShortcuts({
+  root = document,
+  tabs = '.ws-tabs a',
+}: ShortcutOptions = {}): () => void {
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return
     if (event.target instanceof Element && event.target.closest(EDITABLE)) return
-    const target = targetFor(event.key, root)
+    const target = targetFor(event.key, root, tabs)
     if (!target) return
     event.preventDefault()
     target.click()
