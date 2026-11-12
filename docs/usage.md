@@ -114,7 +114,9 @@ The markup of each piece is in the comment at the top of its stylesheet, and in 
 A key hint in a status line has to work. Put `data-ws-key` on the control the key presses, and turn the shortcuts on:
 
 ```html
-<button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
+<button type="button" data-ws-key="t" aria-keyshortcuts="t">
+  <kbd class="ws-kbd">t</kbd>theme
+</button>
 ```
 
 ```ts

@@ -156,6 +156,9 @@
     font-family: var(--ws-font-family-mono);
     font-size: var(--ws-font-size-13);
     font-variant-numeric: tabular-nums;
+
+    /* the line of the item, so the smaller number sits on its baseline */
+    line-height: calc(var(--ws-text-body-line-height) * var(--ws-text-body-font-size));
     text-align: right;
     content: counter(ws-item);
   }

@@ -3,8 +3,18 @@
  * numbered tabs right after it, and search, links and the ghost at the right end.
  */
 .VPNav .VPNavBar {
-  background: var(--ws-color-bg);
   font-family: var(--ws-font-family-mono);
+}
+
+/*
+ * The bar is always opaque. The default theme leaves it clear in places and paints its
+ * parts instead, which lets the page show through between them here.
+ */
+.VPNav .VPNavBar:not(.home),
+.VPNav .VPNavBar.has-sidebar,
+.VPNav .VPNavBar.home,
+.VPNav .VPNavBar.home.top {
+  background-color: var(--ws-color-bg);
 }
 
 .VPNav .VPNavBar .wrapper {

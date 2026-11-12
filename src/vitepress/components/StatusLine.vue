@@ -72,19 +72,44 @@ onUnmounted(() => {
     <span class="ws-status-line__spacer" />
     <!-- Each hint is the control it names: the key clicks the button. -->
     <span class="ws-status-line__keys">
-      <button v-if="hasSearch" type="button" data-ws-key="/" @click="openSearch">
+      <button
+        v-if="hasSearch"
+        type="button"
+        data-ws-key="/"
+        aria-label="Search"
+        aria-keyshortcuts="/"
+        @click="openSearch"
+      >
         <kbd class="ws-kbd">/</kbd>search
       </button>
       <span class="WsStatusLine-pair">
-        <button type="button" data-ws-key="j" aria-label="Scroll down" @click="scrollPage(1)">
+        <button
+          type="button"
+          data-ws-key="j"
+          aria-label="Scroll down"
+          aria-keyshortcuts="j"
+          @click="scrollPage(1)"
+        >
           <kbd class="ws-kbd">j</kbd>
         </button>
-        <button type="button" data-ws-key="k" aria-label="Scroll up" @click="scrollPage(-1)">
+        <button
+          type="button"
+          data-ws-key="k"
+          aria-label="Scroll up"
+          aria-keyshortcuts="k"
+          @click="scrollPage(-1)"
+        >
           <kbd class="ws-kbd">k</kbd>
         </button>
         <span aria-hidden="true">scroll</span>
       </span>
-      <button type="button" data-ws-key="t" @click="toggleTheme">
+      <button
+        type="button"
+        data-ws-key="t"
+        aria-label="Switch theme"
+        aria-keyshortcuts="t"
+        @click="toggleTheme"
+      >
         <kbd class="ws-kbd">t</kbd>theme
       </button>
     </span>

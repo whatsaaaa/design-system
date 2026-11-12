@@ -14,16 +14,18 @@ test.skip(
 )
 
 const shots = [
-  { suffix: 'desktop-dark', viewport: DESKTOP, colorScheme: 'dark' },
-  { suffix: 'desktop-light', viewport: DESKTOP, colorScheme: 'light' },
-  { suffix: 'phone-dark', viewport: PHONE, colorScheme: 'dark' },
+  { suffix: 'desktop-dark', viewport: DESKTOP, colorScheme: 'dark', pages: ['all', 'desktop'] },
+  { suffix: 'desktop-light', viewport: DESKTOP, colorScheme: 'light', pages: ['all', 'desktop'] },
+  { suffix: 'phone-dark', viewport: PHONE, colorScheme: 'dark', pages: ['all'] },
 ] as const
 
-for (const { suffix, viewport, colorScheme } of shots) {
+for (const { suffix, viewport, colorScheme, pages } of shots) {
   test.describe(suffix, () => {
     test.use({ viewport, colorScheme })
 
-    for (const { name, path } of PAGES) {
+    for (const { name, path } of PAGES.filter((page) =>
+      (pages as readonly string[]).includes(page.shots),
+    )) {
       test(name, async ({ page }) => {
         await open(page, path)
         // A window as tall as the page shows all of it at once, with the status line at its end.

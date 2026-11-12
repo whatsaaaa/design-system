@@ -272,7 +272,7 @@
  *     <span class="ws-status-line__file">guide/conditions.md</span>
  *     <span class="ws-status-line__item ws-status-line__item--wide">main</span>
  *     <span class="ws-status-line__keys">
- *       <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
+ *       <button type="button" data-ws-key="t" aria-keyshortcuts="t"><kbd class="ws-kbd">t</kbd>theme</button>
  *     </span>
  *     <span class="ws-status-line__item ws-status-line__item--edge">rose-pine</span>
  *   </footer>

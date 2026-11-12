@@ -18,11 +18,17 @@ const files = computed(() => {
 })
 const url = (file: string) => withBase(`/kit/${props.identity}/${file}`)
 
-/** The background a file is meant for, so each preview sits on the right one. */
+/** The one-color cut takes the text color, which an image cannot. It is drawn as a mask. */
+const isMono = (file: string) => /mono/.test(file)
+
+/**
+ * The background a file is shown on: the one it is made for, the page for a banner or the
+ * one-color cut, and both halves of a split one for a mark that has to work anywhere.
+ */
 function surface(file: string) {
   if (/-light\.|on-light/.test(file)) return 'light'
   if (/-dark\.|on-dark/.test(file)) return 'dark'
-  return /mono/.test(file) ? 'page' : 'checker'
+  return isMono(file) || /^(readme-header|social-card)/.test(file) ? 'plain' : 'split'
 }
 const previewable = (file: string) => !file.endsWith('.ico')
 </script>
@@ -43,7 +49,7 @@ const previewable = (file: string) => !file.endsWith('.ico')
       >
         <!-- an image cannot take the text color, so the one-color cut is drawn as a mask of it -->
         <span
-          v-if="surface(entry.file) === 'page'"
+          v-if="isMono(entry.file)"
           class="mono"
           role="img"
           :aria-label="entry.use"
@@ -103,7 +109,7 @@ const previewable = (file: string) => !file.endsWith('.ico')
 }
 
 /* a file made for any background is shown on both halves of one */
-.preview.checker {
+.preview.split {
   background: linear-gradient(
     90deg,
     var(--ws-palette-main-base) 50%,

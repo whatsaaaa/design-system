@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 /**
- * Browser tests of the built style guide. Build it first: pnpm build && pnpm styleguide:build.
+ * Browser tests of the built style guide. "pnpm test:browser" builds it first.
  *
  * Screenshots are compared on Linux only, in the Playwright container, where they are taken.
  * On another system the screenshot tests skip and the rest runs.

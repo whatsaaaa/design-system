@@ -69,7 +69,9 @@ The mode, where you are, the keys, and one or two facts at the right edge.
   <span class="ws-status-line__spacer"></span>
   <span class="ws-status-line__keys">
     <a href="https://github.com/whatsaaaa" data-ws-key="g"><kbd class="ws-kbd">g</kbd>github</a>
-    <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
+    <button type="button" data-ws-key="t" aria-keyshortcuts="t">
+      <kbd class="ws-kbd">t</kbd>theme
+    </button>
   </span>
   <span class="ws-status-line__item ws-status-line__item--edge">rose-pine</span>
 </footer>

@@ -25,24 +25,25 @@ You need Node.js 24 or later and pnpm. `corepack enable` sets pnpm up.
 
 ```sh
 pnpm install
-pnpm build            # tokens, fonts, stylesheets and modules, into dist/
-pnpm styleguide:dev   # the style guide, at http://localhost:5173
+pnpm styleguide:dev   # builds the package and starts the style guide
 ```
 
-| Command                 | What it does                                                 |
-| ----------------------- | ------------------------------------------------------------ |
-| `pnpm build`            | Builds the package into `dist/`                              |
-| `pnpm assets`           | Regenerates the asset kit in `assets/` from its sources      |
-| `pnpm styleguide:dev`   | Starts the style guide                                       |
-| `pnpm styleguide:build` | Builds the style guide                                       |
-| `pnpm test`             | Runs the unit tests, the contrast checks among them          |
-| `pnpm test:browser`     | Runs the browser tests against the built style guide         |
-| `pnpm lint`             | Checks the tokens, the code, the stylesheets and the package |
-| `pnpm type-check`       | Type-checks everything                                       |
-| `pnpm format`           | Formats everything                                           |
-| `pnpm contrast`         | Prints the contrast of every pair the system relies on       |
+| Command                    | What it does                                                                                          |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `pnpm build`               | Builds the package into `dist/`: tokens, fonts, stylesheets and modules                               |
+| `pnpm assets`              | Regenerates the asset kit in `assets/` from its sources                                               |
+| `pnpm styleguide:dev`      | Starts the style guide                                                                                |
+| `pnpm styleguide:build`    | Builds the style guide                                                                                |
+| `pnpm test`                | Runs the unit tests, the contrast checks among them                                                   |
+| `pnpm test:browser`        | Builds the style guide and runs the browser tests against it. The screenshot tests skip outside Linux |
+| `pnpm test:browser:docker` | Runs the browser tests in the Playwright container, screenshots included, as CI does                  |
+| `pnpm test:browser:update` | Takes the screenshots again, in the container                                                         |
+| `pnpm lint`                | Checks the tokens, the code, the stylesheets and the package                                          |
+| `pnpm type-check`          | Type-checks everything                                                                                |
+| `pnpm format`              | Formats everything                                                                                    |
+| `pnpm contrast`            | Prints the contrast of every pair the system relies on                                                |
 
-Most checks read `dist/`, so build first.
+Every script builds what it needs first, so each one works on a fresh checkout.
 
 ## Changing things
 
@@ -61,7 +62,7 @@ CI runs on every pull request:
 - the unit tests, with the contrast of every role pair in both themes,
 - that `assets/` is what the sources produce,
 - that the package and the style guide build,
-- the browser tests: no page overflows sideways at phone and desktop width in either theme, the easter egg works with the mouse, the keyboard and reduced motion, the keys of the status line work, both fonts draw Serbian Latin, and every page of the style guide looks like its stored screenshot.
+- the browser tests: no page overflows sideways at phone and desktop width in either theme, the easter egg works with the mouse, the keyboard and reduced motion, the keys of the status line work, both fonts draw Serbian Latin, and the pages of the style guide look like their stored screenshots.
 
 The screenshots are in `tests/browser/__screenshots__/` and are taken on Linux, in the Playwright container, so they are the same on every machine. After a change that is meant to be seen, update them:
 
@@ -69,7 +70,7 @@ The screenshots are in `tests/browser/__screenshots__/` and are taken on Linux, 
 pnpm test:browser:update
 ```
 
-That needs Docker. Review the changed images like any other change.
+That needs Docker. Review the changed images like any other change. The Playwright version in `package.json` and the container in `.github/workflows/ci.yml` go together: a unit test fails when they differ.
 
 ## Layout
 

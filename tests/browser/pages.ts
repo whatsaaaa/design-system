@@ -1,22 +1,29 @@
 import type { Page } from '@playwright/test'
 
-/** Every page of the style guide, and the two standalone examples. */
+/**
+ * Every page of the style guide, and the two standalone examples.
+ *
+ * `shots` says which screenshots a page has. Every page is checked for overflow at both
+ * widths. Screenshots are kept to what a look can go wrong on: all pages at desktop width,
+ * and at phone width the pages that differ there beyond their column getting narrow.
+ * The usage guide is prose only, which the prose page already shows.
+ */
 export const PAGES = [
-  { name: 'overview', path: '/' },
-  { name: 'identity-ghost', path: '/identity/' },
-  { name: 'identity-projects', path: '/identity/projects' },
-  { name: 'identity-banners', path: '/identity/banners' },
-  { name: 'tokens-color', path: '/tokens/color' },
-  { name: 'tokens-typography', path: '/tokens/typography' },
-  { name: 'tokens-space', path: '/tokens/space' },
-  { name: 'styles-prose', path: '/styles/prose' },
-  { name: 'styles-terminal', path: '/styles/terminal' },
-  { name: 'docs-theme', path: '/docs/' },
-  { name: 'docs-usage', path: '/docs/usage' },
-  { name: 'docs-sample', path: '/docs/sample/conditions' },
-  { name: 'docs-sample-home', path: '/docs/sample/home' },
-  { name: 'example-terminal', path: '/examples/terminal.html' },
-  { name: 'example-prose', path: '/examples/prose.html' },
+  { name: 'overview', path: '/', shots: 'all' },
+  { name: 'identity-ghost', path: '/identity/', shots: 'all' },
+  { name: 'identity-projects', path: '/identity/projects', shots: 'desktop' },
+  { name: 'identity-banners', path: '/identity/banners', shots: 'desktop' },
+  { name: 'tokens-color', path: '/tokens/color', shots: 'desktop' },
+  { name: 'tokens-typography', path: '/tokens/typography', shots: 'desktop' },
+  { name: 'tokens-space', path: '/tokens/space', shots: 'desktop' },
+  { name: 'styles-prose', path: '/styles/prose', shots: 'all' },
+  { name: 'styles-terminal', path: '/styles/terminal', shots: 'all' },
+  { name: 'docs-theme', path: '/docs/', shots: 'desktop' },
+  { name: 'docs-usage', path: '/docs/usage', shots: 'none' },
+  { name: 'docs-sample', path: '/docs/sample/conditions', shots: 'all' },
+  { name: 'docs-sample-home', path: '/docs/sample/home', shots: 'all' },
+  { name: 'example-terminal', path: '/examples/terminal.html', shots: 'all' },
+  { name: 'example-prose', path: '/examples/prose.html', shots: 'all' },
 ] as const
 
 export const PHONE = { width: 390, height: 844 }

@@ -29,10 +29,9 @@ docker run --rm --ipc=host \
     cd /work
     npm install --global --silent "$(node -p "require(\"./package.json\").packageManager")"
     pnpm install --frozen-lockfile
-    pnpm build
     pnpm styleguide:build
     status=0
-    CI=1 pnpm exec playwright test "$@" || status=$?
+    CI=1 pnpm test:browser:run "$@" || status=$?
     cp -R tests/browser/__screenshots__/. /shots/ 2>/dev/null || true
     exit $status
   ' sh "$@"

@@ -70,6 +70,18 @@
   transition: none;
 }
 
+/* the default theme pulls a block up against the one before it. Here each keeps its own frame. */
+.vp-doc div[class*='language-'] + div[class*='language-'],
+.vp-doc div[class$='-api'] + div[class*='language-'],
+.vp-doc div[class*='language-'] + div[class$='-api'] > div[class*='language-'] {
+  margin-top: var(--ws-space-16);
+}
+
+/* the marks of a diff sit in the padding, left of the code */
+.vp-doc div[class*='language-'] code .diff::before {
+  left: var(--ws-space-4);
+}
+
 .vp-doc div[class*='language-']::before {
   position: absolute;
   top: 0;
