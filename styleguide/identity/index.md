@@ -93,7 +93,3 @@ And three more for drawing it:
 - Draw it on whole pixels. Do not rotate it, stretch it or smooth it.
 - Do not redraw it by hand. Take a file from the kit or the element.
 - As a favicon it keeps its tile. A pale body would vanish on a light tab strip.
-
-::: info Before public use
-Whether to run a trademark search for the ghost before it is used in public is an open question for the owner. This guide does not settle it.
-:::
