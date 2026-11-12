@@ -96,7 +96,7 @@ const lastRowWith = (rows: Sprite, cell: string) =>
  *
  * - every sprite: 16 rows of 16 cells, only the four known cells, one empty pixel around the
  *   edge so nothing touches the rounded corners of the tile
- * - a project sprite: one body shape and exactly one love element, which hangs at the bottom
+ * - a project sprite: no holes, and exactly one love element, which hangs below the body
  * - the ghost: exactly one tongue, or none in the one pose that has its mouth shut
  */
 export function checkSprite(rows: Sprite, kind: 'ghost' | 'project'): string[] {

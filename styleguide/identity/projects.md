@@ -7,11 +7,11 @@ Every project has a sprite of its own from the same game as the ghost. The ghost
 A project sprite is:
 
 - on the same dark rounded tile as the ghost,
-- one shape in the text color, on the 16 x 16 grid, with no outline and no shading,
+- a body in the text color alone, on the 16 x 16 grid, with no outline and no shading. It can be several pieces,
 - with exactly one love element, hanging at the bottom, the way the ghost carries its tongue,
 - readable at 16 px.
 
-The generator checks the first three. The last one is yours: look at the 16 px mark below before you keep a sprite.
+The first two come with the format: the generator draws the tile, and a sprite has only body and love pixels to draw with. The generator checks the third. The last one is yours: look at the 16 px mark below before you keep a sprite.
 
 ## form-builder
 
@@ -39,7 +39,7 @@ Two blocks, and a third one under them.
 
 ## Adding a project
 
-A project is one file in `identity/projects/`. Its name, a line about it, and sixteen rows of sixteen cells: `B` for the shape, `T` for the love element, `.` for nothing.
+A project is one file in `identity/projects/`. Its name, a line about it, and sixteen rows of sixteen cells: `B` for the body, `T` for the love element, `.` for nothing.
 
 ```json [identity/projects/form-builder.json]
 {

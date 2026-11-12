@@ -15,7 +15,7 @@ export const PAGES = [
   { name: 'identity-banners', path: '/identity/banners', shots: 'desktop' },
   { name: 'tokens-color', path: '/tokens/color', shots: 'desktop' },
   { name: 'tokens-typography', path: '/tokens/typography', shots: 'desktop' },
-  { name: 'tokens-space', path: '/tokens/space', shots: 'desktop' },
+  { name: 'tokens-space', path: '/tokens/space', shots: 'all' },
   { name: 'styles-prose', path: '/styles/prose', shots: 'all' },
   { name: 'styles-terminal', path: '/styles/terminal', shots: 'all' },
   { name: 'docs-theme', path: '/docs/', shots: 'desktop' },

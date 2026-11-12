@@ -34,6 +34,30 @@ describe('markdown in the docs theme', () => {
     expect(html.trim()).toMatch(/<\/table>\s*<\/div>$/)
   })
 
+  it('marks the cells of running text in a table, and leaves cells of short values alone', async () => {
+    const html = (await renderer()).render(
+      [
+        '| Operator | Value | True when the field |',
+        '| --- | --- | --- |',
+        '| `equals` | a string, number or boolean | holds the value |',
+        '| `empty` | [Rezervacije](/vodic/rezervacije-u-kafani) | not shown |',
+      ].join('\n'),
+    )
+    const cells = [...html.matchAll(/<td([^>]*)>(.*?)<\/td>/g)].map(([, attributes, content]) => [
+      content!.replace(/<[^>]+>/g, ''),
+      attributes!.includes('class="ws-table__text"'),
+    ])
+    expect(cells).toEqual([
+      ['equals', false],
+      ['a string, number or boolean', true],
+      ['holds the value', false],
+      ['empty', false],
+      // a link counts by its text, not by its address
+      ['Rezervacije', false],
+      ['not shown', false],
+    ])
+  })
+
   it('can be added to a site that has its own markdown setup', async () => {
     const md = await createMarkdownRenderer(root, {
       config: (instance) => whatsaaaaMarkdown(instance),

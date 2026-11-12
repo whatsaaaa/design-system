@@ -48,7 +48,9 @@ const visual = computed(() => ['fontSizes', 'space', 'radius', 'borderWidth'].in
               Aa
             </span>
           </td>
-          <td v-if="rows.some((entry) => entry.description)" class="use">{{ row.description }}</td>
+          <td v-if="rows.some((entry) => entry.description)" class="ws-table__text">
+            {{ row.description }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -85,9 +87,5 @@ const visual = computed(() => ['fontSizes', 'space', 'radius', 'borderWidth'].in
 .letters {
   font-family: var(--ws-font-family-mono);
   line-height: 1;
-}
-
-.use {
-  min-width: 12rem;
 }
 </style>

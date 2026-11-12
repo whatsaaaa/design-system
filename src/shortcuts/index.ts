@@ -31,6 +31,7 @@ function targetFor(key: string, tabSelector: string): HTMLElement | undefined {
   const declared = [...document.querySelectorAll<HTMLElement>('[data-ws-key]')].find(
     (element) =>
       element.dataset.wsKey === key &&
+      isVisible(element) &&
       !(element as HTMLButtonElement).disabled &&
       element.getAttribute('aria-disabled') !== 'true',
   )
@@ -44,7 +45,8 @@ function targetFor(key: string, tabSelector: string): HTMLElement | undefined {
 
 /**
  * Turns the shortcuts on and reveals the key hints. Returns a function that turns them off.
- * Keys typed into a field, and keys pressed with Ctrl, Alt or Cmd, are left alone.
+ * A key works only while the control that shows its hint is rendered. Keys typed into a
+ * field, and keys pressed with Ctrl, Alt or Cmd, are left alone.
  */
 export function enableShortcuts({ tabs = '.ws-tabs a' }: ShortcutOptions = {}): () => void {
   const onKeyDown = (event: KeyboardEvent) => {

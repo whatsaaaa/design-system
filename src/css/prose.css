@@ -262,6 +262,14 @@
     white-space: nowrap;
   }
 
+  /*
+   * A cell of running text keeps room for a few words in a line, so a narrow frame scrolls
+   * instead of squeezing it. Cells of short values are left as narrow as they are.
+   */
+  & .ws-table__text {
+    min-width: 10rem;
+  }
+
   & kbd {
     display: inline-grid;
     place-items: center;
@@ -312,11 +320,6 @@
 
     & table {
       font-size: var(--ws-font-size-14);
-    }
-
-    /* A cell keeps room for a few words in a line. The frame scrolls instead of squeezing it. */
-    & td:not(:first-child) {
-      min-width: 10rem;
     }
   }
 }

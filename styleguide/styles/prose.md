@@ -154,10 +154,11 @@ The same styles work on plain HTML, with the classes of the system. This is a pa
 </article>
 ```
 
-| Class                                                 | What it is                                 |
-| ----------------------------------------------------- | ------------------------------------------ |
-| `ws-prose`                                            | The container for long-form text           |
-| `ws-crumb`                                            | The path above a page title                |
-| `ws-code`                                             | A code block with a caption                |
-| `ws-callout`, with `--tip`, `--warning` or `--danger` | A callout. Without a modifier it is a note |
-| `ws-table`                                            | The frame a table scrolls in               |
+| Class                                                 | What it is                                                                                                         |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `ws-prose`                                            | The container for long-form text                                                                                   |
+| `ws-crumb`                                            | The path above a page title                                                                                        |
+| `ws-code`                                             | A code block with a caption                                                                                        |
+| `ws-callout`, with `--tip`, `--warning` or `--danger` | A callout. Without a modifier it is a note                                                                         |
+| `ws-table`                                            | The frame a table scrolls in                                                                                       |
+| `ws-table__text`                                      | A cell of running text. It keeps room for a few words in a line, so a narrow frame scrolls instead of squeezing it |

@@ -65,10 +65,10 @@ markdown: {
 
 Everything from the default theme works. The theme adds one group, `themeConfig.whatsaaaa`:
 
-| Option   | What it does                                                                    | Default   |
-| -------- | ------------------------------------------------------------------------------- | --------- |
-| `ghost`  | `link` for a link to the handle's site, `egg` for the ghost with the easter egg | `link`    |
-| `branch` | The git branch shown in the status line                                         | not shown |
+| Option   | What it does                                                                    | Default        |
+| -------- | ------------------------------------------------------------------------------- | -------------- |
+| `ghost`  | `link` for a link to the handle's site, `egg` for the ghost with the easter egg | `link`         |
+| `branch` | The git branch shown in the status line                                         | not&nbsp;shown |
 
 ## The logo
 

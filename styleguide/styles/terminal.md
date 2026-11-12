@@ -79,7 +79,7 @@ The mode, where you are, the keys, and one or two facts at the right edge.
 
 ### Keys are real or not shown
 
-A key hint is the control it names. `data-ws-key="t"` on a button means pressing <kbd>t</kbd> clicks that button, so the hint and the action cannot drift apart. The hints stay hidden until the shortcuts module runs, and they are hidden on narrow screens, where there is no keyboard.
+A key hint is the control it names. `data-ws-key="t"` on a button means pressing <kbd>t</kbd> clicks that button, so the hint and the action cannot drift apart. The hints stay hidden until the shortcuts module runs, and below 64rem, where the status line has no room for them. A key works only while its hint shows.
 
 ```ts
 import { enableShortcuts } from '@whatsaaaa/design-system/shortcuts'

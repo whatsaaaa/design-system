@@ -19,15 +19,33 @@ function codeTitle(md: MarkdownRenderer) {
   }
 }
 
-/** Puts every table in a frame that scrolls sideways, so a wide table never widens the page. */
+/**
+ * A cell with more characters than this is running text. It is about what one line holds
+ * at the width the styles keep for such a cell, so the mark never widens a cell of short values.
+ */
+const TEXT_CELL = 24
+
+/**
+ * Puts every table in a frame that scrolls sideways, so a wide table never widens the page,
+ * and marks its cells of running text, which the styles keep from being squeezed.
+ */
 function tableFrame(md: MarkdownRenderer) {
   type Rule = NonNullable<MarkdownRenderer['renderer']['rules'][string]>
   const plain: Rule = (tokens, index, options, _env, self) =>
     self.renderToken(tokens, index, options)
   const open = md.renderer.rules.table_open ?? plain
   const close = md.renderer.rules.table_close ?? plain
+  const cell = md.renderer.rules.td_open ?? plain
   md.renderer.rules.table_open = (...args) => `<div class="ws-table">${open(...args)}`
   md.renderer.rules.table_close = (...args) => `${close(...args)}</div>`
+  md.renderer.rules.td_open = (tokens, index, ...rest) => {
+    // the cell's content is the token after the one that opens it
+    const text = (tokens[index + 1]?.children ?? [])
+      .map((part) => (part.type === 'text' || part.type === 'code_inline' ? part.content : ''))
+      .join('')
+    if (text.length > TEXT_CELL) tokens[index]!.attrSet('class', 'ws-table__text')
+    return cell(tokens, index, ...rest)
+  }
 }
 
 /**

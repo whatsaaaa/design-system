@@ -417,7 +417,7 @@
     border-right-color: transparent;
   }
 
-  /* Key hints are for keyboards, and the wide items do not fit a phone. */
+  /* The key hints and the wide items do not fit. A key whose hint is hidden does nothing. */
   [data-ws-keys] .ws-status-line__keys,
   .ws-status-line__item--wide {
     display: none;

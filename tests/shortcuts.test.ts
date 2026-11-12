@@ -88,6 +88,16 @@ describe('shortcuts', () => {
     },
   )
 
+  it('leaves a key alone while the control that shows its hint is not rendered', () => {
+    const theme = clicks('theme')
+    // what a browser reports for an element inside display: none
+    vi.spyOn(document.getElementById('theme')!, 'getClientRects').mockReturnValue(
+      [] as unknown as DOMRectList,
+    )
+    expect(press('t').defaultPrevented).toBe(false)
+    expect(theme).not.toHaveBeenCalled()
+  })
+
   it('skips a control that is disabled', () => {
     const off = clicks('off')
     expect(press('x').defaultPrevented).toBe(false)

@@ -88,6 +88,25 @@ test.describe('on a phone', () => {
   })
 })
 
+test.describe('in a window too narrow for the key hints', () => {
+  test.use({ viewport: { width: 900, height: 800 } })
+
+  for (const [path, secondTab] of [
+    ['/styles/prose', /\/tokens\/color/],
+    ['/examples/terminal.html', /\/examples\/prose\.html/],
+  ] as const) {
+    test(`a key whose hint is hidden does nothing on ${path}`, async ({ page }) => {
+      await open(page, path)
+      await expect(page.locator('.ws-status-line__keys')).toBeHidden()
+      await page.keyboard.press('t')
+      // a tab shows its number at every width, so that key still works: it is handled after t
+      await page.keyboard.press('2')
+      await expect(page).toHaveURL(secondTab)
+      expect(await theme(page)).not.toBe('light')
+    })
+  }
+})
+
 test.describe('on a plain page', () => {
   test('the keys work with nothing but the module', async ({ page }) => {
     await open(page, '/examples/terminal.html')
