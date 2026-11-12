@@ -1,0 +1,27 @@
+node_modules
+.DS_Store
+dist
+coverage
+*.local
+*.log
+*.tsbuildinfo
+*.tgz
+.eslintcache
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# VitePress
+**/.vitepress/cache
+**/.vitepress/dist
+
+# Copied into the style guide from dist/ and assets/ when it builds
+/styleguide/public/ds
+/styleguide/public/kit
+
+# Playwright
+/test-results
+/playwright-report
+/blob-report

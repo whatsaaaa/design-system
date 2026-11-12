@@ -1,0 +1,84 @@
+/*
+ * Page defaults for a site that is all this system: box sizing, the page colors, the body
+ * face, links, focus and selection. It resets margins and list markers, so content that
+ * should read as a document goes in a .ws-prose container.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ws-color-bg);
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ws-color-bg);
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-font-size-16);
+  line-height: var(--ws-font-line-height-relaxed);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote,
+pre {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: var(--ws-color-interactive);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* A mono face with ligatures turns => and != into single shapes, which code should not do. */
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--ws-font-family-mono);
+  font-variant-ligatures: none;
+}
+
+:focus-visible {
+  border-radius: var(--ws-radius-sm);
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--ws-color-selection);
+  color: var(--ws-color-text);
+}
+
+/* Text for screen readers only. */
+.ws-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

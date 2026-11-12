@@ -1,0 +1,183 @@
+/*
+ * Page layout of the two example pages. Everything here is local to the examples: the
+ * window that fills the screen, the two panes and the list of projects. The pieces of the
+ * terminal frame themselves come from the design system's stylesheet.
+ */
+body {
+  min-height: 100dvh;
+  padding: var(--ws-space-20);
+}
+
+.window {
+  height: calc(100dvh - 2 * var(--ws-space-20));
+  max-width: var(--ws-size-frame);
+  margin-inline: auto;
+}
+
+.panes {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  min-height: 0;
+}
+
+.pane {
+  min-width: 0;
+  padding: var(--ws-space-40) var(--ws-space-48);
+  overflow: auto;
+}
+
+.pane + .pane {
+  border-left: var(--ws-border-width-thin) solid var(--ws-color-border);
+}
+
+.who {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ws-space-20);
+  margin-top: var(--ws-space-24);
+}
+
+.who h1 {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-12);
+  font: var(--ws-text-display);
+  letter-spacing: var(--ws-text-display-letter-spacing);
+}
+
+.role {
+  margin-top: var(--ws-space-10);
+  font-size: var(--ws-font-size-20);
+  font-weight: var(--ws-font-weight-medium);
+}
+
+.pane .ws-output {
+  margin-bottom: var(--ws-space-40);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ws-space-8);
+  margin-top: var(--ws-space-16);
+}
+
+.total {
+  margin-top: var(--ws-space-20);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+}
+
+.ls {
+  margin-top: var(--ws-space-8);
+  border-top: var(--ws-border-width-thin) dashed var(--ws-color-border);
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  column-gap: var(--ws-space-16);
+  padding-block: var(--ws-space-20);
+  border-bottom: var(--ws-border-width-thin) dashed var(--ws-color-border);
+}
+
+.entry .ws-state {
+  align-self: start;
+  line-height: 1.625rem;
+}
+
+.entry h3 {
+  font: var(--ws-text-h4);
+  line-height: 1.625rem;
+}
+
+.entry h3 a {
+  color: var(--ws-color-text);
+  text-decoration: none;
+}
+
+.entry p {
+  margin-top: var(--ws-space-6);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-body-sm);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ws-space-6);
+  margin-top: var(--ws-space-12);
+}
+
+.next {
+  margin-top: var(--ws-space-24);
+}
+
+.article {
+  min-height: 0;
+  overflow: auto;
+}
+
+.article .ws-prose {
+  max-width: var(--ws-size-content);
+  margin-inline: auto;
+  padding: var(--ws-space-40) var(--ws-space-56) var(--ws-space-64);
+}
+
+@media (width < 64rem) {
+  body {
+    padding: var(--ws-space-12);
+  }
+
+  /* on a phone the window grows with its content and the page scrolls */
+  .window {
+    height: auto;
+    min-height: calc(100dvh - 2 * var(--ws-space-12));
+  }
+
+  .panes {
+    display: block;
+  }
+
+  .pane {
+    padding: var(--ws-space-24) var(--ws-space-20);
+    overflow: visible;
+  }
+
+  .pane + .pane {
+    border-top: var(--ws-border-width-thin) solid var(--ws-color-border);
+    border-left: 0;
+  }
+
+  .who {
+    gap: var(--ws-space-14);
+  }
+
+  .who h1 {
+    font: var(--ws-text-display-compact);
+    letter-spacing: var(--ws-text-display-compact-letter-spacing);
+  }
+
+  /* four screen pixels per sprite pixel instead of six */
+  .who .ws-ghost__sprite {
+    width: 2.5rem;
+    height: 3rem;
+  }
+
+  .role {
+    font-size: var(--ws-font-size-18);
+  }
+
+  .entry {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--ws-space-4);
+  }
+
+  .article {
+    overflow: visible;
+  }
+
+  .article .ws-prose {
+    padding: var(--ws-space-24) var(--ws-space-20) var(--ws-space-48);
+  }
+}

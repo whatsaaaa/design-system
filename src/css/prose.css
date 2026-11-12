@@ -1,0 +1,346 @@
+/*
+ * Long-form text: headings, paragraphs, links, lists, inline code, tables and the small
+ * things around them. Put rendered Markdown in a .ws-prose container.
+ * The same rules style VitePress pages, whose content container is .vp-doc.
+ */
+@import './breakpoints.css';
+
+.ws-prose,
+.vp-doc {
+  color: var(--ws-color-text);
+  font: var(--ws-text-body);
+
+  & h1,
+  & h2,
+  & h3,
+  & h4 {
+    margin: 0;
+    color: var(--ws-color-text);
+  }
+
+  & h1 {
+    font: var(--ws-text-h1);
+    letter-spacing: var(--ws-text-h1-letter-spacing);
+  }
+
+  /* A section starts with a rule and a hash, like a comment that opens a block. */
+  & h2 {
+    display: flex;
+    gap: var(--ws-space-10);
+    margin-top: var(--ws-space-48);
+    padding-top: var(--ws-space-24);
+    border-top: var(--ws-border-width-thin) solid var(--ws-color-border);
+    font: var(--ws-text-h2);
+    letter-spacing: var(--ws-text-h2-letter-spacing);
+    scroll-margin-top: var(--ws-size-tab-bar);
+  }
+
+  & h2::before {
+    flex: none;
+    color: var(--ws-color-brand);
+    content: '#';
+    content: '#' / '';
+  }
+
+  & h3 {
+    margin-top: var(--ws-space-32);
+    font: var(--ws-text-h3);
+    letter-spacing: var(--ws-text-h3-letter-spacing);
+    scroll-margin-top: var(--ws-size-tab-bar);
+  }
+
+  & h4 {
+    margin-top: var(--ws-space-24);
+    font: var(--ws-text-h4);
+    scroll-margin-top: var(--ws-size-tab-bar);
+  }
+
+  & p,
+  & ul,
+  & ol,
+  & dl,
+  & blockquote {
+    margin: var(--ws-space-16) 0 0;
+  }
+
+  & p {
+    line-height: var(--ws-text-body-line-height);
+  }
+
+  /* The paragraph under the page title is the lead. */
+  & h1 + p,
+  & .ws-lead {
+    margin-top: var(--ws-space-20);
+    font: var(--ws-text-lead);
+  }
+
+  & strong,
+  & b {
+    font-weight: var(--ws-font-weight-semibold);
+  }
+
+  & a {
+    color: var(--ws-color-interactive);
+    font-weight: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  & a:has(> code) {
+    text-decoration: none;
+  }
+
+  /* Inline code sits on a raised chip in the text color, so it reads on both themes. */
+  & :not(pre) > code {
+    padding: var(--ws-space-2) var(--ws-space-6);
+    border-radius: var(--ws-radius-sm);
+    background: var(--ws-color-raised);
+    color: var(--ws-color-text);
+    font-family: var(--ws-font-family-mono);
+    font-size: 0.8125em;
+    font-variant-ligatures: none;
+    overflow-wrap: anywhere;
+  }
+
+  & a > code {
+    color: inherit;
+  }
+
+  & ul,
+  & ol {
+    padding: 0;
+    list-style: none;
+  }
+
+  & li {
+    position: relative;
+    padding-left: var(--ws-space-20);
+    line-height: var(--ws-text-body-line-height);
+  }
+
+  & li + li {
+    margin-top: var(--ws-space-8);
+  }
+
+  & li > ul,
+  & li > ol {
+    margin-top: var(--ws-space-8);
+  }
+
+  /* Bullets are sprite pixels: small squares in the brand color. */
+  & ul > li::before {
+    position: absolute;
+    top: 0.72em;
+    left: var(--ws-space-2);
+    width: var(--ws-space-6);
+    height: var(--ws-space-6);
+    background: var(--ws-color-brand);
+    content: '';
+  }
+
+  & ol {
+    counter-reset: ws-item;
+  }
+
+  & ol > li {
+    padding-left: var(--ws-space-32);
+    counter-increment: ws-item;
+  }
+
+  & ol > li::before {
+    position: absolute;
+    left: 0;
+    width: var(--ws-space-20);
+    color: var(--ws-color-text-secondary);
+    font-family: var(--ws-font-family-mono);
+    font-size: var(--ws-font-size-13);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    content: counter(ws-item);
+  }
+
+  & blockquote {
+    padding-left: var(--ws-space-16);
+    border-left: var(--ws-border-width-medium) solid var(--ws-color-border);
+    color: var(--ws-color-text-secondary);
+  }
+
+  & blockquote > :first-child {
+    margin-top: 0;
+  }
+
+  & hr {
+    margin: var(--ws-space-48) 0 0;
+    border: 0;
+    border-top: var(--ws-border-width-thin) solid var(--ws-color-border);
+  }
+
+  & img,
+  & video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  & dt {
+    font-weight: var(--ws-font-weight-semibold);
+  }
+
+  & dd {
+    margin: var(--ws-space-4) 0 0;
+  }
+
+  & dd + dt {
+    margin-top: var(--ws-space-16);
+  }
+
+  /* A table scrolls inside its own frame, so a wide one never widens the page. */
+  & .ws-table {
+    margin-top: var(--ws-space-16);
+    overflow-x: auto;
+    border: var(--ws-border-width-thin) solid var(--ws-color-border);
+    border-radius: var(--ws-radius-lg);
+  }
+
+  & .ws-table > table {
+    display: table;
+    width: 100%;
+    margin: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    border-collapse: collapse;
+  }
+
+  /* A table without the frame scrolls by itself and is as wide as its content. */
+  & table {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: var(--ws-space-16) 0 0;
+    overflow-x: auto;
+    border: var(--ws-border-width-thin) solid var(--ws-color-border);
+    border-radius: var(--ws-radius-lg);
+    border-spacing: 0;
+    font: var(--ws-text-body-sm);
+  }
+
+  & th,
+  & td {
+    padding: var(--ws-space-10) var(--ws-space-16);
+    border: 0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  & th {
+    background: var(--ws-color-surface);
+    color: var(--ws-color-text-secondary);
+    font: var(--ws-text-overline);
+    letter-spacing: var(--ws-text-overline-letter-spacing);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  & td {
+    border-top: var(--ws-border-width-thin) solid var(--ws-color-border);
+  }
+
+  & tr {
+    border: 0;
+    background: none;
+  }
+
+  & td:first-child {
+    white-space: nowrap;
+  }
+
+  & kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.5em;
+    padding: 0 var(--ws-space-4);
+    border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
+    border-radius: var(--ws-radius-xs);
+    color: var(--ws-color-text);
+    font-family: var(--ws-font-family-mono);
+    font-size: 0.8125em;
+    line-height: 1.5;
+  }
+
+  & figcaption {
+    margin-top: var(--ws-space-8);
+    color: var(--ws-color-text-secondary);
+    font: var(--ws-text-caption);
+  }
+
+  & details {
+    margin-top: var(--ws-space-16);
+  }
+
+  & summary {
+    cursor: pointer;
+    font-weight: var(--ws-font-weight-semibold);
+  }
+
+  & > :first-child {
+    margin-top: 0;
+  }
+
+  @media (--ws-compact) {
+    & h1 {
+      font: var(--ws-text-h1-compact);
+      letter-spacing: var(--ws-text-h1-compact-letter-spacing);
+    }
+
+    & h2 {
+      font: var(--ws-text-h2-compact);
+      letter-spacing: var(--ws-text-h2-compact-letter-spacing);
+    }
+
+    & th,
+    & td {
+      padding: var(--ws-space-8) var(--ws-space-10);
+    }
+
+    & table {
+      font-size: var(--ws-font-size-14);
+    }
+  }
+}
+
+/* A plain code block in prose. Dark in both themes, like every code block. */
+.ws-prose pre {
+  margin: var(--ws-space-16) 0 0;
+  padding: var(--ws-space-16);
+  overflow-x: auto;
+  border: var(--ws-border-width-thin) solid var(--ws-code-border);
+  border-radius: var(--ws-radius-lg);
+  background: var(--ws-code-bg);
+  color: var(--ws-code-text);
+  font: var(--ws-text-code);
+  font-variant-ligatures: none;
+  tab-size: 2;
+}
+
+.ws-prose pre > code {
+  font: inherit;
+}
+
+/* The path above a page title. */
+.ws-crumb {
+  margin: 0;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-caption);
+}
+
+.ws-crumb > * + *::before {
+  margin-inline: var(--ws-space-4);
+  color: var(--ws-color-text-faint);
+  content: '/';
+  content: '/' / '';
+}
+
+.ws-crumb + h1 {
+  margin-top: var(--ws-space-12);
+}

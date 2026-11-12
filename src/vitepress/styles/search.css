@@ -1,0 +1,55 @@
+/* The local search dialog. */
+.VPLocalSearchBox .shell {
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-xl);
+  box-shadow: none;
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPLocalSearchBox .search-bar {
+  border-color: var(--ws-color-field-border);
+  border-radius: var(--ws-radius-md);
+}
+
+.VPLocalSearchBox .search-bar:focus-within {
+  border-color: var(--ws-color-interactive);
+}
+
+.VPLocalSearchBox .search-input {
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+}
+
+.VPLocalSearchBox .result {
+  border-width: var(--ws-border-width-thin);
+  border-radius: var(--ws-radius-md);
+  transition: none;
+}
+
+.VPLocalSearchBox .titles {
+  font: var(--ws-text-label-sm);
+}
+
+.VPLocalSearchBox .title-icon {
+  color: var(--ws-color-brand);
+  opacity: 1;
+}
+
+.VPLocalSearchBox .excerpt {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-body-sm);
+}
+
+.VPLocalSearchBox .no-results,
+.VPLocalSearchBox .search-keyboard-shortcuts {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-caption);
+}
+
+.VPLocalSearchBox .search-keyboard-shortcuts kbd {
+  border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
+  border-radius: var(--ws-radius-xs);
+  background: none;
+  box-shadow: none;
+  color: var(--ws-color-text);
+}

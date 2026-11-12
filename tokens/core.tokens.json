@@ -1,0 +1,743 @@
+{
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "mono": {
+        "$value": [
+          "JetBrains Mono",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Consolas",
+          "monospace"
+        ],
+        "$description": "The voice: headings, labels, navigation and code."
+      },
+      "sans": {
+        "$value": ["Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+        "$description": "Long-form text and form values."
+      }
+    },
+    "size": {
+      "11": {
+        "$value": {
+          "value": 0.6875,
+          "unit": "rem"
+        }
+      },
+      "12": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        }
+      },
+      "13": {
+        "$value": {
+          "value": 0.8125,
+          "unit": "rem"
+        }
+      },
+      "14": {
+        "$value": {
+          "value": 0.875,
+          "unit": "rem"
+        }
+      },
+      "15": {
+        "$value": {
+          "value": 0.9375,
+          "unit": "rem"
+        }
+      },
+      "16": {
+        "$value": {
+          "value": 1,
+          "unit": "rem"
+        }
+      },
+      "17": {
+        "$value": {
+          "value": 1.0625,
+          "unit": "rem"
+        }
+      },
+      "18": {
+        "$value": {
+          "value": 1.125,
+          "unit": "rem"
+        }
+      },
+      "20": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        }
+      },
+      "22": {
+        "$value": {
+          "value": 1.375,
+          "unit": "rem"
+        }
+      },
+      "32": {
+        "$value": {
+          "value": 2,
+          "unit": "rem"
+        }
+      },
+      "40": {
+        "$value": {
+          "value": 2.5,
+          "unit": "rem"
+        }
+      },
+      "64": {
+        "$value": {
+          "value": 4,
+          "unit": "rem"
+        }
+      },
+      "$type": "dimension",
+      "$description": "Named by the size in px at the default root size."
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": {
+        "$value": 400
+      },
+      "medium": {
+        "$value": 500
+      },
+      "semibold": {
+        "$value": 600
+      },
+      "bold": {
+        "$value": 700
+      },
+      "extrabold": {
+        "$value": 800
+      }
+    },
+    "line-height": {
+      "$type": "number",
+      "none": {
+        "$value": 1
+      },
+      "tight": {
+        "$value": 1.1
+      },
+      "snug": {
+        "$value": 1.3
+      },
+      "normal": {
+        "$value": 1.5
+      },
+      "relaxed": {
+        "$value": 1.65
+      },
+      "loose": {
+        "$value": 1.75
+      }
+    }
+  },
+  "text": {
+    "$type": "typography",
+    "$description": "Text styles. Each one emits a font shorthand and one variable per property.",
+    "display": {
+      "$description": "The handle on a home page.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 4,
+          "unit": "rem"
+        },
+        "fontWeight": 800,
+        "lineHeight": 1,
+        "letterSpacing": {
+          "value": -0.12,
+          "unit": "rem"
+        }
+      }
+    },
+    "display-compact": {
+      "$description": "The display style on phones.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 2.5,
+          "unit": "rem"
+        },
+        "fontWeight": 800,
+        "lineHeight": 1,
+        "letterSpacing": {
+          "value": -0.075,
+          "unit": "rem"
+        }
+      }
+    },
+    "h1": {
+      "$description": "Page title.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 2.5,
+          "unit": "rem"
+        },
+        "fontWeight": 800,
+        "lineHeight": 1.1,
+        "letterSpacing": {
+          "value": -0.075,
+          "unit": "rem"
+        }
+      }
+    },
+    "h1-compact": {
+      "$description": "Page title on phones.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 2,
+          "unit": "rem"
+        },
+        "fontWeight": 800,
+        "lineHeight": 1.1,
+        "letterSpacing": {
+          "value": -0.06,
+          "unit": "rem"
+        }
+      }
+    },
+    "h2": {
+      "$description": "Section heading.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 1.375,
+          "unit": "rem"
+        },
+        "fontWeight": 700,
+        "lineHeight": 1.3,
+        "letterSpacing": {
+          "value": -0.0275,
+          "unit": "rem"
+        }
+      }
+    },
+    "h2-compact": {
+      "$description": "Section heading on phones.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "fontWeight": 700,
+        "lineHeight": 1.3,
+        "letterSpacing": {
+          "value": -0.025,
+          "unit": "rem"
+        }
+      }
+    },
+    "h3": {
+      "$description": "Subsection heading.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 1.125,
+          "unit": "rem"
+        },
+        "fontWeight": 700,
+        "lineHeight": 1.4,
+        "letterSpacing": {
+          "value": -0.01125,
+          "unit": "rem"
+        }
+      }
+    },
+    "h4": {
+      "$description": "Minor heading and entry titles.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 1,
+          "unit": "rem"
+        },
+        "fontWeight": 700,
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "lead": {
+      "$description": "The first paragraph of a page.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": {
+          "value": 1.0625,
+          "unit": "rem"
+        },
+        "fontWeight": 400,
+        "lineHeight": 1.75,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "body": {
+      "$description": "Long-form text.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": {
+          "value": 1,
+          "unit": "rem"
+        },
+        "fontWeight": 400,
+        "lineHeight": 1.75,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "body-sm": {
+      "$description": "Descriptions and table cells.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": {
+          "value": 0.9375,
+          "unit": "rem"
+        },
+        "fontWeight": 400,
+        "lineHeight": 1.6,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "label": {
+      "$description": "Tabs, prompts and buttons.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 0.875,
+          "unit": "rem"
+        },
+        "fontWeight": 400,
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "label-sm": {
+      "$description": "Side navigation and tags.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 0.8125,
+          "unit": "rem"
+        },
+        "fontWeight": 400,
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "caption": {
+      "$description": "Status line, captions and breadcrumbs.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "fontWeight": 400,
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "overline": {
+      "$description": "Group headings and table heads. Set in uppercase.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 0.6875,
+          "unit": "rem"
+        },
+        "fontWeight": 700,
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0.06875,
+          "unit": "rem"
+        }
+      }
+    },
+    "code": {
+      "$description": "Code blocks.",
+      "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": {
+          "value": 0.8125,
+          "unit": "rem"
+        },
+        "fontWeight": 400,
+        "lineHeight": 1.7,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    }
+  },
+  "space": {
+    "2": {
+      "$value": {
+        "value": 0.125,
+        "unit": "rem"
+      }
+    },
+    "4": {
+      "$value": {
+        "value": 0.25,
+        "unit": "rem"
+      }
+    },
+    "6": {
+      "$value": {
+        "value": 0.375,
+        "unit": "rem"
+      }
+    },
+    "8": {
+      "$value": {
+        "value": 0.5,
+        "unit": "rem"
+      }
+    },
+    "10": {
+      "$value": {
+        "value": 0.625,
+        "unit": "rem"
+      }
+    },
+    "12": {
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      }
+    },
+    "14": {
+      "$value": {
+        "value": 0.875,
+        "unit": "rem"
+      }
+    },
+    "16": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      }
+    },
+    "20": {
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      }
+    },
+    "24": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      }
+    },
+    "32": {
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      }
+    },
+    "40": {
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      }
+    },
+    "48": {
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      }
+    },
+    "56": {
+      "$value": {
+        "value": 3.5,
+        "unit": "rem"
+      }
+    },
+    "64": {
+      "$value": {
+        "value": 4,
+        "unit": "rem"
+      }
+    },
+    "$type": "dimension",
+    "$description": "Spacing on a 2 px grid, named by the size in px at the default root size."
+  },
+  "radius": {
+    "$type": "dimension",
+    "xs": {
+      "$value": {
+        "value": 3,
+        "unit": "px"
+      },
+      "$description": "Key caps."
+    },
+    "sm": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "Inline code, tags and the focus ring."
+    },
+    "md": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Inputs and buttons."
+    },
+    "lg": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$description": "Code blocks, callouts, tables and cards."
+    },
+    "xl": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "The terminal frame."
+    },
+    "full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$description": "Dots and pills."
+    }
+  },
+  "border-width": {
+    "$type": "dimension",
+    "thin": {
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      },
+      "$description": "Dividers and outlines."
+    },
+    "medium": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Active markers and the focus ring."
+    },
+    "thick": {
+      "$value": {
+        "value": 3,
+        "unit": "px"
+      },
+      "$description": "The bar of a callout."
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "frame": {
+      "$value": {
+        "value": 90,
+        "unit": "rem"
+      },
+      "$description": "Widest a page frame gets."
+    },
+    "content": {
+      "$value": {
+        "value": 50,
+        "unit": "rem"
+      },
+      "$description": "Widest a column of long-form text gets, padding included."
+    },
+    "sidebar": {
+      "$value": {
+        "value": 17,
+        "unit": "rem"
+      },
+      "$description": "Side navigation."
+    },
+    "outline": {
+      "$value": {
+        "value": 15,
+        "unit": "rem"
+      },
+      "$description": "Page outline."
+    },
+    "tab-bar": {
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      },
+      "$description": "Height of the tab bar."
+    },
+    "status-line": {
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$description": "Height of the status line."
+    }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "fast": {
+        "$value": {
+          "value": 120,
+          "unit": "ms"
+        },
+        "$description": "Hover and focus changes."
+      },
+      "base": {
+        "$value": {
+          "value": 160,
+          "unit": "ms"
+        },
+        "$description": "Small things appearing, such as the speech bubble."
+      },
+      "slow": {
+        "$value": {
+          "value": 240,
+          "unit": "ms"
+        },
+        "$description": "Panels and drawers."
+      }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "standard": {
+        "$value": [0.2, 0, 0, 1],
+        "$description": "Most movement."
+      },
+      "in": {
+        "$value": [0.4, 0, 1, 1],
+        "$description": "Leaving the screen."
+      },
+      "out": {
+        "$value": [0, 0, 0.2, 1],
+        "$description": "Entering the screen."
+      }
+    }
+  },
+  "mark": {
+    "$type": "color",
+    "$description": "The mark on its tile, the same in both themes so a favicon reads on any tab strip.",
+    "tile": {
+      "$value": "{palette.main.overlay}"
+    },
+    "body": {
+      "$value": "{palette.main.text}"
+    },
+    "tongue": {
+      "$value": "{palette.main.love}",
+      "$description": "The love element of the ghost and of every project sprite."
+    }
+  },
+  "code": {
+    "$type": "color",
+    "$description": "Code blocks stay on the dark palette in both themes: on dawn no syntax color except pine reaches AA.",
+    "bg": {
+      "$value": "{palette.main.surface}"
+    },
+    "header-bg": {
+      "$value": "{palette.main.base}"
+    },
+    "border": {
+      "$value": "{palette.main.highlight-med}"
+    },
+    "text": {
+      "$value": "{palette.main.text}"
+    },
+    "text-secondary": {
+      "$value": "{palette.main.subtle}",
+      "$description": "File name, language and line numbers."
+    },
+    "line-highlight": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.251, 0.2392, 0.3216],
+        "alpha": 0.5,
+        "hex": "#403d52"
+      },
+      "$description": "A highlighted line."
+    },
+    "line-added": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6118, 0.8118, 0.8471],
+        "alpha": 0.14,
+        "hex": "#9ccfd8"
+      },
+      "$description": "An added line in a diff."
+    },
+    "line-removed": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9216, 0.4353, 0.5725],
+        "alpha": 0.14,
+        "hex": "#eb6f92"
+      },
+      "$description": "A removed line in a diff."
+    },
+    "selection": {
+      "$value": "{palette.main.highlight-high}"
+    }
+  },
+  "syntax": {
+    "$type": "color",
+    "$description": "Syntax colors on the code background. All reach AA on it.",
+    "keyword": {
+      "$value": "{palette.main.love}"
+    },
+    "string": {
+      "$value": "{palette.main.gold}"
+    },
+    "function": {
+      "$value": "{palette.main.rose}"
+    },
+    "type": {
+      "$value": "{palette.main.foam}",
+      "$description": "Types, tags and object keys."
+    },
+    "constant": {
+      "$value": "{palette.main.iris}",
+      "$description": "Numbers and constants."
+    },
+    "comment": {
+      "$value": "{palette.main.subtle}"
+    },
+    "punctuation": {
+      "$value": "{palette.main.subtle}"
+    }
+  }
+}

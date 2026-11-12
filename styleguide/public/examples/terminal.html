@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>whatsaaaa</title>
+    <link rel="icon" href="../kit/whatsaaaa/favicon.svg" type="image/svg+xml" />
+    <!-- applies a remembered theme before the first paint, so it comes before the stylesheet -->
+    <script src="../ds/theme/init.js"></script>
+    <link rel="stylesheet" href="../ds/index.css" />
+    <link rel="stylesheet" href="./example.css" />
+  </head>
+  <body>
+    <div class="ws-term window">
+      <header class="ws-tab-bar">
+        <span class="ws-tab-bar__brand">
+          <ws-ghost px="2" bubble="below"></ws-ghost>
+          <a href="./terminal.html">whatsaaaa</a>
+        </span>
+        <nav class="ws-tabs" aria-label="Main">
+          <ul>
+            <li><a href="./terminal.html" aria-current="page">home</a></li>
+            <li><a href="./prose.html">writing</a></li>
+          </ul>
+        </nav>
+        <div class="ws-tab-bar__end">
+          <a class="ws-arrow" href="https://github.com/whatsaaaa">github</a>
+        </div>
+      </header>
+
+      <main class="panes">
+        <section class="pane" aria-labelledby="who">
+          <h2 class="ws-prompt">whoami</h2>
+          <div class="who">
+            <ws-ghost px="6"></ws-ghost>
+            <div>
+              <h1 id="who">whatsaaaa<span class="ws-cursor" aria-hidden="true"></span></h1>
+              <p class="role">Building things end to end.</p>
+            </div>
+          </div>
+          <div class="ws-output">
+            <p>
+              I build web applications from top to bottom: <strong>Vue and Nuxt</strong> on the
+              front, <strong>C#/.NET</strong> and <strong>Go</strong> with
+              <strong>Postgres</strong> doing the heavy lifting behind them. My favorite part is
+              owning the whole thing, from sketching the database schema to polishing the last
+              button on the page.
+            </p>
+            <p>The handle is a long, drawn-out shout from a movie I watched as a kid. It stuck.</p>
+          </div>
+          <h2 class="ws-prompt">cat stack.txt</h2>
+          <ul class="stack" aria-label="Stack">
+            <li class="ws-tag ws-tag--outline">C#</li>
+            <li class="ws-tag ws-tag--outline">.NET</li>
+            <li class="ws-tag ws-tag--outline">Go</li>
+            <li class="ws-tag ws-tag--outline">Postgres</li>
+            <li class="ws-tag ws-tag--outline">Vue</li>
+            <li class="ws-tag ws-tag--outline">Nuxt</li>
+            <li class="ws-tag ws-tag--outline">TypeScript</li>
+            <li class="ws-tag ws-tag--outline">Nix</li>
+          </ul>
+        </section>
+
+        <section class="pane" aria-labelledby="projects">
+          <h2 class="ws-prompt" id="projects">ls ~/projects</h2>
+          <p class="total">total 3</p>
+          <ol class="ls">
+            <li class="entry">
+              <span class="ws-state ws-state--active">active</span>
+              <div>
+                <h3>
+                  <a class="ws-arrow" href="https://github.com/whatsaaaa/form-builder"
+                    >form-builder</a
+                  >
+                </h3>
+                <p>
+                  Describe forms in JSON and get validated Formisch forms out, built on typed
+                  Valibot schemas.
+                </p>
+                <ul class="tags" aria-label="Built with">
+                  <li class="ws-tag">TypeScript</li>
+                  <li class="ws-tag">Valibot</li>
+                  <li class="ws-tag">Formisch</li>
+                  <li class="ws-tag">Vue</li>
+                  <li class="ws-tag">React</li>
+                </ul>
+              </div>
+            </li>
+            <li class="entry">
+              <span class="ws-state ws-state--active">active</span>
+              <div>
+                <h3>
+                  <a class="ws-arrow" href="https://github.com/whatsaaaa/dotfiles">dotfiles</a>
+                </h3>
+                <p>
+                  My macOS setup, written down as code. One repo, a few commands, and a fresh Mac
+                  looks exactly like my last one.
+                </p>
+                <ul class="tags" aria-label="Built with">
+                  <li class="ws-tag">Nix</li>
+                  <li class="ws-tag">nix-darwin</li>
+                  <li class="ws-tag">home-manager</li>
+                  <li class="ws-tag">macOS</li>
+                </ul>
+              </div>
+            </li>
+            <li class="entry">
+              <span class="ws-state ws-state--experimental">experimental</span>
+              <div>
+                <h3>
+                  <a class="ws-arrow" href="https://github.com/whatsaaaa/building-blocks"
+                    >building-blocks</a
+                  >
+                </h3>
+                <p>The foundation every Whatsaaaa's .NET product is built on.</p>
+                <ul class="tags" aria-label="Built with">
+                  <li class="ws-tag">C#</li>
+                  <li class="ws-tag">.NET</li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+          <p class="ws-prompt next">
+            <a href="https://github.com/whatsaaaa?tab=repositories">cd ~/projects</a>
+            <span class="ws-prompt__comment"># all projects</span>
+          </p>
+        </section>
+      </main>
+
+      <footer class="ws-status-line">
+        <span class="ws-status-line__mode">NORMAL</span>
+        <span class="ws-status-line__file"><span>~/whatsaaaa</span></span>
+        <span class="ws-status-line__spacer"></span>
+        <span class="ws-status-line__keys">
+          <a href="https://github.com/whatsaaaa" data-ws-key="g"
+            ><kbd class="ws-kbd">g</kbd>github</a
+          >
+          <button type="button" data-ws-key="t" data-toggle-theme>
+            <kbd class="ws-kbd">t</kbd>theme
+          </button>
+        </span>
+        <span class="ws-status-line__item ws-status-line__item--edge" data-theme-name
+          >rose-pine</span
+        >
+      </footer>
+    </div>
+    <script type="module" src="./example.js"></script>
+  </body>
+</html>

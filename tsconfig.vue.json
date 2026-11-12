@@ -1,0 +1,16 @@
+// The VitePress theme, the style guide and the browser tests: code that a bundler compiles.
+{
+  "extends": "@tsconfig/node24/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es2024", "dom", "dom.iterable"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["src/vitepress", "styleguide/.vitepress", "tests/browser", "playwright.config.ts"],
+  "exclude": ["styleguide/.vitepress/cache", "styleguide/.vitepress/dist"]
+}

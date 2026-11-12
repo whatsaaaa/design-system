@@ -1,0 +1,161 @@
+/* Side navigation and the page outline: mono labels, uppercase group headings, a love marker. */
+.VPSidebar.VPSidebar {
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPSidebar .group + .group {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.VPSidebar .VPSidebarItem.level-0 {
+  padding-bottom: var(--ws-space-24);
+}
+
+/* group heading */
+.VPSidebar .VPSidebarItem.level-0 > .item .text {
+  padding: 0 0 var(--ws-space-8);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-overline);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.VPSidebar .VPSidebarItem.level-0.has-active > .item > .text,
+.VPSidebar .VPSidebarItem.level-0.has-active > .item > .link > .text {
+  color: var(--ws-color-text-secondary);
+}
+
+/* links */
+.VPSidebar .VPSidebarItem:not(.level-0) > .item > .link > .text,
+.VPSidebar .VPSidebarItem:not(.level-0) > .item > .text {
+  padding: var(--ws-space-4) var(--ws-space-12);
+  border-left: var(--ws-border-width-medium) solid transparent;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  transition: none;
+}
+
+.VPSidebar .VPSidebarItem:not(.level-0).is-link > .item > .link:hover .text {
+  color: var(--ws-color-text);
+}
+
+.VPSidebar .VPSidebarItem:not(.level-0).is-active > .item .link > .text {
+  border-left-color: var(--ws-color-brand);
+  background: var(--ws-color-raised);
+  color: var(--ws-color-text);
+  font-weight: var(--ws-font-weight-bold);
+}
+
+.VPSidebar .VPSidebarItem .indicator {
+  display: none;
+}
+
+.VPSidebar .VPSidebarItem .items {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.VPSidebar .VPSidebarItem.level-2 .items,
+.VPSidebar .VPSidebarItem.level-1 .items {
+  padding-left: var(--ws-space-12);
+}
+
+/* outline */
+.VPDocAside .VPDocAsideOutline .content {
+  border-left: var(--ws-border-width-thin) solid var(--ws-color-border);
+  padding-left: 0;
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPDocAside .VPDocAsideOutline .outline-title {
+  padding-left: var(--ws-space-12);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-overline);
+  letter-spacing: 0.12em;
+  line-height: 2rem;
+  text-transform: uppercase;
+}
+
+.VPDocAside .VPDocAsideOutline .outline-marker {
+  left: -1px;
+  width: var(--ws-border-width-thin);
+  border-radius: 0;
+  background-color: var(--ws-color-brand);
+}
+
+.VPDocAside .VPDocOutlineItem .outline-link {
+  padding: var(--ws-space-4) var(--ws-space-12);
+  overflow: visible;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  white-space: normal;
+  transition: none;
+}
+
+.VPDocAside .VPDocOutlineItem .outline-link:hover,
+.VPDocAside .VPDocOutlineItem .outline-link.active {
+  color: var(--ws-color-text);
+}
+
+.VPDocAside .VPDocOutlineItem.nested {
+  padding-left: var(--ws-space-12);
+}
+
+/* the row under the bar on narrow screens: the menu and the outline */
+.VPLocalNav.VPLocalNav {
+  border-top: 0;
+  border-bottom-color: var(--ws-color-border);
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPLocalNav .menu,
+.VPLocalNav .VPLocalNavOutlineDropdown > button {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  line-height: 2.5rem;
+  transition: none;
+}
+
+.VPLocalNav .VPLocalNavOutlineDropdown > button {
+  padding: 0;
+}
+
+.VPLocalNav .VPLocalNavOutlineDropdown .items {
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-lg);
+  background: var(--ws-color-surface);
+  box-shadow: none;
+}
+
+.VPLocalNav .VPLocalNavOutlineDropdown .header {
+  background: var(--ws-color-surface);
+}
+
+.VPLocalNav .VPLocalNavOutlineDropdown .top-link,
+.VPLocalNav .VPLocalNavOutlineDropdown .outline-link {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  line-height: 2rem;
+}
+
+.VPLocalNav .VPLocalNavOutlineDropdown .top-link {
+  color: var(--ws-color-interactive);
+}
+
+@media (width >= 60rem) {
+  .VPSidebar.VPSidebar {
+    bottom: var(--ws-size-status-line);
+    padding: calc(var(--vp-nav-height) + var(--ws-space-32)) var(--ws-space-20) var(--ws-space-32)
+      var(--ws-space-24);
+    border-right: var(--ws-border-width-thin) solid var(--ws-color-border);
+  }
+
+  .VPSidebar .nav {
+    padding-top: 0;
+  }
+
+  .VPSidebar .curtain {
+    display: none;
+  }
+}

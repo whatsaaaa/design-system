@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conditions | whatsaaaa</title>
+    <link rel="icon" href="../kit/whatsaaaa/favicon.svg" type="image/svg+xml" />
+    <!-- applies a remembered theme before the first paint, so it comes before the stylesheet -->
+    <script src="../ds/theme/init.js"></script>
+    <link rel="stylesheet" href="../ds/index.css" />
+    <link rel="stylesheet" href="./example.css" />
+  </head>
+  <body>
+    <div class="ws-term window">
+      <header class="ws-tab-bar">
+        <span class="ws-tab-bar__brand">
+          <ws-ghost px="2" bubble="below"></ws-ghost>
+          <a href="./terminal.html">whatsaaaa</a>
+        </span>
+        <nav class="ws-tabs" aria-label="Main">
+          <ul>
+            <li><a href="./terminal.html">home</a></li>
+            <li><a href="./prose.html" aria-current="page">writing</a></li>
+          </ul>
+        </nav>
+        <div class="ws-tab-bar__end">
+          <a class="ws-arrow" href="https://github.com/whatsaaaa">github</a>
+        </div>
+      </header>
+
+      <main class="article">
+        <article class="ws-prose">
+          <p class="ws-crumb">
+            <span>writing</span><span>form-builder</span><span>conditions</span>
+          </p>
+          <h1>Conditions</h1>
+          <p>
+            The affects package adds conditions to definitions: a field, a section or a step shows,
+            hides, or hides and clears its value, by the values of other fields.
+          </p>
+
+          <h2>Adding the extension</h2>
+          <p>
+            Conditions come from
+            <a href="https://github.com/whatsaaaa/form-builder"
+              ><code>@whatsaaaa/form-builder-affects</code></a
+            >, an extension of the schema builder. Give the builder the extension:
+          </p>
+          <figure class="ws-code">
+            <figcaption><span>conditions.ts</span><span>ts</span></figcaption>
+            <pre><code><span style="color: var(--ws-syntax-keyword)">import</span> <span style="color: var(--ws-syntax-punctuation)">{</span> affects <span style="color: var(--ws-syntax-punctuation)">}</span> <span style="color: var(--ws-syntax-keyword)">from</span> <span style="color: var(--ws-syntax-string)">'@whatsaaaa/form-builder-affects'</span>
+
+<span style="color: var(--ws-syntax-keyword)">const</span> builder <span style="color: var(--ws-syntax-punctuation)">=</span> <span style="color: var(--ws-syntax-function)">createSchemaBuilder</span><span style="color: var(--ws-syntax-punctuation)">({</span> <span style="color: var(--ws-syntax-type)">extensions</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-punctuation)">[</span><span style="color: var(--ws-syntax-function)">affects</span><span style="color: var(--ws-syntax-punctuation)">()]</span> <span style="color: var(--ws-syntax-punctuation)">})</span> <span style="color: var(--ws-syntax-comment); font-style: italic">// with conditions</span></code></pre>
+          </figure>
+          <aside class="ws-callout ws-callout--warning">
+            <p class="ws-callout__title">Warning</p>
+            <p>
+              Without the extension, <code>affects</code> is an unknown key:
+              <code>validate()</code> reports it, and <code>build()</code> throws.
+            </p>
+          </aside>
+
+          <h2>Effects</h2>
+          <p><code>affects</code> is a list of effects, each with the condition that applies it:</p>
+          <div class="ws-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Effect</th>
+                  <th>While its condition is met</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>show</code></td>
+                  <td>the field shows. Otherwise it is hidden, like with <code>hide</code></td>
+                </tr>
+                <tr>
+                  <td><code>hide</code></td>
+                  <td>the field is hidden, and keeps its value</td>
+                </tr>
+                <tr>
+                  <td><code>hideAndClear</code></td>
+                  <td>the field is hidden, and its value is cleared</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ul>
+            <li>
+              <strong>Hide always wins.</strong> A field is hidden when its
+              <code>show</code> condition isn't met.
+            </li>
+            <li>
+              <strong>Each effect goes once on a field.</strong> Join conditions with
+              <code>all</code> or <code>any</code> instead.
+            </li>
+          </ul>
+          <aside class="ws-callout ws-callout--tip">
+            <p class="ws-callout__title">Tip</p>
+            <p>
+              Use <code>hideAndClear</code> for data that only makes sense while the field shows.
+            </p>
+          </aside>
+        </article>
+      </main>
+
+      <footer class="ws-status-line">
+        <span class="ws-status-line__mode">NORMAL</span>
+        <span class="ws-status-line__file"><span>writing/conditions.md</span></span>
+        <span class="ws-status-line__spacer"></span>
+        <span class="ws-status-line__keys">
+          <a href="https://github.com/whatsaaaa" data-ws-key="g"
+            ><kbd class="ws-kbd">g</kbd>github</a
+          >
+          <button type="button" data-ws-key="t" data-toggle-theme>
+            <kbd class="ws-kbd">t</kbd>theme
+          </button>
+        </span>
+        <span class="ws-status-line__item ws-status-line__item--edge" data-theme-name
+          >rose-pine</span
+        >
+      </footer>
+    </div>
+    <script type="module" src="./example.js"></script>
+  </body>
+</html>

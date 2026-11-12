@@ -1,0 +1,368 @@
+/*
+ * The default theme's nav bar, drawn as the tab bar of the terminal frame: the brand, the
+ * numbered tabs right after it, and search, links and the ghost at the right end.
+ */
+.VPNav .VPNavBar {
+  background: var(--ws-color-bg);
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPNav .VPNavBar .wrapper {
+  padding: 0 var(--ws-space-8) 0 var(--ws-space-16);
+}
+
+.VPNav .VPNavBar .wrapper > .container {
+  max-width: 100%;
+}
+
+/* the bar is ruled off from the page everywhere, not only once the page scrolls */
+.VPNav .VPNavBar .divider {
+  padding-left: 0;
+}
+
+.VPNav .VPNavBar .divider-line,
+.VPNav .VPNavBar.home.top .divider-line {
+  background-color: var(--ws-color-border);
+}
+
+.VPNav .VPNavBar .title,
+.VPNav .VPNavBar .content-body {
+  background: none;
+}
+
+/* brand */
+.VPNav .VPNavBarTitle .title {
+  gap: var(--ws-space-10);
+  border-bottom: 0;
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-weight: var(--ws-font-weight-extrabold);
+  letter-spacing: -0.02em;
+}
+
+/* a mark in a 64 box at 32 px draws each sprite pixel as 2 px */
+.VPNav .VPNavBarTitle .logo {
+  width: auto;
+  height: 2rem;
+  margin-right: 0;
+  image-rendering: pixelated;
+}
+
+/* tabs */
+.VPNav .VPNavBar .VPNavBarMenu {
+  align-self: stretch;
+  counter-reset: ws-tab;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button {
+  gap: var(--ws-space-8);
+  height: 100%;
+  padding: 0 var(--ws-space-16);
+  border-inline: var(--ws-border-width-thin) solid transparent;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+  line-height: var(--vp-nav-height);
+  transition: none;
+  counter-increment: ws-tab;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button .text {
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button::before {
+  color: var(--ws-color-text-faint);
+  font-weight: var(--ws-font-weight-bold);
+  content: counter(ws-tab);
+  content: counter(ws-tab) / '';
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink:hover,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup:hover .button {
+  color: var(--ws-color-text);
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink.active,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup.active .button {
+  border-color: var(--ws-color-border);
+  background: var(--ws-color-surface);
+  box-shadow: inset 0 var(--ws-border-width-medium) 0 var(--ws-color-brand);
+  color: var(--ws-color-text);
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink.active::before,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup.active .button::before {
+  color: var(--ws-color-brand);
+}
+
+/* flyout menus of a tab group, of the language picker and of the overflow menu */
+.VPNav .VPFlyout .menu .VPMenu {
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-lg);
+  background: var(--ws-color-surface);
+  box-shadow: none;
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPNav .VPMenu .VPMenuLink .link {
+  border-radius: var(--ws-radius-sm);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  line-height: 2rem;
+  transition: none;
+}
+
+.VPNav .VPMenu .VPMenuLink .link:hover,
+.VPNav .VPMenu .VPMenuLink .link.active {
+  background: var(--ws-color-raised);
+  color: var(--ws-color-text);
+}
+
+/* search: a field that names its own key */
+.VPNav .VPNavBarSearch .DocSearch-Button {
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPNav .DocSearch-Button .DocSearch-Button-Placeholder {
+  margin: 0;
+  padding: 0;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  text-transform: lowercase;
+  transition: none;
+}
+
+/* links out: the name and an arrow, in the voice of the bar */
+.VPNav .VPNavBarSocialLinks .VPSocialLink {
+  gap: 0.375em;
+  width: auto;
+  height: auto;
+  padding-inline: var(--ws-space-12);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+  transition: none;
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink:hover {
+  color: var(--ws-color-text);
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink > span {
+  display: none;
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink::before {
+  content: attr(aria-label);
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink::after {
+  width: 0.75em;
+  height: 0.75em;
+  background: currentcolor;
+  content: '';
+  mask: var(--ws-icon-arrow) center / contain no-repeat;
+}
+
+/* the ghost at the end of the bar */
+.WsNavGhost {
+  display: flex;
+  align-items: center;
+  margin-left: var(--ws-space-12);
+  color: var(--ws-color-text);
+  line-height: 0;
+}
+
+.WsNavGhost a {
+  display: block;
+  border-radius: var(--ws-radius-sm);
+  color: inherit;
+}
+
+/* the lines the default theme draws between the groups of the bar */
+.VPNav .VPNavBar .content-body > .translations::before,
+.VPNav .VPNavBar .content-body > .appearance::before,
+.VPNav .VPNavBar .content-body > .social-links::before {
+  display: none;
+}
+
+.VPNav .VPNavBarHamburger .container > span {
+  background-color: var(--ws-color-text);
+}
+
+@media (width >= 48rem) {
+  .VPNav .VPNavBar .wrapper,
+  .VPNav .VPNavBar.has-sidebar .wrapper {
+    padding: 0 var(--ws-space-20);
+  }
+
+  /* the tabs come right after the brand, and search moves to the right end */
+  .VPNav .VPNavBar .content-body {
+    justify-content: flex-start;
+  }
+
+  .VPNav .VPNavBar .content-body > .menu {
+    order: -1;
+  }
+
+  .VPNav .VPNavBar .content-body > .search {
+    flex-grow: 0;
+    margin-left: auto;
+    padding-left: 0;
+  }
+
+  .VPNav .VPNavBarSearch .DocSearch-Button {
+    justify-content: space-between;
+    width: 13rem;
+    height: 1.875rem;
+    padding: 0 var(--ws-space-6) 0 var(--ws-space-10);
+    border: var(--ws-border-width-thin) solid var(--ws-color-border);
+    border-radius: var(--ws-radius-md);
+    background: var(--ws-color-surface);
+    transition: none;
+  }
+
+  .VPNav .VPNavBarSearch .DocSearch-Button:hover {
+    border-color: var(--ws-color-field-border);
+    background: var(--ws-color-surface);
+  }
+
+  .VPNav .DocSearch-Button .DocSearch-Search-Icon {
+    display: none;
+  }
+
+  /* The default theme shows Ctrl K here. It listens for / as well, which is the key this system names. */
+  .VPNav .DocSearch-Button .DocSearch-Button-Keys {
+    display: flex;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  .VPNav .DocSearch-Button .DocSearch-Button-Keys .DocSearch-Button-Key {
+    display: none;
+  }
+
+  .VPNav .DocSearch-Button .DocSearch-Button-Keys::after {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.125rem;
+    height: 1.125rem;
+    padding-inline: var(--ws-space-4);
+    border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
+    border-radius: var(--ws-radius-xs);
+    color: var(--ws-color-text);
+    font-family: var(--ws-font-family-mono);
+    font-size: var(--ws-font-size-11);
+    line-height: 1;
+    content: '/';
+  }
+}
+
+@media (width >= 60rem) {
+  /* with a sidebar the default theme pins the title above it. Here the bar is one row. */
+  .VPNav .VPNavBar.has-sidebar .title {
+    position: static;
+    width: auto;
+    height: var(--vp-nav-height);
+    padding: 0;
+  }
+
+  .VPNav .VPNavBar.has-sidebar .content {
+    padding: 0 0 0 var(--ws-space-32);
+  }
+
+  .VPNav .VPNavBar:not(.has-sidebar) .content {
+    padding-left: var(--ws-space-32);
+  }
+
+  .VPNav .VPNavBar .content-body,
+  .VPNav .VPNavBar:not(.home.top) .content-body {
+    background: none;
+  }
+}
+
+@media (width >= 80rem) {
+  /* at this width the status line has the theme key, so the switch in the bar goes */
+  .VPNav .VPNavBar .content-body > .appearance {
+    display: none;
+  }
+}
+
+/*
+ * On phones the tabs stay visible, in a row of their own under the brand, as in the
+ * framework-free tab bar. The default theme hides them behind its menu button, so this
+ * gives the bar a second row and moves the menu into it. It needs :has(), to leave a site
+ * without tabs with one row.
+ */
+@media (width < 48rem) {
+  :root:has(.VPNavBarMenu) {
+    --ws-nav-row: 2.75rem;
+    --ws-tab-row: 2.5rem;
+    --vp-nav-height: calc(var(--ws-nav-row) + var(--ws-tab-row) + 2px);
+  }
+
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .wrapper > .container,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .wrapper > .container > .title,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBarTitle .title,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .content-body {
+    height: var(--ws-nav-row);
+  }
+
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .VPNavBarMenu {
+    display: flex;
+    position: absolute;
+    top: calc(var(--ws-nav-row) + 1px);
+    right: 0;
+    left: 0;
+    height: calc(var(--ws-tab-row) + 1px);
+    border-bottom: var(--ws-border-width-thin) solid var(--ws-color-border);
+    pointer-events: auto;
+  }
+
+  /* each tab takes the room its name needs, and they share what is left */
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBarHamburger,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBarSearch .DocSearch-Button {
+    height: var(--ws-nav-row);
+  }
+
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button {
+    padding: 0 var(--ws-space-8);
+    line-height: var(--ws-tab-row);
+  }
+
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .VPNav .VPNavBarMenu > :first-child {
+    border-left-color: transparent;
+  }
+
+  .VPNav .VPNavBarMenu > :last-child {
+    border-right-color: transparent;
+  }
+
+  .VPNav .VPNavBarMenu .VPFlyout .menu {
+    top: 100%;
+  }
+
+  /* the tabs are in the bar, so the menu behind the button does not repeat them */
+  :root:has(.VPNavBarMenu) .VPNavScreen .VPNavScreenMenu {
+    display: none;
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "building-blocks",
+  "tagline": "the foundation every .NET product is built on",
+  "sprite": [
+    "................",
+    "................",
+    "..BBBBB..BBBBB..",
+    "..BBBBB..BBBBB..",
+    "..BBBBB..BBBBB..",
+    "..BBBBB..BBBBB..",
+    "..BBBBB..BBBBB..",
+    "................",
+    ".....TTTTTT.....",
+    ".....TTTTTT.....",
+    ".....TTTTTT.....",
+    ".....TTTTTT.....",
+    "......TTTT......",
+    "................",
+    "................",
+    "................"
+  ]
+}

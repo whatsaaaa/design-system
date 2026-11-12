@@ -1,0 +1,104 @@
+/*
+ * The ghost as an element: <ws-ghost>. See the ghost module for its markup and behavior.
+ * The body takes the text color and the tongue the brand color, so the free ghost follows
+ * the theme. Set --ws-ghost-body or --ws-ghost-tongue to draw it differently.
+ */
+ws-ghost {
+  display: inline-flex;
+  position: relative;
+  flex: none;
+  color: var(--ws-color-text);
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.ws-ghost__button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ws-radius-sm);
+  background: none;
+  color: inherit;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.ws-ghost__sprite {
+  display: block;
+}
+
+.ws-ghost__body {
+  fill: var(--ws-ghost-body, currentcolor);
+}
+
+.ws-ghost__tongue {
+  fill: var(--ws-ghost-tongue, var(--ws-color-brand));
+}
+
+/*
+ * The speech bubble. It is a popover, so it shows above everything and no container clips
+ * it. The script places it next to the ghost and keeps it inside the window.
+ */
+.ws-ghost__bubble {
+  position: fixed;
+  inset: auto;
+  z-index: 1000;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: none;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.ws-ghost__bubble:not(:popover-open, [data-open]) {
+  display: none;
+}
+
+.ws-ghost__bubble svg {
+  display: block;
+}
+
+.ws-ghost__bubble-shape {
+  fill: var(--ws-ghost-bubble, var(--ws-color-text));
+}
+
+.ws-ghost__bubble-text {
+  fill: var(--ws-ghost-bubble-text, var(--ws-color-bg));
+}
+
+/* The bubble pops in four frames, like a sprite. With reduced motion it is just there. */
+@media (prefers-reduced-motion: no-preference) {
+  .ws-ghost__bubble svg {
+    transform-origin: 0 100%;
+    animation: ws-ghost-pop var(--ws-motion-duration-base) steps(4, end);
+  }
+
+  .ws-ghost__bubble[data-side='below'] svg {
+    transform-origin: 0 0;
+  }
+}
+
+@keyframes ws-ghost-pop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* The shout for screen readers. */
+.ws-ghost__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ws-ghost__button:focus-visible {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 3px;
+}

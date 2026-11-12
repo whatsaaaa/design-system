@@ -1,0 +1,271 @@
+{
+  "note": "The color pairs the system relies on, with the WCAG 2 contrast each one has to reach in both themes: 4.5 for text, 3 for large type, outlines and graphics. A pair listed under `below` in a theme is known to miss its bar there, and says how the meaning is carried instead.",
+  "pairs": [
+    {
+      "foreground": "color.text",
+      "background": "color.bg",
+      "min": 4.5,
+      "use": "Body text and headings on the page"
+    },
+    {
+      "foreground": "color.text",
+      "background": "color.surface",
+      "min": 4.5,
+      "use": "Text on panels and cards"
+    },
+    {
+      "foreground": "color.text",
+      "background": "color.raised",
+      "min": 4.5,
+      "use": "Inline code and the current navigation item"
+    },
+    {
+      "foreground": "color.text",
+      "background": "color.selection",
+      "min": 4.5,
+      "use": "Selected text"
+    },
+    {
+      "foreground": "color.text-secondary",
+      "background": "color.bg",
+      "min": 4.5,
+      "use": "Descriptions, captions and idle navigation"
+    },
+    {
+      "foreground": "color.text-secondary",
+      "background": "color.surface",
+      "min": 4.5,
+      "use": "Secondary text on panels and table heads"
+    },
+    {
+      "foreground": "color.text-secondary",
+      "background": "color.raised",
+      "min": 4.5,
+      "use": "Secondary text on a raised chip"
+    },
+    {
+      "foreground": "color.text-faint",
+      "background": "color.bg",
+      "min": 3,
+      "use": "Idle indicators, tab numbers and disabled text. Never body text"
+    },
+    {
+      "foreground": "color.field-border",
+      "background": "color.surface",
+      "min": 3,
+      "use": "Outlines of inputs and buttons"
+    },
+    {
+      "foreground": "color.field-border",
+      "background": "color.bg",
+      "min": 3,
+      "use": "Outlines of inputs and buttons on the page"
+    },
+    {
+      "foreground": "color.brand",
+      "background": "color.bg",
+      "min": 3,
+      "use": "The tongue, cursor, prompt chevron and heading hash. Graphics and large type"
+    },
+    {
+      "foreground": "color.brand",
+      "background": "color.surface",
+      "min": 3,
+      "use": "Brand marks on a panel"
+    },
+    {
+      "foreground": "color.on-brand",
+      "background": "color.brand-fill",
+      "min": 4.5,
+      "use": "Small text on the brand fill, such as the mode of the status line"
+    },
+    {
+      "foreground": "color.interactive",
+      "background": "color.bg",
+      "min": 4.5,
+      "use": "Links and the focus ring"
+    },
+    {
+      "foreground": "color.interactive",
+      "background": "color.surface",
+      "min": 4.5,
+      "use": "Links on panels"
+    },
+    {
+      "foreground": "color.on-interactive",
+      "background": "color.interactive",
+      "min": 4.5,
+      "use": "The label of a primary button"
+    },
+    { "foreground": "color.tag-text", "background": "color.tag-bg", "min": 4.5, "use": "Tags" },
+    {
+      "foreground": "color.tip",
+      "background": "color.bg",
+      "min": 3,
+      "use": "Tip: bar and the active dot"
+    },
+    { "foreground": "color.note", "background": "color.bg", "min": 3, "use": "Note: bar" },
+    {
+      "foreground": "color.warning",
+      "background": "color.bg",
+      "min": 3,
+      "use": "Warning: bar and the experimental dot",
+      "below": {
+        "light": "Dawn gold cannot reach 3:1 on a light page. The bar and the dot never carry the meaning alone: the label, the icon and the word next to the dot are set in the text color."
+      }
+    },
+    { "foreground": "color.danger", "background": "color.bg", "min": 3, "use": "Danger: bar" },
+    {
+      "foreground": "color.danger",
+      "background": "color.surface",
+      "min": 3,
+      "use": "The border of a field with an error"
+    },
+    {
+      "foreground": "color.tip-text",
+      "background": "color.tip-tint",
+      "min": 4.5,
+      "use": "Tip: label"
+    },
+    {
+      "foreground": "color.note-text",
+      "background": "color.note-tint",
+      "min": 4.5,
+      "use": "Note: label"
+    },
+    {
+      "foreground": "color.warning-text",
+      "background": "color.warning-tint",
+      "min": 4.5,
+      "use": "Warning: label"
+    },
+    {
+      "foreground": "color.danger-text",
+      "background": "color.danger-tint",
+      "min": 4.5,
+      "use": "Danger: label"
+    },
+    {
+      "foreground": "color.danger-text",
+      "background": "color.surface",
+      "min": 4.5,
+      "use": "Error message under a field"
+    },
+    {
+      "foreground": "color.text",
+      "background": "color.tip-tint",
+      "min": 4.5,
+      "use": "Text in a tip"
+    },
+    {
+      "foreground": "color.text",
+      "background": "color.note-tint",
+      "min": 4.5,
+      "use": "Text in a note"
+    },
+    {
+      "foreground": "color.text",
+      "background": "color.warning-tint",
+      "min": 4.5,
+      "use": "Text in a warning"
+    },
+    {
+      "foreground": "color.text",
+      "background": "color.danger-tint",
+      "min": 4.5,
+      "use": "Text in a danger block"
+    },
+    {
+      "foreground": "color.interactive",
+      "background": "color.tip-tint",
+      "min": 4.5,
+      "use": "Links in a tip"
+    },
+    {
+      "foreground": "color.interactive",
+      "background": "color.note-tint",
+      "min": 4.5,
+      "use": "Links in a note"
+    },
+    {
+      "foreground": "color.interactive",
+      "background": "color.warning-tint",
+      "min": 4.5,
+      "use": "Links in a warning"
+    },
+    {
+      "foreground": "color.interactive",
+      "background": "color.danger-tint",
+      "min": 4.5,
+      "use": "Links in a danger block"
+    },
+    {
+      "foreground": "mark.body",
+      "background": "mark.tile",
+      "min": 3,
+      "use": "The mark on its tile"
+    },
+    {
+      "foreground": "mark.tongue",
+      "background": "mark.tile",
+      "min": 3,
+      "use": "The love element on the tile"
+    },
+    { "foreground": "code.text", "background": "code.bg", "min": 4.5, "use": "Code" },
+    {
+      "foreground": "code.text",
+      "background": "code.line-highlight",
+      "min": 4.5,
+      "over": "code.bg",
+      "use": "Code on a highlighted line"
+    },
+    {
+      "foreground": "code.text",
+      "background": "code.line-added",
+      "min": 4.5,
+      "over": "code.bg",
+      "use": "Code on an added line"
+    },
+    {
+      "foreground": "code.text",
+      "background": "code.line-removed",
+      "min": 4.5,
+      "over": "code.bg",
+      "use": "Code on a removed line"
+    },
+    {
+      "foreground": "code.text-secondary",
+      "background": "code.bg",
+      "min": 4.5,
+      "use": "Line numbers"
+    },
+    {
+      "foreground": "code.text-secondary",
+      "background": "code.header-bg",
+      "min": 4.5,
+      "use": "File name and language in the caption"
+    },
+    { "foreground": "syntax.keyword", "background": "code.bg", "min": 4.5, "use": "Keywords" },
+    { "foreground": "syntax.string", "background": "code.bg", "min": 4.5, "use": "Strings" },
+    { "foreground": "syntax.function", "background": "code.bg", "min": 4.5, "use": "Functions" },
+    {
+      "foreground": "syntax.type",
+      "background": "code.bg",
+      "min": 4.5,
+      "use": "Types, tags and keys"
+    },
+    {
+      "foreground": "syntax.constant",
+      "background": "code.bg",
+      "min": 4.5,
+      "use": "Numbers and constants"
+    },
+    { "foreground": "syntax.comment", "background": "code.bg", "min": 4.5, "use": "Comments" },
+    {
+      "foreground": "syntax.punctuation",
+      "background": "code.bg",
+      "min": 4.5,
+      "use": "Punctuation"
+    }
+  ]
+}

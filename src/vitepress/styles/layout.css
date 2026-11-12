@@ -1,0 +1,98 @@
+/*
+ * The page frame. The status line is fixed to the bottom of the window, and everything
+ * that reaches the bottom leaves room for it.
+ *
+ * The default theme scopes its component styles, which makes them more specific than a
+ * plain class. The selectors in these files repeat part of the structure to win over them.
+ */
+html {
+  scroll-padding-top: calc(var(--vp-nav-height) + var(--ws-space-16));
+}
+
+body {
+  background: var(--ws-color-bg);
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-sans);
+}
+
+::selection {
+  background: var(--ws-color-selection);
+  color: var(--ws-color-text);
+}
+
+:focus-visible {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 2px;
+}
+
+.Layout {
+  padding-bottom: var(--ws-size-status-line);
+}
+
+.WsStatusLine {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--vp-z-index-nav);
+  height: var(--ws-size-status-line);
+}
+
+.WsStatusLine .WsStatusLine-pair {
+  gap: var(--ws-space-6);
+}
+
+/* the keys of the status line are for a keyboard: below the default theme's own desktop width they go */
+@media (width < 60rem) {
+  .WsStatusLine .ws-status-line__keys,
+  .WsStatusLine .ws-status-line__item--wide {
+    display: none;
+  }
+}
+
+.VPNavScreen.VPNavScreen {
+  bottom: var(--ws-size-status-line);
+}
+
+.VPFooter.VPFooter {
+  border-top-color: var(--ws-color-border);
+  background: var(--ws-color-bg);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-caption);
+}
+
+/* skip link */
+.VPSkipLink.VPSkipLink {
+  border-radius: var(--ws-radius-md);
+  color: var(--ws-color-interactive);
+  font: var(--ws-text-label);
+}
+
+/* 404 */
+.WsNotFound {
+  display: grid;
+  justify-items: start;
+  gap: var(--ws-space-16);
+  max-width: var(--ws-size-content);
+  margin-inline: auto;
+  padding: var(--ws-space-64) var(--ws-space-24);
+}
+
+.WsNotFound-ghost {
+  color: var(--ws-color-text);
+  line-height: 0;
+}
+
+.WsNotFound-title {
+  margin-top: var(--ws-space-8);
+  font: var(--ws-text-display-compact);
+  letter-spacing: var(--ws-text-display-compact-letter-spacing);
+}
+
+.WsNotFound-output {
+  margin: 0 0 var(--ws-space-16);
+  padding-left: var(--ws-space-16);
+  border-left: var(--ws-border-width-medium) solid var(--ws-color-border);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+}

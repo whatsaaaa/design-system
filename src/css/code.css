@@ -1,0 +1,61 @@
+/*
+ * A code block with a caption: the file name on the left, the language on the right.
+ *
+ *   <figure class="ws-code">
+ *     <figcaption><span>conditions.ts</span><span>ts</span></figcaption>
+ *     <pre><code>...</code></pre>
+ *   </figure>
+ *
+ * Code blocks stay on the dark palette in both themes: on dawn no syntax color except
+ * pine reaches AA on the surface.
+ */
+.ws-code {
+  margin: var(--ws-space-16) 0 0;
+  overflow: hidden;
+  border: var(--ws-border-width-thin) solid var(--ws-code-border);
+  border-radius: var(--ws-radius-lg);
+  background: var(--ws-code-bg);
+  color: var(--ws-code-text);
+}
+
+.ws-code > figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ws-space-16);
+  height: 2.25rem;
+  margin: 0;
+  padding-inline: var(--ws-space-16);
+  border-bottom: var(--ws-border-width-thin) solid var(--ws-code-border);
+  background: var(--ws-code-header-bg);
+  color: var(--ws-code-text-secondary);
+  font: var(--ws-text-caption);
+}
+
+.ws-code > pre {
+  margin: 0;
+  padding: var(--ws-space-16);
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: var(--ws-text-code);
+  font-variant-ligatures: none;
+  tab-size: 2;
+}
+
+.ws-code code {
+  font: inherit;
+}
+
+.ws-code ::selection {
+  background: var(--ws-code-selection);
+  color: var(--ws-code-text);
+}
+
+/* The scrollbar of a code block belongs to the dark block, whatever the page theme is. */
+.ws-code > pre,
+.ws-prose pre {
+  color-scheme: dark;
+}

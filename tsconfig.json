@@ -1,0 +1,16 @@
+// Everything that is plain TypeScript: the modules, the build scripts, the tests and the configs.
+// The VitePress theme and the style guide have Vue files and are checked by tsconfig.vue.json.
+{
+  "extends": "@tsconfig/node24/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es2024", "dom", "dom.iterable"],
+    "types": ["node"],
+    "noUncheckedIndexedAccess": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "rewriteRelativeImportExtensions": true,
+    "noEmit": true
+  },
+  "include": ["src", "scripts", "tests", "*.config.ts"],
+  "exclude": ["src/vitepress", "tests/browser"]
+}

@@ -1,0 +1,424 @@
+/*
+ * The terminal frame: a tab bar on top, prompts as headings, a status line at the bottom.
+ * Each piece stands alone, so an app can take the bars without the frame.
+ */
+@import './breakpoints.css';
+
+/* The window: bar, content, bar. Give it a height to make the content scroll inside it. */
+.ws-term {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-xl);
+  background: var(--ws-color-surface);
+  color: var(--ws-color-text);
+}
+
+/*
+ * Tab bar.
+ *
+ *   <header class="ws-tab-bar">
+ *     <a class="ws-tab-bar__brand" href="/">...mark... name</a>
+ *     <nav class="ws-tabs" aria-label="Main">
+ *       <ul>
+ *         <li><a href="/" aria-current="page">home</a></li>
+ *         <li><a href="/projects/">projects</a></li>
+ *       </ul>
+ *     </nav>
+ *     <div class="ws-tab-bar__end">...</div>
+ *   </header>
+ */
+.ws-tab-bar {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ws-space-32);
+  min-height: var(--ws-size-tab-bar);
+  padding-inline: var(--ws-space-20);
+  border-bottom: var(--ws-border-width-thin) solid var(--ws-color-border);
+  background: var(--ws-color-bg);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+}
+
+.ws-tab-bar__brand {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--ws-space-10);
+  color: var(--ws-color-text);
+  font-weight: var(--ws-font-weight-extrabold);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ws-tab-bar__brand a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ws-tabs,
+.ws-tabs ul {
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ws-tabs ul {
+  counter-reset: ws-tab;
+}
+
+.ws-tabs li {
+  display: flex;
+  counter-increment: ws-tab;
+}
+
+.ws-tabs a {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-8);
+  padding-inline: var(--ws-space-16);
+  border-inline: var(--ws-border-width-thin) solid transparent;
+  color: var(--ws-color-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Tabs are numbered like the windows of a terminal multiplexer. */
+.ws-tabs a::before {
+  color: var(--ws-color-text-faint);
+  font-weight: var(--ws-font-weight-bold);
+  content: counter(ws-tab);
+  content: counter(ws-tab) / '';
+}
+
+.ws-tabs a:hover {
+  color: var(--ws-color-text);
+}
+
+.ws-tabs a[aria-current]:not([aria-current='false']) {
+  border-color: var(--ws-color-border);
+  background: var(--ws-color-surface);
+  box-shadow: inset 0 var(--ws-border-width-medium) 0 var(--ws-color-brand);
+  color: var(--ws-color-text);
+}
+
+.ws-tabs a[aria-current]:not([aria-current='false'])::before {
+  color: var(--ws-color-brand);
+}
+
+.ws-tab-bar__end {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-24);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.ws-tab-bar__end a {
+  display: flex;
+  align-items: center;
+  color: var(--ws-color-text-secondary);
+  text-decoration: none;
+}
+
+.ws-tab-bar__end a:hover {
+  color: var(--ws-color-text);
+}
+
+/* An arrow after a link that leaves the site. */
+.ws-arrow::after {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  margin-left: 0.375em;
+  background: currentcolor;
+  content: '';
+  mask: var(--ws-icon-arrow) center / contain no-repeat;
+}
+
+/*
+ * A prompt: the chevron, then a command. As a heading it names a section by the command
+ * whose output the section is.
+ *
+ *   <h2 class="ws-prompt">ls ~/projects</h2>
+ */
+.ws-prompt {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-10);
+  margin: 0;
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-variant-ligatures: none;
+}
+
+.ws-prompt::before {
+  flex: none;
+  width: 0.625em;
+  height: 0.875em;
+  background: var(--ws-color-brand);
+  content: '';
+  mask: var(--ws-icon-chevron) center / contain no-repeat;
+}
+
+.ws-prompt a {
+  color: var(--ws-color-interactive);
+}
+
+.ws-prompt__comment {
+  color: var(--ws-color-text-secondary);
+}
+
+/* What a command printed: text set off by a rule on the left. */
+.ws-output {
+  margin: var(--ws-space-24) 0 0;
+  padding-left: var(--ws-space-16);
+  border-left: var(--ws-border-width-medium) solid var(--ws-color-border);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-body-sm);
+  line-height: var(--ws-font-line-height-loose);
+}
+
+.ws-output > * + * {
+  margin-top: var(--ws-space-14);
+}
+
+.ws-output strong {
+  color: var(--ws-color-text);
+  font-weight: var(--ws-font-weight-semibold);
+}
+
+/* The block cursor after the handle. It does not blink. */
+.ws-cursor {
+  display: inline-block;
+  flex: none;
+  width: 0.52em;
+  height: 0.94em;
+  border-radius: 2px;
+  background: var(--ws-color-brand);
+}
+
+/* A key cap. */
+.ws-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding-inline: var(--ws-space-4);
+  border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
+  border-radius: var(--ws-radius-xs);
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-mono);
+  font-size: var(--ws-font-size-11);
+  font-style: normal;
+  line-height: 1;
+}
+
+/* A tag on a tint of the interactive color, or outlined for a plain list such as a stack. */
+.ws-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--ws-space-2) var(--ws-space-8);
+  border-radius: var(--ws-radius-sm);
+  background: var(--ws-color-tag-bg);
+  color: var(--ws-color-tag-text);
+  font: var(--ws-text-label-sm);
+  white-space: nowrap;
+}
+
+.ws-tag--outline {
+  padding: calc(var(--ws-space-4) - var(--ws-border-width-thin)) var(--ws-space-10);
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  background: none;
+  color: var(--ws-color-text);
+}
+
+/* A state as a dot with its word. The word carries the meaning, the dot only repeats it. */
+.ws-state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ws-space-8);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-caption);
+  font-weight: var(--ws-font-weight-medium);
+}
+
+.ws-state::before {
+  flex: none;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: var(--ws-radius-full);
+  background: var(--ws-color-text-faint);
+  content: '';
+}
+
+.ws-state--active::before {
+  background: var(--ws-color-tip);
+}
+
+.ws-state--experimental::before {
+  background: var(--ws-color-warning);
+}
+
+/*
+ * Status line.
+ *
+ *   <footer class="ws-status-line">
+ *     <span class="ws-status-line__mode">NORMAL</span>
+ *     <span class="ws-status-line__file">guide/conditions.md</span>
+ *     <span class="ws-status-line__item ws-status-line__item--wide">main</span>
+ *     <span class="ws-status-line__keys">
+ *       <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
+ *     </span>
+ *     <span class="ws-status-line__item ws-status-line__item--edge">rose-pine</span>
+ *   </footer>
+ *
+ * A key hint is the control itself: pressing the key clicks it (see the shortcuts module).
+ * Hints stay hidden until that module runs, so a hint is never shown for a key that does nothing.
+ */
+.ws-status-line {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--ws-size-status-line);
+  overflow: hidden;
+  border-top: var(--ws-border-width-thin) solid var(--ws-color-border);
+  background: var(--ws-color-bg);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-caption);
+  white-space: nowrap;
+}
+
+.ws-status-line__mode,
+.ws-status-line__file,
+.ws-status-line__item {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--ws-space-6);
+  padding-inline: var(--ws-space-14);
+}
+
+.ws-status-line__mode {
+  background: var(--ws-color-brand-fill);
+  color: var(--ws-color-on-brand);
+  font-weight: var(--ws-font-weight-extrabold);
+  letter-spacing: 0.04em;
+}
+
+.ws-status-line__file {
+  flex: 0 1 auto;
+  min-width: 0;
+  background: var(--ws-color-raised);
+  color: var(--ws-color-text);
+}
+
+.ws-status-line__file > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ws-status-line__item--edge {
+  border-left: var(--ws-border-width-thin) solid var(--ws-color-border);
+}
+
+.ws-status-line__keys {
+  display: none;
+  flex: none;
+  align-items: stretch;
+  gap: var(--ws-space-20);
+  margin-left: auto;
+  padding-inline: var(--ws-space-14);
+}
+
+[data-ws-keys] .ws-status-line__keys {
+  display: flex;
+}
+
+/* Without key hints the items after them still go to the right edge. */
+.ws-status-line__spacer {
+  flex: 1;
+}
+
+.ws-status-line__keys > * {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-6);
+}
+
+.ws-status-line__keys :is(button, a) {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-6);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ws-status-line__keys :is(button, a):hover {
+  color: var(--ws-color-text);
+}
+
+.ws-status-line__keys :is(button, a):focus-visible {
+  outline-offset: 2px;
+}
+
+@media (--ws-compact) {
+  .ws-tab-bar {
+    flex-wrap: wrap;
+    gap: 0;
+    padding-inline: 0;
+  }
+
+  .ws-tab-bar__brand {
+    min-height: 2.75rem;
+    padding-left: var(--ws-space-16);
+  }
+
+  .ws-tab-bar__end {
+    padding-right: var(--ws-space-16);
+  }
+
+  /* The tabs take a row of their own and share it evenly. */
+  .ws-tabs {
+    flex-basis: 100%;
+    order: 3;
+    border-top: var(--ws-border-width-thin) solid var(--ws-color-border);
+  }
+
+  .ws-tabs ul,
+  .ws-tabs li {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ws-tabs a {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+    min-height: 2.5rem;
+    padding-inline: var(--ws-space-8);
+  }
+
+  .ws-tabs li:first-child a {
+    border-left-color: transparent;
+  }
+
+  .ws-tabs li:last-child a {
+    border-right-color: transparent;
+  }
+
+  /* Key hints are for keyboards, and the wide items do not fit a phone. */
+  [data-ws-keys] .ws-status-line__keys,
+  .ws-status-line__item--wide {
+    display: none;
+  }
+}

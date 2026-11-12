@@ -1,0 +1,46 @@
+/* The home layout of the default theme, for a docs site that opens with a hero. */
+.VPHome .VPHero .name,
+.VPHome .VPHero .text {
+  font-family: var(--ws-font-family-mono);
+  font-weight: var(--ws-font-weight-extrabold);
+  letter-spacing: -0.03em;
+}
+
+.VPHome .VPHero .name .clip {
+  color: var(--ws-color-text);
+  -webkit-text-fill-color: currentcolor;
+}
+
+.VPHome .VPHero .tagline {
+  color: var(--ws-color-text-secondary);
+  font-family: var(--ws-font-family-sans);
+}
+
+.VPHome .VPButton,
+.vp-doc .VPButton {
+  border-radius: var(--ws-radius-md);
+  font-family: var(--ws-font-family-mono);
+  font-weight: var(--ws-font-weight-bold);
+  transition: none;
+}
+
+.VPHome .VPFeature {
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-lg);
+  background: var(--ws-color-surface);
+  transition: none;
+}
+
+.VPHome .VPFeature .title {
+  font: var(--ws-text-h4);
+}
+
+.VPHome .VPFeature .details {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-body-sm);
+}
+
+.VPHome .VPFeature .icon {
+  border-radius: var(--ws-radius-md);
+  background: var(--ws-color-raised);
+}

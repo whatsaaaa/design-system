@@ -1,0 +1,204 @@
+/*
+ * The default theme's variables, pointed at the tokens. The mapping is the same in both
+ * themes, because the role tokens change with the theme themselves.
+ * Listed for :root and .dark so it wins over the default theme's values for both.
+ */
+:root,
+.dark {
+  /* page */
+  --vp-c-bg: var(--ws-color-bg);
+  --vp-c-bg-alt: var(--ws-color-bg);
+  --vp-c-bg-elv: var(--ws-color-surface);
+  --vp-c-bg-soft: var(--ws-color-surface);
+  --vp-c-border: var(--ws-color-field-border);
+  --vp-c-divider: var(--ws-color-border);
+  --vp-c-gutter: var(--ws-color-border);
+  --vp-c-text-1: var(--ws-color-text);
+  --vp-c-text-2: var(--ws-color-text-secondary);
+  --vp-c-text-3: var(--ws-color-text-faint);
+  --vp-c-neutral: var(--ws-color-text);
+  --vp-c-neutral-inverse: var(--ws-color-bg);
+
+  /* "default" is the quiet gray of the default theme: raised chips and hovers */
+  --vp-c-default-1: var(--ws-color-border-strong);
+  --vp-c-default-2: var(--ws-color-border);
+  --vp-c-default-3: var(--ws-color-raised);
+  --vp-c-default-soft: var(--ws-color-raised);
+
+  /* the default theme's "brand" is its link and button color: the interactive role here */
+  --vp-c-brand-1: var(--ws-color-interactive);
+  --vp-c-brand-2: var(--ws-color-interactive);
+  --vp-c-brand-3: var(--ws-color-interactive);
+  --vp-c-brand-soft: var(--ws-color-tag-bg);
+  --vp-c-tip-1: var(--ws-color-tip);
+  --vp-c-tip-2: var(--ws-color-tip);
+  --vp-c-tip-3: var(--ws-color-tip);
+  --vp-c-tip-soft: var(--ws-color-tip-tint);
+  --vp-c-success-1: var(--ws-color-tip);
+  --vp-c-success-2: var(--ws-color-tip);
+  --vp-c-success-3: var(--ws-color-tip);
+  --vp-c-success-soft: var(--ws-color-tip-tint);
+  --vp-c-note-1: var(--ws-color-note);
+  --vp-c-note-2: var(--ws-color-note);
+  --vp-c-note-3: var(--ws-color-note);
+  --vp-c-note-soft: var(--ws-color-note-tint);
+  --vp-c-important-1: var(--ws-color-note);
+  --vp-c-important-2: var(--ws-color-note);
+  --vp-c-important-3: var(--ws-color-note);
+  --vp-c-important-soft: var(--ws-color-note-tint);
+  --vp-c-warning-1: var(--ws-color-warning);
+  --vp-c-warning-2: var(--ws-color-warning);
+  --vp-c-warning-3: var(--ws-color-warning);
+  --vp-c-warning-soft: var(--ws-color-warning-tint);
+  --vp-c-danger-1: var(--ws-color-danger);
+  --vp-c-danger-2: var(--ws-color-danger);
+  --vp-c-danger-3: var(--ws-color-danger);
+  --vp-c-danger-soft: var(--ws-color-danger-tint);
+  --vp-c-caution-1: var(--ws-color-danger);
+  --vp-c-caution-2: var(--ws-color-danger);
+  --vp-c-caution-3: var(--ws-color-danger);
+  --vp-c-caution-soft: var(--ws-color-danger-tint);
+
+  /* type */
+  --vp-font-family-base: var(--ws-font-family-sans);
+  --vp-font-family-mono: var(--ws-font-family-mono);
+
+  /* flat: borders separate things, not shadows */
+  --vp-shadow-1: none;
+  --vp-shadow-2: none;
+  --vp-shadow-3: 0 0 0 1px var(--ws-color-border);
+  --vp-shadow-4: 0 0 0 1px var(--ws-color-border);
+  --vp-shadow-5: 0 0 0 1px var(--ws-color-border);
+
+  /* layout */
+  --vp-layout-max-width: var(--ws-size-frame);
+  --vp-nav-height: var(--ws-size-tab-bar);
+  --vp-nav-logo-height: 1.5rem;
+  --vp-nav-bg-color: var(--ws-color-bg);
+  --vp-nav-screen-bg-color: var(--ws-color-bg);
+  --vp-local-nav-bg-color: var(--ws-color-bg);
+  --vp-sidebar-width: var(--ws-size-sidebar);
+  --vp-sidebar-bg-color: var(--ws-color-bg);
+  --vp-backdrop-bg-color: color-mix(in srgb, var(--ws-palette-main-base) 70%, transparent);
+
+  /* code: dark in both themes */
+  --vp-code-line-height: var(--ws-text-code-line-height);
+  --vp-code-font-size: 0.8125em;
+  --vp-code-color: var(--ws-color-text);
+  --vp-code-link-color: var(--ws-color-interactive);
+  --vp-code-link-hover-color: var(--ws-color-interactive);
+  --vp-code-bg: var(--ws-color-raised);
+  --vp-code-block-color: var(--ws-code-text);
+  --vp-code-block-bg: var(--ws-code-bg);
+  --vp-code-block-divider-color: var(--ws-code-border);
+  --vp-code-lang-color: var(--ws-code-text-secondary);
+  --vp-code-line-highlight-color: var(--ws-code-line-highlight);
+  --vp-code-line-number-color: var(--ws-code-text-secondary);
+  --vp-code-line-diff-add-color: var(--ws-code-line-added);
+  --vp-code-line-diff-add-symbol-color: var(--ws-syntax-type);
+  --vp-code-line-diff-remove-color: var(--ws-code-line-removed);
+  --vp-code-line-diff-remove-symbol-color: var(--ws-syntax-keyword);
+  --vp-code-line-warning-color: color-mix(in srgb, var(--ws-syntax-string) 14%, transparent);
+  --vp-code-line-error-color: var(--ws-code-line-removed);
+  --vp-code-copy-code-border-color: var(--ws-code-border);
+  --vp-code-copy-code-bg: var(--ws-code-header-bg);
+  --vp-code-copy-code-hover-border-color: var(--ws-code-text-secondary);
+  --vp-code-copy-code-hover-bg: var(--ws-code-header-bg);
+  --vp-code-copy-code-active-text: var(--ws-code-text-secondary);
+  --vp-code-tab-divider: var(--ws-code-border);
+  --vp-code-tab-text-color: var(--ws-code-text-secondary);
+  --vp-code-tab-bg: var(--ws-code-header-bg);
+  --vp-code-tab-hover-text-color: var(--ws-code-text);
+  --vp-code-tab-active-text-color: var(--ws-code-text);
+  --vp-code-tab-active-bar-color: var(--ws-palette-main-love);
+
+  /* buttons: the primary one is filled with the interactive color */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: var(--ws-color-on-interactive);
+  --vp-button-brand-bg: var(--ws-color-interactive);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: var(--ws-color-on-interactive);
+  --vp-button-brand-hover-bg: var(--ws-color-interactive);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: var(--ws-color-on-interactive);
+  --vp-button-brand-active-bg: var(--ws-color-interactive);
+  --vp-button-alt-border: var(--ws-color-field-border);
+  --vp-button-alt-text: var(--ws-color-text);
+  --vp-button-alt-bg: transparent;
+  --vp-button-alt-hover-border: var(--ws-color-text);
+  --vp-button-alt-hover-text: var(--ws-color-text);
+  --vp-button-alt-hover-bg: transparent;
+  --vp-button-alt-active-border: var(--ws-color-text);
+  --vp-button-alt-active-text: var(--ws-color-text);
+  --vp-button-alt-active-bg: var(--ws-color-raised);
+
+  /* callouts: the label follows the theme, the bar and tint carry the hue */
+  --vp-custom-block-font-size: var(--ws-font-size-16);
+  --vp-custom-block-code-font-size: 0.8125em;
+  --vp-custom-block-info-border: transparent;
+  --vp-custom-block-info-text: var(--ws-color-text);
+  --vp-custom-block-info-bg: var(--ws-color-note-tint);
+  --vp-custom-block-info-code-bg: var(--ws-color-raised);
+  --vp-custom-block-note-border: transparent;
+  --vp-custom-block-note-text: var(--ws-color-text);
+  --vp-custom-block-note-bg: var(--ws-color-note-tint);
+  --vp-custom-block-note-code-bg: var(--ws-color-raised);
+  --vp-custom-block-tip-border: transparent;
+  --vp-custom-block-tip-text: var(--ws-color-text);
+  --vp-custom-block-tip-bg: var(--ws-color-tip-tint);
+  --vp-custom-block-tip-code-bg: var(--ws-color-raised);
+  --vp-custom-block-important-border: transparent;
+  --vp-custom-block-important-text: var(--ws-color-text);
+  --vp-custom-block-important-bg: var(--ws-color-note-tint);
+  --vp-custom-block-important-code-bg: var(--ws-color-raised);
+  --vp-custom-block-warning-border: transparent;
+  --vp-custom-block-warning-text: var(--ws-color-text);
+  --vp-custom-block-warning-bg: var(--ws-color-warning-tint);
+  --vp-custom-block-warning-code-bg: var(--ws-color-raised);
+  --vp-custom-block-danger-border: transparent;
+  --vp-custom-block-danger-text: var(--ws-color-text);
+  --vp-custom-block-danger-bg: var(--ws-color-danger-tint);
+  --vp-custom-block-danger-code-bg: var(--ws-color-raised);
+  --vp-custom-block-caution-border: transparent;
+  --vp-custom-block-caution-text: var(--ws-color-text);
+  --vp-custom-block-caution-bg: var(--ws-color-danger-tint);
+  --vp-custom-block-caution-code-bg: var(--ws-color-raised);
+  --vp-custom-block-details-border: transparent;
+  --vp-custom-block-details-text: var(--ws-color-text);
+  --vp-custom-block-details-bg: var(--ws-color-surface);
+  --vp-custom-block-details-code-bg: var(--ws-color-raised);
+
+  /* inputs and the appearance switch */
+  --vp-input-border-color: var(--ws-color-field-border);
+  --vp-input-bg-color: var(--ws-color-surface);
+  --vp-input-switch-bg-color: var(--ws-color-raised);
+
+  /* home */
+  --vp-home-hero-name-color: var(--ws-color-text);
+  --vp-home-hero-name-background: none;
+  --vp-home-hero-image-background-image: none;
+  --vp-home-hero-image-filter: none;
+
+  /* badges */
+  --vp-badge-info-border: transparent;
+  --vp-badge-info-text: var(--ws-color-text);
+  --vp-badge-info-bg: var(--ws-color-raised);
+  --vp-badge-tip-border: transparent;
+  --vp-badge-tip-text: var(--ws-color-tag-text);
+  --vp-badge-tip-bg: var(--ws-color-tag-bg);
+  --vp-badge-warning-border: transparent;
+  --vp-badge-warning-text: var(--ws-color-text);
+  --vp-badge-warning-bg: var(--ws-color-warning-tint);
+  --vp-badge-danger-border: transparent;
+  --vp-badge-danger-text: var(--ws-color-text);
+  --vp-badge-danger-bg: var(--ws-color-danger-tint);
+
+  /* local search */
+  --vp-local-search-bg: var(--ws-color-surface);
+  --vp-local-search-result-bg: var(--ws-color-surface);
+  --vp-local-search-result-border: var(--ws-color-border);
+  --vp-local-search-result-selected-bg: var(--ws-color-raised);
+  --vp-local-search-result-selected-border: var(--ws-color-interactive);
+  --vp-local-search-highlight-bg: var(--ws-color-brand-fill);
+  --vp-local-search-highlight-text: var(--ws-color-on-brand);
+}
