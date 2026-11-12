@@ -61,6 +61,36 @@ test.describe('the easter egg', () => {
     expect(bubbleBox.x).toBeLessThan(ghostBox.x + ghostBox.width)
   })
 
+  test('the bubble stays with the ghost when the page moves under it', async ({ page }) => {
+    const held = page.locator('.stage.held ws-ghost')
+    await held.scrollIntoViewIfNeeded()
+    await expect(bubbleOf(held)).toBeVisible()
+    const gap = async () => {
+      const [ghostBox, bubbleBox] = [
+        (await held.getByRole('button').boundingBox())!,
+        (await bubbleOf(held).locator('svg').boundingBox())!,
+      ]
+      return {
+        above: Math.round(ghostBox.y - (bubbleBox.y + bubbleBox.height)),
+        left: Math.round(bubbleBox.x - ghostBox.x),
+      }
+    }
+    const atRest = await gap()
+    expect(atRest.above).toBe(4)
+
+    // the page reflows above the ghost, as it does when a font or an image arrives late:
+    // nothing scrolls and the window keeps its size
+    await page.locator('.stage.held').evaluate((stage) => {
+      const spacer = document.createElement('div')
+      spacer.style.height = '137px'
+      stage.before(spacer)
+    })
+    await expect.poll(gap).toEqual(atRest)
+
+    await page.mouse.wheel(0, 60)
+    await expect.poll(gap).toEqual(atRest)
+  })
+
   test('the ghost calms down by itself', async ({ page }) => {
     const ghost = demoGhost(page)
     for (let press = 0; press < 3; press++) await ghost.getByRole('button').click()

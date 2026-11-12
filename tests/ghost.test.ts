@@ -197,6 +197,48 @@ describe('the easter egg', () => {
     )
   })
 
+  it('keeps the bubble with the ghost when the page moves under it', () => {
+    const { button, bubble } = mount({ shout: '4' })
+    let top = 300
+    vi.spyOn(button, 'getBoundingClientRect').mockImplementation(
+      () => ({ left: 100, top, right: 160, bottom: top + 72, width: 60, height: 72 }) as DOMRect,
+    )
+    vi.advanceTimersToNextFrame()
+    // above the ghost: its top, less the gap, less the 18 font pixels of the bubble at 2 px each
+    expect(bubble.style.top).toBe(`${300 - 4 - 36}px`)
+    expect(bubble.style.left).toBe('133px')
+    const drawing = bubble.firstElementChild
+
+    // the page reflows: nothing scrolled and the window kept its size
+    top = 437
+    vi.advanceTimersToNextFrame()
+    expect(bubble.style.top).toBe(`${437 - 4 - 36}px`)
+    // it moved, it was not drawn again: its pop does not replay
+    expect(bubble.firstElementChild).toBe(drawing)
+  })
+
+  it('draws the bubble again when it has to change sides', () => {
+    const { button, bubble } = mount({ shout: '4' })
+    let top = 300
+    vi.spyOn(button, 'getBoundingClientRect').mockImplementation(
+      () => ({ left: 100, top, right: 160, bottom: top + 72, width: 60, height: 72 }) as DOMRect,
+    )
+    vi.advanceTimersToNextFrame()
+    expect(bubble.dataset.side).toBe('above')
+    top = 10
+    vi.advanceTimersToNextFrame()
+    expect(bubble.dataset.side).toBe('below')
+    expect(bubble.style.top).toBe(`${10 + 72 + 4}px`)
+  })
+
+  it('stops watching the ghost once the shout is over', () => {
+    const { button } = mount()
+    for (let press = 0; press < 3; press++) button.click()
+    expect(vi.getTimerCount()).toBeGreaterThan(0)
+    vi.advanceTimersByTime(SHOUT_HOLD)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
   it('leaves nothing behind when it is detached', () => {
     const { host, button, detach } = mount()
     for (let press = 0; press < 3; press++) button.click()

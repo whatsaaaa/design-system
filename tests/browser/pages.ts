@@ -46,6 +46,8 @@ export async function settle(page: Page): Promise<void> {
           image.complete ? undefined : image.decode().catch(() => undefined),
         ),
       )
+      // two frames, so what reacts to a new layout or a new window size has reacted and is painted
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
     })
   }
 }

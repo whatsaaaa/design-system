@@ -115,6 +115,12 @@ export function attachGhost(host: HTMLElement): () => void {
     host.dataset.pose = name
   }
 
+  /** What the bubble shows now: its text, its side and where its tail is. */
+  let drawn = ''
+  /** Where the ghost was when the bubble was last placed. */
+  let placedFor = ''
+  let following = 0
+
   /** Puts the bubble next to the ghost: above it when there is room, and inside the window. */
   const place = () => {
     if (!shouting) return
@@ -136,10 +142,31 @@ export function attachGhost(host: HTMLElement): () => void {
       0,
       Math.min(Math.round((wanted - left) / unit), maxTailShift(shouting)),
     )
-    bubble.innerHTML = bubbleSvg(shouting, unit, side, tailShift)
-    bubble.dataset.side = side
+    // Drawn again only when it looks different. Moving it must not replay its pop.
+    const drawing = `${shouting}|${side}|${tailShift}`
+    if (drawing !== drawn) {
+      bubble.innerHTML = bubbleSvg(shouting, unit, side, tailShift)
+      bubble.dataset.side = side
+      drawn = drawing
+    }
     bubble.style.left = `${Math.round(left)}px`
     bubble.style.top = `${Math.round(side === 'above' ? ghost.top - BUBBLE_GAP - height : ghost.bottom + BUBBLE_GAP)}px`
+    placedFor = position()
+  }
+
+  const position = () => {
+    const ghost = button.getBoundingClientRect()
+    return `${ghost.left},${ghost.top},${ghost.width},${ghost.height},${host.ownerDocument.documentElement.clientWidth}`
+  }
+
+  /**
+   * The bubble is drawn above the page, so nothing moves it along with the ghost. While it is
+   * open it looks every frame where the ghost is and follows: a scroll, a window that
+   * changes size, or a page that reflows when a font or an image arrives late.
+   */
+  const follow = () => {
+    if (position() !== placedFor) place()
+    following = view.requestAnimationFrame(follow)
   }
 
   const showBubble = () => {
@@ -147,17 +174,17 @@ export function attachGhost(host: HTMLElement): () => void {
     // a popover is drawn above everything and is never clipped
     if (typeof bubble.showPopover === 'function' && !bubble.matches(':popover-open'))
       bubble.showPopover()
-    view.addEventListener('scroll', place, { capture: true, passive: true })
-    view.addEventListener('resize', place)
+    following = view.requestAnimationFrame(follow)
   }
 
   const hideBubble = () => {
-    view.removeEventListener('scroll', place, { capture: true })
-    view.removeEventListener('resize', place)
+    view.cancelAnimationFrame(following)
     if (typeof bubble.hidePopover === 'function' && bubble.matches(':popover-open'))
       bubble.hidePopover()
     delete bubble.dataset.open
     bubble.replaceChildren()
+    drawn = ''
+    placedFor = ''
   }
 
   const reset = () => {

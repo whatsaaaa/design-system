@@ -35,7 +35,8 @@ for (const { suffix, viewport, colorScheme, pages } of shots) {
           height: Math.max(height, viewport.height),
         })
         await settle(page)
-        await expect(page).toHaveScreenshot(`${name}-${suffix}.png`)
+        // A screenshot of a long page takes a second or two, and two in a row have to agree.
+        await expect(page).toHaveScreenshot(`${name}-${suffix}.png`, { timeout: 30_000 })
       })
     }
   })
