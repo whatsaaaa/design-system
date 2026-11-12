@@ -49,17 +49,31 @@ describe('markdown in the docs theme', () => {
   })
 })
 
-describe('the base config', () => {
-  it('applies the remembered theme before the first paint', () => {
-    const [tag, attributes, script] = whatsaaaaConfig().head![0] as [string, object, string]
+describe('the script the base config puts in the head', () => {
+  /** Runs the script in a page: what VitePress remembers as the appearance, and the system theme. */
+  function themeAfter(remembered: string | null, system: 'dark' | 'light') {
+    const [tag, , script] = whatsaaaaConfig().head![0] as [string, object, string]
     expect(tag).toBe('script')
-    expect(attributes).toEqual({ id: 'ws-theme' })
-    expect(script).toContain("localStorage.getItem('vitepress-theme-appearance')")
-    expect(script).toContain('document.documentElement.dataset.theme')
-  })
+    const page = { documentElement: { dataset: {} as Record<string, string> } }
+    const storage = {
+      getItem: (key: string) => (key === 'vitepress-theme-appearance' ? remembered : null),
+    }
+    const view = {
+      matchMedia: (query: string) => ({ matches: query === `(prefers-color-scheme: ${system})` }),
+    }
+    new Function('document', 'localStorage', 'window', script)(page, storage, view)
+    return page.documentElement.dataset.theme
+  }
 
-  it('lets the site build the theme from source', () => {
-    expect(whatsaaaaConfig().vite?.ssr?.noExternal).toEqual(['@whatsaaaa/design-system'])
+  it.each([
+    ['light', 'dark', 'light'],
+    ['dark', 'light', 'dark'],
+    ['auto', 'dark', 'dark'],
+    ['auto', 'light', 'light'],
+    [null, 'dark', 'dark'],
+    [null, 'light', 'light'],
+  ] as const)('with %s remembered on a %s system sets %s', (remembered, system, theme) => {
+    expect(themeAfter(remembered, system)).toBe(theme)
   })
 })
 
@@ -92,5 +106,15 @@ describe('the active link', () => {
   it('matches a pattern for a tab that covers a section', () => {
     expect(isActiveLink('guide/conditions.md', '^/guide/', true)).toBe(true)
     expect(isActiveLink('api/index.md', '^/guide/', true)).toBe(false)
+  })
+
+  it('matches that pattern on the index page of the section, as the nav bar does', () => {
+    expect(isActiveLink('guide/index.md', '^/guide/', true)).toBe(true)
+    expect(isActiveLink('index.md', '^/guide/', true)).toBe(false)
+  })
+
+  it('takes a page for what it is called, not for a name that ends like an index', () => {
+    expect(isActiveLink('guide/reindex.md', '/guide/reindex')).toBe(true)
+    expect(isActiveLink('guide/reindex.md', '/guide/re')).toBe(false)
   })
 })

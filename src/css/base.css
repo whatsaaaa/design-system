@@ -72,13 +72,3 @@ pre {
   background: var(--ws-color-selection);
   color: var(--ws-color-text);
 }
-
-/* Text for screen readers only. */
-.ws-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}

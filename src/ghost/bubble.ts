@@ -19,7 +19,7 @@ export function lettersThatFit(width: number): number {
 }
 
 /** Furthest the tail can move right, in font pixels. */
-export const maxTailShift = (text: string) => bubbleSize(text).width - 5
+export const maxTailShift = (text: string) => bubbleSize(text).width - 7
 
 /**
  * A pixel speech bubble with stepped corners, as SVG.

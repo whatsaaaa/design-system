@@ -11,21 +11,24 @@
  */
 
 export interface ShortcutOptions {
-  /** The document the keys are heard in. */
-  root?: Document
   /** A selector for the tabs the number keys go to, in their order. */
   tabs?: string
 }
 
 const EDITABLE = 'input, textarea, select, [contenteditable=""], [contenteditable="true"]'
 
+/** Whether keys pressed on this element are typed into a field. Shortcuts leave those alone. */
+export function isTyping(element: Element | null): boolean {
+  return !!element?.closest(EDITABLE)
+}
+
 function isVisible(element: Element): boolean {
   // an element that is not rendered has no boxes
   return element.getClientRects().length > 0
 }
 
-function targetFor(key: string, root: Document, tabSelector: string): HTMLElement | undefined {
-  const declared = [...root.querySelectorAll<HTMLElement>('[data-ws-key]')].find(
+function targetFor(key: string, tabSelector: string): HTMLElement | undefined {
+  const declared = [...document.querySelectorAll<HTMLElement>('[data-ws-key]')].find(
     (element) =>
       element.dataset.wsKey === key &&
       !(element as HTMLButtonElement).disabled &&
@@ -33,7 +36,7 @@ function targetFor(key: string, root: Document, tabSelector: string): HTMLElemen
   )
   if (declared) return declared
   if (/^[1-9]$/.test(key)) {
-    const tabs = [...root.querySelectorAll<HTMLElement>(tabSelector)].filter(isVisible)
+    const tabs = [...document.querySelectorAll<HTMLElement>(tabSelector)].filter(isVisible)
     return tabs[Number(key) - 1]
   }
   return undefined
@@ -43,22 +46,19 @@ function targetFor(key: string, root: Document, tabSelector: string): HTMLElemen
  * Turns the shortcuts on and reveals the key hints. Returns a function that turns them off.
  * Keys typed into a field, and keys pressed with Ctrl, Alt or Cmd, are left alone.
  */
-export function enableShortcuts({
-  root = document,
-  tabs = '.ws-tabs a',
-}: ShortcutOptions = {}): () => void {
+export function enableShortcuts({ tabs = '.ws-tabs a' }: ShortcutOptions = {}): () => void {
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return
-    if (event.target instanceof Element && event.target.closest(EDITABLE)) return
-    const target = targetFor(event.key, root, tabs)
+    if (event.target instanceof Element && isTyping(event.target)) return
+    const target = targetFor(event.key, tabs)
     if (!target) return
     event.preventDefault()
     target.click()
   }
-  root.addEventListener('keydown', onKeyDown)
-  root.documentElement.dataset.wsKeys = ''
+  document.addEventListener('keydown', onKeyDown)
+  document.documentElement.dataset.wsKeys = ''
   return () => {
-    root.removeEventListener('keydown', onKeyDown)
-    delete root.documentElement.dataset.wsKeys
+    document.removeEventListener('keydown', onKeyDown)
+    delete document.documentElement.dataset.wsKeys
   }
 }

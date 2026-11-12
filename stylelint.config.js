@@ -1,9 +1,11 @@
 /**
  * The stylesheets take every color from a token. A hex value, a named color or a color
  * function in src/ is an error, so the tokens stay the one place a color is defined.
+ * A variable that nothing defines is an error too, so a token cannot be misspelled.
  */
 export default {
   extends: ['stylelint-config-standard'],
+  plugins: ['stylelint-value-no-unknown-custom-properties'],
   ignoreFiles: [
     'dist/**',
     'styleguide/public/ds/**',
@@ -12,6 +14,18 @@ export default {
   ],
   rules: {
     'color-no-hex': true,
+    'csstools/value-no-unknown-custom-properties': [
+      true,
+      {
+        // what a stylesheet may read besides its own variables: the built tokens, the icons,
+        // and in the docs theme the variables of VitePress's default theme
+        importFrom: [
+          'dist/tokens.css',
+          'src/css/icons.css',
+          'node_modules/vitepress/dist/client/theme-default/styles/vars.css',
+        ],
+      },
+    ],
     'color-named': 'never',
     'function-disallowed-list': [
       'rgb',

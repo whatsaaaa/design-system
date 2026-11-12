@@ -14,5 +14,5 @@
     "noEmit": true
   },
   "include": ["src", "scripts", "tests", "*.config.ts"],
-  "exclude": ["src/vitepress", "tests/browser"]
+  "exclude": ["src/vitepress", "tests/browser", "tests/fixtures"]
 }

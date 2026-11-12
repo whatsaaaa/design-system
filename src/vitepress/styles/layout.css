@@ -42,14 +42,6 @@ body {
   gap: var(--ws-space-6);
 }
 
-/* the keys of the status line are for a keyboard: below the default theme's own desktop width they go */
-@media (width < 60rem) {
-  .WsStatusLine .ws-status-line__keys,
-  .WsStatusLine .ws-status-line__item--wide {
-    display: none;
-  }
-}
-
 .VPNavScreen.VPNavScreen {
   bottom: var(--ws-size-status-line);
 }

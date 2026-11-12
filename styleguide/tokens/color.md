@@ -14,7 +14,7 @@ Love is the brand accent and the color of an error. So the things you press are 
 
 ## Themes
 
-Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and the [theme module](/docs/usage#theme) remembers that choice.
+Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and the [theme module](/docs/usage#_3-theme) remembers that choice.
 
 The attribute also works on any element, for a part of a page that has to stay in one theme:
 

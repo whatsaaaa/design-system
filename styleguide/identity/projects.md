@@ -73,10 +73,4 @@ Then generate. The same script writes the whole kit of every identity: marks, lo
 pnpm assets
 ```
 
-To make the kit of a project that does not live in this repository, point the script at a file of the same shape and say where the files go:
-
-```sh
-pnpm assets --project ./my-project.json --out ./brand
-```
-
 `banner.command` is the command whose output the name is. Leave it out and the banner reads the README: `cat README.md`.

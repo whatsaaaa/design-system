@@ -105,7 +105,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 - Code block with a caption: `<figure class="ws-code"><figcaption><span>file.ts</span><span>ts</span></figcaption><pre><code>...</code></pre></figure>`. For highlighting, use Shiki with `codeTheme` from `@whatsaaaa/design-system/shiki`.
 - Callout: `<aside class="ws-callout ws-callout--warning"><p class="ws-callout__title">Warning</p><p>...</p></aside>`. Modifiers: `--tip`, `--warning`, `--danger`. None is a note.
 - Terminal frame: `ws-term` (the window), `ws-tab-bar` with `ws-tab-bar__brand`, `ws-tabs` and `ws-tab-bar__end`, `ws-prompt` for headings, `ws-output`, `ws-status-line`. Mark the current tab with `aria-current="page"`.
-- Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`, `ws-sr-only`.
+- Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`.
 
 The markup of each piece is in the comment at the top of its stylesheet, and in the style guide.
 
@@ -157,11 +157,7 @@ Generated files are in `assets/<name>/`, for `whatsaaaa` and for each project. `
 
 Copy the files you need into the project. Show a mark at 16, 32, 48 or 64 px, where its pixels are sharp.
 
-Never edit a file in `assets/`. To change artwork, change its source and run `pnpm assets` in this repository. For a project that has no kit yet, write a file like `identity/projects/form-builder.json` and run:
-
-```sh
-pnpm assets --project ./my-project.json --out ./brand
-```
+Never edit a file in `assets/`. To change artwork, change its source and run `pnpm assets` in this repository. For a project that has no kit yet, add a file like `identity/projects/form-builder.json` first.
 
 ## 10. Docs sites
 

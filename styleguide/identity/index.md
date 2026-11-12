@@ -63,13 +63,11 @@ The element is `<ws-ghost>`. Load its styles and register it once:
 <ws-ghost px="6"></ws-ghost>
 ```
 
-| Attribute   | What it does                                               | Default                                  |
-| ----------- | ---------------------------------------------------------- | ---------------------------------------- |
-| `px`        | Size of one sprite pixel, in CSS pixels. Use whole numbers | `2`                                      |
-| `bubble-px` | Size of one pixel of the bubble                            | `2`, or `3` for a ghost of 4 px and more |
-| `bubble`    | `above` or `below`, to fix the side the bubble takes       | above when it fits                       |
-| `label`     | What a screen reader calls the button                      | "The whatsaaaa ghost"                    |
-| `shout`     | A number of a's. The ghost shouts at once and holds it     | not set                                  |
+| Attribute | What it does                                               | Default            |
+| --------- | ---------------------------------------------------------- | ------------------ |
+| `px`      | Size of one sprite pixel, in CSS pixels. Use whole numbers | `2`                |
+| `bubble`  | `above` or `below`, to fix the side the bubble takes       | above when it fits |
+| `shout`   | A number of a's. The ghost shouts at once and holds it     | not set            |
 
 To have the ghost in the page before any script runs, render its inside on the server with `ghostMarkup()`. For a ghost that is only a picture or a link, use `ghostSvg()`.
 

@@ -28,6 +28,9 @@ function mount(attributes: Record<string, string> = {}) {
   }
 }
 
+/** The number of letters the bubble shows. */
+const shown = (bubble: HTMLElement) => bubble.querySelectorAll('.ws-ghost__bubble-text path').length
+
 const reducedMotion = (reduce: boolean) =>
   vi
     .spyOn(window, 'matchMedia')
@@ -60,26 +63,20 @@ describe('the markup', () => {
     expect(markup).toContain('aria-hidden="true"')
   })
 
-  it('escapes a label', () => {
-    expect(ghostMarkup({ label: 'say "aaaa" & more' })).toContain(
-      'aria-label="say &quot;aaaa&quot; &amp; more"',
-    )
-  })
-
   it('draws any pose as a picture', () => {
     expect(ghostSvg({ pose: 'lost' })).not.toBe(ghostSvg({ pose: 'idle' }))
     expect(ghostSvg()).toContain('width="20" height="24"')
   })
 
   it('is filled in by the element when the page did not render it', () => {
-    const { host, button } = mount({ px: '4', label: 'Ghost' })
-    expect(button.getAttribute('aria-label')).toBe('Ghost')
+    const { host, button } = mount({ px: '4' })
+    expect(button.getAttribute('aria-label')).toBe('The whatsaaaa ghost')
     expect(host.querySelector('svg')!.getAttribute('width')).toBe('40')
   })
 
   it('is kept when the page rendered it', () => {
     const host = document.createElement('div')
-    host.innerHTML = ghostMarkup({ px: 6, label: 'From the server' })
+    host.innerHTML = ghostMarkup({ px: 6 })
     const rendered = host.querySelector('button')
     document.body.append(host)
     attachGhost(host)
@@ -102,17 +99,24 @@ describe('the easter egg', () => {
     expect(host.dataset.pose).toBe('shout')
     expect(live.textContent).toBe('whatsaaaa!')
     expect(bubble.dataset.open).toBe('')
-    expect(bubble.querySelectorAll('.ws-ghost__bubble-text path')).toHaveLength('whatsaaaa!'.length)
+    expect(shown(bubble)).toBe('whatsaaaa!'.length)
   })
 
   it('holds the a one letter longer with every further press', () => {
-    const { button } = mount()
-    const shouts: string[] = []
-    document.addEventListener('ws-ghost-shout', (event) =>
-      shouts.push((event as CustomEvent).detail.text),
-    )
-    for (let press = 0; press < 6; press++) button.click()
-    expect(shouts).toEqual(['whatsaaaa!', 'whatsaaaaa!', 'whatsaaaaaa!', 'whatsaaaaaaa!'])
+    const { button, bubble } = mount()
+    const shouts: number[] = []
+    for (let press = 0; press < 6; press++) {
+      button.click()
+      shouts.push(shown(bubble))
+    }
+    expect(shouts).toEqual([
+      0,
+      0,
+      'whatsaaaa!'.length,
+      'whatsaaaaa!'.length,
+      'whatsaaaaaa!'.length,
+      'whatsaaaaaaa!'.length,
+    ])
   })
 
   it('announces the shout once, not every letter added to it', () => {
@@ -138,6 +142,33 @@ describe('the easter egg', () => {
     const { host, button } = mount()
     button.click()
     vi.advanceTimersByTime(WAG_HOLD)
+    expect(host.dataset.pose).toBe('idle')
+  })
+
+  it('counts presses in a row that are further apart than a wag lasts', () => {
+    const { host, button } = mount()
+    const pause = (WAG_HOLD + PRESS_WINDOW) / 2
+    button.click()
+    vi.advanceTimersByTime(pause)
+    expect(host.dataset.pose).toBe('idle')
+    button.click()
+    expect(host.dataset.pose).toBe('wag-right')
+    vi.advanceTimersByTime(pause)
+    button.click()
+    expect(host.dataset.pose).toBe('shout')
+  })
+
+  it('holds the a longer on a press late in the shout, which then lasts its whole time again', () => {
+    const { host, button, bubble } = mount()
+    for (let press = 0; press < 3; press++) button.click()
+    // later than two presses of a row may be apart, and the shout still shows
+    vi.advanceTimersByTime(SHOUT_HOLD - 100)
+    button.click()
+    expect(host.dataset.pose).toBe('shout')
+    expect(shown(bubble)).toBe('whatsaaaaa!'.length)
+    vi.advanceTimersByTime(SHOUT_HOLD - 1)
+    expect(host.dataset.pose).toBe('shout')
+    vi.advanceTimersByTime(1)
     expect(host.dataset.pose).toBe('idle')
   })
 
@@ -177,13 +208,30 @@ describe('the easter egg', () => {
     expect(host.dataset.pose).toBe('shout')
   })
 
+  it('grows a shout it holds on a press, then goes back to holding it', () => {
+    const { host, button, live, bubble } = mount({ shout: '6' })
+    button.click()
+    expect(host.dataset.pose).toBe('shout')
+    expect(shown(bubble)).toBe('whatsaaaaaaa!'.length)
+    button.click()
+    expect(shown(bubble)).toBe('whatsaaaaaaaa!'.length)
+
+    vi.advanceTimersByTime(SHOUT_HOLD)
+    expect(host.dataset.pose).toBe('shout')
+    expect(bubble.dataset.open).toBe('')
+    expect(shown(bubble)).toBe('whatsaaaaaa!'.length)
+    expect(live.textContent).toBe('whatsaaaaaa!')
+    vi.advanceTimersByTime(SHOUT_HOLD * 3)
+    expect(host.dataset.pose).toBe('shout')
+  })
+
   it('stops growing before the bubble is wider than the window', () => {
     windowWidth = 200
     const { button, live, bubble } = mount()
     for (let press = 0; press < 12; press++) button.click()
     // the announcement keeps the first shout, the bubble is as long as the window allows
     expect(live.textContent).toBe('whatsaaaa!')
-    const letters = bubble.querySelectorAll('.ws-ghost__bubble-text path').length
+    const letters = shown(bubble)
     expect(bubbleSize('x'.repeat(letters)).width * 2).toBeLessThanOrEqual(200 - 16)
     expect(letters).toBeGreaterThanOrEqual(shoutText(2).length)
   })
@@ -192,9 +240,7 @@ describe('the easter egg', () => {
     windowWidth = 4000
     const { button, bubble } = mount()
     for (let press = 0; press < 40; press++) button.click()
-    expect(bubble.querySelectorAll('.ws-ghost__bubble-text path')).toHaveLength(
-      shoutText(16).length,
-    )
+    expect(shown(bubble)).toBe(shoutText(16).length)
   })
 
   it('keeps the bubble with the ghost when the page moves under it', () => {
@@ -229,6 +275,24 @@ describe('the easter egg', () => {
     vi.advanceTimersToNextFrame()
     expect(bubble.dataset.side).toBe('below')
     expect(bubble.style.top).toBe(`${10 + 72 + 4}px`)
+  })
+
+  it('keeps the tail under the bubble when the ghost stands at the right edge of the window', () => {
+    windowWidth = 400
+    const { button, bubble } = mount({ shout: '4' })
+    vi.spyOn(button, 'getBoundingClientRect').mockImplementation(
+      () => ({ left: 372, top: 300, right: 392, bottom: 324, width: 20, height: 24 }) as DOMRect,
+    )
+    vi.advanceTimersToNextFrame()
+    // the bubble's bottom edge runs from 1 to its width less 1, and the tail hangs from it
+    const edge = bubbleSize('whatsaaaa!').width - 1
+    const shape = bubble.querySelector('.ws-ghost__bubble-shape')!.getAttribute('d')!
+    const steps = [...shape.matchAll(/M(\d+) \d+h(\d+)v1h-\d+z/g)].map(
+      ([, x, run]) => Number(x) + Number(run),
+    )
+    expect(steps).toHaveLength(3)
+    // as far right as it can go, and no further
+    expect(Math.max(...steps)).toBe(edge)
   })
 
   it('stops watching the ghost once the shout is over', () => {

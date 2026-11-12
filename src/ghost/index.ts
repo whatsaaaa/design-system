@@ -52,19 +52,14 @@ export function ghostSvg({ px = 2, pose = 'idle' }: GhostSvgOptions = {}): strin
 
 export interface GhostMarkupOptions {
   px?: number
-  /** What a screen reader calls the button. */
-  label?: string
 }
-
-const DEFAULT_LABEL = 'The whatsaaaa ghost'
-const escapeAttribute = (text: string) => text.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 
 /**
  * The inside of a <ws-ghost>, for rendering it on a server so the ghost is there before
  * any script runs. The element fills itself in when it is empty.
  */
-export function ghostMarkup({ px = 2, label = DEFAULT_LABEL }: GhostMarkupOptions = {}): string {
-  return `<button type="button" class="ws-ghost__button" aria-label="${escapeAttribute(label)}">${ghostSvg({ px })}</button>`
+export function ghostMarkup({ px = 2 }: GhostMarkupOptions = {}): string {
+  return `<button type="button" class="ws-ghost__button" aria-label="The whatsaaaa ghost">${ghostSvg({ px })}</button>`
 }
 
 /** Space kept between the bubble and the edge of the window, and between bubble and ghost. */
@@ -77,16 +72,16 @@ const BUBBLE_GAP = 4
  *
  * Attributes of the host:
  * - `px`: size of one sprite pixel (default 2)
- * - `bubble-px`: size of one bubble pixel (default 2, or 3 for a ghost of 4 px and more)
  * - `bubble`: `above` or `below` to fix the side the bubble takes (default: above when it fits)
- * - `label`: what a screen reader calls the button
  * - `shout`: a number of a's. The ghost shouts at once and holds it, for showing the shout
  */
 export function attachGhost(host: HTMLElement): () => void {
   const px = Number(host.getAttribute('px')) || 2
-  const unit = Number(host.getAttribute('bubble-px')) || (px >= 4 ? 3 : 2)
-  if (!host.querySelector('.ws-ghost__button'))
-    host.innerHTML = ghostMarkup({ px, label: host.getAttribute('label') ?? undefined })
+  // one bubble pixel: larger next to a large ghost
+  const unit = px >= 4 ? 3 : 2
+  /** The shout the host asks to hold, as a number of a's. None when it is not set. */
+  const held = Number(host.getAttribute('shout'))
+  if (!host.querySelector('.ws-ghost__button')) host.innerHTML = ghostMarkup({ px })
   const button = host.querySelector<HTMLButtonElement>('.ws-ghost__button')!
   const body = host.querySelector<SVGPathElement>('.ws-ghost__body')!
   const tongue = host.querySelector<SVGPathElement>('.ws-ghost__tongue')!
@@ -105,7 +100,9 @@ export function attachGhost(host: HTMLElement): () => void {
 
   let presses = 0
   let lastPress = 0
+  /** The shout that shows and the a's in it. Empty and none while the ghost is quiet. */
   let shouting = ''
+  let letters = 0
   let calm: ReturnType<typeof setTimeout> | undefined
 
   const pose = (name: GhostPose) => {
@@ -187,54 +184,60 @@ export function attachGhost(host: HTMLElement): () => void {
     placedFor = ''
   }
 
-  const reset = () => {
+  const quiet = () => {
     clearTimeout(calm)
-    presses = 0
     shouting = ''
+    letters = 0
     hideBubble()
     live.textContent = ''
     pose('idle')
   }
 
-  const shout = (count: number, hold: boolean) => {
+  const shout = (count: number) => {
     // the bubble never gets wider than the window: the shout stops growing instead
     const room = (host.ownerDocument.documentElement.clientWidth - 2 * WINDOW_MARGIN) / unit
     const most = Math.max(2, lettersThatFit(room) - shoutText(0).length)
-    const text = shoutText(Math.min(count, most, LONGEST_SHOUT))
     const started = !shouting
-    shouting = text
+    letters = Math.min(count, most, LONGEST_SHOUT)
+    shouting = shoutText(letters)
     pose('shout')
     if (started) {
       showBubble()
       // announced once, when the shout starts, not for every letter added to it
-      live.textContent = text
+      live.textContent = shouting
     }
     place()
-    host.dispatchEvent(new CustomEvent('ws-ghost-shout', { bubbles: true, detail: { text } }))
-    clearTimeout(calm)
-    if (!hold) calm = setTimeout(reset, SHOUT_HOLD)
+  }
+
+  /** What the ghost goes back to after a wag or a shout: the shout it holds, or quiet. */
+  const rest = () => {
+    if (held > 0) shout(held)
+    else quiet()
   }
 
   const press = () => {
     const now = Date.now()
     presses = now - lastPress < PRESS_WINDOW ? presses + 1 : 1
     lastPress = now
-    if (presses >= PRESSES_TO_SHOUT) return shout(FIRST_SHOUT + presses - PRESSES_TO_SHOUT, false)
+    clearTimeout(calm)
+    // a press while the shout shows continues it, however long ago the last one was
+    if (shouting || presses >= PRESSES_TO_SHOUT) {
+      shout(shouting ? letters + 1 : FIRST_SHOUT)
+      calm = setTimeout(rest, SHOUT_HOLD)
+      return
+    }
     // The first presses only wag the tongue. With reduced motion the ghost keeps still.
     if (view.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
     pose(presses === 1 ? 'wag-left' : 'wag-right')
-    clearTimeout(calm)
-    calm = setTimeout(reset, WAG_HOLD)
+    calm = setTimeout(rest, WAG_HOLD)
   }
 
   button.addEventListener('click', press)
-  pose('idle')
-  const held = Number(host.getAttribute('shout'))
-  if (held > 0) shout(held, true)
+  rest()
 
   return () => {
     button.removeEventListener('click', press)
-    reset()
+    quiet()
     bubble.remove()
     live.remove()
   }
@@ -244,10 +247,10 @@ export function attachGhost(host: HTMLElement): () => void {
  * Registers <ws-ghost>. Call it once in the browser. Does nothing on a server or when the
  * element is already registered.
  */
-export function defineGhost(tag = 'ws-ghost'): void {
-  if (typeof customElements === 'undefined' || customElements.get(tag)) return
+export function defineGhost(): void {
+  if (typeof customElements === 'undefined' || customElements.get('ws-ghost')) return
   customElements.define(
-    tag,
+    'ws-ghost',
     class extends HTMLElement {
       #detach: (() => void) | undefined
 

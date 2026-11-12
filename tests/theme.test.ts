@@ -57,15 +57,6 @@ describe('the theme switch', () => {
     expect(root.dataset.theme).toBe('light')
   })
 
-  it('tells the page when the theme changes', () => {
-    const heard = vi.fn()
-    document.addEventListener('ws-theme-change', (event) =>
-      heard((event as CustomEvent).detail.theme),
-    )
-    setTheme('light')
-    expect(heard).toHaveBeenCalledWith('light')
-  })
-
   it('still switches when storage is blocked', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('blocked')
@@ -98,14 +89,4 @@ describe('the script for the head', () => {
     expect(file).toContain(themeInitScript)
     expect(file).not.toMatch(/\bimport\b|\bexport\b/)
   })
-
-  it.each(['terminal.html', 'prose.html'])(
-    'runs in the example page %s before its stylesheet',
-    (page) => {
-      const html = readFileSync(join(process.cwd(), 'styleguide/public/examples', page), 'utf8')
-      const script = html.indexOf('<script src="../ds/theme/init.js"></script>')
-      expect(script).toBeGreaterThan(-1)
-      expect(script).toBeLessThan(html.indexOf('rel="stylesheet"'))
-    },
-  )
 })

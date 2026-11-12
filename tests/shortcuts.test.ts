@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { enableShortcuts } from '../src/shortcuts/index.ts'
+import { enableShortcuts, isTyping } from '../src/shortcuts/index.ts'
 
 let disable: () => void
 const press = (key: string, init: KeyboardEventInit = {}, target: EventTarget = document.body) => {
@@ -70,6 +70,13 @@ describe('shortcuts', () => {
     const theme = clicks('theme')
     press('t', {}, document.getElementById(id)!)
     expect(theme).not.toHaveBeenCalled()
+  })
+
+  it('says where keys are typed, for a status line that shows whether the hints work', () => {
+    expect(isTyping(document.getElementById('field'))).toBe(true)
+    expect(isTyping(document.getElementById('editor'))).toBe(true)
+    expect(isTyping(document.getElementById('theme'))).toBe(false)
+    expect(isTyping(null)).toBe(false)
   })
 
   it.each([{ ctrlKey: true }, { metaKey: true }, { altKey: true }])(

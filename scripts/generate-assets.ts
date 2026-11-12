@@ -1,30 +1,18 @@
 // Generates the asset kit from its sources: the ghost in src/identity/ghost.ts, the handle in
 // identity/whatsaaaa.json and one file per project in identity/projects/.
 //
-//   node scripts/generate-assets.ts                        writes assets/
-//   node scripts/generate-assets.ts --check                fails when assets/ is not what the sources produce
-//   node scripts/generate-assets.ts --project <file> --out <dir>
-//                                                          writes the kit of one project anywhere, from a
-//                                                          file shaped like identity/projects/*.json
-import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
-import { dirname, join, relative, resolve } from 'node:path'
+//   node scripts/generate-assets.ts           writes assets/
+//   node scripts/generate-assets.ts --check   fails when assets/ is not what the sources produce
+import { readFileSync, readdirSync } from 'node:fs'
+import { join, relative, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { GHOST, GHOST_POSES } from '../src/identity/ghost.ts'
-import { type Identity, type KitFile, buildKit } from './lib/kit.ts'
+import { type Identity, type KitFile, buildKit, readProject, writeKit } from './lib/kit.ts'
 
 const root = resolve(import.meta.dirname, '..')
-const readJson = (file: string) => JSON.parse(readFileSync(file, 'utf8'))
-
-/** A project file: a name, a tagline and a sprite, with the banner's command if it has one. */
-function readProject(file: string): Identity {
-  const project = readJson(file)
-  for (const key of ['name', 'tagline', 'sprite'])
-    if (!(key in project)) throw new Error(`${file} has no "${key}"`)
-  return { ...project, kind: 'project' }
-}
 
 function readIdentities(): Identity[] {
-  const handle = readJson(join(root, 'identity/whatsaaaa.json'))
+  const handle = JSON.parse(readFileSync(join(root, 'identity/whatsaaaa.json'), 'utf8'))
   const projects = readdirSync(join(root, 'identity/projects'))
     .filter((file) => file.endsWith('.json'))
     .sort()
@@ -59,19 +47,10 @@ function listFiles(dir: string): string[] {
   }
 }
 
-const { values } = parseArgs({
-  options: {
-    check: { type: 'boolean', default: false },
-    project: { type: 'string' },
-    out: { type: 'string' },
-  },
-})
-if (values.project && !values.out) throw new Error('--project needs --out <dir>')
-if (values.check && values.project) throw new Error('--check works on assets/, not with --project')
+const { values } = parseArgs({ options: { check: { type: 'boolean', default: false } } })
 
-const identities = values.project ? [readProject(resolve(values.project))] : readIdentities()
-const out = resolve(values.out ?? join(root, 'assets'))
-const files = (await Promise.all(identities.map(buildKit))).flat()
+const out = join(root, 'assets')
+const files = (await Promise.all(readIdentities().map(buildKit))).flat()
 const kit = new Map<string, string | Buffer>(files.map((file) => [file.path, file.content]))
 kit.set('manifest.json', manifest(files))
 
@@ -95,11 +74,6 @@ if (values.check) {
   }
   console.log(`assets/ is up to date (${kit.size} files)`)
 } else {
-  // a kit is replaced as a whole, so a file the sources no longer produce does not linger
-  for (const { name } of identities) rmSync(join(out, name), { recursive: true, force: true })
-  for (const [file, content] of kit) {
-    mkdirSync(dirname(join(out, file)), { recursive: true })
-    writeFileSync(join(out, file), content)
-  }
+  writeKit(out, kit)
   console.log(`wrote ${kit.size} files to ${relative(process.cwd(), out) || '.'}`)
 }

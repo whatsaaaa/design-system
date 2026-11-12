@@ -49,7 +49,7 @@ Every script builds what it needs first, so each one works on a fresh checkout.
 
 - **A color, a size, a text style.** Edit the files in `tokens/`. They are in the Design Tokens Community Group format and [Terrazzo](https://terrazzo.app) builds them. A color pair that has to stay readable goes in `tokens/contrast.json`, and a test holds it to its bar.
 - **The ghost.** Edit `src/identity/ghost.ts`, then run `pnpm assets`. The kit, the element and the style guide all draw from that file.
-- **A new project.** Add `identity/projects/<name>.json` with its name, a line about it and its sprite, then run `pnpm assets`. For a project that does not live here: `pnpm assets --project ./file.json --out ./dir`.
+- **A new project.** Add `identity/projects/<name>.json` with its name, a line about it and its sprite, then run `pnpm assets`.
 - **A style.** The stylesheets in `src/css/` take every color from a token. Stylelint rejects a hex value.
 
 Never edit a file in `assets/` or `dist/`. Both are generated, and `assets/` is checked against its sources in CI.

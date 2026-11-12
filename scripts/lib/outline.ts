@@ -6,14 +6,14 @@ import opentype from 'opentype.js'
 const require = createRequire(import.meta.url)
 
 export interface OutlineOptions {
-  /** Where the text starts, ends or is centered, by `anchor`. */
+  /** Where the text starts or is centered, by `anchor`. */
   x?: number
   /** The baseline. */
   y?: number
   size?: number
   /** Extra space between characters, in thousandths of an em. */
   tracking?: number
-  anchor?: 'start' | 'middle' | 'end'
+  anchor?: 'start' | 'middle'
 }
 
 export interface Outlined {
@@ -70,7 +70,7 @@ export class Typeface {
       ({ glyph, unitsPerEm }) => ((glyph.advanceWidth ?? 0) / unitsPerEm) * size + gap,
     )
     const width = advances.reduce((sum, advance) => sum + advance, 0) - gap
-    const x0 = anchor === 'middle' ? x - width / 2 : anchor === 'end' ? x - width : x
+    const x0 = anchor === 'middle' ? x - width / 2 : x
 
     let cursor = x0
     let [top, bottom] = [Infinity, -Infinity]

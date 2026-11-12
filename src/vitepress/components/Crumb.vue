@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import { isActiveLink } from '../support.ts'
 import type { ThemeConfig } from '../../../dist/vitepress-config/types.js'
 
-const { theme, page, frontmatter } = useData<ThemeConfig>()
+const { theme, page } = useData<ThemeConfig>()
 const { sidebarGroups } = useSidebar()
 
 /** The path to this page: its tab, its group in the sidebar, then the page itself. */
@@ -26,7 +26,7 @@ const trail = computed(() => {
 </script>
 
 <template>
-  <p v-if="trail.length > 1 && frontmatter.crumb !== false" class="ws-crumb WsCrumb">
+  <p v-if="trail.length > 1" class="ws-crumb WsCrumb">
     <span v-for="part in trail" :key="part">{{ part }}</span>
   </p>
 </template>

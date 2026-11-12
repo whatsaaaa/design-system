@@ -1,4 +1,7 @@
 // Builds the asset kit of one identity: the handle with its ghost, or a project with its sprite.
+// Also reads a project's file and writes a kit to its folder.
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import {
   type MarkColors,
   type MarkCut,
@@ -41,6 +44,26 @@ export interface KitFile {
   use: string
   width: number
   height: number
+}
+
+/** A project file: a name, a tagline and a sprite, with the banner's command if it has one. */
+export function readProject(file: string): Identity {
+  const project = JSON.parse(readFileSync(file, 'utf8'))
+  for (const key of ['name', 'tagline', 'sprite'])
+    if (!(key in project)) throw new Error(`${file} has no "${key}"`)
+  return { ...project, kind: 'project' }
+}
+
+/**
+ * Writes a kit, as paths and their content, as everything a folder holds. The folder is
+ * replaced as a whole, so what the sources no longer produce does not linger in it.
+ */
+export function writeKit(out: string, kit: Map<string, string | Buffer>): void {
+  rmSync(out, { recursive: true, force: true })
+  for (const [file, content] of kit) {
+    mkdirSync(dirname(join(out, file)), { recursive: true })
+    writeFileSync(join(out, file), content)
+  }
 }
 
 const HANDLE = 'whatsaaaa'

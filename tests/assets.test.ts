@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, describe, expect, it } from 'vitest'
+import { buildKit, readProject, writeKit } from '../scripts/lib/kit.ts'
 import { jetBrainsMono } from '../scripts/lib/outline.ts'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -105,49 +106,82 @@ describe('the asset kit', () => {
 })
 
 describe('a new project', () => {
-  it('gets the whole kit from its name and sprite', () => {
-    const file = join(scratch, 'kafana.json')
-    writeFileSync(
-      file,
-      JSON.stringify({ name: 'kafana', tagline: 'rezervacije za Čačak i Niš', sprite }),
+  it('gets the whole kit from its name and sprite', async () => {
+    const files = await buildKit({
+      kind: 'project',
+      name: 'kafana',
+      tagline: 'rezervacije za Čačak i Niš',
+      sprite,
+    })
+    const names = files.map((file) => file.path)
+    expect(names).toHaveLength(19)
+    expect(names).toEqual(
+      expect.arrayContaining([
+        'kafana/mark.svg',
+        'kafana/favicon.ico',
+        'kafana/readme-header.svg',
+        'kafana/social-card.png',
+      ]),
     )
-    const out = join(scratch, 'brand')
-    expect(generate('--project', file, '--out', out)).toContain('wrote 20 files')
-    const files = readdirSync(join(out, 'kafana'))
-    expect(files).toEqual(
-      expect.arrayContaining(['mark.svg', 'favicon.ico', 'readme-header.svg', 'social-card.png']),
-    )
-    expect(files.some((name) => name.startsWith('pose-'))).toBe(false)
-    const header = readFileSync(join(out, 'kafana/readme-header.svg'), 'utf8')
+    expect(names.some((name) => name.includes('pose-'))).toBe(false)
+    const header = String(files.find((file) => file.path === 'kafana/readme-header.svg')!.content)
     expect(header).toContain('aria-label="kafana README header"')
     expect(header).not.toContain('NaN')
-    // nothing of the repository's own kit is touched
-    expect(generate('--check')).toContain('assets/ is up to date')
   })
 
-  it('is refused when its sprite breaks the rules, with the reason', () => {
-    const file = join(scratch, 'broken.json')
+  it('is refused when its sprite breaks the rules, with the reason', async () => {
     const noLove = sprite.map((row) => row.replaceAll('T', '.'))
-    writeFileSync(file, JSON.stringify({ name: 'broken', tagline: 'nothing', sprite: noLove }))
-    expect(() => generate('--project', file, '--out', join(scratch, 'broken'))).toThrow(
-      /The sprite of broken has 0 love elements \(T\), needs exactly one/,
-    )
+    await expect(
+      buildKit({ kind: 'project', name: 'broken', tagline: 'nothing', sprite: noLove }),
+    ).rejects.toThrow(/The sprite of broken has 0 love elements \(T\), needs exactly one/)
   })
 
-  it('is refused when its tagline does not fit the banner', () => {
-    const file = join(scratch, 'long.json')
-    writeFileSync(file, JSON.stringify({ name: 'long', tagline: 'a tagline '.repeat(12), sprite }))
-    expect(() => generate('--project', file, '--out', join(scratch, 'long'))).toThrow(
-      /do not fit the readme banner.*Shorten the tagline/,
-    )
+  it('is refused when its tagline does not fit the banner', async () => {
+    await expect(
+      buildKit({ kind: 'project', name: 'long', tagline: 'a tagline '.repeat(12), sprite }),
+    ).rejects.toThrow(/do not fit the readme banner.*Shorten the tagline/)
+  })
+
+  it('is read from a file with its name, its tagline and its sprite', () => {
+    const file = join(scratch, 'kafana.json')
+    writeFileSync(file, JSON.stringify({ name: 'kafana', tagline: 'rezervacije', sprite }))
+    expect(readProject(file)).toEqual({
+      kind: 'project',
+      name: 'kafana',
+      tagline: 'rezervacije',
+      sprite,
+    })
   })
 
   it('needs a name, a tagline and a sprite', () => {
     const file = join(scratch, 'nameless.json')
     writeFileSync(file, JSON.stringify({ tagline: 'x', sprite }))
-    expect(() => generate('--project', file, '--out', join(scratch, 'nameless'))).toThrow(
-      /has no "name"/,
+    expect(() => readProject(file)).toThrow(/has no "name"/)
+  })
+})
+
+describe('writing the kit', () => {
+  it('replaces the folder as a whole, so a project that was renamed leaves nothing behind', () => {
+    const out = join(scratch, 'kit')
+    writeKit(
+      out,
+      new Map([
+        ['old-name/mark.svg', '<svg/>'],
+        ['manifest.json', '{}'],
+      ]),
     )
+    writeKit(
+      out,
+      new Map([
+        ['new-name/mark.svg', '<svg/>'],
+        ['manifest.json', '{}'],
+      ]),
+    )
+    expect(readdirSync(out, { recursive: true }).sort()).toEqual([
+      'manifest.json',
+      'new-name',
+      'new-name/mark.svg',
+    ])
   })
 })
 
@@ -169,10 +203,8 @@ describe('text as outlines', () => {
   it('places text by its anchor and reports its box', () => {
     const start = face.outline('whatsaaaa', { x: 100, size: 50, tracking: -25 })
     const middle = face.outline('whatsaaaa', { x: 100, size: 50, tracking: -25, anchor: 'middle' })
-    const end = face.outline('whatsaaaa', { x: 100, size: 50, tracking: -25, anchor: 'end' })
     expect(start.x0).toBe(100)
     expect(middle.x0).toBeCloseTo(100 - start.width / 2)
-    expect(end.x1).toBeCloseTo(100)
     // a mono face: nine letters of 600 units at 50 px, less the tracking between them
     expect(start.width).toBeCloseTo(9 * 30 - 8 * 1.25)
     expect(start.top).toBeLessThan(0)

@@ -1,9 +1,6 @@
 // What the docs theme needs from the Markdown renderer. VitePress renders with markdown-it.
 import type { MarkdownRenderer } from 'vitepress'
 
-const escapeHtml = (text: string) =>
-  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-
 /**
  * Shows the file name of a code block in its caption: ```ts [conditions.ts]
  * VitePress reads that bracket only inside a code group and drops it elsewhere.
@@ -17,7 +14,7 @@ function codeTitle(md: MarkdownRenderer) {
     // the title goes right inside the block's wrapper, where the styles pick it up
     return html.replace(
       /^(<div class="language-[^"]*">)/,
-      `$1<span class="ws-code-title">${escapeHtml(title)}</span>`,
+      `$1<span class="ws-code-title">${md.utils.escapeHtml(title)}</span>`,
     )
   }
 }

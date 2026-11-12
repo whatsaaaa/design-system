@@ -11,6 +11,9 @@ import StatusLine from './components/StatusLine.vue'
 
 const { isDark } = useData()
 
+/** The slots this layout fills itself. A site's content for them goes inside, next to the theme's. */
+const OWN_SLOTS = ['nav-bar-content-after', 'doc-before', 'not-found', 'layout-bottom']
+
 // VitePress marks dark with a class on <html>. The tokens read data-theme, so mirror it.
 watchEffect(() => {
   if (inBrowser) document.documentElement.dataset.theme = isDark.value ? 'dark' : 'light'
@@ -30,7 +33,11 @@ onUnmounted(() => disableShortcuts?.())
 <template>
   <DefaultTheme.Layout>
     <!-- every slot of the default theme stays open to a site that wraps this layout -->
-    <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
+    <template
+      v-for="name in Object.keys($slots).filter((slot) => !OWN_SLOTS.includes(slot))"
+      :key="name"
+      #[name]="slotProps"
+    >
       <slot :name="name" v-bind="slotProps ?? {}" />
     </template>
 

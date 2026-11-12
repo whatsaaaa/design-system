@@ -46,9 +46,6 @@ export function setTheme(choice: ThemeChoice): void {
   } catch {
     // the choice still holds for this page
   }
-  root.dispatchEvent(
-    new CustomEvent('ws-theme-change', { bubbles: true, detail: { theme: getTheme() } }),
-  )
 }
 
 /** Switches to the other theme and returns it. */

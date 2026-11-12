@@ -21,16 +21,20 @@ const url = (file: string) => withBase(`/kit/${props.identity}/${file}`)
 /** The one-color cut takes the text color, which an image cannot. It is drawn as a mask. */
 const isMono = (file: string) => /mono/.test(file)
 
+const previewable = (file: string) => !file.endsWith('.ico')
+
 /**
- * The background a file is shown on: the one it is made for, the page for a banner or the
- * one-color cut, and both halves of a split one for a mark that has to work anywhere.
+ * The background a file is shown on: the one it is made for, the page for a banner, the
+ * one-color cut or a file without a preview, and both halves of a split one for a mark that
+ * has to work anywhere.
  */
 function surface(file: string) {
   if (/-light\.|on-light/.test(file)) return 'light'
   if (/-dark\.|on-dark/.test(file)) return 'dark'
-  return isMono(file) || /^(readme-header|social-card)/.test(file) ? 'plain' : 'split'
+  return isMono(file) || !previewable(file) || /^(readme-header|social-card)/.test(file)
+    ? 'plain'
+    : 'split'
 }
-const previewable = (file: string) => !file.endsWith('.ico')
 </script>
 
 <template>

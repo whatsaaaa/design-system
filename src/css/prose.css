@@ -68,8 +68,7 @@
   }
 
   /* The paragraph under the page title is the lead. */
-  & h1 + p,
-  & .ws-lead {
+  & h1 + p {
     margin-top: var(--ws-space-20);
     font: var(--ws-text-lead);
   }
@@ -258,6 +257,11 @@
     white-space: nowrap;
   }
 
+  /* A value in a cell stays in one piece. A table too wide for its frame scrolls. */
+  & :is(th, td) code {
+    white-space: nowrap;
+  }
+
   & kbd {
     display: inline-grid;
     place-items: center;
@@ -308,6 +312,11 @@
 
     & table {
       font-size: var(--ws-font-size-14);
+    }
+
+    /* A cell keeps room for a few words in a line. The frame scrolls instead of squeezing it. */
+    & td:not(:first-child) {
+      min-width: 10rem;
     }
   }
 }

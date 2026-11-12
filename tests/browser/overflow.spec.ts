@@ -3,7 +3,8 @@ import { DESKTOP, PAGES, PHONE, open } from './pages.ts'
 
 /**
  * How far the page scrolls sideways, and the elements that stick out of the window without
- * a scrolling container around them. Both have to be nothing.
+ * a scrolling container around them. Both have to be nothing. A container that only clips
+ * does not count: what it cuts off cannot be reached.
  */
 const measure = () => {
   const width = document.documentElement.clientWidth
@@ -15,7 +16,7 @@ const measure = () => {
     let contained = false
     while (parent) {
       const style = getComputedStyle(parent)
-      if (style.overflowX !== 'visible' || style.position === 'fixed') {
+      if (['auto', 'scroll'].includes(style.overflowX) || style.position === 'fixed') {
         contained = true
         break
       }

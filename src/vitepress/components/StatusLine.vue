@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { isTyping } from '../../../dist/shortcuts/index.js'
 import type { ThemeConfig } from '../../../dist/vitepress-config/types.js'
 
 const { page, theme, isDark } = useData<ThemeConfig>()
@@ -17,10 +18,8 @@ const hasSearch = computed(() => !!theme.value.search?.provider)
 const file = computed(() => page.value.relativePath)
 const themeName = computed(() => (isDark.value ? 'rose-pine' : 'rose-pine-dawn'))
 
-const EDITABLE = 'input, textarea, select, [contenteditable=""], [contenteditable="true"]'
-
 function updateMode() {
-  mode.value = document.activeElement?.closest(EDITABLE) ? 'INSERT' : 'NORMAL'
+  mode.value = isTyping(document.activeElement) ? 'INSERT' : 'NORMAL'
 }
 
 function updatePosition() {

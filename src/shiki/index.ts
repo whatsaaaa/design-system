@@ -6,6 +6,7 @@
  * background. This one keeps every syntax color at AA.
  */
 import { resolver } from '../../dist/tokens.js'
+import { colorHex } from '../color.ts'
 
 const tokens = resolver.apply({ theme: 'dark' })
 type ColorId =
@@ -14,15 +15,7 @@ type ColorId =
   | 'code.selection'
   | (`syntax.${string}` & keyof typeof tokens)
 
-const channel = (component: number | null) =>
-  Math.round((component ?? 0) * 255)
-    .toString(16)
-    .padStart(2, '0')
-
-function hex(id: ColorId): string {
-  const { components, alpha } = tokens[id].$value
-  return `#${components.map(channel).join('')}${alpha === 1 ? '' : channel(alpha)}`
-}
+const hex = (id: ColorId) => colorHex(tokens[id].$value)
 
 const rule = (scope: string[], foreground: string, fontStyle?: string) => ({
   scope,

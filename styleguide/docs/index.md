@@ -65,13 +65,10 @@ markdown: {
 
 Everything from the default theme works. The theme adds one group, `themeConfig.whatsaaaa`:
 
-| Option   | What it does                                                                                          | Default                        |
-| -------- | ----------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `ghost`  | `link` for a link to the handle's site, `egg` for the ghost with the easter egg, `false` for no ghost | `link`                         |
-| `home`   | Where the ghost links to                                                                              | `https://whatsaaaa.github.io/` |
-| `branch` | The git branch shown in the status line                                                               | not shown                      |
-
-A page can leave out the path above its title with `crumb: false` in its frontmatter.
+| Option   | What it does                                                                    | Default   |
+| -------- | ------------------------------------------------------------------------------- | --------- |
+| `ghost`  | `link` for a link to the handle's site, `egg` for the ghost with the easter egg | `link`    |
+| `branch` | The git branch shown in the status line                                         | not shown |
 
 ## The logo
 

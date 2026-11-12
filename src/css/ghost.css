@@ -1,7 +1,7 @@
 /*
  * The ghost as an element: <ws-ghost>. See the ghost module for its markup and behavior.
  * The body takes the text color and the tongue the brand color, so the free ghost follows
- * the theme. Set --ws-ghost-body or --ws-ghost-tongue to draw it differently.
+ * the theme.
  */
 ws-ghost {
   display: inline-flex;
@@ -28,11 +28,11 @@ ws-ghost {
 }
 
 .ws-ghost__body {
-  fill: var(--ws-ghost-body, currentcolor);
+  fill: currentcolor;
 }
 
 .ws-ghost__tongue {
-  fill: var(--ws-ghost-tongue, var(--ws-color-brand));
+  fill: var(--ws-color-brand);
 }
 
 /*
@@ -62,11 +62,11 @@ ws-ghost {
 }
 
 .ws-ghost__bubble-shape {
-  fill: var(--ws-ghost-bubble, var(--ws-color-text));
+  fill: var(--ws-color-text);
 }
 
 .ws-ghost__bubble-text {
-  fill: var(--ws-ghost-bubble-text, var(--ws-color-bg));
+  fill: var(--ws-color-bg);
 }
 
 /* The bubble pops in four frames, like a sprite. With reduced motion it is just there. */

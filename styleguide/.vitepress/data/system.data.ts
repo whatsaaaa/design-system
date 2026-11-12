@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { type Measured, measureAll } from '../../../scripts/lib/contrast.ts'
 import { type Theme, type TokenId, tokens } from '../../../scripts/lib/tokens.ts'
+import { colorHex } from '../../../src/color.ts'
 
 const root = resolve(import.meta.dirname, '../../..')
 const source = (file: string) => JSON.parse(readFileSync(join(root, 'tokens', file), 'utf8'))
@@ -75,16 +76,10 @@ declare const data: SystemData
 export { data }
 
 const cssVar = (id: string) => `--ws-${id.replaceAll('.', '-')}`
-const channel = (component: number | null) =>
-  Math.round((component ?? 0) * 255)
-    .toString(16)
-    .padStart(2, '0')
-
 function colorValue(id: string, theme: Theme, sources: Record<string, unknown>): ColorValue {
   const token = tokens(theme)[id as TokenId]
   if (token.$type !== 'color') throw new Error(`${id} is not a color`)
-  const { components, alpha } = token.$value
-  const hex = `#${components.map(channel).join('')}${alpha === 1 ? '' : channel(alpha)}`
+  const hex = colorHex(token.$value)
   // the source says which palette color a role points at
   const raw = id
     .split('.')

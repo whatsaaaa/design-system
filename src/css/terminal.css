@@ -8,6 +8,7 @@
 .ws-term {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
   border-radius: var(--ws-radius-xl);

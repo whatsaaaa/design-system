@@ -75,8 +75,9 @@ test.describe('the easter egg', () => {
         left: Math.round(bubbleBox.x - ghostBox.x),
       }
     }
+    // the bubble follows the ghost a frame after the page has scrolled to it
+    await expect.poll(async () => (await gap()).above).toBe(4)
     const atRest = await gap()
-    expect(atRest.above).toBe(4)
 
     // the page reflows above the ghost, as it does when a font or an image arrives late:
     // nothing scrolls and the window keeps its size
