@@ -148,3 +148,23 @@ test.describe('the two kinds of table on a phone', () => {
     })
   }
 })
+
+test.describe('tables in a desktop window', () => {
+  test.use({ viewport: DESKTOP })
+
+  // the column of a page is wide enough for every table of the guide, also for the ones
+  // whose first cell holds a name and a line about it and wraps by a rule of its page
+  for (const { name, path } of PAGES) {
+    test(`${name} has no table that scrolls sideways`, async ({ page }) => {
+      await open(page, path)
+      const scrolling = await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>('.ws-table')]
+          .filter((frame) => frame.scrollWidth > frame.clientWidth)
+          .map((frame) =>
+            [...frame.querySelectorAll('th')].map((th) => th.textContent).join(' | '),
+          ),
+      )
+      expect(scrolling).toEqual([])
+    })
+  }
+})

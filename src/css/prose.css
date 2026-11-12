@@ -253,8 +253,11 @@
     background: none;
   }
 
-  /* A first cell stays on one line, unless it holds running text. */
-  & td:first-child:not(.ws-table__text) {
+  /*
+   * A first cell stays on one line, unless it holds running text. The exception sits in
+   * :where(), so it adds no weight and a page's own rule for a first cell still wins.
+   */
+  & td:first-child:where(:not(.ws-table__text)) {
     white-space: nowrap;
   }
 
