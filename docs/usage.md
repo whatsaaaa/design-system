@@ -89,7 +89,7 @@ The browser's own bars, such as a phone's address bar, take the background of th
 </head>
 ```
 
-A theme-color tag that is there, with or without `media`, takes the theme's color too. Do not set it from a script of your own.
+A theme-color tag that is there, with or without `media`, takes the theme's color too. Do not set it from a script of your own. A docs site gets the same script from the base config of the docs theme.
 
 An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or `ws-theme-light`. Put both in the page and the styles show the one of the theme in effect where it stands: the nearest `data-theme`, on `<html>` or on an element around it, or the system's theme. So the right one shows before any script runs. Do not swap them from a script.
 
