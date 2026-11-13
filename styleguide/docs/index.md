@@ -13,10 +13,10 @@ export { default } from '@whatsaaaa/design-system/vitepress'
 ```
 
 ```ts [.vitepress/config.ts]
-import { defineConfig } from 'vitepress'
+import { defineConfigWithTheme } from 'vitepress'
 import { type ThemeConfig, whatsaaaaConfig } from '@whatsaaaa/design-system/vitepress/config'
 
-export default defineConfig<ThemeConfig>({
+export default defineConfigWithTheme<ThemeConfig>({
   extends: whatsaaaaConfig(),
   title: 'form-builder',
   themeConfig: {

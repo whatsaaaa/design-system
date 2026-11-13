@@ -41,8 +41,11 @@ describe('the package', () => {
     }
   })
 
-  it('cannot be published by accident before the first release', () => {
-    expect(pkg.private).toBe(true)
+  it('is published publicly, from this repository', () => {
+    expect(pkg.private).toBeUndefined()
+    expect(pkg.publishConfig.access).toBe('public')
+    // npm's trusted publishing rejects a publish whose repository.url names another repository
+    expect(pkg.repository.url).toBe('git+https://github.com/whatsaaaa/design-system.git')
   })
 })
 

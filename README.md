@@ -4,7 +4,7 @@
 
 Whatsaaaa's design system: one identity, one set of tokens and one voice for the personal site, the docs sites, the apps and the READMEs.
 
-It is not released. The package is private and is not on npm, and the style guide is built here but not deployed.
+The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whatsaaaa/design-system) on npm. The style guide is built here but not deployed.
 
 ## What is in it
 
@@ -17,7 +17,7 @@ It is not released. The package is private and is not on npm, and the style guid
 | Docs theme              | A VitePress theme on top of VitePress's default theme                                                                           | `src/vitepress/`, `src/vitepress-config/` |
 | Style guide             | A site that shows all of it with real content, in dark and light, and offers the assets for download                            | `styleguide/`                             |
 
-To use it in another project, read [docs/usage.md](./docs/usage.md). It is written for coding agents and is short.
+To use it in another project, install it with `pnpm add @whatsaaaa/design-system` and read [docs/usage.md](./docs/usage.md). It is written for coding agents and is short.
 
 ## Working on it
 
@@ -42,6 +42,7 @@ pnpm styleguide:dev   # builds the package and starts the style guide
 | `pnpm type-check`          | Type-checks everything                                                                                |
 | `pnpm format`              | Formats everything                                                                                    |
 | `pnpm contrast`            | Prints the contrast of every pair the system relies on                                                |
+| `pnpm changeset`           | Records a change to the package for the next release                                                  |
 
 Every script builds what it needs first, so each one works on a fresh checkout.
 
@@ -53,6 +54,8 @@ Every script builds what it needs first, so each one works on a fresh checkout.
 - **A style.** The stylesheets in `src/css/` take every color from a token. Stylelint rejects a hex value.
 
 Never edit a file in `assets/` or `dist/`. Both are generated, and `assets/` is checked against its sources in CI.
+
+A pull request that changes what the package ships adds a changeset with `pnpm changeset`. When it merges, the release workflow opens a pull request that bumps the version and writes the changelog, and merging that one publishes the package to npm.
 
 ## Checks
 
@@ -99,3 +102,9 @@ licenses/        licenses of what the system builds on
 - The six letters of the speech bubble are pixel outlines of [Departure Mono](https://departuremono.com), SIL Open Font License 1.1.
 
 The licenses are in [`licenses/`](./licenses/).
+
+## License
+
+The code and the styles are [MIT](./LICENSE): the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules and the docs theme.
+
+The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards and the favicons, in `assets/` and as drawn in `src/identity/` and `identity/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
