@@ -21,7 +21,7 @@ To use it in another project, read [docs/usage.md](./docs/usage.md). It is writt
 
 ## Working on it
 
-You need Node.js 24 or later and pnpm. `corepack enable` sets pnpm up.
+You need Node.js 24.12 or later and pnpm. `corepack enable` sets pnpm up.
 
 ```sh
 pnpm install
@@ -88,7 +88,7 @@ scripts/         the builds and the asset generator
 assets/          the generated asset kit
 styleguide/      the style guide
 tests/           unit tests, and browser tests in tests/browser/
-docs/            the usage guide
+docs/            the usage guide, and the decisions behind the build
 licenses/        licenses of what the system builds on
 ```
 
