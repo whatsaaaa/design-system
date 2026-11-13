@@ -28,23 +28,19 @@ const Ghost = () =>
 </template>
 
 <style scoped>
+/*
+ * Room above the ghost for its bubble, and the padding of the frame above that. At these
+ * sizes the bubble is 54 px tall and stands 4 px over the ghost.
+ */
 .stage {
   display: flex;
   align-items: center;
   gap: var(--ws-space-24);
   margin-top: var(--ws-space-16);
-  padding: var(--ws-space-56) var(--ws-space-32) var(--ws-space-32);
+  padding: calc(var(--ws-space-32) + 58px) var(--ws-space-32) var(--ws-space-32);
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
   border-radius: var(--ws-radius-lg);
   background: var(--ws-color-surface);
-}
-
-/*
- * Room above the ghost for the bubble that is held open, and the padding of the frame above
- * that. At this size the bubble is 54 px tall and stands 4 px over the ghost.
- */
-.stage.held {
-  padding-top: calc(var(--ws-space-32) + 58px);
 }
 
 .stage .hint {
