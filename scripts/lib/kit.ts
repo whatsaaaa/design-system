@@ -11,7 +11,7 @@ import {
   svgDocument,
 } from '../../src/identity/marks.ts'
 import { type Sprite, checkSprite } from '../../src/identity/sprite.ts'
-import { type BannerColors, terminalBanner } from './banner.ts'
+import { type BannerColors, PROFILE_BANNER, profileBanner, terminalBanner } from './banner.ts'
 import { jetBrainsMono } from './outline.ts'
 import { renderIco, renderPng } from './raster.ts'
 import { hex } from './tokens.ts'
@@ -223,6 +223,26 @@ export async function buildKit(identity: Identity): Promise<KitFile[]> {
     1280,
     640,
   )
+
+  /* the banner of a profile, whose avatar is the ghost */
+  if (kind === 'ghost') {
+    const { width, height } = PROFILE_BANNER
+    const profile = profileBanner({
+      name,
+      title: identity.banner?.title ?? `${HANDLE}: ~`,
+      command: identity.banner?.command ?? 'whoami',
+      colors: bannerColors(),
+      fonts,
+    })
+    add('profile-banner.svg', profile, 'Header image of a Gravatar profile.', width, height)
+    add(
+      'profile-banner.png',
+      renderPng(profile, width * 2),
+      'The profile banner as an image, at twice its size. Upload this one to Gravatar.',
+      width * 2,
+      height * 2,
+    )
+  }
 
   return files
 }

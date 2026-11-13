@@ -26,6 +26,14 @@ Each header also comes as a PNG at twice its size, `readme-header.png`, for plac
 
 The cards of dotfiles and building-blocks are in the kit too.
 
+## Profile banner
+
+640 x 144, the header image of a Gravatar profile, for the handle only. It is the top of the window: the profile under it is what `whoami` prints. Upload the PNG, which is twice that size.
+
+<Kit identity="whatsaaaa" match="^profile-banner\.png" wide />
+
+Gravatar does not scale the header on a phone: it crops it to the middle, and the avatar covers its left. The command stands where every width from 360 px up shows it and the avatar leaves it free. On the profile's Design page, set the colors to the dark theme's `bg` for Background, `surface` for Surface and `interactive` for Accent, so the banner and the card are one window.
+
 ## Favicons
 
 The favicon is the mark on its tile, drawn for each size on whole pixels.

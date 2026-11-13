@@ -23,6 +23,8 @@ const isMono = (file: string) => /mono/.test(file)
 
 const previewable = (file: string) => !file.endsWith('.ico')
 
+const isBanner = (file: string) => /^(readme-header|social-card|profile-banner)/.test(file)
+
 /**
  * The background a file is shown on: the one it is made for, the page for a banner, the
  * one-color cut or a file without a preview, and both halves of a split one for a mark that
@@ -31,9 +33,7 @@ const previewable = (file: string) => !file.endsWith('.ico')
 function surface(file: string) {
   if (/-light\.|on-light/.test(file)) return 'light'
   if (/-dark\.|on-dark/.test(file)) return 'dark'
-  return isMono(file) || !previewable(file) || /^(readme-header|social-card)/.test(file)
-    ? 'plain'
-    : 'split'
+  return isMono(file) || !previewable(file) || isBanner(file) ? 'plain' : 'split'
 }
 </script>
 
