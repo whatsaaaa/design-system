@@ -147,7 +147,7 @@ Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works on
 The switch is not optional. The keys are single characters that act on the whole page, so a visitor has to be able to turn them off (WCAG 2.1.4): it matters most with speech input, where a dictated word presses them, and for someone who presses keys without meaning to.
 
 - It reads "keys on" or "keys off". Pressing it turns every key off or on again, and the browser remembers the choice.
-- Put it in the status line, outside `ws-status-line__keys`: it shows at every width, the hints do not, because the number of a tab is a key at every width.
+- Put it in the status line, outside `ws-status-line__keys`: unlike the hints it shows at every width, because the number of a tab is a key at every width.
 - Do not write `aria-checked` on the switch or `aria-keyshortcuts` on a control. The module sets both while they are true, and the switch stays hidden until it has its state.
 - With the keys off the controls stay and work by hand. What names a key goes: the key caps and the numbers of the tabs. Hide a control that is nothing but a key cap with `[data-ws-keys='off']`.
 - A key acts only on a page that has the switch. A page without the switch has no shortcuts.
