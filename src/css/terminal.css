@@ -96,6 +96,11 @@
   content: counter(ws-tab) / '';
 }
 
+/* The number names the key that goes to the tab. With the keys switched off it is left out. */
+[data-ws-keys='off'] .ws-tabs a::before {
+  content: none;
+}
+
 .ws-tabs a:hover {
   color: var(--ws-color-text);
 }
@@ -273,13 +278,22 @@
  *     <span class="ws-status-line__file">guide/conditions.md</span>
  *     <span class="ws-status-line__item ws-status-line__item--wide">main</span>
  *     <span class="ws-status-line__keys">
- *       <button type="button" data-ws-key="t" aria-keyshortcuts="t"><kbd class="ws-kbd">t</kbd>theme</button>
+ *       <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
  *     </span>
- *     <span class="ws-status-line__item ws-status-line__item--edge">rose-pine</span>
+ *     <button type="button" class="ws-status-line__switch" role="switch"
+ *       aria-label="Shortcut keys" data-ws-keys-switch>
+ *       keys
+ *       <span class="ws-status-line__on" aria-hidden="true">on</span>
+ *       <span class="ws-status-line__off" aria-hidden="true">off</span>
+ *     </button>
+ *     <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--dark">rose-pine</span>
+ *     <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--light">rose-pine-dawn</span>
  *   </footer>
  *
  * A key hint is the control itself: pressing the key clicks it (see the shortcuts module).
  * Hints stay hidden until that module runs, so a hint is never shown for a key that does nothing.
+ * The switch turns the keys off and on again. A status line with key hints carries it.
+ * With the keys off the controls stay, without their key caps.
  */
 .ws-status-line {
   display: flex;
@@ -326,6 +340,27 @@
   border-left: var(--ws-border-width-thin) solid var(--ws-color-border);
 }
 
+/*
+ * An item for one theme only, such as the name of the theme. Both are in the page and the
+ * one of the page's theme shows, so it is right before any script runs.
+ */
+[data-theme='dark'] .ws-status-line__item--light,
+[data-theme='light'] .ws-status-line__item--dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .ws-status-line__item--dark {
+    display: none;
+  }
+}
+
+@media not (prefers-color-scheme: light) {
+  :root:not([data-theme]) .ws-status-line__item--light {
+    display: none;
+  }
+}
+
 .ws-status-line__keys {
   display: none;
   flex: none;
@@ -337,6 +372,11 @@
 
 [data-ws-keys] .ws-status-line__keys {
   display: flex;
+}
+
+/* With the keys switched off a control stays and its key cap goes: nothing names a key then. */
+[data-ws-keys='off'] .ws-status-line__keys .ws-kbd {
+  display: none;
 }
 
 /* Without key hints the items after them still go to the right edge. */
@@ -370,6 +410,47 @@
 
 .ws-status-line__keys :is(button, a):focus-visible {
   outline-offset: 2px;
+}
+
+/*
+ * The keys switch. It reads "keys on" or "keys off" from its own state, which the shortcuts
+ * module sets, and stays hidden until it has one. Unlike the hints it shows at every width:
+ * the numbers of the tabs are keys everywhere, and with the keys off it is the way to turn
+ * them on again.
+ */
+.ws-status-line__switch {
+  display: none;
+  flex: none;
+  align-items: center;
+  gap: var(--ws-space-6);
+  margin: 0;
+  padding: 0 var(--ws-space-14);
+  border: 0;
+  border-left: var(--ws-border-width-thin) solid var(--ws-color-border);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ws-status-line__switch[aria-checked] {
+  display: flex;
+}
+
+.ws-status-line__switch:hover,
+.ws-status-line__on,
+.ws-status-line__off {
+  color: var(--ws-color-text);
+}
+
+.ws-status-line__switch[aria-checked='true'] .ws-status-line__off,
+.ws-status-line__switch[aria-checked='false'] .ws-status-line__on {
+  display: none;
+}
+
+/* the status line clips, so the ring is drawn inside the switch */
+.ws-status-line__switch:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
 
 @media (--ws-compact) {

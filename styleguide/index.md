@@ -33,3 +33,5 @@ The package is not on npm and this guide is not deployed. Both wait for the firs
 ## Keys
 
 The hints in the status line are real. Press <kbd>t</kbd> to switch the theme, <kbd>j</kbd> and <kbd>k</kbd> to scroll, <kbd>/</kbd> to search, and a number to go to a tab. The status line shows `INSERT` while you type in a field, where single keys are just letters.
+
+The switch next to the hints, `keys on`, turns every key off, and the browser remembers it. The buttons stay and work by hand, and nothing names a key any more.

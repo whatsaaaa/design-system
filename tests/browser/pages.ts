@@ -3,8 +3,8 @@ import type { Page } from '@playwright/test'
 /**
  * Every page of the style guide, and the two standalone examples.
  *
- * `shots` says which screenshots a page has. Every page is checked for overflow at both
- * widths. Screenshots are kept to what a look can go wrong on: all pages at desktop width,
+ * `shots` says which screenshots a page has. Every page is checked for overflow at phone,
+ * tablet and desktop width. Screenshots are kept to what a look can go wrong on: all pages at desktop width,
  * and at phone width the pages that differ there beyond their column getting narrow.
  * The usage guide is prose only, which the prose page already shows.
  */
@@ -27,6 +27,8 @@ export const PAGES = [
 ] as const
 
 export const PHONE = { width: 390, height: 844 }
+/** The narrowest window that has the tabs in the bar, next to everything else in it. */
+export const TABLET = { width: 768, height: 1024 }
 export const DESKTOP = { width: 1440, height: 900 }
 
 /** Opens a page and waits until it is settled: fonts, images and embedded examples. */

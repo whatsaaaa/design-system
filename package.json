@@ -44,6 +44,7 @@
       "types": "./dist/shortcuts/index.d.ts",
       "default": "./dist/shortcuts/index.js"
     },
+    "./shortcuts/init.js": "./dist/shortcuts/init.js",
     "./shiki": {
       "types": "./dist/shiki/index.d.ts",
       "default": "./dist/shiki/index.js"
@@ -61,7 +62,7 @@
     "build:tokens": "tz build",
     "build:fonts": "node scripts/build-fonts.ts",
     "build:css": "node scripts/build-css.ts",
-    "build:js": "tsc -p tsconfig.build.json && node scripts/build-theme-init.ts",
+    "build:js": "tsc -p tsconfig.build.json && node scripts/build-head-scripts.ts",
     "assets": "pnpm build:tokens && node scripts/generate-assets.ts",
     "assets:check": "pnpm build:tokens && node scripts/generate-assets.ts --check",
     "contrast": "pnpm build:tokens && node scripts/check-contrast.ts",

@@ -16,7 +16,6 @@ const position = ref('top')
 
 const hasSearch = computed(() => !!theme.value.search?.provider)
 const file = computed(() => page.value.relativePath)
-const themeName = computed(() => (isDark.value ? 'rose-pine' : 'rose-pine-dawn'))
 
 function updateMode() {
   mode.value = isTyping(document.activeElement) ? 'INSERT' : 'NORMAL'
@@ -76,45 +75,52 @@ onUnmounted(() => {
         type="button"
         data-ws-key="/"
         aria-label="Search"
-        aria-keyshortcuts="/"
         @click="openSearch"
       >
         <kbd class="ws-kbd">/</kbd>search
       </button>
       <span class="WsStatusLine-pair">
-        <button
-          type="button"
-          data-ws-key="j"
-          aria-label="Scroll down"
-          aria-keyshortcuts="j"
-          @click="scrollPage(1)"
-        >
+        <button type="button" data-ws-key="j" aria-label="Scroll down" @click="scrollPage(1)">
           <kbd class="ws-kbd">j</kbd>
         </button>
-        <button
-          type="button"
-          data-ws-key="k"
-          aria-label="Scroll up"
-          aria-keyshortcuts="k"
-          @click="scrollPage(-1)"
-        >
+        <button type="button" data-ws-key="k" aria-label="Scroll up" @click="scrollPage(-1)">
           <kbd class="ws-kbd">k</kbd>
         </button>
         <span aria-hidden="true">scroll</span>
       </span>
-      <button
-        type="button"
-        data-ws-key="t"
-        aria-label="Switch theme"
-        aria-keyshortcuts="t"
-        @click="toggleTheme"
-      >
+      <button type="button" data-ws-key="t" aria-label="Switch theme" @click="toggleTheme">
         <kbd class="ws-kbd">t</kbd>theme
       </button>
     </span>
+    <!--
+      The shortcuts module flips this switch and gives it its state, in the browser. Until
+      then it is hidden, so nothing here depends on what the browser remembers.
+    -->
+    <button
+      type="button"
+      class="ws-status-line__switch"
+      role="switch"
+      aria-label="Shortcut keys"
+      data-ws-keys-switch
+    >
+      keys
+      <span class="ws-status-line__on" aria-hidden="true">on</span>
+      <span class="ws-status-line__off" aria-hidden="true">off</span>
+    </button>
     <span class="ws-status-line__item ws-status-line__item--edge">{{ position }}</span>
-    <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--wide">
-      {{ themeName }}
+    <!--
+      Both names are rendered and the styles show the one of the page's theme. The theme is
+      not known on the server, so a name rendered from it would differ in the browser.
+    -->
+    <span
+      class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--wide ws-status-line__item--dark"
+    >
+      rose-pine
+    </span>
+    <span
+      class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--wide ws-status-line__item--light"
+    >
+      rose-pine-dawn
     </span>
   </footer>
 </template>

@@ -23,20 +23,26 @@
     letter-spacing: var(--ws-text-h1-letter-spacing);
   }
 
-  /* A section starts with a rule and a hash, like a comment that opens a block. */
+  /*
+   * A section starts with a rule and a hash, like a comment that opens a block. The hash
+   * hangs in front of the heading: one character and a gap. The heading itself stays one
+   * text, so inline code sits in its line and a long heading wraps beside the hash.
+   */
   & h2 {
-    display: flex;
-    gap: var(--ws-space-10);
+    position: relative;
     margin-top: var(--ws-space-48);
-    padding-top: var(--ws-space-24);
+    padding: var(--ws-space-24) 0 0 calc(1ch + var(--ws-space-10));
     border-top: var(--ws-border-width-thin) solid var(--ws-color-border);
     font: var(--ws-text-h2);
     letter-spacing: var(--ws-text-h2-letter-spacing);
     scroll-margin-top: var(--ws-size-tab-bar);
   }
 
+  /* on the first line, which starts under the padding */
   & h2::before {
-    flex: none;
+    position: absolute;
+    top: var(--ws-space-24);
+    left: 0;
     color: var(--ws-color-brand);
     content: '#';
     content: '#' / '';

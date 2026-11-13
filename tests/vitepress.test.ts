@@ -87,20 +87,28 @@ describe('markdown in the docs theme', () => {
   })
 })
 
-describe('the script the base config puts in the head', () => {
-  /** Runs the script in a page: what VitePress remembers as the appearance, and the system theme. */
-  function themeAfter(remembered: string | null, system: 'dark' | 'light') {
-    const [tag, , script] = whatsaaaaConfig().head![0] as [string, object, string]
-    expect(tag).toBe('script')
+describe('the scripts the base config puts in the head', () => {
+  /**
+   * Runs every head script of the config in a page, in their order, and returns what they
+   * set on <html>. `remembered` is what the browser's storage holds, or `blocked` for a
+   * browser that refuses storage.
+   */
+  function pageAfter(remembered: Record<string, string> | 'blocked', system: 'dark' | 'light') {
     const page = { documentElement: { dataset: {} as Record<string, string> } }
     const storage = {
-      getItem: (key: string) => (key === 'vitepress-theme-appearance' ? remembered : null),
+      getItem: (key: string) => {
+        if (remembered === 'blocked') throw new Error('blocked')
+        return remembered[key] ?? null
+      },
     }
     const view = {
       matchMedia: (query: string) => ({ matches: query === `(prefers-color-scheme: ${system})` }),
     }
-    new Function('document', 'localStorage', 'window', script)(page, storage, view)
-    return page.documentElement.dataset.theme
+    for (const [tag, , script] of whatsaaaaConfig().head as [string, object, string][]) {
+      expect(tag).toBe('script')
+      new Function('document', 'localStorage', 'window', script)(page, storage, view)
+    }
+    return page.documentElement.dataset
   }
 
   it.each([
@@ -110,9 +118,24 @@ describe('the script the base config puts in the head', () => {
     ['auto', 'light', 'light'],
     [null, 'dark', 'dark'],
     [null, 'light', 'light'],
-  ] as const)('with %s remembered on a %s system sets %s', (remembered, system, theme) => {
-    expect(themeAfter(remembered, system)).toBe(theme)
+  ] as const)('with %s remembered on a %s system set the theme %s', (remembered, system, theme) => {
+    const storage: Record<string, string> = {}
+    if (remembered) storage['vitepress-theme-appearance'] = remembered
+    expect(pageAfter(storage, system).theme).toBe(theme)
   })
+
+  it('mark a page whose keys are remembered as off, and no other', () => {
+    expect(pageAfter({ 'ws-keys': 'off' }, 'dark').wsKeys).toBe('off')
+    expect(pageAfter({}, 'dark').wsKeys).toBeUndefined()
+    expect(pageAfter({ 'vitepress-theme-appearance': 'light' }, 'dark').wsKeys).toBeUndefined()
+  })
+
+  it.each(['dark', 'light'] as const)(
+    'follow a %s system and leave the keys on where storage is refused',
+    (system) => {
+      expect(pageAfter('blocked', system)).toEqual({ theme: system })
+    },
+  )
 })
 
 describe('the code theme', () => {

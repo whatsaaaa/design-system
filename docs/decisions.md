@@ -43,6 +43,10 @@ The theme's client code ships as source, as `@vue/theme` does, so the site's own
 
 The status line and the tab numbering are real: keys are bound to the controls they are shown on, in one small module that the framework-free pages use too.
 
+Those keys are single characters, which WCAG 2.1.4 allows only with a way to turn them off, to remap them, or to limit them to a focused control. The way here is one switch in the status line, `keys on`, that the same module wires and the browser remembers. It follows the switch pattern of the ARIA Authoring Practices, and what GitHub does with its "character keys" setting: one remembered choice that rests every single-key shortcut. The module makes the switch a condition: a key acts only while a switch can be reached, so a page cannot have the keys without the way out. There is no site option to drop it and no remapping.
+
+In the tab bar the brand and the first tab share a box as wide as the sidebar, with the first tab at its right end, so one length places both the border of the sidebar and the edge of the tab. It was the simplest form that keeps the tabs next to the brand: the tab is positioned from the line, in plain CSS, and nothing is measured in a script. The price is a limit on the brand: what does not fit beside the first tab is cut with an ellipsis. The brand learns the width of the tab by CSS anchor sizing, and a browser without it lets the end of the brand run under the tab. Letting the box grow instead would have kept every brand whole but brought back the near miss between the two lines that this was made to remove.
+
 ## Asset kit: a generator on established libraries
 
 `scripts/generate-assets.ts` draws every file from the sprite data: SVG as strings, PNG through [resvg](https://github.com/linebender/resvg), ICO through `png-to-ico`, and text as outlines through `opentype.js`.

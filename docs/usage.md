@@ -72,6 +72,8 @@ setTheme('system') // follows the system again
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
 
+To name the theme in a status line, put both names in the page: an item with `ws-status-line__item--dark` shows on the dark theme only, one with `ws-status-line__item--light` on the light theme only. Do not set the name from a script.
+
 `data-theme` also works on any element, to keep a part of a page in one theme.
 
 ## 4. Type
@@ -111,11 +113,22 @@ The markup of each piece is in the comment at the top of its stylesheet, and in 
 
 ## 7. Keys
 
-A key hint in a status line has to work. Put `data-ws-key` on the control the key presses, and turn the shortcuts on:
+A key hint in a status line has to work. Put `data-ws-key` on the control the key presses, give the status line the keys switch, and turn the shortcuts on:
 
 ```html
-<button type="button" data-ws-key="t" aria-keyshortcuts="t">
-  <kbd class="ws-kbd">t</kbd>theme
+<span class="ws-status-line__keys">
+  <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
+</span>
+<button
+  type="button"
+  class="ws-status-line__switch"
+  role="switch"
+  aria-label="Shortcut keys"
+  data-ws-keys-switch
+>
+  keys
+  <span class="ws-status-line__on" aria-hidden="true">on</span>
+  <span class="ws-status-line__off" aria-hidden="true">off</span>
 </button>
 ```
 
@@ -126,6 +139,15 @@ enableShortcuts()
 ```
 
 Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works only while its hint shows. Do not show a hint any other way. Number keys go to the tabs of a `ws-tabs` bar.
+
+The switch is not optional. The keys are single characters that act on the whole page, so a visitor has to be able to turn them off (WCAG 2.1.4): it matters most with speech input, where a dictated word presses them.
+
+- It reads "keys on" or "keys off". Pressing it turns every key off or on again, and the browser remembers the choice.
+- Put it in the status line, outside `ws-status-line__keys`: it shows at every width, the hints do not.
+- Do not write `aria-checked` on the switch or `aria-keyshortcuts` on a control. The module sets both while they are true, and the switch stays hidden until it has its state.
+- With the keys off the controls stay and work by hand. What names a key goes: the key caps and the numbers of the tabs. Hide a control that is nothing but a key cap with `[data-ws-keys='off']`.
+- A key acts only while the switch can be reached. A page without the switch has no shortcuts, and a dialog that covers the status line rests them.
+- Load `shortcuts/init.js` in the head, next to `theme/init.js`, or inline `keysInitScript`. It marks the page before the first paint when the keys are remembered as off, so the tab numbers are not drawn first and then taken away.
 
 ## 8. The ghost
 
@@ -173,6 +195,8 @@ export default defineConfig<ThemeConfig>({ extends: whatsaaaaConfig() /* the sit
 ```
 
 Keep the site's nav, sidebar and search config as they are. Do not restyle the theme with `--vp-*` variables: change a token here instead.
+
+The brand and the first tab share the width of the sidebar, so the first tab ends on the sidebar's border. Keep the two short: with a logo there is room for about 17 characters in the site title and the first tab's label together, without one about 22. A longer title is cut with an ellipsis before the first tab.
 
 ## 11. Data
 

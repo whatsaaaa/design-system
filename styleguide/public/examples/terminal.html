@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>whatsaaaa</title>
     <link rel="icon" href="../kit/whatsaaaa/favicon.svg" type="image/svg+xml" />
-    <!-- applies a remembered theme before the first paint, so it comes before the stylesheet -->
+    <!-- apply what is remembered before the first paint, so they come before the stylesheet -->
     <script src="../ds/theme/init.js"></script>
+    <script src="../ds/shortcuts/init.js"></script>
     <link rel="stylesheet" href="../ds/index.css" />
     <link rel="stylesheet" href="./example.css" />
   </head>
@@ -132,15 +133,29 @@
         <span class="ws-status-line__file"><span>~/whatsaaaa</span></span>
         <span class="ws-status-line__spacer"></span>
         <span class="ws-status-line__keys">
-          <a href="https://github.com/whatsaaaa" data-ws-key="g" aria-keyshortcuts="g"
+          <a href="https://github.com/whatsaaaa" data-ws-key="g"
             ><kbd class="ws-kbd">g</kbd>github</a
           >
-          <button type="button" data-ws-key="t" aria-keyshortcuts="t" data-toggle-theme>
+          <button type="button" data-ws-key="t" data-toggle-theme>
             <kbd class="ws-kbd">t</kbd>theme
           </button>
         </span>
-        <span class="ws-status-line__item ws-status-line__item--edge" data-theme-name
+        <button
+          type="button"
+          class="ws-status-line__switch"
+          role="switch"
+          aria-label="Shortcut keys"
+          data-ws-keys-switch
+        >
+          keys
+          <span class="ws-status-line__on" aria-hidden="true">on</span>
+          <span class="ws-status-line__off" aria-hidden="true">off</span>
+        </button>
+        <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--dark"
           >rose-pine</span
+        >
+        <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--light"
+          >rose-pine-dawn</span
         >
       </footer>
     </div>

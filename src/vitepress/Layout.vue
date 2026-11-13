@@ -3,7 +3,7 @@ import { inBrowser, useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import { onMounted, onUnmounted, watchEffect } from 'vue'
 import { defineGhost } from '../../dist/ghost/index.js'
-import { enableShortcuts } from '../../dist/shortcuts/index.js'
+import { enableShortcuts, isTyping, shortcutsOn } from '../../dist/shortcuts/index.js'
 import Crumb from './components/Crumb.vue'
 import NavGhost from './components/NavGhost.vue'
 import NotFound from './components/NotFound.vue'
@@ -19,6 +19,16 @@ watchEffect(() => {
   if (inBrowser) document.documentElement.dataset.theme = isDark.value ? 'dark' : 'light'
 })
 
+/**
+ * VitePress listens for / itself, on the window, and opens the search. With the keys
+ * switched off that key rests like the others, so it is stopped here on its way there.
+ */
+function restSearchKey(event: KeyboardEvent) {
+  if (event.key !== '/' || shortcutsOn()) return
+  if (event.target instanceof Element && isTyping(event.target)) return
+  event.stopPropagation()
+}
+
 let disableShortcuts: (() => void) | undefined
 onMounted(() => {
   defineGhost()
@@ -26,8 +36,12 @@ onMounted(() => {
   disableShortcuts = enableShortcuts({
     tabs: '.VPNavBarMenu > .VPNavBarMenuLink, .VPNavBarMenu > .VPNavBarMenuGroup .button',
   })
+  document.addEventListener('keydown', restSearchKey)
 })
-onUnmounted(() => disableShortcuts?.())
+onUnmounted(() => {
+  disableShortcuts?.()
+  document.removeEventListener('keydown', restSearchKey)
+})
 </script>
 
 <template>

@@ -62,7 +62,7 @@ CI runs on every pull request:
 - the unit tests, with the contrast of every role pair in both themes,
 - that `assets/` is what the sources produce,
 - that the package and the style guide build,
-- the browser tests: no page overflows sideways at phone and desktop width in either theme, the easter egg works with the mouse, the keyboard and reduced motion, the keys of the status line work, both fonts draw Serbian Latin, and the pages of the style guide look like their stored screenshots.
+- the browser tests: no page overflows sideways at phone, tablet and desktop width in either theme, no page logs an error when it loads, the easter egg works with the mouse, the keyboard and reduced motion, the keys of the status line work and their switch turns them off, the first tab ends on the border of the sidebar, both fonts draw Serbian Latin, and the pages of the style guide look like their stored screenshots.
 
 The screenshots are in `tests/browser/__screenshots__/` and are taken on Linux, in the Playwright container, so they are the same on every machine. After a change that is meant to be seen, update them:
 
@@ -81,7 +81,7 @@ src/identity/    the ghost, pixel by pixel, and how a sprite becomes a mark
 src/css/         the stylesheets
 src/ghost/       <ws-ghost>
 src/theme/       the theme switch
-src/shortcuts/   keys that click the control they are shown on
+src/shortcuts/   keys that click the control they are shown on, and their switch
 src/shiki/       the code theme
 src/vitepress/   the docs theme
 scripts/         the builds and the asset generator

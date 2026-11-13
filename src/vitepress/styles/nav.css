@@ -92,6 +92,12 @@
   content: counter(ws-tab) / '';
 }
 
+/* the number names the key that goes to the tab. With the keys switched off it is left out. */
+[data-ws-keys='off'] .VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
+[data-ws-keys='off'] .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button::before {
+  content: none;
+}
+
 .VPNav .VPNavBarMenu .VPNavBarMenuLink:hover,
 .VPNav .VPNavBarMenu .VPNavBarMenuGroup:hover .button {
   color: var(--ws-color-text);
@@ -219,15 +225,30 @@
     order: -1;
   }
 
+  /*
+   * The search field gives way first: in a window too narrow for the whole bar it gets
+   * shorter, down to its word and its key, and the tabs and the brand keep their width.
+   * Its padding keeps it off the last tab then.
+   */
+  .VPNav .VPNavBar .content {
+    min-width: 0;
+  }
+
   .VPNav .VPNavBar .content-body > .search {
-    flex-grow: 0;
+    flex: 0 1 calc(13rem + var(--ws-space-8));
+    min-width: 6rem;
     margin-left: auto;
-    padding-left: 0;
+    padding-left: var(--ws-space-8);
+  }
+
+  .VPNav .VPNavBarSearch > div {
+    flex: 1;
+    min-width: 0;
   }
 
   .VPNav .VPNavBarSearch .DocSearch-Button {
     justify-content: space-between;
-    width: 13rem;
+    width: 100%;
     height: 1.875rem;
     padding: 0 var(--ws-space-6) 0 var(--ws-space-10);
     border: var(--ws-border-width-thin) solid var(--ws-color-border);
@@ -271,23 +292,111 @@
     line-height: 1;
     content: '/';
   }
+
+  [data-ws-keys='off'] .VPNav .DocSearch-Button .DocSearch-Button-Keys::after {
+    content: none;
+  }
 }
 
 @media (width >= 60rem) {
-  /* with a sidebar the default theme pins the title above it. Here the bar is one row. */
-  .VPNav .VPNavBar.has-sidebar .title {
+  /*
+   * The brand and the first tab share a box as wide as the sidebar, on every page: the
+   * brand at its left end, the first tab at its right end. So one length, the width of the
+   * sidebar, places the border of the sidebar and the right edge of the first tab, and the
+   * two are one line whatever the tab is called. The other tabs follow from that line.
+   *
+   * With a sidebar the default theme pins the title above it. Here the bar is one row.
+   */
+  .VPNav .VPNavBar .container > .title,
+  .VPNav .VPNavBar.has-sidebar .container > .title {
     position: static;
-    width: auto;
+
+    /* the default theme lifts the title above the rest of the bar. Here the first tab lies over its end. */
+    z-index: auto;
+    width: calc(var(--vp-sidebar-width) - var(--ws-space-20));
     height: var(--vp-nav-height);
     padding: 0;
   }
 
-  .VPNav .VPNavBar.has-sidebar .content {
-    padding: 0 0 0 var(--ws-space-32);
+  /* the link is as wide as the brand, and never wider than the box */
+  .VPNav .VPNavBar .VPNavBarTitle .title {
+    width: fit-content;
+    max-width: 100%;
+    height: var(--vp-nav-height);
+    padding: 0;
   }
 
-  .VPNav .VPNavBar:not(.has-sidebar) .content {
-    padding-left: var(--ws-space-32);
+  .VPNav .VPNavBar .VPNavBarTitle .title > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .VPNav .VPNavBar .content,
+  .VPNav .VPNavBar.has-sidebar .content {
+    padding: 0;
+  }
+
+  /* the rule under the bar starts where the sidebar ends, in a window of any width */
+  .VPNav .VPNavBar.has-sidebar .divider {
+    padding-left: var(--vp-sidebar-width);
+  }
+
+  .VPNav .VPNavBar .VPNavBarMenu {
+    position: relative;
+  }
+
+  /*
+   * The first tab stands out of the row, with its right edge on the line the row starts at.
+   * It is never wider than the box, so it cannot leave the bar. It is named as an anchor,
+   * for the brand to learn how wide it is.
+   */
+  .VPNav .VPNavBarMenu > .visually-hidden + * {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    bottom: 0;
+    max-width: calc(var(--vp-sidebar-width) - var(--ws-space-20));
+    anchor-name: --ws-first-tab;
+  }
+
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup .button {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* neighbors share the pixel of their borders, so the border of either tab at the line is the line */
+  .VPNav .VPNavBarMenu > .visually-hidden + * ~ * {
+    margin-left: calc(-1 * var(--ws-border-width-thin));
+  }
+
+  /*
+   * A brand too long for the room the first tab leaves is cut with an ellipsis, a gap
+   * before the tab. The tab keeps its place: a long name gives way, not the line. For that
+   * the brand takes the width of the tab off the box, by anchor sizing, which works on a
+   * positioned element: the link leaves the flow of its box and stands where it stood.
+   */
+  @supports (width: anchor-size(width)) {
+    .VPNav .VPNavBar .VPNavBarTitle .title {
+      position: absolute;
+      top: 0;
+      left: var(--ws-space-20);
+      max-width: calc(
+        var(--vp-sidebar-width) - var(--ws-space-20) - anchor-size(--ws-first-tab width, 0px) -
+          var(--ws-space-16)
+      );
+    }
+  }
+
+  /* in a browser without anchor sizing the end of such a brand runs under the tab, which covers it */
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink:not(.active),
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup:not(.active) .button {
+    background: var(--ws-color-bg) padding-box;
   }
 
   .VPNav .VPNavBar .content-body,
@@ -297,7 +406,7 @@
 }
 
 @media (width >= 80rem) {
-  /* at this width the status line has the theme key, so the switch in the bar goes */
+  /* at this width the status line has the theme button, so the switch in the bar goes */
   .VPNav .VPNavBar .content-body > .appearance {
     display: none;
   }

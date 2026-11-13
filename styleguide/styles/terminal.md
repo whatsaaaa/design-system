@@ -69,13 +69,29 @@ The mode, where you are, the keys, and one or two facts at the right edge.
   <span class="ws-status-line__spacer"></span>
   <span class="ws-status-line__keys">
     <a href="https://github.com/whatsaaaa" data-ws-key="g"><kbd class="ws-kbd">g</kbd>github</a>
-    <button type="button" data-ws-key="t" aria-keyshortcuts="t">
-      <kbd class="ws-kbd">t</kbd>theme
-    </button>
+    <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
   </span>
-  <span class="ws-status-line__item ws-status-line__item--edge">rose-pine</span>
+  <button
+    type="button"
+    class="ws-status-line__switch"
+    role="switch"
+    aria-label="Shortcut keys"
+    data-ws-keys-switch
+  >
+    keys
+    <span class="ws-status-line__on" aria-hidden="true">on</span>
+    <span class="ws-status-line__off" aria-hidden="true">off</span>
+  </button>
+  <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--dark">
+    rose-pine
+  </span>
+  <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--light">
+    rose-pine-dawn
+  </span>
 </footer>
 ```
+
+An item with `--dark` or `--light` shows on that theme only. Both names of the theme are in the page and the styles pick one, so the name is right before any script runs.
 
 ### Keys are real or not shown
 
@@ -88,6 +104,21 @@ enableShortcuts()
 ```
 
 Keys typed into a field, and keys pressed with <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or <kbd>Cmd</kbd>, are left alone.
+
+### Keys can be switched off
+
+The keys are single characters that act on the whole page. Someone who dictates, or who presses keys without meaning to, has to be able to turn them off, so a status line with key hints carries the keys switch: the button that reads `keys on`.
+
+Pressing it turns every key off. The controls stay and work by hand, and what names a key goes: the key caps, and the numbers of the tabs. It then reads `keys off`, and pressing it again turns the keys back on. The browser remembers the choice.
+
+The switch is declared like a key, with `data-ws-keys-switch` on the button, and the shortcuts module does the rest. It gives the switch its state and tells assistive technology the key of a control, so leave `aria-checked` and `aria-keyshortcuts` out of the markup: until the module has run the switch is hidden and no key is named. Unlike the hints it shows at every width, because the number of a tab is a key at every width. A key acts only while the switch can be reached: a page without it has no shortcuts, and a dialog over the status line rests them.
+
+For a page with the keys off to draw no tab number from its first paint, load the head script, next to the one of the theme:
+
+```html
+<script src=".../theme/init.js"></script>
+<script src=".../shortcuts/init.js"></script>
+```
 
 ## Small pieces
 
@@ -102,4 +133,4 @@ Keys typed into a field, and keys pressed with <kbd>Ctrl</kbd>, <kbd>Alt</kbd> o
 
 ## In the docs theme
 
-The docs theme draws VitePress's own nav bar as the tab bar and adds the status line, with <kbd>/</kbd>, <kbd>j</kbd>, <kbd>k</kbd> and <kbd>t</kbd> as its keys. See [Using the theme](/docs/).
+The docs theme draws VitePress's own nav bar as the tab bar and adds the status line, with <kbd>/</kbd>, <kbd>j</kbd>, <kbd>k</kbd> and <kbd>t</kbd> as its keys and the switch that turns them off. See [Using the theme](/docs/).

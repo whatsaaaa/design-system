@@ -18,6 +18,26 @@ test.describe('the asset kit on the page', () => {
   })
 })
 
+test.describe('code blocks', () => {
+  test('a block has a caption bar only when it has a file name or a language to show', async ({
+    page,
+  }) => {
+    await open(page, '/styles/prose')
+    const caption = (block: Element) => ({
+      room: getComputedStyle(block).paddingTop,
+      bar: getComputedStyle(block, '::before').content,
+    })
+    // the first block of the page has both
+    expect(await page.locator('.vp-doc div[class*="language-"]').first().evaluate(caption)).toEqual(
+      { room: '36px', bar: '""' },
+    )
+    // the output in the callout has neither
+    const plain = page.locator('.vp-doc .custom-block div[class*="language-"]')
+    await expect(plain.locator('.lang')).toBeEmpty()
+    expect(await plain.evaluate(caption)).toEqual({ room: '0px', bar: 'none' })
+  })
+})
+
 test.describe('links to a section', () => {
   /** The sections the page links to, as the id each link expects by the page it is on. */
   const sections = () => {

@@ -6,7 +6,7 @@ Outside VitePress, put rendered Markdown in a container with the class `ws-prose
 
 ## Headings
 
-A page has one title. Sections start with a rule and a hash, like a comment that opens a block. In this theme the hash is the permalink of the section.
+A page has one title. Sections start with a rule and a hash, like a comment that opens a block. In this theme the hash is the permalink of the section. The hash hangs in front of the heading, so a long heading, or one with inline code as the last on this page, wraps as one text beside it.
 
 ### A subsection
 
@@ -125,7 +125,19 @@ This removes the form and every answer it has collected.
 On Dawn the syntax colors are too pale for text: love is 4.03:1 on the surface, iris 3.64, foam 3.29. On the dark palette all of them pass.
 :::
 
-## Outside VitePress
+A callout can hold a code block, with a language or without. It stays dark like any other:
+
+::: info
+`validate()` lists what is wrong with a definition, one line for each problem:
+
+```
+vatId: affects is an unknown key
+grad: options needs at least one entry
+```
+
+:::
+
+## A `ws-prose` container, outside VitePress
 
 The same styles work on plain HTML, with the classes of the system. This is a page that uses nothing but the built stylesheet:
 

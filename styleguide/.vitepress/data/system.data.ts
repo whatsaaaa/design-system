@@ -197,9 +197,7 @@ export default {
       radius: dimensions('radius.'),
       borderWidth: dimensions('border-width.'),
       size: dimensions('size.'),
-      duration: scalars('motion.duration.', (id) =>
-        dimension(dark[id].$value as { value: number; unit: string }),
-      ),
+      duration: dimensions('motion.duration.'),
       easing: scalars(
         'motion.easing.',
         (id) => `cubic-bezier(${(dark[id].$value as number[]).join(', ')})`,

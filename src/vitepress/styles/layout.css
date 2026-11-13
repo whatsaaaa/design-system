@@ -42,6 +42,11 @@ body {
   gap: var(--ws-space-6);
 }
 
+/* the two scroll controls are nothing but their keys, so they go with the keys */
+[data-ws-keys='off'] .WsStatusLine .WsStatusLine-pair {
+  display: none;
+}
+
 .VPNavScreen.VPNavScreen {
   bottom: var(--ws-size-status-line);
 }

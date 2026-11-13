@@ -8,14 +8,14 @@
   text-transform: lowercase;
 }
 
-/* the permalink of a section is its hash */
+/* the permalink of a section is its hash, and hangs where the hash of a plain page does */
 .vp-doc h2::before {
   content: none;
 }
 
 .vp-doc h2 .header-anchor {
-  position: static;
-  order: -1;
+  top: var(--ws-space-24);
+  left: 0;
   margin: 0;
   color: var(--ws-color-brand);
   font-weight: inherit;
@@ -91,6 +91,15 @@
   border-bottom: var(--ws-border-width-thin) solid var(--ws-code-border);
   background: var(--ws-code-header-bg);
   content: '';
+}
+
+/* a block with neither a file name nor a language has nothing to caption */
+.vp-doc div[class*='language-']:has(> span.lang:empty):not(:has(> .ws-code-title)) {
+  --ws-caption: 0rem;
+}
+
+.vp-doc div[class*='language-']:has(> span.lang:empty):not(:has(> .ws-code-title))::before {
+  content: none;
 }
 
 .vp-doc div[class*='language-'] > span.lang,
@@ -285,8 +294,12 @@
 }
 
 .vp-doc .custom-block code {
-  color: var(--ws-color-text);
   font-size: 0.8125em;
+}
+
+/* inline code only: a code block in a callout keeps the colors of a code block */
+.vp-doc .custom-block :not(pre) > code {
+  color: var(--ws-color-text);
 }
 
 .vp-doc .custom-block a > code,

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { DESKTOP, PAGES, PHONE, open } from './pages.ts'
+import { DESKTOP, PAGES, PHONE, TABLET, open } from './pages.ts'
 
 /**
  * How far the page scrolls sideways, and the elements that stick out of the window without
@@ -30,6 +30,7 @@ const measure = () => {
 
 for (const [viewportName, viewport] of [
   ['phone', PHONE],
+  ['tablet', TABLET],
   ['desktop', DESKTOP],
 ] as const) {
   for (const colorScheme of ['dark', 'light'] as const) {

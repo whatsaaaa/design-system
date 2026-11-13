@@ -144,11 +144,23 @@
 }
 
 @media (width >= 60rem) {
+  /*
+   * The sidebar keeps one width at every width of the window, and the page starts where it
+   * ends. The default theme centers a frame in a wide window and stretches the sidebar to
+   * the edge of the window. Here the bars reach from edge to edge, so the sidebar stays at
+   * the left and its border stays under the first tab (see nav.css). Its padding at the
+   * sides is the padding of the bar, so its headings start under the brand.
+   */
   .VPSidebar.VPSidebar {
     bottom: var(--ws-size-status-line);
-    padding: calc(var(--vp-nav-height) + var(--ws-space-32)) var(--ws-space-20) var(--ws-space-32)
-      var(--ws-space-24);
+    width: var(--vp-sidebar-width);
+    padding: calc(var(--vp-nav-height) + var(--ws-space-32)) var(--ws-space-20) var(--ws-space-32);
     border-right: var(--ws-border-width-thin) solid var(--ws-color-border);
+  }
+
+  .VPContent.VPContent.has-sidebar {
+    padding-right: 0;
+    padding-left: var(--vp-sidebar-width);
   }
 
   .VPSidebar .nav {

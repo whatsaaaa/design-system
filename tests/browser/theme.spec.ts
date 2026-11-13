@@ -37,6 +37,17 @@ test.describe('themes', () => {
       )
     })
 
+    test('a code block in a callout stays dark too, also one without a language', async ({
+      page,
+    }) => {
+      await open(page, '/styles/prose')
+      // a block without a language has no colors of its own: every token takes the color of the block
+      const plain = '.vp-doc .custom-block div[class*="language-"]'
+      await expect(page.locator(`${plain} code span[style]`)).toHaveCount(0)
+      expect(await color(page, plain, 'backgroundColor')).toBe('rgb(31, 29, 46)')
+      expect(await color(page, `${plain} code`, 'color')).toBe('rgb(224, 222, 244)')
+    })
+
     test('a callout label takes the text color, and its bar keeps the hue', async ({ page }) => {
       await open(page, '/docs/sample/conditions')
       expect(await color(page, '.custom-block.warning .custom-block-title', 'color')).toBe(
@@ -123,6 +134,65 @@ test.describe('themes', () => {
       })
     })
   }
+
+  test.describe('the name of the theme in the status line', () => {
+    const name = (page: import('@playwright/test').Page, theme: 'dark' | 'light') =>
+      page.locator(`.WsStatusLine .ws-status-line__item--${theme}`)
+
+    /** The page as the server sends it, with its head scripts run and the app never arriving. */
+    async function beforeTheApp(
+      browser: import('@playwright/test').Browser,
+      colorScheme: 'dark' | 'light',
+      remembered?: 'dark' | 'light',
+    ) {
+      const context = await browser.newContext({ colorScheme })
+      if (remembered)
+        await context.addInitScript(
+          (appearance) => localStorage.setItem('vitepress-theme-appearance', appearance),
+          remembered,
+        )
+      const page = await context.newPage()
+      await page.route('**/assets/**/*.js', (route) => route.abort())
+      await page.goto('/docs/sample/conditions')
+      return { context, page }
+    }
+
+    for (const [colorScheme, other] of [
+      ['dark', 'light'],
+      ['light', 'dark'],
+    ] as const) {
+      test(`is the theme of the page before the app runs, ${colorScheme}`, async ({ browser }) => {
+        const { context, page } = await beforeTheApp(browser, colorScheme)
+        await expect(page.locator('html')).toHaveAttribute('data-theme', colorScheme)
+        await expect(name(page, colorScheme)).toBeVisible()
+        await expect(name(page, other)).toBeHidden()
+        await context.close()
+      })
+
+      test(`is the theme chosen by hand before the app runs, ${other} on a ${colorScheme} system`, async ({
+        browser,
+      }) => {
+        const { context, page } = await beforeTheApp(browser, colorScheme, other)
+        await expect(page.locator('html')).toHaveAttribute('data-theme', other)
+        await expect(name(page, other)).toBeVisible()
+        await expect(name(page, colorScheme)).toBeHidden()
+        await context.close()
+      })
+    }
+
+    test('follows the switch of the nav bar', async ({ page }) => {
+      // below 80rem the switch of the default theme is in the menu at the end of the bar
+      await page.setViewportSize({ width: 1100, height: 800 })
+      await open(page, '/docs/sample/conditions')
+      await expect(name(page, 'dark')).toHaveText('rose-pine')
+      await expect(name(page, 'light')).toBeHidden()
+      await page.locator('.VPNavBarExtra').hover()
+      await page.locator('.VPNavBarExtra .VPSwitchAppearance').click()
+      await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+      await expect(name(page, 'light')).toHaveText('rose-pine-dawn')
+      await expect(name(page, 'dark')).toBeHidden()
+    })
+  })
 
   test('a theme chosen by hand wins over the system', async ({ page }) => {
     await open(page, '/')
