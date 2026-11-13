@@ -109,6 +109,7 @@ The key hints are declared on the controls they press, with `data-ws-key`, and t
 | `ws-state`, with `--active` or `--experimental` | A state as a dot with its word                    |
 | `ws-arrow`                                      | An arrow after a link that leaves the site        |
 | `ws-cursor`                                     | The block cursor                                  |
+| `ws-visually-hidden`                            | Text only assistive technology reads              |
 
 ## In the docs theme
 

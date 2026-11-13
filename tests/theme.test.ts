@@ -88,65 +88,64 @@ describe('the theme switch', () => {
   })
 })
 
-describe("the color of the browser's own bars", () => {
-  const colors = () =>
-    [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map(
-      (tag) => tag.content,
-    )
-  /** The token stylesheet, as a page loads it. */
-  const loadStyles = () => {
-    const style = document.createElement('style')
-    // vitest runs from the repository root
-    style.textContent = readFileSync(join(process.cwd(), 'dist/tokens.css'), 'utf8')
-    document.head.append(style)
-  }
+/** Runs the head script, as the page does before its stylesheet. */
+const run = () => new Function(themeInitScript)()
+const colors = () =>
+  [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map(
+    (tag) => tag.content,
+  )
+/** The token stylesheet, as a page loads it. */
+const loadStyles = () => {
+  const style = document.createElement('style')
+  // vitest runs from the repository root
+  style.textContent = readFileSync(join(process.cwd(), 'dist/tokens.css'), 'utf8')
+  document.head.append(style)
+}
+const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve))
 
-  it('is the background of the theme chosen by hand, from the tokens', () => {
+describe("the color of the browser's own bars", () => {
+  it('is the background of the theme chosen by hand, from the tokens', async () => {
     loadStyles()
+    run()
     setTheme('light')
-    expect(colors()).toEqual([hex('color.bg', 'light')])
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
     toggleTheme()
-    expect(colors()).toEqual([hex('color.bg', 'dark')])
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'dark')]))
   })
 
-  it('is the background of the system theme again when the page follows the system', () => {
+  it('is the background of the system theme again when the page follows the system', async () => {
     loadStyles()
     systemPrefers('light')
+    run()
     setTheme('dark')
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'dark')]))
     setTheme('system')
-    expect(colors()).toEqual([hex('color.bg', 'light')])
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
   })
 
-  it('goes on every theme-color tag the page has, and adds none of its own', () => {
+  it('goes on every theme-color tag the page has, and adds none of its own', async () => {
     loadStyles()
     document.head.insertAdjacentHTML(
       'beforeend',
       '<meta name="theme-color" media="(prefers-color-scheme: light)" content="" />' +
         '<meta name="theme-color" media="not (prefers-color-scheme: light)" content="" />',
     )
+    run()
     setTheme('light')
-    expect(colors()).toEqual([hex('color.bg', 'light'), hex('color.bg', 'light')])
+    await vi.waitFor(() =>
+      expect(colors()).toEqual([hex('color.bg', 'light'), hex('color.bg', 'light')]),
+    )
   })
 
-  it('is left alone while the stylesheet is not there', () => {
+  it('is left alone while the stylesheet is not there', async () => {
+    run()
     setTheme('light')
+    await nextFrame()
     expect(colors()).toEqual([])
   })
 })
 
 describe('the script for the head', () => {
-  const run = () => new Function(themeInitScript)()
-  const colors = () =>
-    [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map(
-      (tag) => tag.content,
-    )
-  const loadStyles = () => {
-    const style = document.createElement('style')
-    style.textContent = readFileSync(join(process.cwd(), 'dist/tokens.css'), 'utf8')
-    document.head.append(style)
-  }
-  const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve))
-
   it('applies a remembered theme before the page renders', () => {
     localStorage.setItem(THEME_STORAGE_KEY, 'light')
     run()

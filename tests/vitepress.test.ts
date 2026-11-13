@@ -1,8 +1,9 @@
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { Window } from 'happy-dom'
 import { createMarkdownRenderer } from 'vitepress'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { codeTheme } from '../src/shiki/index.ts'
-import { themeColorScript } from '../src/theme/color.ts'
 import { whatsaaaaConfig, whatsaaaaMarkdown } from '../src/vitepress-config/index.ts'
 import { isActiveLink } from '../src/vitepress/support.ts'
 import { hex } from '../scripts/lib/tokens.ts'
@@ -95,41 +96,40 @@ describe('markdown in the docs theme', () => {
 })
 
 describe('the scripts the base config puts in the head', () => {
+  const tokens = readFileSync(new URL('../dist/tokens.css', import.meta.url), 'utf8')
+
   /**
-   * Runs every head script of the config in a page, in their order, and returns what they
-   * set on <html>. `remembered` is what the browser's storage holds, or `blocked` for a
-   * browser that refuses storage.
+   * Runs every head script of the config, in their order, in a page that has the token
+   * stylesheet, and returns its <html>. `remembered` is what the browser's storage holds,
+   * or `blocked` for a browser that refuses storage.
    */
   function pageAfter(remembered: Record<string, string> | 'blocked', system: 'dark' | 'light') {
-    const page = { documentElement: { dataset: {} as Record<string, string> } }
+    const window = new Window({ settings: { device: { prefersColorScheme: system } } })
+    const style = window.document.createElement('style')
+    style.textContent = tokens
+    window.document.head.append(style)
     const storage = {
       getItem: (key: string) => {
         if (remembered === 'blocked') throw new Error('blocked')
         return remembered[key] ?? null
       },
     }
-    const matchMedia = (query: string) => ({
-      matches: query === `(prefers-color-scheme: ${system})`,
-      addEventListener: () => {},
-    })
-    // what the scripts reach for. The theme-color script only starts listening here: it acts
-    // once the stylesheet is there, which the theme module's tests show in a page
+    // what the scripts reach for, from the page but for the storage
     const globals = {
-      document: page,
+      window,
+      document: window.document,
       localStorage: storage,
-      window: { matchMedia },
-      matchMedia,
-      MutationObserver: class {
-        observe() {}
-      },
-      requestAnimationFrame: () => 0,
-      addEventListener: () => {},
+      matchMedia: window.matchMedia,
+      getComputedStyle: window.getComputedStyle,
+      MutationObserver: window.MutationObserver,
+      requestAnimationFrame: window.requestAnimationFrame,
+      addEventListener: window.addEventListener,
     }
     for (const [tag, , script] of whatsaaaaConfig().head as [string, object, string][]) {
       expect(tag).toBe('script')
       new Function(...Object.keys(globals), script)(...Object.values(globals))
     }
-    return page.documentElement.dataset
+    return window.document.documentElement
   }
 
   it.each([
@@ -142,24 +142,33 @@ describe('the scripts the base config puts in the head', () => {
   ] as const)('with %s remembered on a %s system set the theme %s', (remembered, system, theme) => {
     const storage: Record<string, string> = {}
     if (remembered) storage['vitepress-theme-appearance'] = remembered
-    expect(pageAfter(storage, system).theme).toBe(theme)
+    expect(pageAfter(storage, system).dataset.theme).toBe(theme)
   })
 
   it('mark a page whose keys are remembered as off, and no other', () => {
-    expect(pageAfter({ 'ws-keys': 'off' }, 'dark').wsKeys).toBe('off')
-    expect(pageAfter({}, 'dark').wsKeys).toBeUndefined()
-    expect(pageAfter({ 'vitepress-theme-appearance': 'light' }, 'dark').wsKeys).toBeUndefined()
+    expect(pageAfter({ 'ws-keys': 'off' }, 'dark').dataset.wsKeys).toBe('off')
+    expect(pageAfter({}, 'dark').dataset.wsKeys).toBeUndefined()
+    expect(
+      pageAfter({ 'vitepress-theme-appearance': 'light' }, 'dark').dataset.wsKeys,
+    ).toBeUndefined()
   })
 
-  it("keep the color of the browser's own bars in step with the theme VitePress switches", () => {
-    const scripts = (whatsaaaaConfig().head as [string, object, string][]).map(([, , s]) => s)
-    expect(scripts).toContain(themeColorScript)
+  it("keep the color of the browser's own bars at the background of the theme shown", async () => {
+    const root = pageAfter({ 'vitepress-theme-appearance': 'light' }, 'dark')
+    const colors = () =>
+      [...root.ownerDocument.querySelectorAll('meta[name="theme-color"]')].map((tag) =>
+        tag.getAttribute('content'),
+      )
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
+    // as the docs theme does, from VitePress's own switch
+    root.dataset.theme = 'dark'
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'dark')]))
   })
 
   it.each(['dark', 'light'] as const)(
     'follow a %s system and leave the keys on where storage is refused',
     (system) => {
-      expect(pageAfter('blocked', system)).toEqual({ theme: system })
+      expect({ ...pageAfter('blocked', system).dataset }).toEqual({ theme: system })
     },
   )
 })

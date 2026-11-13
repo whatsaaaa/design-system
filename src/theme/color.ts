@@ -9,20 +9,6 @@
 const TAGS = 'meta[name="theme-color"]'
 const TOKEN = '--ws-color-bg'
 
-/** Gives the theme-color tags the background of the theme shown. */
-export function paintThemeColor(): void {
-  const color = getComputedStyle(document.documentElement).getPropertyValue(TOKEN).trim()
-  // before the stylesheet is there the token has no value, and the bars keep theirs
-  if (!color) return
-  const tags = [...document.querySelectorAll<HTMLMetaElement>(TAGS)]
-  if (tags.length === 0) {
-    const tag = document.createElement('meta')
-    tag.name = 'theme-color'
-    tags.push(document.head.appendChild(tag))
-  }
-  for (const tag of tags) tag.content = color
-}
-
 /**
  * A script for the <head> that keeps the theme-color tags in step from the first paint on:
  * when the stylesheet is there, whenever data-theme on <html> changes, whoever changes it,

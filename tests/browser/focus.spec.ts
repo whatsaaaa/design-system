@@ -96,25 +96,76 @@ const cutRing = () => {
   return { cuts, visible: element.matches(':focus-visible') }
 }
 
-/** Tabs through the page and returns, for each control of the window's bars, where its ring is cut. */
-async function ringsOfTheBars(page: Page) {
-  const rings: Record<string, string[]> = {}
+/**
+ * What the focus ring of the focused element, in one of the `bars`, lies on: a key cap of
+ * its own, which the ring has to go around, or another control of the bar, which the ring
+ * and the element's click area have to keep clear of.
+ */
+const crowdedRing = (bars: string) => {
+  const element = document.activeElement!
+  const style = getComputedStyle(element)
+  const box = element.getBoundingClientRect()
+  const grown = (by: number) => ({
+    left: box.left - by,
+    top: box.top - by,
+    right: box.right + by,
+    bottom: box.bottom + by,
+  })
+  const inner = grown(parseFloat(style.outlineOffset))
+  const outer = grown(Math.max(0, parseFloat(style.outlineOffset) + parseFloat(style.outlineWidth)))
+  const name = (other: Element) => {
+    const text = other.getAttribute('aria-label') ?? (other as HTMLElement).innerText
+    return `${other.className || other.tagName.toLowerCase()} "${text.replace(/\s+/g, ' ')}"`
+  }
+  const crowded: string[] = []
+  for (const cap of element.querySelectorAll('.ws-kbd')) {
+    const { left, top, right, bottom } = cap.getBoundingClientRect()
+    if (
+      left < inner.left - 0.5 ||
+      top < inner.top - 0.5 ||
+      right > inner.right + 0.5 ||
+      bottom > inner.bottom + 0.5
+    )
+      crowded.push(`its own ${name(cap)}`)
+  }
+  for (const other of element.closest(bars)!.querySelectorAll('a[href], button')) {
+    if (other === element || other.getClientRects().length === 0) continue
+    const { left, top, right, bottom } = other.getBoundingClientRect()
+    if (
+      left < outer.right - 0.5 &&
+      right > outer.left + 0.5 &&
+      top < outer.bottom - 0.5 &&
+      bottom > outer.top + 0.5
+    )
+      crowded.push(name(other))
+  }
+  return crowded
+}
+
+/**
+ * Tabs through the page and returns, for each control of the `bars`, where its ring is cut
+ * and what it crowds.
+ */
+async function ringsOfTheBars(page: Page, bars = '.ws-term :is(.ws-tab-bar, .ws-status-line)') {
+  const rings: Record<string, { cuts: string[]; crowded: string[] }> = {}
   for (let presses = 0; presses < 40; presses++) {
     await page.keyboard.press('Tab')
-    const focused = await page.evaluate(() => {
+    const focused = await page.evaluate((bars) => {
       const element = document.activeElement!
-      if (!element.closest('.ws-term :is(.ws-tab-bar, .ws-status-line)')) return null
+      if (!element.closest(bars)) return null
       const name = element.getAttribute('aria-label') ?? (element as HTMLElement).innerText
       return `${element.className || element.tagName.toLowerCase()} "${name.replace(/\s+/g, ' ')}"`
-    })
+    }, bars)
     if (!focused) continue
     if (focused in rings) break
     const { cuts, visible } = await page.evaluate(cutRing)
     expect(visible, focused).toBe(true)
-    rings[focused] = cuts
+    rings[focused] = { cuts, crowded: await page.evaluate(crowdedRing, bars) }
   }
   return rings
 }
+
+const WHOLE = { cuts: [], crowded: [] }
 
 for (const [name, viewport] of [
   ['on a wide screen', DESKTOP],
@@ -125,7 +176,9 @@ for (const [name, viewport] of [
   test.describe(`the focus rings of the window's bars ${name}`, () => {
     test.use({ viewport })
 
-    test('are seen whole: no box cuts them off, nor a corner of the window', async ({ page }) => {
+    test('are seen whole: no box cuts them off, nor a corner of the window, nor do they crowd', async ({
+      page,
+    }) => {
       await open(page, '/examples/terminal.html')
       const rings = await ringsOfTheBars(page)
       // the tabs, the switch and the theme button are all there, and the hints where they show
@@ -135,7 +188,7 @@ for (const [name, viewport] of [
       expect(names).toContain('ws-status-line__switch')
       expect(names).toContain('ws-status-line__theme')
       if (viewport.width >= 1024) expect(names).toContain('"t theme"')
-      for (const [control, cuts] of Object.entries(rings)) expect(cuts, control).toEqual([])
+      for (const [control, ring] of Object.entries(rings)) expect(ring, control).toEqual(WHOLE)
     })
 
     test('are seen whole when the brand is the link, as in the markup of the guide', async ({
@@ -153,7 +206,31 @@ for (const [name, viewport] of [
       const rings = await ringsOfTheBars(page)
       const brand = Object.keys(rings).find((control) => control.startsWith('ws-tab-bar__brand'))
       expect(brand).toBeDefined()
-      expect(rings[brand!]).toEqual([])
+      expect(rings[brand!]).toEqual(WHOLE)
     })
   })
 }
+
+test.describe("the focus rings of the docs theme's status line on a wide screen", () => {
+  test.use({ viewport: DESKTOP })
+
+  test('are seen whole, go around their key caps and keep clear of each other', async ({
+    page,
+  }) => {
+    await open(page, '/styles/prose')
+    // Tab comes to the status line from the control before it
+    await page
+      .locator('.WsStatusLine button:visible')
+      .first()
+      .evaluate((control) => control.focus())
+    await page.keyboard.press('Shift+Tab')
+    const rings = await ringsOfTheBars(page, '.WsStatusLine')
+    // the two scroll keys share a group of their own, next to the other hints and the switch
+    const names = Object.keys(rings).join('\n')
+    expect(names).toContain('"Scroll down"')
+    expect(names).toContain('"Scroll up"')
+    expect(names).toContain('"Switch theme"')
+    expect(names).toContain('"Shortcut keys"')
+    for (const [control, ring] of Object.entries(rings)) expect(ring, control).toEqual(WHOLE)
+  })
+})

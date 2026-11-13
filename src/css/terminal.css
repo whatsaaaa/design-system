@@ -374,7 +374,8 @@
 
 /*
  * No room for "~…" between the padding of the path, --ws-space-14 on each side. The padding
- * is written out, as a container query takes no var(). A unit test holds the two together.
+ * is written out, as a container query takes no var(). The browser test of the path,
+ * tests/browser/status-line.spec.ts, holds the two together.
  */
 @container ws-status-line-path (width < calc(2ch + 2 * 0.875rem)) {
   .ws-status-line__file {
@@ -415,9 +416,14 @@
   gap: var(--ws-space-6);
 }
 
-/* The room for the focus ring inside a control comes from the gap between them: nothing moves. */
+/*
+ * A control fills the height of the line, also in a group of hints. The room for its focus
+ * ring comes from the gap between controls, so nothing moves: in a group of hints, give the
+ * controls a gap of twice --ws-space-6.
+ */
 .ws-status-line__keys :is(button, a) {
   display: flex;
+  align-self: stretch;
   align-items: center;
   gap: var(--ws-space-6);
   margin: 0 calc(-1 * var(--ws-space-6));
@@ -480,12 +486,8 @@
 
 /*
  * The window cuts off its corners, so a ring in one follows the window's curve: that of the
- * first and the last control of the status line, and on a narrow screen that of the brand.
+ * last control of the status line, and on a narrow screen that of the brand.
  */
-.ws-term .ws-status-line > :first-child:focus-visible {
-  border-bottom-left-radius: calc(var(--ws-radius-xl) - var(--ws-border-width-thin));
-}
-
 .ws-term .ws-status-line > :last-child:focus-visible {
   border-bottom-right-radius: calc(var(--ws-radius-xl) - var(--ws-border-width-thin));
 }

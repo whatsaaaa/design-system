@@ -1,10 +1,10 @@
 /**
  * The theme switch. The stylesheet does the work: dark is the default, light applies when
  * the system asks for it, and data-theme="dark" or "light" on <html> overrides both.
- * This module sets that attribute by hand and remembers the choice. The browser's own bars,
- * such as a phone's address bar, follow: their color is the background of the theme shown.
+ * This module sets that attribute by hand and remembers the choice. The head script keeps
+ * the browser's own bars, such as a phone's address bar, at the background of the theme shown.
  */
-import { paintThemeColor, themeColorScript } from './color.ts'
+import { themeColorScript } from './color.ts'
 
 export type Theme = 'dark' | 'light'
 export type ThemeChoice = Theme | 'system'
@@ -48,7 +48,6 @@ export function setTheme(choice: ThemeChoice): void {
   } catch {
     // the choice still holds for this page
   }
-  paintThemeColor()
 }
 
 /** Switches to the other theme and returns it. */

@@ -77,7 +77,7 @@ setTheme('system') // follows the system again
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
 
-The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand and when the system's theme changes, and `setTheme` and `toggleTheme` do too. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
+The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme`, and when the system's theme changes. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
 
 ```html
 <head>
