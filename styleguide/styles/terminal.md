@@ -93,32 +93,9 @@ The mode, where you are, the keys, and one or two facts at the right edge.
 
 An item with `--dark` or `--light` shows on that theme only. Both names of the theme are in the page and the styles pick one, so the name is right before any script runs.
 
-### Keys are real or not shown
+### Keys
 
-A key hint is the control it names. `data-ws-key="t"` on a button means pressing <kbd>t</kbd> clicks that button, so the hint and the action cannot drift apart. The hints stay hidden until the shortcuts module runs, and below 64rem, where the status line has no room for them. A key works only while its hint shows, and a key that is held down works once.
-
-```ts
-import { enableShortcuts } from '@whatsaaaa/design-system/shortcuts'
-
-enableShortcuts()
-```
-
-Keys typed into a field, and keys pressed with <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or <kbd>Cmd</kbd>, are left alone.
-
-### Keys can be switched off
-
-The keys are single characters that act on the whole page. Someone who dictates, or who presses keys without meaning to, has to be able to turn them off, so a status line with key hints carries the keys switch: the button that reads `keys on`.
-
-Pressing it turns every key off. The controls stay and work by hand, and what names a key goes: the key caps, and the numbers of the tabs. It then reads `keys off`, and pressing it again turns the keys back on. The browser remembers the choice.
-
-The switch is declared like a key, with `data-ws-keys-switch` on the button, and the shortcuts module does the rest. It gives the switch its state and tells assistive technology the key of a control, so leave `aria-checked` and `aria-keyshortcuts` out of the markup: until the module has run the switch is hidden and no key is named. Unlike the hints it shows at every width, because the number of a tab is a key at every width. A key acts only on a page that has the switch: a page without it has no shortcuts.
-
-For a page with the keys off to draw no tab number from its first paint, load the head script, next to the one of the theme:
-
-```html
-<script src=".../theme/init.js"></script>
-<script src=".../shortcuts/init.js"></script>
-```
+The key hints are declared on the controls they press, with `data-ws-key`, and the button that reads `keys on` is the switch that turns them off, with `data-ws-keys-switch`. The shortcuts module makes both work. How to wire them into a page, and the rules they follow, are in [the usage guide](/docs/usage#_7-keys).
 
 ## Small pieces
 
