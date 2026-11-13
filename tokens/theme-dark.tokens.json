@@ -1,0 +1,146 @@
+{
+  "color": {
+    "$type": "color",
+    "bg": {
+      "$value": "{palette.main.base}",
+      "$description": "Page background."
+    },
+    "surface": {
+      "$value": "{palette.main.surface}",
+      "$description": "Panels, cards and table heads."
+    },
+    "raised": {
+      "$value": "{palette.main.overlay}",
+      "$description": "Inline code, hover, the current navigation item."
+    },
+    "border": {
+      "$value": "{palette.main.highlight-med}",
+      "$description": "Dividers and panel edges. Decorative, no contrast bar."
+    },
+    "border-strong": {
+      "$value": "{palette.main.highlight-high}",
+      "$description": "Key caps."
+    },
+    "selection": {
+      "$value": "{palette.main.highlight-high}",
+      "$description": "Background of selected text."
+    },
+    "field-border": {
+      "$value": "{palette.main.muted}",
+      "$description": "Input and button outlines. At least 3:1 on surface."
+    },
+    "text": {
+      "$value": "{palette.main.text}",
+      "$description": "Body text, headings and values."
+    },
+    "text-secondary": {
+      "$value": "{palette.main.subtle}",
+      "$description": "Descriptions, captions and idle navigation."
+    },
+    "text-faint": {
+      "$value": "{palette.main.muted}",
+      "$description": "Rules, idle indicators and disabled text. At least 3:1, never body text."
+    },
+    "brand": {
+      "$value": "{palette.main.love}",
+      "$description": "The brand accent: tongue, cursor, prompt chevron, active markers. Graphics and large type."
+    },
+    "brand-fill": {
+      "$value": "{palette.main.love}",
+      "$description": "Solid chip behind small text, such as the mode segment."
+    },
+    "on-brand": {
+      "$value": "{palette.main.base}",
+      "$description": "Text on the brand fill."
+    },
+    "interactive": {
+      "$value": "{palette.main.foam}",
+      "$description": "Links, the focus ring, checked controls and the primary button fill."
+    },
+    "on-interactive": {
+      "$value": "{palette.main.base}",
+      "$description": "Text on the interactive fill."
+    },
+    "tag-text": {
+      "$value": "{palette.main.foam}",
+      "$description": "Tag text."
+    },
+    "tag-bg": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6118, 0.8118, 0.8471],
+        "alpha": 0.12,
+        "hex": "#9ccfd8"
+      },
+      "$description": "Tag background: a tint of the interactive color."
+    },
+    "tip": {
+      "$value": "{palette.main.foam}",
+      "$description": "Status tip and \"active\": bar and icon."
+    },
+    "tip-text": {
+      "$value": "{palette.main.foam}",
+      "$description": "Status tip: label text."
+    },
+    "tip-tint": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6118, 0.8118, 0.8471],
+        "alpha": 0.09,
+        "hex": "#9ccfd8"
+      },
+      "$description": "Status tip: block background."
+    },
+    "note": {
+      "$value": "{palette.main.iris}",
+      "$description": "Status note: bar and icon."
+    },
+    "note-text": {
+      "$value": "{palette.main.iris}",
+      "$description": "Status note: label text."
+    },
+    "note-tint": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.7686, 0.6549, 0.9059],
+        "alpha": 0.09,
+        "hex": "#c4a7e7"
+      },
+      "$description": "Status note: block background."
+    },
+    "warning": {
+      "$value": "{palette.main.gold}",
+      "$description": "Status warning and \"experimental\": bar."
+    },
+    "warning-text": {
+      "$value": "{palette.main.gold}",
+      "$description": "Status warning: label text."
+    },
+    "warning-tint": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9647, 0.7569, 0.4667],
+        "alpha": 0.09,
+        "hex": "#f6c177"
+      },
+      "$description": "Status warning: block background."
+    },
+    "danger": {
+      "$value": "{palette.main.love}",
+      "$description": "Status danger: field error border and bar."
+    },
+    "danger-text": {
+      "$value": "{palette.main.love}",
+      "$description": "Status danger: label and error message text."
+    },
+    "danger-tint": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.9216, 0.4353, 0.5725],
+        "alpha": 0.09,
+        "hex": "#eb6f92"
+      },
+      "$description": "Status danger: block background."
+    }
+  }
+}

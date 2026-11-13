@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      # each script builds what it reads from dist/ first
+      - run: pnpm lint
+      - name: Fail if lint auto-fixed anything
+        run: git diff --exit-code
+      - run: pnpm type-check
+      # the unit tests include the contrast of every role pair and that assets/ is up to date
+      - run: pnpm test
+      - run: pnpm styleguide:build
+
+  browser:
+    runs-on: ubuntu-latest
+    # The screenshots in tests/browser/__screenshots__ are taken in this image, so they are
+    # compared in it. Its version is the version of @playwright/test, and a unit test holds the two together.
+    container: mcr.microsoft.com/playwright:v1.65.0-noble
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # builds the package and the style guide, then tests the built guide
+      - run: pnpm test:browser
+      - name: Keep the report when a test fails
+        if: ${{ !cancelled() && failure() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-test-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

@@ -1,0 +1,43 @@
+{
+  "name": "whatsaaaa",
+  "version": "2025.10",
+  "description": "Rosé Pine primitives and everything that never changes, then the color roles of one theme.",
+  "sets": {
+    "core": {
+      "sources": [
+        {
+          "$ref": "palette.tokens.json"
+        },
+        {
+          "$ref": "core.tokens.json"
+        }
+      ]
+    }
+  },
+  "modifiers": {
+    "theme": {
+      "description": "Dark is Rosé Pine main and the default. Light is Rosé Pine Dawn.",
+      "contexts": {
+        "dark": [
+          {
+            "$ref": "theme-dark.tokens.json"
+          }
+        ],
+        "light": [
+          {
+            "$ref": "theme-light.tokens.json"
+          }
+        ]
+      },
+      "default": "dark"
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/core"
+    },
+    {
+      "$ref": "#/modifiers/theme"
+    }
+  ]
+}

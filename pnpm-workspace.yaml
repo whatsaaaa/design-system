@@ -1,0 +1,4 @@
+# Install scripts that may run. esbuild's postinstall (used by VitePress's Vite) only checks the
+# native binary that pnpm already installs through its optional platform package.
+allowBuilds:
+  esbuild: false

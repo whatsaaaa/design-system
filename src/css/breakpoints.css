@@ -1,0 +1,6 @@
+/*
+ * The one breakpoint of the system. Below it there is one column, the tab bar wraps and
+ * headings take their compact sizes. Custom properties cannot be used in media queries,
+ * so in another project write the query out: @media (width < 64rem).
+ */
+@custom-media --ws-compact (width < 64rem);

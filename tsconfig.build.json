@@ -1,0 +1,12 @@
+// Compiles the modules to dist/. Run after the tokens are built: some modules read dist/tokens.js.
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": ["src/vitepress"]
+}

@@ -1,0 +1,155 @@
+{
+  "name": "@whatsaaaa/design-system",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Whatsaaaa's design system: brand identity, design tokens, typography, docs theme and asset kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whatsaaaa/design-system.git"
+  },
+  "files": [
+    "assets",
+    "dist",
+    "docs/usage.md",
+    "licenses",
+    "src/vitepress",
+    "tokens"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css",
+    "./src/vitepress/**"
+  ],
+  "exports": {
+    "./index.css": "./dist/index.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./css/*.css": "./dist/css/*.css",
+    "./fonts/*": "./dist/fonts/*",
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "default": "./dist/tokens.js"
+    },
+    "./tokens/*.json": "./tokens/*.json",
+    "./ghost": {
+      "types": "./dist/ghost/index.d.ts",
+      "default": "./dist/ghost/index.js"
+    },
+    "./theme": {
+      "types": "./dist/theme/index.d.ts",
+      "default": "./dist/theme/index.js"
+    },
+    "./theme/init.js": "./dist/theme/init.js",
+    "./shortcuts": {
+      "types": "./dist/shortcuts/index.d.ts",
+      "default": "./dist/shortcuts/index.js"
+    },
+    "./shortcuts/init.js": "./dist/shortcuts/init.js",
+    "./shiki": {
+      "types": "./dist/shiki/index.d.ts",
+      "default": "./dist/shiki/index.js"
+    },
+    "./vitepress": "./src/vitepress/index.ts",
+    "./vitepress/config": {
+      "types": "./dist/vitepress-config/index.d.ts",
+      "default": "./dist/vitepress-config/index.js"
+    },
+    "./assets/*": "./assets/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "run-s build:tokens build:fonts build:css build:js",
+    "build:tokens": "tz build",
+    "build:fonts": "node scripts/build-fonts.ts",
+    "build:css": "node scripts/build-css.ts",
+    "build:js": "tsc -p tsconfig.build.json && node scripts/build-head-scripts.ts",
+    "assets": "pnpm build:tokens && node scripts/generate-assets.ts",
+    "assets:check": "pnpm build:tokens && node scripts/generate-assets.ts --check",
+    "contrast": "pnpm build:tokens && node scripts/check-contrast.ts",
+    "styleguide:dev": "run-s build styleguide:prepare styleguide:serve",
+    "styleguide:build": "run-s build styleguide:prepare styleguide:compile",
+    "styleguide:preview": "vitepress preview styleguide",
+    "styleguide:prepare": "node scripts/prepare-styleguide.ts",
+    "styleguide:serve": "vitepress dev styleguide",
+    "styleguide:compile": "vitepress build styleguide",
+    "test": "run-s build test:unit",
+    "test:unit": "vitest run",
+    "test:browser": "run-s styleguide:build test:browser:run",
+    "test:browser:run": "playwright test",
+    "test:browser:docker": "sh scripts/browser-tests-in-docker.sh",
+    "test:browser:update": "sh scripts/browser-tests-in-docker.sh --update-snapshots",
+    "type-check": "run-s build type-check:ts type-check:vue",
+    "type-check:ts": "tsc --noEmit",
+    "type-check:vue": "vue-tsc --noEmit -p tsconfig.vue.json",
+    "lint": "run-s build lint:tokens lint:oxlint lint:eslint lint:css lint:package",
+    "lint:tokens": "tz check",
+    "lint:oxlint": "oxlint . --fix",
+    "lint:eslint": "eslint . --fix --cache",
+    "lint:css": "stylelint \"src/**/*.css\" \"styleguide/**/*.{css,vue}\" --fix",
+    "lint:package": "publint",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check ."
+  },
+  "dependencies": {
+    "@terrazzo/token-types": "2.10.0"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@playwright/test": "^1.65.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "@rose-pine/palette": "^4.0.1",
+    "@terrazzo/cli": "^2.10.0",
+    "@terrazzo/plugin-css": "^2.10.0",
+    "@terrazzo/plugin-js": "^2.10.0",
+    "@tsconfig/node24": "^24.0.5",
+    "@types/culori": "^4.0.1",
+    "@types/fontkit": "^2.0.9",
+    "@types/node": "^24.19.2",
+    "@types/opentype.js": "^1.3.10",
+    "@vue/eslint-config-typescript": "^14.9.0",
+    "culori": "^4.0.2",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-oxlint": "^1.93.0",
+    "eslint-plugin-vue": "^10.12.1",
+    "fontkit": "^2.0.4",
+    "happy-dom": "^21.0.4",
+    "jiti": "^2.7.0",
+    "lightningcss": "^1.33.0",
+    "npm-run-all2": "^9.0.4",
+    "opentype.js": "^2.0.0",
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
+    "png-to-ico": "^3.0.2",
+    "postcss-html": "^2.0.0",
+    "publint": "^0.3.25",
+    "stylelint": "^18.0.0",
+    "stylelint-config-standard": "^41.0.0",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1",
+    "typescript": "~6.0.3",
+    "vitepress": "^1.6.4",
+    "vitest": "^5.1.0",
+    "vue": "^3.5.45",
+    "vue-eslint-parser": "^10.4.2",
+    "vue-tsc": "^3.3.14",
+    "yaml": "^2.9.1"
+  },
+  "peerDependencies": {
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "vitepress": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
+  },
+  "packageManager": "pnpm@12.18.0"
+}

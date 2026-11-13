@@ -1,0 +1,25 @@
+{
+  "name": "form-builder",
+  "tagline": "forms from JSON, validated by Formisch",
+  "banner": {
+    "command": "form-builder --help"
+  },
+  "sprite": [
+    "................",
+    "................",
+    "................",
+    "..BBBBBBBBBBBB..",
+    "..BBBBBBBBBBBB..",
+    "................",
+    "..BBBBBBB.BBBB..",
+    "..BBBBBBB.BBBB..",
+    "................",
+    "..TTTTT.........",
+    "..TTTTT.........",
+    "..TTTTT.........",
+    "...TTT..........",
+    "................",
+    "................",
+    "................"
+  ]
+}

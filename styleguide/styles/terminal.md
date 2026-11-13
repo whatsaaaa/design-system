@@ -1,0 +1,136 @@
+# Terminal frame
+
+A page as a terminal session: a tab bar on top, prompts as headings, a status line at the bottom. The pieces are plain CSS classes with no framework behind them, so any app or site can carry them.
+
+This is a page built from nothing but the system's stylesheet and its three small modules. It is the handle's home page, laid out at 1200 px and scaled to fit:
+
+<ExampleFrame src="/examples/terminal.html" title="The terminal frame, at 1200 px" :width="1200" :height="700" />
+
+And the same page as a phone shows it:
+
+<ExampleFrame src="/examples/terminal.html" title="The terminal frame, at the width of this column" :height="640" />
+
+## The window
+
+`ws-term` is the window: a border, rounded corners, and three rows for the bar, the content and the bar. Give it a height and the content scrolls inside it. Leave it out and use the bars on a page that scrolls, as this guide does.
+
+```html
+<div class="ws-term">
+  <header class="ws-tab-bar">...</header>
+  <main>...</main>
+  <footer class="ws-status-line">...</footer>
+</div>
+```
+
+## Tab bar
+
+The brand, the tabs, and whatever goes at the right end. Tabs number themselves, like the windows of a terminal multiplexer, and the number keys go to them. The current tab is the link with `aria-current`.
+
+```html
+<header class="ws-tab-bar">
+  <a class="ws-tab-bar__brand" href="/">whatsaaaa</a>
+  <nav class="ws-tabs" aria-label="Main">
+    <ul>
+      <li><a href="/" aria-current="page">home</a></li>
+      <li><a href="/projects/">projects</a></li>
+    </ul>
+  </nav>
+  <div class="ws-tab-bar__end">
+    <a class="ws-arrow" href="https://github.com/whatsaaaa">github</a>
+  </div>
+</header>
+```
+
+Below 64rem the tabs take a row of their own and share it evenly.
+
+## Prompts
+
+A prompt is a chevron and a command. As a heading it names a section by the command whose output the section is: `whoami` for the introduction, `ls ~/projects` for the list of projects.
+
+```html
+<h2 class="ws-prompt">ls ~/projects</h2>
+
+<p class="ws-prompt">
+  <a href="/projects/">cd ~/projects</a>
+  <span class="ws-prompt__comment"># all projects</span>
+</p>
+```
+
+`ws-output` sets what a command printed off with a rule on the left. `ws-cursor` is the block cursor after the handle. It does not blink.
+
+## Status line
+
+The mode, where you are, the keys, and one or two facts at the right edge.
+
+```html
+<footer class="ws-status-line">
+  <span class="ws-status-line__mode">NORMAL</span>
+  <span class="ws-status-line__file"><span>~/whatsaaaa</span></span>
+  <span class="ws-status-line__spacer"></span>
+  <span class="ws-status-line__keys">
+    <a href="https://github.com/whatsaaaa" data-ws-key="g"><kbd class="ws-kbd">g</kbd>github</a>
+    <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
+  </span>
+  <button
+    type="button"
+    class="ws-status-line__switch"
+    role="switch"
+    aria-label="Shortcut keys"
+    data-ws-keys-switch
+  >
+    keys
+    <span class="ws-status-line__on" aria-hidden="true">on</span>
+    <span class="ws-status-line__off" aria-hidden="true">off</span>
+  </button>
+  <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--dark">
+    rose-pine
+  </span>
+  <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--light">
+    rose-pine-dawn
+  </span>
+</footer>
+```
+
+An item with `--dark` or `--light` shows on that theme only. Both names of the theme are in the page and the styles pick one, so the name is right before any script runs.
+
+### Keys are real or not shown
+
+A key hint is the control it names. `data-ws-key="t"` on a button means pressing <kbd>t</kbd> clicks that button, so the hint and the action cannot drift apart. The hints stay hidden until the shortcuts module runs, and below 64rem, where the status line has no room for them. A key works only while its hint shows, and a key that is held down works once.
+
+```ts
+import { enableShortcuts } from '@whatsaaaa/design-system/shortcuts'
+
+enableShortcuts()
+```
+
+Keys typed into a field, and keys pressed with <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or <kbd>Cmd</kbd>, are left alone.
+
+### Keys can be switched off
+
+The keys are single characters that act on the whole page. Someone who dictates, or who presses keys without meaning to, has to be able to turn them off, so a status line with key hints carries the keys switch: the button that reads `keys on`.
+
+Pressing it turns every key off. The controls stay and work by hand, and what names a key goes: the key caps, and the numbers of the tabs. It then reads `keys off`, and pressing it again turns the keys back on. The browser remembers the choice.
+
+The switch is declared like a key, with `data-ws-keys-switch` on the button, and the shortcuts module does the rest. It gives the switch its state and tells assistive technology the key of a control, so leave `aria-checked` and `aria-keyshortcuts` out of the markup: until the module has run the switch is hidden and no key is named. Unlike the hints it shows at every width, because the number of a tab is a key at every width. A key acts only on a page that has the switch: a page without it has no shortcuts.
+
+For a page with the keys off to draw no tab number from its first paint, load the head script, next to the one of the theme:
+
+```html
+<script src=".../theme/init.js"></script>
+<script src=".../shortcuts/init.js"></script>
+```
+
+## Small pieces
+
+| Class                                           | What it is                                        |
+| ----------------------------------------------- | ------------------------------------------------- |
+| `ws-kbd`                                        | A key cap                                         |
+| `ws-tag`                                        | A tag on a tint of the interactive color          |
+| `ws-tag`, with `--outline`                      | An outlined tag, for a plain list such as a stack |
+| `ws-state`, with `--active` or `--experimental` | A state as a dot with its word                    |
+| `ws-arrow`                                      | An arrow after a link that leaves the site        |
+| `ws-cursor`                                     | The block cursor                                  |
+
+## In the docs theme
+
+The docs theme draws VitePress's own nav bar as the tab bar and adds the status line, with <kbd>/</kbd>, <kbd>j</kbd>, <kbd>k</kbd> and <kbd>t</kbd> as its keys and the switch that turns them off. See [Using the theme](/docs/).

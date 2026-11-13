@@ -1,0 +1,441 @@
+/*
+ * The default theme's nav bar, drawn as the tab bar of the terminal frame: the brand, the
+ * numbered tabs after it, and search, links and the ghost at the right end.
+ */
+.VPNav .VPNavBar {
+  font-family: var(--ws-font-family-mono);
+}
+
+/*
+ * The bar is always opaque. The default theme leaves it clear in places and paints its
+ * parts instead, which lets the page show through between them here.
+ */
+.VPNav .VPNavBar:not(.home),
+.VPNav .VPNavBar.has-sidebar,
+.VPNav .VPNavBar.home,
+.VPNav .VPNavBar.home.top {
+  background-color: var(--ws-color-bg);
+}
+
+.VPNav .VPNavBar .wrapper {
+  padding: 0 var(--ws-space-8) 0 var(--ws-space-16);
+}
+
+.VPNav .VPNavBar .wrapper > .container {
+  max-width: 100%;
+}
+
+/* the bar is ruled off from the page everywhere, not only once the page scrolls */
+.VPNav .VPNavBar .divider {
+  padding-left: 0;
+}
+
+.VPNav .VPNavBar .divider-line,
+.VPNav .VPNavBar.home.top .divider-line {
+  background-color: var(--ws-color-border);
+}
+
+.VPNav .VPNavBar .title,
+.VPNav .VPNavBar .content-body {
+  background: none;
+}
+
+/* brand */
+.VPNav .VPNavBarTitle .title {
+  gap: var(--ws-space-10);
+  border-bottom: 0;
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-weight: var(--ws-font-weight-extrabold);
+  letter-spacing: -0.02em;
+}
+
+/* a mark in a 64 box at 32 px draws each sprite pixel as 2 px */
+.VPNav .VPNavBarTitle .logo {
+  width: auto;
+  height: 2rem;
+  margin-right: 0;
+  image-rendering: pixelated;
+}
+
+/* tabs */
+.VPNav .VPNavBar .VPNavBarMenu {
+  align-self: stretch;
+  counter-reset: ws-tab;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button {
+  gap: var(--ws-space-8);
+  height: 100%;
+  padding: 0 var(--ws-space-16);
+  border-inline: var(--ws-border-width-thin) solid transparent;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+  line-height: var(--vp-nav-height);
+  transition: none;
+  counter-increment: ws-tab;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button .text {
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button::before {
+  color: var(--ws-color-text-faint);
+  font-weight: var(--ws-font-weight-bold);
+  content: counter(ws-tab);
+  content: counter(ws-tab) / '';
+}
+
+/* the number names the key that goes to the tab. With the keys switched off it is left out. */
+[data-ws-keys='off'] .VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
+[data-ws-keys='off'] .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button::before {
+  content: none;
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink:hover,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup:hover .button {
+  color: var(--ws-color-text);
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink.active,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup.active .button {
+  border-color: var(--ws-color-border);
+  background: var(--ws-color-surface);
+  box-shadow: inset 0 var(--ws-border-width-medium) 0 var(--ws-color-brand);
+  color: var(--ws-color-text);
+}
+
+.VPNav .VPNavBarMenu .VPNavBarMenuLink.active::before,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup.active .button::before {
+  color: var(--ws-color-brand);
+}
+
+/* flyout menus of a tab group, of the language picker and of the overflow menu */
+.VPNav .VPFlyout .menu .VPMenu {
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-lg);
+  background: var(--ws-color-surface);
+  box-shadow: none;
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPNav .VPMenu .VPMenuLink .link {
+  border-radius: var(--ws-radius-sm);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  line-height: 2rem;
+  transition: none;
+}
+
+.VPNav .VPMenu .VPMenuLink .link:hover,
+.VPNav .VPMenu .VPMenuLink .link.active {
+  background: var(--ws-color-raised);
+  color: var(--ws-color-text);
+}
+
+/* search: a field that names its own key */
+.VPNav .VPNavBarSearch .DocSearch-Button {
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPNav .DocSearch-Button .DocSearch-Button-Placeholder {
+  margin: 0;
+  padding: 0;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label-sm);
+  text-transform: lowercase;
+  transition: none;
+}
+
+/* links out: the name and an arrow, in the voice of the bar */
+.VPNav .VPNavBarSocialLinks .VPSocialLink {
+  gap: 0.375em;
+  width: auto;
+  height: auto;
+  padding-inline: var(--ws-space-12);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+  transition: none;
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink:hover {
+  color: var(--ws-color-text);
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink > span {
+  display: none;
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink::before {
+  content: attr(aria-label);
+}
+
+.VPNav .VPNavBarSocialLinks .VPSocialLink::after {
+  width: 0.75em;
+  height: 0.75em;
+  background: currentcolor;
+  content: '';
+  mask: var(--ws-icon-arrow) center / contain no-repeat;
+}
+
+/* the ghost at the end of the bar */
+.WsNavGhost {
+  display: flex;
+  align-items: center;
+  margin-left: var(--ws-space-12);
+  color: var(--ws-color-text);
+  line-height: 0;
+}
+
+.WsNavGhost a {
+  display: block;
+  border-radius: var(--ws-radius-sm);
+  color: inherit;
+}
+
+/* the lines the default theme draws between the groups of the bar */
+.VPNav .VPNavBar .content-body > .translations::before,
+.VPNav .VPNavBar .content-body > .appearance::before,
+.VPNav .VPNavBar .content-body > .social-links::before {
+  display: none;
+}
+
+.VPNav .VPNavBarHamburger .container > span {
+  background-color: var(--ws-color-text);
+}
+
+@media (width >= 48rem) {
+  .VPNav .VPNavBar .wrapper,
+  .VPNav .VPNavBar.has-sidebar .wrapper {
+    padding: 0 var(--ws-space-20);
+  }
+
+  /* the tabs come after the brand, and search moves to the right end */
+  .VPNav .VPNavBar .content-body {
+    justify-content: flex-start;
+  }
+
+  .VPNav .VPNavBar .content-body > .menu {
+    order: -1;
+  }
+
+  /*
+   * The search field gives way first: in a window too narrow for the whole bar it gets
+   * shorter, down to its word and its key, and the tabs and the brand keep their width.
+   * Its padding keeps it off the last tab then.
+   */
+  .VPNav .VPNavBar .content {
+    min-width: 0;
+  }
+
+  .VPNav .VPNavBar .content-body > .search {
+    flex: 0 1 calc(13rem + var(--ws-space-8));
+    min-width: 6rem;
+    margin-left: auto;
+    padding-left: var(--ws-space-8);
+  }
+
+  .VPNav .VPNavBarSearch > div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .VPNav .VPNavBarSearch .DocSearch-Button {
+    justify-content: space-between;
+    width: 100%;
+    height: 1.875rem;
+    padding: 0 var(--ws-space-6) 0 var(--ws-space-10);
+    border: var(--ws-border-width-thin) solid var(--ws-color-field-border);
+    border-radius: var(--ws-radius-md);
+    background: var(--ws-color-surface);
+    transition: none;
+  }
+
+  /* as on a secondary button, the outline takes the text color under the pointer */
+  .VPNav .VPNavBarSearch .DocSearch-Button:hover {
+    border-color: var(--ws-color-text);
+    background: var(--ws-color-surface);
+  }
+
+  /* with the focus it takes the color of the ring, as the field of the search dialog does */
+  .VPNav .VPNavBarSearch .DocSearch-Button:focus-visible {
+    border-color: var(--ws-color-interactive);
+    outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+    outline-offset: 2px;
+  }
+
+  .VPNav .DocSearch-Button .DocSearch-Search-Icon {
+    display: none;
+  }
+
+  /* The default theme shows Ctrl K here. It listens for / as well, which is the key this system names. */
+  .VPNav .DocSearch-Button .DocSearch-Button-Keys {
+    display: flex;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  .VPNav .DocSearch-Button .DocSearch-Button-Keys .DocSearch-Button-Key {
+    display: none;
+  }
+
+  .VPNav .DocSearch-Button .DocSearch-Button-Keys::after {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.125rem;
+    height: 1.125rem;
+    padding-inline: var(--ws-space-4);
+    border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
+    border-radius: var(--ws-radius-xs);
+    color: var(--ws-color-text);
+    font-family: var(--ws-font-family-mono);
+    font-size: var(--ws-font-size-11);
+    line-height: 1;
+    content: '/';
+  }
+
+  [data-ws-keys='off'] .VPNav .DocSearch-Button .DocSearch-Button-Keys::after {
+    content: none;
+  }
+}
+
+@media (width >= 60rem) {
+  /*
+   * The brand has a box as wide as the sidebar, on every page, and the tabs start where it
+   * ends. So one length, the width of the sidebar, places the border of the sidebar and the
+   * left edge of the first tab: the left border of that tab is the pixels of the sidebar's
+   * border, whatever the brand and the tabs are called. A short brand leaves a gap before
+   * the tabs, and a long tab pushes the tabs after it, never the brand.
+   *
+   * The box has the padding of the sidebar at its right too, so a brand that is cut ends
+   * that far before the tabs.
+   *
+   * With a sidebar the default theme pins the title above it. Here the bar is one row.
+   */
+  .VPNav .VPNavBar .container > .title,
+  .VPNav .VPNavBar.has-sidebar .container > .title {
+    position: static;
+    width: calc(var(--vp-sidebar-width) - var(--ws-space-20) - var(--ws-border-width-thin));
+    height: var(--vp-nav-height);
+    padding: 0 var(--ws-space-20) 0 0;
+  }
+
+  /* the link is as wide as the brand, and a brand too long for the box is cut with an ellipsis */
+  .VPNav .VPNavBar .VPNavBarTitle .title {
+    width: fit-content;
+    max-width: 100%;
+    height: var(--vp-nav-height);
+    padding: 0;
+  }
+
+  .VPNav .VPNavBar .VPNavBarTitle .title > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .VPNav .VPNavBar .content,
+  .VPNav .VPNavBar.has-sidebar .content {
+    padding: 0;
+  }
+
+  /* the rule under the bar starts where the sidebar ends, in a window of any width */
+  .VPNav .VPNavBar.has-sidebar .divider {
+    padding-left: var(--vp-sidebar-width);
+  }
+
+  .VPNav .VPNavBar .content-body,
+  .VPNav .VPNavBar:not(.home.top) .content-body {
+    background: none;
+  }
+}
+
+@media (width >= 80rem) {
+  /* at this width the status line has the theme button, so the switch in the bar goes */
+  .VPNav .VPNavBar .content-body > .appearance {
+    display: none;
+  }
+}
+
+/*
+ * On phones the tabs stay visible, in a row of their own under the brand, as in the
+ * framework-free tab bar. The default theme hides them behind its menu button, so this
+ * gives the bar a second row and moves the menu into it. It needs :has(), to leave a site
+ * without tabs with one row.
+ */
+@media (width < 48rem) {
+  :root:has(.VPNavBarMenu) {
+    --ws-nav-row: 2.75rem;
+    --ws-tab-row: 2.5rem;
+    --vp-nav-height: calc(var(--ws-nav-row) + var(--ws-tab-row) + 2px);
+  }
+
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .wrapper > .container,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .wrapper > .container > .title,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBarTitle .title,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .content-body {
+    height: var(--ws-nav-row);
+  }
+
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBar .VPNavBarMenu {
+    display: flex;
+    position: absolute;
+    top: calc(var(--ws-nav-row) + 1px);
+    right: 0;
+    left: 0;
+    height: calc(var(--ws-tab-row) + 1px);
+    border-bottom: var(--ws-border-width-thin) solid var(--ws-color-border);
+    pointer-events: auto;
+  }
+
+  /* each tab takes the room its name needs, and they share what is left */
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBarHamburger,
+  :root:has(.VPNavBarMenu) .VPNav .VPNavBarSearch .DocSearch-Button {
+    height: var(--ws-nav-row);
+  }
+
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button {
+    padding: 0 var(--ws-space-8);
+    line-height: var(--ws-tab-row);
+  }
+
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* the row runs from edge to edge, so the current tab has no border at an end of it */
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink,
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup .button {
+    border-left-color: transparent;
+  }
+
+  .VPNav .VPNavBarMenu > .VPNavBarMenuLink:last-child,
+  .VPNav .VPNavBarMenu > .VPNavBarMenuGroup:last-child .button {
+    border-right-color: transparent;
+  }
+
+  .VPNav .VPNavBarMenu .VPFlyout .menu {
+    top: 100%;
+  }
+
+  /* the tabs are in the bar, so the menu behind the button does not repeat them */
+  :root:has(.VPNavBarMenu) .VPNavScreen .VPNavScreenMenu {
+    display: none;
+  }
+}

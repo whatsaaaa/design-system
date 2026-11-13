@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": false,
+  "singleQuote": true,
+  "ignorePatterns": [
+    "assets",
+    "dist",
+    "licenses",
+    "pnpm-lock.yaml",
+    "styleguide/public/ds",
+    "styleguide/public/kit",
+    "tests/browser/__screenshots__"
+  ]
+}

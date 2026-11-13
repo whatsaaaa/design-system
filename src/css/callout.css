@@ -1,0 +1,74 @@
+/*
+ * A callout: a bar in the status color, a label with an icon, then text.
+ * The status is never carried by color alone. On the light theme the label and icon take the
+ * text color, because the status hues miss AA as text there, and the hue stays on the bar.
+ *
+ *   <aside class="ws-callout ws-callout--warning">
+ *     <p class="ws-callout__title">Warning</p>
+ *     <p>...</p>
+ *   </aside>
+ */
+.ws-callout {
+  --ws-callout-tone: var(--ws-color-note);
+  --ws-callout-label: var(--ws-color-note-text);
+  --ws-callout-tint: var(--ws-color-note-tint);
+  --ws-callout-icon: var(--ws-icon-note);
+
+  margin: var(--ws-space-20) 0 0;
+  padding: var(--ws-space-14) var(--ws-space-16) var(--ws-space-16);
+  border-left: var(--ws-border-width-thick) solid var(--ws-callout-tone);
+  border-radius: 0 var(--ws-radius-lg) var(--ws-radius-lg) 0;
+  background: var(--ws-callout-tint);
+  color: var(--ws-color-text);
+}
+
+.ws-callout--tip {
+  --ws-callout-tone: var(--ws-color-tip);
+  --ws-callout-label: var(--ws-color-tip-text);
+  --ws-callout-tint: var(--ws-color-tip-tint);
+  --ws-callout-icon: var(--ws-icon-tip);
+}
+
+.ws-callout--warning {
+  --ws-callout-tone: var(--ws-color-warning);
+  --ws-callout-label: var(--ws-color-warning-text);
+  --ws-callout-tint: var(--ws-color-warning-tint);
+  --ws-callout-icon: var(--ws-icon-warning);
+}
+
+.ws-callout--danger {
+  --ws-callout-tone: var(--ws-color-danger);
+  --ws-callout-label: var(--ws-color-danger-text);
+  --ws-callout-tint: var(--ws-color-danger-tint);
+  --ws-callout-icon: var(--ws-icon-danger);
+}
+
+.ws-callout__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-8);
+  margin: 0;
+  color: var(--ws-callout-label);
+  font: var(--ws-text-overline);
+  letter-spacing: var(--ws-text-overline-letter-spacing);
+  text-transform: uppercase;
+}
+
+.ws-callout__title::before {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  background: currentcolor;
+  content: '';
+  mask: var(--ws-callout-icon) center / contain no-repeat;
+}
+
+.ws-callout > p {
+  margin: var(--ws-space-6) 0 0;
+  line-height: var(--ws-text-body-line-height);
+}
+
+.ws-callout > .ws-callout__title {
+  margin: 0;
+  line-height: var(--ws-text-overline-line-height);
+}

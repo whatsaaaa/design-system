@@ -1,0 +1,385 @@
+/*
+ * The page content. The prose styles of the system already apply to .vp-doc. This file
+ * covers what VitePress renders in its own shape: heading permalinks, code blocks, custom
+ * blocks, the pager, and the few default theme rules that are more specific than prose.
+ */
+.WsCrumb {
+  margin-bottom: var(--ws-space-12);
+  text-transform: lowercase;
+}
+
+/* the permalink of a section is its hash, and hangs where the hash of a plain page does */
+.vp-doc h2::before {
+  content: none;
+}
+
+.vp-doc h2 .header-anchor {
+  top: var(--ws-space-24);
+  left: 0;
+  margin: 0;
+  color: var(--ws-color-brand);
+  font-weight: inherit;
+  opacity: 1;
+  text-decoration: none;
+  transition: none;
+}
+
+.vp-doc :is(h1, h3, h4, h5, h6) .header-anchor {
+  color: var(--ws-color-brand);
+  font-weight: inherit;
+  text-decoration: none;
+  transition: none;
+}
+
+.vp-doc h2 .header-anchor::before {
+  content: '#';
+}
+
+.vp-doc :is(h1, h2, h3, h4, h5, h6) {
+  outline-offset: 4px;
+}
+
+.vp-doc a {
+  transition: none;
+}
+
+.vp-doc a:hover {
+  color: var(--ws-color-interactive);
+}
+
+.vp-doc :not(pre, h1, h2, h3, h4, h5, h6) > code {
+  font-size: 0.8125em;
+  transition: none;
+}
+
+.vp-doc tr:nth-child(2n) {
+  background: none;
+}
+
+/* code blocks: a caption bar with the file name and the language, dark in both themes */
+.vp-doc div[class*='language-'] {
+  --ws-caption: 2.25rem;
+
+  margin: var(--ws-space-16) 0 0;
+  padding-top: var(--ws-caption);
+  overflow: hidden;
+  border: var(--ws-border-width-thin) solid var(--ws-code-border);
+  border-radius: var(--ws-radius-lg);
+  background: var(--ws-code-bg);
+  color-scheme: dark;
+  transition: none;
+}
+
+/* the default theme pulls a block up against the one before it. Here each keeps its own frame. */
+.vp-doc div[class*='language-'] + div[class*='language-'],
+.vp-doc div[class$='-api'] + div[class*='language-'],
+.vp-doc div[class*='language-'] + div[class$='-api'] > div[class*='language-'] {
+  margin-top: var(--ws-space-16);
+}
+
+/* the marks of a diff sit in the padding, left of the code */
+.vp-doc div[class*='language-'] code .diff::before {
+  left: var(--ws-space-4);
+}
+
+.vp-doc div[class*='language-']::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--ws-caption);
+  border-bottom: var(--ws-border-width-thin) solid var(--ws-code-border);
+  background: var(--ws-code-header-bg);
+  content: '';
+}
+
+/* a block with neither a file name nor a language has nothing to caption */
+.vp-doc div[class*='language-']:has(> span.lang:empty):not(:has(> .ws-code-title)) {
+  --ws-caption: 0rem;
+}
+
+.vp-doc div[class*='language-']:has(> span.lang:empty):not(:has(> .ws-code-title))::before {
+  content: none;
+}
+
+.vp-doc div[class*='language-'] > span.lang,
+.vp-doc div[class*='language-'] > .ws-code-title {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  color: var(--ws-code-text-secondary);
+  font: var(--ws-text-caption);
+  line-height: var(--ws-caption);
+  transition: opacity var(--ws-motion-duration-fast);
+}
+
+.vp-doc div[class*='language-'] > span.lang {
+  right: var(--ws-space-16);
+}
+
+.vp-doc div[class*='language-'] > .ws-code-title {
+  left: var(--ws-space-16);
+  max-width: calc(100% - 6rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vp-doc div[class*='language-'] > button.copy {
+  top: 0.375rem;
+  right: var(--ws-space-8);
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--ws-radius-sm);
+  background-size: 0.875rem;
+}
+
+.vp-doc div[class*='language-'] > button.copy.copied::before,
+.vp-doc div[class*='language-'] > button.copy:hover.copied::before {
+  width: auto;
+  height: 1.5rem;
+  border-radius: var(--ws-radius-sm) 0 0 var(--ws-radius-sm);
+  padding: 0 var(--ws-space-8);
+  font: var(--ws-text-caption);
+  line-height: 1.5rem;
+}
+
+.vp-doc div[class*='language-'] pre {
+  padding: var(--ws-space-16) 0;
+}
+
+.vp-doc div[class*='language-'] code {
+  padding: 0 var(--ws-space-16);
+  font: var(--ws-text-code);
+  font-variant-ligatures: none;
+}
+
+.vp-doc div[class*='language-'].line-numbers-mode .line-numbers-wrapper {
+  top: var(--ws-caption);
+  padding-top: var(--ws-space-16);
+  border-right-color: var(--ws-code-border);
+  font: var(--ws-text-code);
+}
+
+.vp-doc div[class*='language-'] ::selection {
+  background: var(--ws-code-selection);
+  color: var(--ws-code-text);
+}
+
+/* a group of code blocks shares one frame, and its tabs are the caption */
+.vp-doc .vp-code-group {
+  margin-top: var(--ws-space-16);
+  overflow: hidden;
+  border: var(--ws-border-width-thin) solid var(--ws-code-border);
+  border-radius: var(--ws-radius-lg);
+  color-scheme: dark;
+}
+
+.vp-doc .vp-code-group .tabs {
+  margin: 0;
+  padding: 0 var(--ws-space-8);
+  border-radius: 0;
+  box-shadow: inset 0 -1px var(--ws-code-border);
+}
+
+.vp-doc .vp-code-group .tabs label {
+  padding: 0 var(--ws-space-10);
+  font: var(--ws-text-caption);
+  line-height: 2.25rem;
+  transition: none;
+}
+
+.vp-doc .vp-code-group .tabs label::after {
+  right: var(--ws-space-10);
+  left: var(--ws-space-10);
+  height: var(--ws-border-width-medium);
+  border-radius: 0;
+}
+
+.vp-doc .vp-code-group div[class*='language-'] {
+  margin: 0;
+  padding-top: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.vp-doc .vp-code-group div[class*='language-']::before,
+.vp-doc .vp-code-group div[class*='language-'] > .ws-code-title {
+  display: none;
+}
+
+.vp-doc .vp-code-group div[class*='language-'] > span.lang {
+  top: var(--ws-space-4);
+}
+
+.vp-doc .vp-code-group div[class*='language-'] > button.copy {
+  top: var(--ws-space-8);
+}
+
+/* custom blocks: a bar in the status color, a label with an icon, then text */
+.vp-doc .custom-block {
+  --ws-callout-tone: var(--ws-color-note);
+  --ws-callout-label: var(--ws-color-note-text);
+  --ws-callout-icon: var(--ws-icon-note);
+
+  margin: var(--ws-space-20) 0 0;
+  padding: var(--ws-space-14) var(--ws-space-16) var(--ws-space-16);
+  border: 0;
+  border-left: var(--ws-border-width-thick) solid var(--ws-callout-tone);
+  border-radius: 0 var(--ws-radius-lg) var(--ws-radius-lg) 0;
+  font-size: var(--ws-font-size-16);
+  line-height: var(--ws-text-body-line-height);
+}
+
+.vp-doc .custom-block.tip {
+  --ws-callout-tone: var(--ws-color-tip);
+  --ws-callout-label: var(--ws-color-tip-text);
+  --ws-callout-icon: var(--ws-icon-tip);
+}
+
+.vp-doc .custom-block.warning {
+  --ws-callout-tone: var(--ws-color-warning);
+  --ws-callout-label: var(--ws-color-warning-text);
+  --ws-callout-icon: var(--ws-icon-warning);
+}
+
+.vp-doc .custom-block:is(.danger, .caution) {
+  --ws-callout-tone: var(--ws-color-danger);
+  --ws-callout-label: var(--ws-color-danger-text);
+  --ws-callout-icon: var(--ws-icon-danger);
+}
+
+.vp-doc .custom-block.details {
+  border-left-color: var(--ws-color-border-strong);
+}
+
+.vp-doc .custom-block .custom-block-title {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-8);
+  margin: 0;
+  color: var(--ws-callout-label);
+  font: var(--ws-text-overline);
+  letter-spacing: var(--ws-text-overline-letter-spacing);
+  text-transform: uppercase;
+}
+
+.vp-doc .custom-block .custom-block-title::before {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  background: currentcolor;
+  content: '';
+  mask: var(--ws-callout-icon) center / contain no-repeat;
+}
+
+.vp-doc .custom-block.details summary {
+  margin: 0;
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-weight: var(--ws-font-weight-bold);
+}
+
+.vp-doc .custom-block p {
+  margin: var(--ws-space-6) 0 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.vp-doc .custom-block a,
+.vp-doc .custom-block a:hover {
+  color: var(--ws-color-interactive);
+  font-weight: inherit;
+  opacity: 1;
+}
+
+.vp-doc .custom-block code {
+  font-size: 0.8125em;
+}
+
+/* inline code only: a code block in a callout keeps the colors of a code block */
+.vp-doc .custom-block :not(pre) > code {
+  color: var(--ws-color-text);
+}
+
+.vp-doc .custom-block a > code,
+.vp-doc .custom-block a:hover > code {
+  color: inherit;
+}
+
+.vp-doc .custom-block div[class*='language-'] {
+  margin: var(--ws-space-10) 0 0;
+}
+
+/* a badge next to a heading */
+.vp-doc .VPBadge {
+  border-radius: var(--ws-radius-sm);
+  font-family: var(--ws-font-family-mono);
+  font-weight: var(--ws-font-weight-medium);
+}
+
+/* footer of a page: edit link, last change, previous and next */
+.VPDoc .VPDocFooter {
+  margin-top: var(--ws-space-56);
+  font-family: var(--ws-font-family-mono);
+}
+
+.VPDoc .VPDocFooter .edit-info {
+  padding-bottom: var(--ws-space-16);
+}
+
+.VPDoc .VPDocFooter .edit-link-button,
+.VPDoc .VPDocFooter .last-updated-text {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-caption);
+  line-height: 2rem;
+  transition: none;
+}
+
+.VPDoc .VPDocFooter .edit-link-button {
+  color: var(--ws-color-interactive);
+}
+
+.VPDoc .VPDocFooter .prev-next {
+  gap: var(--ws-space-16);
+  border-top: 0;
+  padding-top: 0;
+}
+
+.VPDoc .VPDocFooter .pager-link {
+  padding: var(--ws-space-12) var(--ws-space-16);
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-lg);
+  transition: none;
+}
+
+.VPDoc .VPDocFooter .pager-link:hover {
+  border-color: var(--ws-color-field-border);
+}
+
+.VPDoc .VPDocFooter .pager-link .desc {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-overline);
+  font-weight: var(--ws-font-weight-medium);
+  letter-spacing: var(--ws-text-overline-letter-spacing);
+  line-height: 1.25rem;
+  text-transform: uppercase;
+}
+
+.VPDoc .VPDocFooter .pager-link .title {
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-size: var(--ws-font-size-15);
+  font-weight: var(--ws-font-weight-bold);
+  transition: none;
+}
+
+@media (width >= 60rem) {
+  .VPDoc.VPDoc {
+    padding: var(--ws-space-40) var(--ws-space-32) 0;
+  }
+
+  .VPDoc .aside-container {
+    padding-bottom: var(--ws-size-status-line);
+  }
+}
