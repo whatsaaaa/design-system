@@ -21,9 +21,15 @@ export interface Identity {
   /** One line about it, shown in the banners. */
   tagline: string
   banner?: {
-    /** Window title. Defaults to the project's folder under the handle. */
+    /**
+     * Window title. Defaults to the project's folder under the handle, and on the profile banner
+     * to home.
+     */
     title?: string
-    /** The command whose output is the name. Defaults to reading the README. */
+    /**
+     * The command whose output is the name, or on the profile banner the profile. Defaults to
+     * reading the README, and on the profile banner to `whoami`.
+     */
     command?: string
     /** Index of the first letter of the name drawn in love. */
     loveFrom?: number

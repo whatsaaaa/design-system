@@ -8,14 +8,14 @@ The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whats
 
 ## What is in it
 
-| Part                    | What it is                                                                                                                      | Source                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| Identity                | The ghost in every cut, the wordmark, six poses, a sprite per project, favicons, README headers and social cards. All generated | `src/identity/ghost.ts`, `identity/`      |
-| Tokens                  | Rosé Pine main for dark and Dawn for light, mapped to roles, with type, space, radii and motion                                 | `tokens/`                                 |
-| Styles                  | Prose, code blocks, tables, lists, callouts, and the terminal frame: tab bar, prompts, status line                              | `src/css/`                                |
-| The ghost as an element | `<ws-ghost>`, with the easter egg                                                                                               | `src/ghost/`                              |
-| Docs theme              | A VitePress theme on top of VitePress's default theme                                                                           | `src/vitepress/`, `src/vitepress-config/` |
-| Style guide             | A site that shows all of it with real content, in dark and light, and offers the assets for download                            | `styleguide/`                             |
+| Part                    | What it is                                                                                                                                        | Source                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| Identity                | The ghost in every cut, the wordmark, six poses, a sprite per project, favicons, README headers, social cards and a profile banner. All generated | `src/identity/ghost.ts`, `identity/`      |
+| Tokens                  | Rosé Pine main for dark and Dawn for light, mapped to roles, with type, space, radii and motion                                                   | `tokens/`                                 |
+| Styles                  | Prose, code blocks, tables, lists, callouts, and the terminal frame: tab bar, prompts, status line                                                | `src/css/`                                |
+| The ghost as an element | `<ws-ghost>`, with the easter egg                                                                                                                 | `src/ghost/`                              |
+| Docs theme              | A VitePress theme on top of VitePress's default theme                                                                                             | `src/vitepress/`, `src/vitepress-config/` |
+| Style guide             | A site that shows all of it with real content, in dark and light, and offers the assets for download                                              | `styleguide/`                             |
 
 To use it in another project, install it with `pnpm add @whatsaaaa/design-system` and read [docs/usage.md](./docs/usage.md). It is written for coding agents and is short.
 
