@@ -26,7 +26,8 @@ Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 | `@whatsaaaa/design-system/css/prose.css`    | Long-form text, in a `.ws-prose` container                                            |
 | `@whatsaaaa/design-system/css/code.css`     | `.ws-code`, a code block with a caption                                               |
 | `@whatsaaaa/design-system/css/callout.css`  | `.ws-callout`                                                                         |
-| `@whatsaaaa/design-system/css/terminal.css` | Tab bar, prompts, status line, key caps, tags                                         |
+| `@whatsaaaa/design-system/css/terminal.css` | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along            |
+| `@whatsaaaa/design-system/css/theme.css`    | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                |
 | `@whatsaaaa/design-system/css/ghost.css`    | Styles of `<ws-ghost>`                                                                |
 | `@whatsaaaa/design-system/css/icons.css`    | The icons the callouts and prompts draw. Needed with `callout.css` and `terminal.css` |
 
@@ -65,7 +66,7 @@ The pairs that are checked for contrast are in `tokens/contrast.json`. If you ne
 
 ## 3. Theme
 
-Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system. Do not write your own `prefers-color-scheme` rules: the tokens already switch.
+Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
 
 ```ts
 import { getTheme, setTheme, toggleTheme, themeInitScript } from '@whatsaaaa/design-system/theme'
@@ -76,7 +77,28 @@ setTheme('system') // follows the system again
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
 
-To name the theme in a status line, put both names in the page: an item with `ws-status-line__item--dark` shows on the dark theme only, one with `ws-status-line__item--light` on the light theme only. Do not set the name from a script.
+The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand and when the system's theme changes, and `setTheme` and `toggleTheme` do too. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
+
+```html
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src=".../theme/init.js"></script>
+  <script src=".../shortcuts/init.js"></script>
+  <link rel="stylesheet" href=".../index.css" />
+</head>
+```
+
+A theme-color tag that is there, with or without `media`, takes the theme's color too. Do not set it from a script of your own.
+
+An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or `ws-theme-light`. Put both in the page and the styles show the one of the theme in effect where it stands: the nearest `data-theme`, on `<html>` or on an element around it, or the system's theme. So the right one shows before any script runs. Do not swap them from a script.
+
+```html
+<img class="ws-theme-dark" src="mark-on-dark.svg" alt="whatsaaaa" width="32" height="32" />
+<img class="ws-theme-light" src="mark-on-light.svg" alt="whatsaaaa" width="32" height="32" />
+```
+
+On a page with a status line, its theme button is the theme switch at every width: see [the status line](#status-line).
 
 `data-theme` also works on any element, to keep a part of a page in one theme.
 
@@ -111,9 +133,32 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 - Code block with a caption: `<figure class="ws-code"><figcaption><span>file.ts</span><span>ts</span></figcaption><pre><code>...</code></pre></figure>`. For highlighting, use Shiki with `codeTheme` from `@whatsaaaa/design-system/shiki`.
 - Callout: `<aside class="ws-callout ws-callout--warning"><p class="ws-callout__title">Warning</p><p>...</p></aside>`. Modifiers: `--tip`, `--warning`, `--danger`. None is a note.
 - Terminal frame: `ws-term` (the window), `ws-tab-bar` with `ws-tab-bar__brand`, `ws-tabs` and `ws-tab-bar__end`, `ws-prompt` for headings, `ws-output`, `ws-status-line`. Mark the current tab with `aria-current="page"`.
-- Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`.
+- Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`, and `ws-visually-hidden` for text that only assistive technology reads.
 
 The markup of each piece is in the comment at the top of its stylesheet, and in the style guide.
+
+### Status line
+
+```html
+<footer class="ws-status-line">
+  <span class="ws-status-line__mode">NORMAL</span>
+  <span class="ws-status-line__path">
+    <span class="ws-status-line__file"><span>~/guide/conditions.md</span></span>
+  </span>
+  <!-- the key hints and the keys switch, see section 7 -->
+  <button type="button" class="ws-status-line__theme">
+    <span class="ws-visually-hidden">Switch theme, now</span>
+    <span class="ws-theme-dark">rose-pine</span>
+    <span class="ws-theme-light">rose-pine-dawn</span>
+  </button>
+</footer>
+```
+
+- **The mode** says whether the key hints work. It reads `NORMAL`, and `INSERT` while the focus is in a field, where a key is typed and not a shortcut. Use those two words and no others. `isTyping` from `@whatsaaaa/design-system/shortcuts` tells which: check `isTyping(document.activeElement)` on `focusin` and `focusout`. A page without fields stays `NORMAL`.
+- **The path** goes in `ws-status-line__path`, which takes the room the other items leave and puts the items after it at the right edge. The path gives way to them on its own: it is cut with an ellipsis, and when not even its first character fits, it goes as a whole. Write no breakpoint or width for it. A status line without a path puts `<span class="ws-status-line__spacer"></span>` where the path would be.
+- **The theme button** names the theme shown and switches it, at every width: below 64rem, where the key hints are hidden, it is the only theme switch. Call `toggleTheme` when it is clicked. It holds both names, and the styles show the one of the theme, so the name is right before any script runs and the button keeps the focus when the theme changes. Its name for assistive technology is "Switch theme, now rose-pine". Where the key hints show, keep the theme's `t` hint as well.
+- An item for wide screens only takes `ws-status-line__item--wide`, and one with a border on its left `ws-status-line__item--edge`.
+- A focus ring in the window's bars is drawn inside its control, so neither the bars nor the window's corners cut it off. A control of your own in a bar does the same: `outline-offset: calc(-1 * var(--ws-border-width-medium))`.
 
 ## 7. Keys
 

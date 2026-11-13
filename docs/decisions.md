@@ -28,6 +28,10 @@ Dark is the default block, light applies under `prefers-color-scheme: light`, an
 
 The newer way is `light-dark()` with `color-scheme`. It needs no second block and nests for free. It was not used because a browser without it shows no colors at all, and the selector approach works everywhere and still nests: code blocks and the samples in the style guide use `data-theme` on an element.
 
+An element for one theme only, `ws-theme-dark` or `ws-theme-light`, is hidden by selectors too. A token cannot hide an element: `display` cannot be switched by a variable without losing the display the element has, and a container style query, which could read the theme from a variable, is not in every browser yet. A selector cannot ask for the nearest `data-theme`, so the rules spell out the depths that occur: a theme on `<html>` and up to three parts held in a theme, one in the other. They hide with `!important`, so no other rule that sets the display of the element shows it in the wrong theme.
+
+The color of the browser's own bars, `<meta name="theme-color">`, is read from the stylesheet, from `--ws-color-bg` on `<html>`, and not written into the theme module. So it is the token's value in the theme that applies, by the same rules as everything else, and the module carries no copy of a color. The price is that it is known only once the stylesheet is there: the head script sets it in the first animation frame, which a browser runs once the stylesheets of the `<head>` are loaded and before the first paint. Material for MkDocs reads its theme-color from the page the same way.
+
 ## Docs theme: on top of VitePress's default theme
 
 The docs theme extends the default theme and restyles it. It does not replace it.

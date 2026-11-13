@@ -3,6 +3,7 @@
  * Each piece stands alone, so an app can take the bars without the frame.
  */
 @import './breakpoints.css';
+@import './theme.css';
 
 /* The window: bar, content, bar. Give it a height to make the content scroll inside it. */
 .ws-term {
@@ -47,11 +48,20 @@
   flex: none;
   align-items: center;
   gap: var(--ws-space-10);
+
+  /* room for the focus ring of a brand that is a link, taken from the space around it */
+  margin-inline: calc(-1 * var(--ws-space-10));
+  padding-inline: var(--ws-space-10);
   color: var(--ws-color-text);
   font-weight: var(--ws-font-weight-extrabold);
   letter-spacing: -0.02em;
   text-decoration: none;
   white-space: nowrap;
+}
+
+/* A brand that is a link fills the bar's height, where the window clips: its ring goes inside. */
+.ws-tab-bar__brand:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
 
 .ws-tab-bar__brand a {
@@ -103,6 +113,11 @@
 
 .ws-tabs a:hover {
   color: var(--ws-color-text);
+}
+
+/* A tab fills the bar from edge to edge, and the window clips there: its ring goes inside it. */
+.ws-tabs a:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
 
 .ws-tabs a[aria-current]:not([aria-current='false']) {
@@ -275,7 +290,9 @@
  *
  *   <footer class="ws-status-line">
  *     <span class="ws-status-line__mode">NORMAL</span>
- *     <span class="ws-status-line__file">guide/conditions.md</span>
+ *     <span class="ws-status-line__path">
+ *       <span class="ws-status-line__file"><span>guide/conditions.md</span></span>
+ *     </span>
  *     <span class="ws-status-line__item ws-status-line__item--wide">main</span>
  *     <span class="ws-status-line__keys">
  *       <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
@@ -286,14 +303,20 @@
  *       <span class="ws-status-line__on" aria-hidden="true">on</span>
  *       <span class="ws-status-line__off" aria-hidden="true">off</span>
  *     </button>
- *     <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--dark">rose-pine</span>
- *     <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--light">rose-pine-dawn</span>
+ *     <button type="button" class="ws-status-line__theme">
+ *       <span class="ws-visually-hidden">Switch theme, now</span>
+ *       <span class="ws-theme-dark">rose-pine</span>
+ *       <span class="ws-theme-light">rose-pine-dawn</span>
+ *     </button>
  *   </footer>
  *
+ * The mode says whether the key hints work: NORMAL, or INSERT while the focus is in a field.
+ * The path takes the room the other items leave, so they always fit.
  * A key hint is the control itself: pressing the key clicks it (see the shortcuts module).
  * Hints stay hidden until that module runs, so a hint is never shown for a key that does nothing.
  * The switch turns the keys off and on again. A status line with key hints carries it.
  * With the keys off the controls stay, without their key caps.
+ * The theme button names the theme shown and switches it, at every width.
  */
 .ws-status-line {
   display: flex;
@@ -324,6 +347,19 @@
   letter-spacing: 0.04em;
 }
 
+/*
+ * The room the other items leave, which the path takes: the items after it go to the right
+ * edge, as after a spacer. The path gives way to them inside it. It shrinks to its first
+ * character and the ellipsis, then goes as a whole, padding and all, so a part of a
+ * character never shows.
+ */
+.ws-status-line__path {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  container: ws-status-line-path / inline-size;
+}
+
 .ws-status-line__file {
   flex: 0 1 auto;
   min-width: 0;
@@ -336,29 +372,18 @@
   text-overflow: ellipsis;
 }
 
+/*
+ * No room for "~…" between the padding of the path, --ws-space-14 on each side. The padding
+ * is written out, as a container query takes no var(). A unit test holds the two together.
+ */
+@container ws-status-line-path (width < calc(2ch + 2 * 0.875rem)) {
+  .ws-status-line__file {
+    display: none;
+  }
+}
+
 .ws-status-line__item--edge {
   border-left: var(--ws-border-width-thin) solid var(--ws-color-border);
-}
-
-/*
- * An item for one theme only, such as the name of the theme. Both are in the page and the
- * one of the page's theme shows, so it is right before any script runs.
- */
-[data-theme='dark'] .ws-status-line__item--light,
-[data-theme='light'] .ws-status-line__item--dark {
-  display: none;
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme]) .ws-status-line__item--dark {
-    display: none;
-  }
-}
-
-@media not (prefers-color-scheme: light) {
-  :root:not([data-theme]) .ws-status-line__item--light {
-    display: none;
-  }
 }
 
 .ws-status-line__keys {
@@ -379,7 +404,7 @@
   display: none;
 }
 
-/* Without key hints the items after them still go to the right edge. */
+/* Without a path and without key hints the items after them still go to the right edge. */
 .ws-status-line__spacer {
   flex: 1;
 }
@@ -390,12 +415,13 @@
   gap: var(--ws-space-6);
 }
 
+/* The room for the focus ring inside a control comes from the gap between them: nothing moves. */
 .ws-status-line__keys :is(button, a) {
   display: flex;
   align-items: center;
   gap: var(--ws-space-6);
-  margin: 0;
-  padding: 0;
+  margin: 0 calc(-1 * var(--ws-space-6));
+  padding: 0 var(--ws-space-6);
   border: 0;
   background: none;
   color: inherit;
@@ -404,22 +430,17 @@
   cursor: pointer;
 }
 
-.ws-status-line__keys :is(button, a):hover {
-  color: var(--ws-color-text);
-}
-
-.ws-status-line__keys :is(button, a):focus-visible {
-  outline-offset: 2px;
-}
-
 /*
- * The keys switch. It reads "keys on" or "keys off" from its own state, which the shortcuts
- * module sets, and stays hidden until it has one. Unlike the hints it shows at every width:
- * the numbers of the tabs are keys everywhere, and with the keys off it is the way to turn
- * them on again.
+ * The keys switch and the theme button. The switch reads "keys on" or "keys off" from its own
+ * state, which the shortcuts module sets, and stays hidden until it has one. Unlike the hints
+ * both show at every width: the numbers of the tabs are keys everywhere, and with the keys
+ * off the switch is the way to turn them on again. The theme button is the theme switch on
+ * a narrow screen, where the hints are hidden. It holds the names of both themes and shows
+ * the one of the theme shown, so it keeps the focus when it switches.
  */
-.ws-status-line__switch {
-  display: none;
+.ws-status-line__switch,
+.ws-status-line__theme {
+  display: flex;
   flex: none;
   align-items: center;
   gap: var(--ws-space-6);
@@ -433,11 +454,13 @@
   cursor: pointer;
 }
 
-.ws-status-line__switch[aria-checked] {
-  display: flex;
+.ws-status-line__switch:not([aria-checked]) {
+  display: none;
 }
 
+.ws-status-line__keys :is(button, a):hover,
 .ws-status-line__switch:hover,
+.ws-status-line__theme:hover,
 .ws-status-line__on,
 .ws-status-line__off {
   color: var(--ws-color-text);
@@ -448,9 +471,36 @@
   display: none;
 }
 
-/* the status line clips, so the ring is drawn inside the switch */
-.ws-status-line__switch:focus-visible {
+/* The status line clips what crosses its edges, so a ring is drawn inside its control. */
+.ws-status-line__keys :is(button, a):focus-visible,
+.ws-status-line__switch:focus-visible,
+.ws-status-line__theme:focus-visible {
   outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
+/*
+ * The window cuts off its corners, so a ring in one follows the window's curve: that of the
+ * first and the last control of the status line, and on a narrow screen that of the brand.
+ */
+.ws-term .ws-status-line > :first-child:focus-visible {
+  border-bottom-left-radius: calc(var(--ws-radius-xl) - var(--ws-border-width-thin));
+}
+
+.ws-term .ws-status-line > :last-child:focus-visible {
+  border-bottom-right-radius: calc(var(--ws-radius-xl) - var(--ws-border-width-thin));
+}
+
+/* Text for assistive technology only, such as the start of the theme button's name. */
+.ws-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
 }
 
 @media (--ws-compact) {
@@ -462,7 +512,12 @@
 
   .ws-tab-bar__brand {
     min-height: 2.75rem;
+    margin-left: 0;
     padding-left: var(--ws-space-16);
+  }
+
+  .ws-term .ws-tab-bar__brand:focus-visible {
+    border-top-left-radius: calc(var(--ws-radius-xl) - var(--ws-border-width-thin));
   }
 
   .ws-tab-bar__end {

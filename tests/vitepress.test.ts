@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url'
 import { createMarkdownRenderer } from 'vitepress'
 import { describe, expect, it } from 'vitest'
 import { codeTheme } from '../src/shiki/index.ts'
+import { themeColorScript } from '../src/theme/color.ts'
 import { whatsaaaaConfig, whatsaaaaMarkdown } from '../src/vitepress-config/index.ts'
 import { isActiveLink } from '../src/vitepress/support.ts'
 import { hex } from '../scripts/lib/tokens.ts'
@@ -85,6 +86,12 @@ describe('markdown in the docs theme', () => {
     expect(html).toContain(`color:${hex('syntax.string').toUpperCase()}`)
     expect(html).not.toContain('--shiki-dark')
   })
+
+  it('highlights the HTML in a Markdown block, also before any HTML block of the site', async () => {
+    // the first block this renderer highlights, so no HTML block has loaded the HTML grammar
+    const html = (await renderer()).render('```md\n<img src="./header.svg" alt="" />\n```')
+    expect(html).toContain(`color:${hex('syntax.type').toUpperCase()}">img<`)
+  })
 })
 
 describe('the scripts the base config puts in the head', () => {
@@ -101,12 +108,26 @@ describe('the scripts the base config puts in the head', () => {
         return remembered[key] ?? null
       },
     }
-    const view = {
-      matchMedia: (query: string) => ({ matches: query === `(prefers-color-scheme: ${system})` }),
+    const matchMedia = (query: string) => ({
+      matches: query === `(prefers-color-scheme: ${system})`,
+      addEventListener: () => {},
+    })
+    // what the scripts reach for. The theme-color script only starts listening here: it acts
+    // once the stylesheet is there, which the theme module's tests show in a page
+    const globals = {
+      document: page,
+      localStorage: storage,
+      window: { matchMedia },
+      matchMedia,
+      MutationObserver: class {
+        observe() {}
+      },
+      requestAnimationFrame: () => 0,
+      addEventListener: () => {},
     }
     for (const [tag, , script] of whatsaaaaConfig().head as [string, object, string][]) {
       expect(tag).toBe('script')
-      new Function('document', 'localStorage', 'window', script)(page, storage, view)
+      new Function(...Object.keys(globals), script)(...Object.values(globals))
     }
     return page.documentElement.dataset
   }
@@ -128,6 +149,11 @@ describe('the scripts the base config puts in the head', () => {
     expect(pageAfter({ 'ws-keys': 'off' }, 'dark').wsKeys).toBe('off')
     expect(pageAfter({}, 'dark').wsKeys).toBeUndefined()
     expect(pageAfter({ 'vitepress-theme-appearance': 'light' }, 'dark').wsKeys).toBeUndefined()
+  })
+
+  it("keep the color of the browser's own bars in step with the theme VitePress switches", () => {
+    const scripts = (whatsaaaaConfig().head as [string, object, string][]).map(([, , s]) => s)
+    expect(scripts).toContain(themeColorScript)
   })
 
   it.each(['dark', 'light'] as const)(

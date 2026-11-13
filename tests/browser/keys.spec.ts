@@ -55,11 +55,11 @@ test.describe('the keys of the status line', () => {
 
   test('t switches the theme, and the choice is remembered', async ({ page }) => {
     expect(await theme(page)).toBe('dark')
-    await expect(page.locator('.WsStatusLine .ws-status-line__item--dark')).toBeVisible()
+    await expect(page.locator('.WsStatusLine .ws-theme-dark')).toBeVisible()
     await page.keyboard.press('t')
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
-    await expect(page.locator('.WsStatusLine .ws-status-line__item--light')).toBeVisible()
-    await expect(page.locator('.WsStatusLine .ws-status-line__item--dark')).toBeHidden()
+    await expect(page.locator('.WsStatusLine .ws-theme-light')).toBeVisible()
+    await expect(page.locator('.WsStatusLine .ws-theme-dark')).toBeHidden()
     await page.reload()
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
     await page.keyboard.press('t')
@@ -323,11 +323,11 @@ test.describe('on a plain page', () => {
   test('the keys work with nothing but the module', async ({ page }) => {
     await open(page, '/examples/terminal.html')
     await expect(page.locator('.ws-status-line__keys')).toBeVisible()
-    await expect(page.locator('.ws-status-line__item--dark')).toBeVisible()
+    await expect(page.locator('.ws-status-line__theme .ws-theme-dark')).toBeVisible()
     await page.keyboard.press('t')
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
-    await expect(page.locator('.ws-status-line__item--light')).toBeVisible()
-    await expect(page.locator('.ws-status-line__item--dark')).toBeHidden()
+    await expect(page.locator('.ws-status-line__theme .ws-theme-light')).toBeVisible()
+    await expect(page.locator('.ws-status-line__theme .ws-theme-dark')).toBeHidden()
     await page.keyboard.press('2')
     await expect(page).toHaveURL(/\/examples\/prose\.html/)
     // the choice came along to the next page, before its first paint
@@ -342,8 +342,8 @@ test.describe('on a plain page', () => {
     await expect(control).toHaveText('keys off', { useInnerText: true })
     expect(await named(page)).toMatchObject({ hints: false, numbers: false, spoken: false })
     expect(await pressAll(page)).toMatchObject({ theme: false, left: false })
-    // the theme button stays, without its key, and works by hand
-    const button = page.locator('[data-toggle-theme]')
+    // the theme's key hint stays, without its key, and works by hand
+    const button = page.locator('.ws-status-line__keys [data-toggle-theme]')
     await expect(button).toHaveText('theme', { useInnerText: true })
     await button.click()
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
@@ -359,14 +359,15 @@ test.describe('on a plain page', () => {
 
   test('the status line names the theme without any script', async ({ browser }) => {
     for (const [colorScheme, shown, hidden] of [
-      ['dark', '--dark', '--light'],
-      ['light', '--light', '--dark'],
+      ['dark', 'dark', 'light'],
+      ['light', 'light', 'dark'],
     ] as const) {
       const context = await browser.newContext({ colorScheme, javaScriptEnabled: false })
       const page = await context.newPage()
       await page.goto('/examples/terminal.html')
-      await expect(page.locator(`.ws-status-line__item${shown}`), colorScheme).toBeVisible()
-      await expect(page.locator(`.ws-status-line__item${hidden}`), colorScheme).toBeHidden()
+      const name = (theme: string) => page.locator(`.ws-status-line__theme .ws-theme-${theme}`)
+      await expect(name(shown), colorScheme).toBeVisible()
+      await expect(name(hidden), colorScheme).toBeHidden()
       // without the module there are no keys, so there is no switch and no hint to show
       await expect(page.locator('.ws-status-line__switch'), colorScheme).toBeHidden()
       await expect(page.locator('.ws-status-line__keys'), colorScheme).toBeHidden()

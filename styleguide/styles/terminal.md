@@ -65,8 +65,9 @@ The mode, where you are, the keys, and one or two facts at the right edge.
 ```html
 <footer class="ws-status-line">
   <span class="ws-status-line__mode">NORMAL</span>
-  <span class="ws-status-line__file"><span>~/whatsaaaa</span></span>
-  <span class="ws-status-line__spacer"></span>
+  <span class="ws-status-line__path">
+    <span class="ws-status-line__file"><span>~/whatsaaaa</span></span>
+  </span>
   <span class="ws-status-line__keys">
     <a href="https://github.com/whatsaaaa" data-ws-key="g"><kbd class="ws-kbd">g</kbd>github</a>
     <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
@@ -82,16 +83,17 @@ The mode, where you are, the keys, and one or two facts at the right edge.
     <span class="ws-status-line__on" aria-hidden="true">on</span>
     <span class="ws-status-line__off" aria-hidden="true">off</span>
   </button>
-  <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--dark">
-    rose-pine
-  </span>
-  <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--light">
-    rose-pine-dawn
-  </span>
+  <button type="button" class="ws-status-line__theme">
+    <span class="ws-visually-hidden">Switch theme, now</span>
+    <span class="ws-theme-dark">rose-pine</span>
+    <span class="ws-theme-light">rose-pine-dawn</span>
+  </button>
 </footer>
 ```
 
-An item with `--dark` or `--light` shows on that theme only. Both names of the theme are in the page and the styles pick one, so the name is right before any script runs.
+The mode reads `NORMAL`, or `INSERT` while you type in a field. The path takes the room the others leave and gives way to them: it is cut with an ellipsis, and where not even its first character fits, it goes as a whole. The last item is the name of the theme, and a button that switches it, at every width. It holds both names and shows the one of the theme. The rules for each are in [the usage guide](/docs/usage#status-line).
+
+A focus ring in the bars is drawn inside its control, so the bars and the corners of the window do not cut it off.
 
 ### Keys
 

@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { hex } from '../scripts/lib/tokens.ts'
 import {
   THEME_STORAGE_KEY,
   getTheme,
@@ -12,17 +13,38 @@ import {
 } from '../src/theme/index.ts'
 
 const root = document.documentElement
-const systemPrefers = (theme: 'dark' | 'light') =>
-  vi
-    .spyOn(window, 'matchMedia')
-    .mockImplementation((query) => ({ matches: query.includes(theme) }) as MediaQueryList)
+/** What a change of the system's theme calls: the listeners the scripts gave matchMedia. */
+let systemChanges: (() => void)[] = []
+
+/** The system's theme, for the module and for the media queries of the stylesheet. */
+function systemPrefers(theme: 'dark' | 'light') {
+  ;(window as unknown as HappyDOMWindow).happyDOM.settings.device.prefersColorScheme = theme
+  // happy-dom keeps the computed styles of <html> until it changes, where a browser computes
+  // them again for the new theme
+  root.setAttribute('data-system', theme)
+  root.removeAttribute('data-system')
+  vi.spyOn(window, 'matchMedia').mockImplementation(
+    (query) =>
+      ({
+        matches: query.includes(theme),
+        addEventListener: (_type: string, listener: () => void) => systemChanges.push(listener),
+      }) as unknown as MediaQueryList,
+  )
+}
+interface HappyDOMWindow {
+  happyDOM: { settings: { device: { prefersColorScheme: string } } }
+}
 
 beforeEach(() => {
   localStorage.clear()
   delete root.dataset.theme
+  systemChanges = []
   systemPrefers('dark')
 })
-afterEach(() => vi.restoreAllMocks())
+afterEach(() => {
+  vi.restoreAllMocks()
+  document.head.replaceChildren()
+})
 
 describe('the theme switch', () => {
   it('follows the system until a theme is chosen by hand', () => {
@@ -66,8 +88,64 @@ describe('the theme switch', () => {
   })
 })
 
+describe("the color of the browser's own bars", () => {
+  const colors = () =>
+    [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map(
+      (tag) => tag.content,
+    )
+  /** The token stylesheet, as a page loads it. */
+  const loadStyles = () => {
+    const style = document.createElement('style')
+    // vitest runs from the repository root
+    style.textContent = readFileSync(join(process.cwd(), 'dist/tokens.css'), 'utf8')
+    document.head.append(style)
+  }
+
+  it('is the background of the theme chosen by hand, from the tokens', () => {
+    loadStyles()
+    setTheme('light')
+    expect(colors()).toEqual([hex('color.bg', 'light')])
+    toggleTheme()
+    expect(colors()).toEqual([hex('color.bg', 'dark')])
+  })
+
+  it('is the background of the system theme again when the page follows the system', () => {
+    loadStyles()
+    systemPrefers('light')
+    setTheme('dark')
+    setTheme('system')
+    expect(colors()).toEqual([hex('color.bg', 'light')])
+  })
+
+  it('goes on every theme-color tag the page has, and adds none of its own', () => {
+    loadStyles()
+    document.head.insertAdjacentHTML(
+      'beforeend',
+      '<meta name="theme-color" media="(prefers-color-scheme: light)" content="" />' +
+        '<meta name="theme-color" media="not (prefers-color-scheme: light)" content="" />',
+    )
+    setTheme('light')
+    expect(colors()).toEqual([hex('color.bg', 'light'), hex('color.bg', 'light')])
+  })
+
+  it('is left alone while the stylesheet is not there', () => {
+    setTheme('light')
+    expect(colors()).toEqual([])
+  })
+})
+
 describe('the script for the head', () => {
   const run = () => new Function(themeInitScript)()
+  const colors = () =>
+    [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map(
+      (tag) => tag.content,
+    )
+  const loadStyles = () => {
+    const style = document.createElement('style')
+    style.textContent = readFileSync(join(process.cwd(), 'dist/tokens.css'), 'utf8')
+    document.head.append(style)
+  }
+  const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve))
 
   it('applies a remembered theme before the page renders', () => {
     localStorage.setItem(THEME_STORAGE_KEY, 'light')
@@ -81,6 +159,40 @@ describe('the script for the head', () => {
     localStorage.setItem(THEME_STORAGE_KEY, 'solarized')
     run()
     expect(root.dataset.theme).toBeUndefined()
+  })
+
+  it('gives the bars the remembered theme once the stylesheet is there, before the first paint', async () => {
+    localStorage.setItem(THEME_STORAGE_KEY, 'light')
+    // it runs before the stylesheet, so it waits for the frame that the stylesheet holds back
+    run()
+    expect(colors()).toEqual([])
+    loadStyles()
+    await nextFrame()
+    expect(colors()).toEqual([hex('color.bg', 'light')])
+  })
+
+  it('keeps the bars in step with data-theme, whoever sets it', async () => {
+    loadStyles()
+    run()
+    await nextFrame()
+    expect(colors()).toEqual([hex('color.bg', 'dark')])
+    // as the docs theme does, from VitePress's own switch
+    root.dataset.theme = 'light'
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
+  })
+
+  it("follows the system's theme while the page follows the system", async () => {
+    loadStyles()
+    run()
+    await nextFrame()
+    systemPrefers('light')
+    for (const change of systemChanges) change()
+    expect(colors()).toEqual([hex('color.bg', 'light')])
+    // a theme chosen by hand holds when the system changes
+    root.dataset.theme = 'light'
+    systemPrefers('dark')
+    for (const change of systemChanges) change()
+    expect(colors()).toEqual([hex('color.bg', 'light')])
   })
 
   it('is also a file, for a page that loads it instead of inlining it', () => {
