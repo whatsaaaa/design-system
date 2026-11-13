@@ -1,8 +1,11 @@
 {
   "name": "@whatsaaaa/design-system",
   "version": "0.0.0",
-  "private": true,
   "description": "Whatsaaaa's design system: brand identity, design tokens, typography, docs theme and asset kit",
+  "homepage": "https://github.com/whatsaaaa/design-system#readme",
+  "bugs": "https://github.com/whatsaaaa/design-system/issues",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Whatsaaaa",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/whatsaaaa/design-system.git"
@@ -49,7 +52,10 @@
       "types": "./dist/shiki/index.d.ts",
       "default": "./dist/shiki/index.js"
     },
-    "./vitepress": "./src/vitepress/index.ts",
+    "./vitepress": {
+      "types": "./src/vitepress/theme.d.ts",
+      "default": "./src/vitepress/index.ts"
+    },
     "./vitepress/config": {
       "types": "./dist/vitepress-config/index.d.ts",
       "default": "./dist/vitepress-config/index.js"
@@ -57,12 +63,16 @@
     "./assets/*": "./assets/*",
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "run-s build:tokens build:fonts build:css build:js",
     "build:tokens": "tz build",
     "build:fonts": "node scripts/build-fonts.ts",
     "build:css": "node scripts/build-css.ts",
     "build:js": "tsc -p tsconfig.build.json && node scripts/build-head-scripts.ts",
+    "prepack": "pnpm build",
     "assets": "pnpm build:tokens && node scripts/generate-assets.ts",
     "assets:check": "pnpm build:tokens && node scripts/generate-assets.ts --check",
     "contrast": "pnpm build:tokens && node scripts/check-contrast.ts",
@@ -94,6 +104,8 @@
     "@terrazzo/token-types": "2.10.0"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@fontsource/jetbrains-mono": "^5.3.0",

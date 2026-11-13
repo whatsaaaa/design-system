@@ -1,7 +1,7 @@
-import { defineConfig } from 'vitepress'
+import { defineConfigWithTheme } from 'vitepress'
 import { type ThemeConfig, whatsaaaaConfig } from '../../src/vitepress-config/index.ts'
 
-export default defineConfig<ThemeConfig>({
+export default defineConfigWithTheme<ThemeConfig>({
   extends: whatsaaaaConfig(),
   title: 'design-system',
   description:

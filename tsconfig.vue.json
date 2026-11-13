@@ -13,11 +13,12 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
+  // A directory whose name starts with a dot is skipped unless a pattern names its files.
   "include": [
     "src/vitepress",
-    "styleguide/.vitepress",
+    "styleguide/.vitepress/**/*",
     "tests/browser",
-    "tests/fixtures/docs-site/.vitepress",
+    "tests/fixtures/docs-site/.vitepress/**/*",
     "playwright.config.ts"
   ],
   "exclude": ["styleguide/.vitepress/cache", "styleguide/.vitepress/dist"]

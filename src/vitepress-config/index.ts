@@ -1,10 +1,10 @@
 /**
  * The base VitePress config of the docs theme. Extend it in .vitepress/config.ts:
  *
- *   import { defineConfig } from 'vitepress'
+ *   import { defineConfigWithTheme } from 'vitepress'
  *   import { whatsaaaaConfig, type ThemeConfig } from '@whatsaaaa/design-system/vitepress/config'
  *
- *   export default defineConfig<ThemeConfig>({
+ *   export default defineConfigWithTheme<ThemeConfig>({
  *     extends: whatsaaaaConfig(),
  *     title: 'form-builder',
  *   })

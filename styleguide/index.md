@@ -26,8 +26,8 @@ Colors are Rosé Pine: the main variant for dark, which is the default, and Dawn
 
 A project takes the tokens and styles from the package, and its artwork from the asset kit. The [usage guide](/docs/usage) says how, in the order a coding agent needs it.
 
-::: warning Not released
-The package is not on npm and this guide is not deployed. Both wait for the first release.
+::: warning Not deployed
+The package is on npm, but this guide is not deployed yet.
 :::
 
 ## Keys

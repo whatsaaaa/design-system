@@ -2,7 +2,11 @@
 
 How to use the Whatsaaaa design system in another project. Written for a coding agent: short, in the order you need it, with the rules that are easy to get wrong.
 
-The package is `@whatsaaaa/design-system`. It is not on npm yet. Until the first release, build this repository (`pnpm install && pnpm build`) and depend on the checkout, for example `pnpm add link:../design-system`.
+The package is `@whatsaaaa/design-system`, on npm:
+
+```sh
+pnpm add @whatsaaaa/design-system
+```
 
 ## 1. Load the styles
 
@@ -190,8 +194,11 @@ A VitePress site uses the theme and its base config together:
 export { default } from '@whatsaaaa/design-system/vitepress'
 
 // .vitepress/config.ts
+import { defineConfigWithTheme } from 'vitepress'
 import { type ThemeConfig, whatsaaaaConfig } from '@whatsaaaa/design-system/vitepress/config'
-export default defineConfig<ThemeConfig>({ extends: whatsaaaaConfig() /* the site's own config */ })
+export default defineConfigWithTheme<ThemeConfig>({
+  extends: whatsaaaaConfig() /* the site's own config */,
+})
 ```
 
 Keep the site's nav, sidebar and search config as they are. Do not restyle the theme with `--vp-*` variables: change a token here instead.

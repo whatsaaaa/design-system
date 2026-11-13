@@ -12,7 +12,7 @@ export interface WhatsaaaaThemeConfig {
   branch?: string
 }
 
-/** The default theme's config with this theme's additions. Pass it to `defineConfig<ThemeConfig>()`. */
+/** The default theme's config with this theme's additions. Pass it to `defineConfigWithTheme<ThemeConfig>()`. */
 export interface ThemeConfig extends DefaultTheme.Config {
   whatsaaaa?: WhatsaaaaThemeConfig
 }
