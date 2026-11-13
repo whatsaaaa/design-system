@@ -45,9 +45,8 @@ body {
   outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
 }
 
-/* the two keys draw their focus rings in the gap between them, so it is room for two */
 .WsStatusLine .WsStatusLine-pair {
-  gap: calc(2 * var(--ws-space-6));
+  gap: var(--ws-space-6);
 }
 
 /* the two scroll controls are nothing but their keys, so they go with the keys */

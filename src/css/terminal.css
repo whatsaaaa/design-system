@@ -417,9 +417,10 @@
 }
 
 /*
- * A control fills the height of the line, also in a group of hints. The room for its focus
- * ring comes from the gap between controls, so nothing moves: in a group of hints, give the
- * controls a gap of twice --ws-space-6.
+ * A control fills the height of the line, also in a group of hints. Its focus ring is drawn
+ * inside it, in padding taken back from the gap between hints with a negative margin, so a
+ * hint does not move. The gap in a group has no room for two rings: there a control after
+ * another takes nothing back at its start, so it moves over and the two only meet.
  */
 .ws-status-line__keys :is(button, a) {
   display: flex;
@@ -434,6 +435,10 @@
   font: inherit;
   text-decoration: none;
   cursor: pointer;
+}
+
+.ws-status-line__keys > * > :is(button, a) + :is(button, a) {
+  margin-left: 0;
 }
 
 /*
