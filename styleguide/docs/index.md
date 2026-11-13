@@ -73,17 +73,11 @@ Everything from the default theme works. The theme adds one group, `themeConfig.
 
 ## Keys, and switching them off
 
-The keys are single characters: <kbd>/</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>t</kbd> and the numbers of the tabs. They act while the focus is not in a field, and never with <kbd>Ctrl</kbd>, <kbd>Alt</kbd> or <kbd>Cmd</kbd> held. A key that is held down acts once.
-
-A visitor can turn them off with the switch in the status line, which reads `keys on` or `keys off`. It is there at every width, a phone included, and the browser remembers the choice. With the keys off nothing names a key: the key caps of the status line, the numbers of the tabs and the <kbd>/</kbd> in the search field are gone, and <kbd>/</kbd> no longer opens the search. The search and theme buttons of the status line stay and work by hand. There is nothing to configure, and no option to remove the switch: a page with single-key shortcuts has to offer a way to turn them off.
+The keys are <kbd>/</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>t</kbd> and the numbers of the tabs, and the switch in the status line turns them off. With the keys off the <kbd>/</kbd> in the search field is gone too, and <kbd>/</kbd> no longer opens the search. The search and theme buttons of the status line stay and work by hand. There is nothing to configure, and no option to remove the switch. The rules the keys follow are in [the usage guide](/docs/usage#_7-keys).
 
 ## The brand and the first tab
 
-From 60rem up, the brand has a box as wide as the sidebar, and the tabs start where it ends. The first tab therefore starts exactly on the border of the sidebar, whatever the brand and the tabs are called. A page without a sidebar keeps the tabs at the same place, so they do not move from page to page.
-
-The box is 17rem wide, with the padding of the sidebar. With a logo it has room for about 23 characters in the site title, without a logo about 28. A longer title is cut with an ellipsis: shorten it with `themeConfig.siteTitle`. A short title leaves a gap before the first tab. The labels of the tabs have no limit from the brand: a long one moves the tabs after it.
-
-Below 60rem there is no sidebar, and the tabs follow the brand. On a phone they take a row of their own under it.
+From 60rem up the brand has a box as wide as the sidebar, so the first tab starts on the border of the sidebar, as in this guide. How long a site title fits, and what happens to a longer one, is in [the usage guide](/docs/usage#_10-docs-sites).
 
 ## The logo
 

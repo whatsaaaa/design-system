@@ -142,12 +142,12 @@ import { enableShortcuts } from '@whatsaaaa/design-system/shortcuts'
 enableShortcuts()
 ```
 
-Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works only while its hint shows. Do not show a hint any other way. Number keys go to the tabs of a `ws-tabs` bar. A held key acts once: the repeats a keyboard sends while the key is down do nothing.
+Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works only while its hint shows. Do not show a hint any other way. Number keys go to the tabs of a `ws-tabs` bar. Keys typed into a field, and keys pressed with Ctrl, Alt or Cmd, are left alone. A held key acts once: the repeats a keyboard sends while the key is down do nothing.
 
-The switch is not optional. The keys are single characters that act on the whole page, so a visitor has to be able to turn them off (WCAG 2.1.4): it matters most with speech input, where a dictated word presses them.
+The switch is not optional. The keys are single characters that act on the whole page, so a visitor has to be able to turn them off (WCAG 2.1.4): it matters most with speech input, where a dictated word presses them, and for someone who presses keys without meaning to.
 
 - It reads "keys on" or "keys off". Pressing it turns every key off or on again, and the browser remembers the choice.
-- Put it in the status line, outside `ws-status-line__keys`: it shows at every width, the hints do not.
+- Put it in the status line, outside `ws-status-line__keys`: unlike the hints it shows at every width, because the number of a tab is a key at every width.
 - Do not write `aria-checked` on the switch or `aria-keyshortcuts` on a control. The module sets both while they are true, and the switch stays hidden until it has its state.
 - With the keys off the controls stay and work by hand. What names a key goes: the key caps and the numbers of the tabs. Hide a control that is nothing but a key cap with `[data-ws-keys='off']`.
 - A key acts only on a page that has the switch. A page without the switch has no shortcuts.
@@ -203,7 +203,7 @@ export default defineConfigWithTheme<ThemeConfig>({
 
 Keep the site's nav, sidebar and search config as they are. Do not restyle the theme with `--vp-*` variables: change a token here instead.
 
-From 60rem up the brand has a box as wide as the sidebar, and the first tab starts on the sidebar's border, on pages without a sidebar too. With a logo there is room for about 23 characters in the site title, without one about 28. A longer title is cut with an ellipsis, and a short one leaves a gap before the tabs. The labels of the tabs have no such limit. Below 60rem there is no sidebar and the tabs follow the brand, and on a phone they take a row of their own under it.
+From 60rem up the brand has a box as wide as the sidebar, 17rem with the sidebar's padding, and the first tab starts on the sidebar's border, on pages without a sidebar too. With a logo there is room for about 23 characters in the site title, without one about 28. A longer title is cut with an ellipsis: shorten it with `themeConfig.siteTitle`. A short one leaves a gap before the tabs. The labels of the tabs have no such limit: a long one moves the tabs after it. Below 60rem there is no sidebar and the tabs follow the brand, and on a phone they take a row of their own under it.
 
 ## 11. Data
 

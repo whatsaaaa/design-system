@@ -1,36 +1,22 @@
 /**
  * Keyboard shortcuts that cannot lie, and that a visitor can switch off.
  *
- * A shortcut is declared on the control it presses:
+ * A shortcut is declared on the control it presses, with `data-ws-key`, so pressing the key
+ * clicks that control and the hint and the action are one element. The number keys go to the
+ * tabs of a tab bar, which numbers them. The switch, declared with `data-ws-keys-switch`,
+ * turns every key off or on again, and the choice is kept in localStorage.
  *
- *   <button type="button" data-ws-key="t"><kbd class="ws-kbd">t</kbd>theme</button>
- *
- * Pressing t clicks that button, so the hint and the action are one element. The styles
- * keep key hints hidden until `enableShortcuts()` has run, so a page never shows a hint
- * for a key that does nothing. For the same reason `aria-keyshortcuts` is set here, while
- * the key works, and not written in the markup.
- *
- * The number keys go to the tabs of a tab bar, which numbers them.
- *
- * The keys are single characters that act on the whole page, so the page carries a switch
- * for them, declared the same way:
- *
- *   <button type="button" class="ws-status-line__switch" role="switch"
- *     aria-label="Shortcut keys" data-ws-keys-switch>
- *     keys
- *     <span class="ws-status-line__on" aria-hidden="true">on</span>
- *     <span class="ws-status-line__off" aria-hidden="true">off</span>
- *   </button>
- *
- * Pressing it turns every key off or on again, and the browser remembers the choice. With
- * the keys off the controls stay and work by hand. Only what names a key goes: the key caps
- * and the numbers of the tabs. The state of the switch, `aria-checked`, is set here: the
- * styles keep the switch hidden until it has one, so it never shows a state that is not the
- * real one. A key acts only on a page that has that switch: a page without it has no
- * shortcuts.
+ * The styles keep key hints hidden until `enableShortcuts()` has run, so a page never shows a
+ * hint for a key that does nothing. For the same reason `aria-keyshortcuts` is set here, while
+ * the key works, and not written in the markup. The state of the switch, `aria-checked`, is
+ * set here too: the styles keep the switch hidden until it has one, so it never shows a state
+ * that is not the real one. A key acts only on a page that has that switch: a page without it
+ * has no shortcuts.
  *
  * A held key acts once. The repeats a keyboard sends while a key is down do nothing, so a
  * finger that rests on t does not flash the page between its themes.
+ *
+ * The markup and the rules for a page that uses this module are in docs/usage.md, section 7.
  */
 
 export interface ShortcutOptions {
