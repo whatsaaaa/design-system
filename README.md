@@ -55,7 +55,7 @@ Every script builds what it needs first, so each one works on a fresh checkout.
 
 Never edit a file in `assets/` or `dist/`. Both are generated, and `assets/` is checked against its sources in CI.
 
-A pull request that changes what the package ships adds a changeset with `pnpm changeset`. When it merges, the release workflow opens a pull request that bumps the version and writes the changelog, and merging that one publishes the package to npm.
+A pull request that changes what the package ships adds a changeset with `pnpm changeset`. See [Releasing](#releasing).
 
 ## Checks
 
@@ -74,6 +74,22 @@ pnpm test:browser:update
 ```
 
 That needs Docker. Review the changed images like any other change. The Playwright version in `package.json` and the container in `.github/workflows/ci.yml` go together: a unit test fails when they differ.
+
+## Releasing
+
+1. A pull request that changes what the package ships adds a changeset with `pnpm changeset`.
+2. When it merges, the release workflow, `.github/workflows/release.yml`, opens a Version Packages pull request that bumps the version and writes the changelog.
+3. Merging that one starts the publish job. It waits for a reviewer to approve the `npm` environment.
+4. Once approved, it publishes to npm through trusted publishing, with provenance. No npm token is stored anywhere.
+
+That needs:
+
+- an `npm` environment in the repository, with a required reviewer,
+- "Allow GitHub Actions to create and approve pull requests" turned on in the repository's Actions settings, so the workflow can open its pull request,
+- a trusted publisher on the package's npm settings: GitHub Actions, repository `whatsaaaa/design-system`, workflow `release.yml`, environment `npm`, allowed to publish,
+- a public repository, since npm records provenance only for a public one.
+
+npm sets up a trusted publisher only for a package that exists, so the package was first created on npm with a hand-published 0.0.0 placeholder before trusted publishing was configured.
 
 ## Layout
 
@@ -107,4 +123,29 @@ The licenses are in [`licenses/`](./licenses/).
 
 The code and the styles are [MIT](./LICENSE): the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules and the docs theme.
 
-The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards and the favicons, in `assets/` and as drawn in `src/identity/` and `identity/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
+The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards and the favicons, in `assets/`, as drawn in `src/identity/` and `identity/`, and as compiled into `dist/identity/` and `dist/ghost/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
+
+That covers the ghost that `<ws-ghost>` and the docs theme draw: the MIT License covers their code, not the ghost. A site that is not Whatsaaaa's own removes the ghost or draws its own in its place. It does not use `<ws-ghost>`, `ghostSvg` or `ghostMarkup`, and with the docs theme it replaces the theme's `NavGhost.vue` and `NotFound.vue`, the way VitePress [overrides an internal component](https://vitepress.dev/guide/extending-default-theme#overriding-internal-components):
+
+```ts
+// .vitepress/config.ts
+import { fileURLToPath, URL } from 'node:url'
+
+export default defineConfigWithTheme<ThemeConfig>({
+  extends: whatsaaaaConfig(),
+  vite: {
+    resolve: {
+      alias: [
+        {
+          find: /^.*\/components\/NavGhost\.vue$/,
+          replacement: fileURLToPath(new URL('./theme/SiteMark.vue', import.meta.url)),
+        },
+        {
+          find: /^.*\/components\/NotFound\.vue$/,
+          replacement: fileURLToPath(new URL('./theme/SiteNotFound.vue', import.meta.url)),
+        },
+      ],
+    },
+  },
+})
+```
