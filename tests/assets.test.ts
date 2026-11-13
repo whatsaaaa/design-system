@@ -82,7 +82,7 @@ describe('the asset kit', () => {
       expect(
         names.filter((name) => name.startsWith('profile-banner')),
         identity,
-      ).toEqual(identity === 'whatsaaaa' ? ['profile-banner.svg', 'profile-banner.png'] : [])
+      ).toEqual(identity === 'whatsaaaa' ? ['profile-banner.png'] : [])
     }
   })
 

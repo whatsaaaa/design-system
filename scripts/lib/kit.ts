@@ -234,7 +234,6 @@ export async function buildKit(identity: Identity): Promise<KitFile[]> {
       colors: bannerColors(),
       fonts,
     })
-    add('profile-banner.svg', profile, 'Header image of a Gravatar profile.', width, height)
     add(
       'profile-banner.png',
       renderPng(profile, width * 2),
