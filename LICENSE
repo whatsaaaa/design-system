@@ -12,12 +12,15 @@ drawings compiled into the package in `dist/identity/` and `dist/ghost/`. The
 code that turns those drawings into files and markup is under the MIT License;
 the drawings are not.
 
-The MIT License covers the code of the <ws-ghost> element and of the docs theme,
-not the ghost they draw, and grants no right to show it. A site that is not
-Whatsaaaa's own and uses either of them removes the ghost or replaces it with
-its own drawing: it does not use <ws-ghost>, `ghostSvg` or `ghostMarkup`, and in
-the docs theme it replaces the theme's `NavGhost.vue` and `NotFound.vue` with
-its own components, the way VitePress overrides an internal component of a
+The artwork may be redistributed unmodified as part of this package and of
+builds made with it, as the <ws-ghost> element and the docs theme carry it. It
+may not be displayed, used as a logo or mark, or used to identify anything other
+than Whatsaaaa and its projects. The MIT License covers the code of <ws-ghost>
+and of the docs theme, not the ghost they draw. A site that is not Whatsaaaa's
+own and uses either of them makes sure the ghost is not shown on it: it puts
+neither <ws-ghost> nor the output of `ghostSvg` or `ghostMarkup` on its pages,
+and in the docs theme it replaces the theme's `NavGhost.vue` and `NotFound.vue`
+with its own components, the way VitePress overrides an internal component of a
 theme, with a Vite alias.
 
 Third-party material keeps its own license: the Rosé Pine palette (MIT) and the
