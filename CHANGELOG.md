@@ -1,5 +1,11 @@
 # @whatsaaaa/design-system
 
+## 0.1.1
+
+### Patch Changes
+
+- [#4](https://github.com/whatsaaaa/design-system/pull/4) [`61b235d`](https://github.com/whatsaaaa/design-system/commit/61b235deeeef1a30ebe7c3407b5679a29457b21e) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - The usage guide is now the one place for the rules of the shortcut keys and of the docs theme's site title, and adds what only the style guide said before: keys typed into a field or pressed with Ctrl, Alt or Cmd are left alone, the brand box is 17rem, and a long title is shortened with `themeConfig.siteTitle`.
+
 ## 0.1.0
 
 ### Minor Changes
