@@ -66,6 +66,24 @@ test.describe('themes', () => {
       await context.close()
     })
 
+    test('a sample of the contrast table stands on what its pair is measured on', async ({
+      page,
+    }) => {
+      await open(page, '/tokens/color')
+      // code on a highlighted line is measured on the code background, dark in both themes
+      const row = page.locator('tr', {
+        hasText: 'code.line-highlight',
+        has: page.locator('.sample'),
+      })
+      for (const theme of ['dark', 'light'])
+        expect(
+          await row
+            .locator(`.sample[data-theme="${theme}"]`)
+            .evaluate((sample) => getComputedStyle(sample).backgroundColor),
+          theme,
+        ).toBe('rgb(31, 29, 46)')
+    })
+
     test('a part of a page can be held in one theme', async ({ page }) => {
       await open(page, '/tokens/color')
       // the samples of the contrast table are drawn in their own theme

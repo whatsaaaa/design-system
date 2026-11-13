@@ -95,7 +95,7 @@ An item with `--dark` or `--light` shows on that theme only. Both names of the t
 
 ### Keys are real or not shown
 
-A key hint is the control it names. `data-ws-key="t"` on a button means pressing <kbd>t</kbd> clicks that button, so the hint and the action cannot drift apart. The hints stay hidden until the shortcuts module runs, and below 64rem, where the status line has no room for them. A key works only while its hint shows.
+A key hint is the control it names. `data-ws-key="t"` on a button means pressing <kbd>t</kbd> clicks that button, so the hint and the action cannot drift apart. The hints stay hidden until the shortcuts module runs, and below 64rem, where the status line has no room for them. A key works only while its hint shows, and a key that is held down works once.
 
 ```ts
 import { enableShortcuts } from '@whatsaaaa/design-system/shortcuts'
@@ -111,7 +111,7 @@ The keys are single characters that act on the whole page. Someone who dictates,
 
 Pressing it turns every key off. The controls stay and work by hand, and what names a key goes: the key caps, and the numbers of the tabs. It then reads `keys off`, and pressing it again turns the keys back on. The browser remembers the choice.
 
-The switch is declared like a key, with `data-ws-keys-switch` on the button, and the shortcuts module does the rest. It gives the switch its state and tells assistive technology the key of a control, so leave `aria-checked` and `aria-keyshortcuts` out of the markup: until the module has run the switch is hidden and no key is named. Unlike the hints it shows at every width, because the number of a tab is a key at every width. A key acts only while the switch can be reached: a page without it has no shortcuts, and a dialog over the status line rests them.
+The switch is declared like a key, with `data-ws-keys-switch` on the button, and the shortcuts module does the rest. It gives the switch its state and tells assistive technology the key of a control, so leave `aria-checked` and `aria-keyshortcuts` out of the markup: until the module has run the switch is hidden and no key is named. Unlike the hints it shows at every width, because the number of a tab is a key at every width. A key acts only on a page that has the switch: a page without it has no shortcuts.
 
 For a page with the keys off to draw no tab number from its first paint, load the head script, next to the one of the theme:
 

@@ -26,8 +26,11 @@
  * the keys off the controls stay and work by hand. Only what names a key goes: the key caps
  * and the numbers of the tabs. The state of the switch, `aria-checked`, is set here: the
  * styles keep the switch hidden until it has one, so it never shows a state that is not the
- * real one. A key acts only while that switch can be reached: a page without it has no
+ * real one. A key acts only on a page that has that switch: a page without it has no
  * shortcuts.
+ *
+ * A held key acts once. The repeats a keyboard sends while a key is down do nothing, so a
+ * finger that rests on t does not flash the page between its themes.
  */
 
 export interface ShortcutOptions {
@@ -55,21 +58,6 @@ export function shortcutsOn(): boolean {
 function isVisible(element: Element): boolean {
   // an element that is not rendered has no boxes
   return element.getClientRects().length > 0
-}
-
-/**
- * Whether a person could press this control now: it is rendered, and nothing lies over it.
- * A dialog over the page, or a status line too narrow to show it, takes it out of reach.
- */
-function isReachable(element: Element): boolean {
-  const box = element.getBoundingClientRect()
-  if (box.width === 0 || box.height === 0) return false
-  const x = box.left + box.width / 2
-  const y = box.top + box.height / 2
-  // outside the window it can be scrolled to, and nothing there is known to cover it
-  if (x < 0 || y < 0 || x >= window.innerWidth || y >= window.innerHeight) return true
-  const top = document.elementFromPoint(x, y)
-  return !!top && element.contains(top)
 }
 
 function rememberedOff(): boolean {
@@ -111,8 +99,9 @@ function targetFor(key: string, tabSelector: string): HTMLElement | undefined {
  * Returns a function that takes all of it away again. Call it once the status line is in
  * the page.
  *
- * A key works only while the control that shows its hint is rendered and the switch can be
- * reached. Keys typed into a field, and keys pressed with Ctrl, Alt or Cmd, are left alone.
+ * A key works only while the control that shows its hint is rendered and the page has the
+ * switch, and a held key works once. Keys typed into a field, and keys pressed with Ctrl,
+ * Alt or Cmd, are left alone.
  */
 export function enableShortcuts({ tabs = '.ws-tabs a' }: ShortcutOptions = {}): () => void {
   const root = document.documentElement
@@ -138,11 +127,12 @@ export function enableShortcuts({ tabs = '.ws-tabs a' }: ShortcutOptions = {}): 
   const onKeyDown = (event: KeyboardEvent) => {
     if (!on || event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return
     if (event.target instanceof Element && isTyping(event.target)) return
-    if (!switches().some(isReachable)) return
+    if (switches().length === 0) return
     const target = targetFor(event.key, tabs)
     if (!target) return
     event.preventDefault()
-    target.click()
+    // the repeats of a held key are the page's too, and do nothing
+    if (!event.repeat) target.click()
   }
   const onClick = (event: MouseEvent) => {
     if (!(event.target instanceof Element) || !event.target.closest(SWITCH)) return

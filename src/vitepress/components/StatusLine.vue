@@ -3,8 +3,9 @@ import { useData } from 'vitepress'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { isTyping } from '../../../dist/shortcuts/index.js'
 import type { ThemeConfig } from '../../../dist/vitepress-config/types.js'
+import { usePagePath } from '../path.ts'
 
-const { page, theme, isDark } = useData<ThemeConfig>()
+const { theme, isDark } = useData<ThemeConfig>()
 
 /**
  * NORMAL while single keys are shortcuts, INSERT while they are typed into a field.
@@ -15,7 +16,8 @@ const mode = ref<'NORMAL' | 'INSERT'>('NORMAL')
 const position = ref('top')
 
 const hasSearch = computed(() => !!theme.value.search?.provider)
-const file = computed(() => page.value.relativePath)
+/** The file of the page. Not known yet on the first render of a page that is not there. */
+const file = usePagePath()
 
 function updateMode() {
   mode.value = isTyping(document.activeElement) ? 'INSERT' : 'NORMAL'
@@ -63,7 +65,7 @@ onUnmounted(() => {
 <template>
   <footer class="ws-status-line WsStatusLine" aria-label="Status">
     <span class="ws-status-line__mode">{{ mode }}</span>
-    <span class="ws-status-line__file"><span>{{ file }}</span></span>
+    <span v-if="file" class="ws-status-line__file"><span>{{ file }}</span></span>
     <span v-if="theme.whatsaaaa?.branch" class="ws-status-line__item ws-status-line__item--wide">
       {{ theme.whatsaaaa.branch }}
     </span>

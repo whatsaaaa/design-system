@@ -33,8 +33,16 @@ function verdict(row: ContrastRow, theme: 'dark' | 'light') {
           <td class="number">{{ row.min }}</td>
           <td v-for="theme in themes" :key="theme">
             <span class="cell">
-              <!-- each sample is drawn in its own theme, whatever theme the page is in -->
-              <span class="sample" :data-theme="theme" aria-hidden="true">
+              <!--
+                Each sample is drawn in its own theme, whatever theme the page is in, and on
+                what the pair is measured on: the page, or the color the pair names as `over`.
+              -->
+              <span
+                class="sample"
+                :data-theme="theme"
+                :style="row.over && { background: cssVar(row.over) }"
+                aria-hidden="true"
+              >
                 <span :style="{ background: cssVar(row.background), color: cssVar(row.foreground) }"
                   >Aa</span
                 >

@@ -96,7 +96,10 @@
     text-decoration: none;
   }
 
-  /* Inline code sits on a raised chip in the text color, so it reads on both themes. */
+  /*
+   * Inline code sits on a raised chip in the text color, so it reads on both themes. A chip
+   * that breaks over two lines is closed on both: each part has its padding and its corners.
+   */
   & :not(pre) > code {
     padding: var(--ws-space-2) var(--ws-space-6);
     border-radius: var(--ws-radius-sm);
@@ -106,6 +109,7 @@
     font-size: 0.8125em;
     font-variant-ligatures: none;
     overflow-wrap: anywhere;
+    box-decoration-break: clone;
   }
 
   & a > code {

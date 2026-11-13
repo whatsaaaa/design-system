@@ -35,6 +35,8 @@ export interface ContrastRow {
   background: string
   use: string
   min: number
+  /** The opaque color a translucent background sits on, when that is not the page background. */
+  over?: string
   dark: { ratio: number; passes: boolean; note?: string }
   light: { ratio: number; passes: boolean; note?: string }
 }
@@ -140,6 +142,7 @@ export default {
         background: pair.background,
         use: pair.use,
         min: pair.min,
+        over: pair.over,
         dark: of('dark'),
         light: of('light'),
       })

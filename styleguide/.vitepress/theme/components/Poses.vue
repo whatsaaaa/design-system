@@ -34,6 +34,7 @@ const poses: { pose: GhostPose; use: string }[] = [
 
 .pose {
   display: grid;
+  align-content: start;
   justify-items: center;
   gap: var(--ws-space-12);
   margin: 0;

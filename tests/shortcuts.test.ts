@@ -20,27 +20,17 @@ const press = (key: string, init: KeyboardEventInit = {}, target: EventTarget = 
 const element = (id: string) => document.getElementById(id)!
 const flipSwitch = () => element('on').click()
 
-/** What lies on top at the middle of the switch. The switch itself, unless a test covers it. */
-let onTop: () => Element | null
-
 beforeEach(() => {
   localStorage.clear()
-  // happy-dom lays nothing out: treat every element as rendered, in a box inside the window
+  // happy-dom lays nothing out: treat every element as rendered
   vi.spyOn(Element.prototype, 'getClientRects').mockReturnValue([{}] as unknown as DOMRectList)
-  vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
-    left: 0,
-    top: 0,
-    width: 10,
-    height: 10,
-  } as DOMRect)
-  onTop = () => element('keys')
-  document.elementFromPoint = () => onTop()
   document.body.innerHTML = `
     <nav class="ws-tabs"><ul>
       <li><a href="#one" id="one">one</a></li>
       <li><a href="#two" id="two">two</a></li>
     </ul></nav>
     <button type="button" data-ws-key="t" id="theme">theme</button>
+    <button type="button" data-ws-key="j" id="down">down</button>
     <button type="button" data-ws-key="x" id="off" disabled>off</button>
     <button type="button" role="switch" data-ws-keys-switch id="keys">
       keys <span id="on">on</span><span>off</span>
@@ -128,6 +118,23 @@ describe('shortcuts', () => {
       expect(theme).not.toHaveBeenCalled()
     },
   )
+
+  it.each([
+    ['t', 'theme'],
+    ['2', 'two'],
+    ['j', 'down'],
+  ])('acts once while %s is held: the repeats of the key do nothing', (key, id) => {
+    const control = clicks(id)
+    press(key)
+    const repeats = [press(key, { repeat: true }), press(key, { repeat: true })]
+    expect(control).toHaveBeenCalledOnce()
+    // a repeat is still the page's key: the browser gets none of them
+    expect(repeats.map((event) => event.defaultPrevented)).toEqual([true, true])
+  })
+
+  it('leaves the repeats of a key alone that nothing declares', () => {
+    expect(press('q', { repeat: true }).defaultPrevented).toBe(false)
+  })
 
   it('leaves a key alone while the control that shows its hint is not rendered', () => {
     const theme = clicks('theme')
@@ -237,46 +244,6 @@ describe('the keys switch', () => {
     localStorage.removeItem(KEYS_STORAGE_KEY)
     window.dispatchEvent(new StorageEvent('storage', { key: 'ws-theme' }))
     expect(element('keys').getAttribute('aria-checked')).toBe('false')
-  })
-
-  it('leaves the keys alone while something lies over the switch', () => {
-    const [theme, two] = [clicks('theme'), clicks('two')]
-    // a dialog over the page: what is on top where the switch is drawn is not the switch
-    onTop = () => document.body
-    expect(press('t').defaultPrevented).toBe(false)
-    expect(press('2').defaultPrevented).toBe(false)
-    expect(theme).not.toHaveBeenCalled()
-    expect(two).not.toHaveBeenCalled()
-    // on top again, as when the dialog closes. A part of the switch counts as the switch
-    onTop = () => element('on')
-    press('t')
-    expect(theme).toHaveBeenCalledOnce()
-  })
-
-  it('leaves the keys alone while the switch is not rendered', () => {
-    const theme = clicks('theme')
-    vi.spyOn(element('keys'), 'getBoundingClientRect').mockReturnValue({
-      left: 0,
-      top: 0,
-      width: 0,
-      height: 0,
-    } as DOMRect)
-    press('t')
-    expect(theme).not.toHaveBeenCalled()
-  })
-
-  it('counts a switch that is scrolled out of the window as in reach', () => {
-    const theme = clicks('theme')
-    vi.spyOn(element('keys'), 'getBoundingClientRect').mockReturnValue({
-      left: 0,
-      top: window.innerHeight + 200,
-      width: 10,
-      height: 10,
-    } as DOMRect)
-    // nothing can be asked about a point outside the window
-    onTop = () => null
-    press('t')
-    expect(theme).toHaveBeenCalledOnce()
   })
 
   it('gives a page without the switch no keys and no hints', () => {

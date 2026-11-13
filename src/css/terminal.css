@@ -490,11 +490,12 @@
     padding-inline: var(--ws-space-8);
   }
 
-  .ws-tabs li:first-child a {
+  /* The row runs from edge to edge, so the current tab has no border at an end of it. */
+  .ws-tabs li:first-child a[aria-current] {
     border-left-color: transparent;
   }
 
-  .ws-tabs li:last-child a {
+  .ws-tabs li:last-child a[aria-current] {
     border-right-color: transparent;
   }
 

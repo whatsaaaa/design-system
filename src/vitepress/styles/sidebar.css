@@ -148,8 +148,8 @@
    * The sidebar keeps one width at every width of the window, and the page starts where it
    * ends. The default theme centers a frame in a wide window and stretches the sidebar to
    * the edge of the window. Here the bars reach from edge to edge, so the sidebar stays at
-   * the left and its border stays under the first tab (see nav.css). Its padding at the
-   * sides is the padding of the bar, so its headings start under the brand.
+   * the left and its border stays under the left border of the first tab (see nav.css). Its
+   * padding at the sides is the padding of the bar, so its headings start under the brand.
    */
   .VPSidebar.VPSidebar {
     bottom: var(--ws-size-status-line);

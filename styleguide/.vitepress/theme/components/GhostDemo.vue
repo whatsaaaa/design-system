@@ -39,9 +39,12 @@ const Ghost = () =>
   background: var(--ws-color-surface);
 }
 
-/* room above the ghost for the bubble that is held open */
+/*
+ * Room above the ghost for the bubble that is held open, and the padding of the frame above
+ * that. At this size the bubble is 54 px tall and stands 4 px over the ghost.
+ */
 .stage.held {
-  padding-top: var(--ws-space-64);
+  padding-top: calc(var(--ws-space-32) + 58px);
 }
 
 .stage .hint {

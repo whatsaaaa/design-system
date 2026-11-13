@@ -1,6 +1,6 @@
 /*
  * The default theme's nav bar, drawn as the tab bar of the terminal frame: the brand, the
- * numbered tabs right after it, and search, links and the ghost at the right end.
+ * numbered tabs after it, and search, links and the ghost at the right end.
  */
 .VPNav .VPNavBar {
   font-family: var(--ws-font-family-mono);
@@ -216,7 +216,7 @@
     padding: 0 var(--ws-space-20);
   }
 
-  /* the tabs come right after the brand, and search moves to the right end */
+  /* the tabs come after the brand, and search moves to the right end */
   .VPNav .VPNavBar .content-body {
     justify-content: flex-start;
   }
@@ -251,15 +251,23 @@
     width: 100%;
     height: 1.875rem;
     padding: 0 var(--ws-space-6) 0 var(--ws-space-10);
-    border: var(--ws-border-width-thin) solid var(--ws-color-border);
+    border: var(--ws-border-width-thin) solid var(--ws-color-field-border);
     border-radius: var(--ws-radius-md);
     background: var(--ws-color-surface);
     transition: none;
   }
 
+  /* as on a secondary button, the outline takes the text color under the pointer */
   .VPNav .VPNavBarSearch .DocSearch-Button:hover {
-    border-color: var(--ws-color-field-border);
+    border-color: var(--ws-color-text);
     background: var(--ws-color-surface);
+  }
+
+  /* with the focus it takes the color of the ring, as the field of the search dialog does */
+  .VPNav .VPNavBarSearch .DocSearch-Button:focus-visible {
+    border-color: var(--ws-color-interactive);
+    outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+    outline-offset: 2px;
   }
 
   .VPNav .DocSearch-Button .DocSearch-Search-Icon {
@@ -300,25 +308,26 @@
 
 @media (width >= 60rem) {
   /*
-   * The brand and the first tab share a box as wide as the sidebar, on every page: the
-   * brand at its left end, the first tab at its right end. So one length, the width of the
-   * sidebar, places the border of the sidebar and the right edge of the first tab, and the
-   * two are one line whatever the tab is called. The other tabs follow from that line.
+   * The brand has a box as wide as the sidebar, on every page, and the tabs start where it
+   * ends. So one length, the width of the sidebar, places the border of the sidebar and the
+   * left edge of the first tab: the left border of that tab is the pixels of the sidebar's
+   * border, whatever the brand and the tabs are called. A short brand leaves a gap before
+   * the tabs, and a long tab pushes the tabs after it, never the brand.
+   *
+   * The box has the padding of the sidebar at its right too, so a brand that is cut ends
+   * that far before the tabs.
    *
    * With a sidebar the default theme pins the title above it. Here the bar is one row.
    */
   .VPNav .VPNavBar .container > .title,
   .VPNav .VPNavBar.has-sidebar .container > .title {
     position: static;
-
-    /* the default theme lifts the title above the rest of the bar. Here the first tab lies over its end. */
-    z-index: auto;
-    width: calc(var(--vp-sidebar-width) - var(--ws-space-20));
+    width: calc(var(--vp-sidebar-width) - var(--ws-space-20) - var(--ws-border-width-thin));
     height: var(--vp-nav-height);
-    padding: 0;
+    padding: 0 var(--ws-space-20) 0 0;
   }
 
-  /* the link is as wide as the brand, and never wider than the box */
+  /* the link is as wide as the brand, and a brand too long for the box is cut with an ellipsis */
   .VPNav .VPNavBar .VPNavBarTitle .title {
     width: fit-content;
     max-width: 100%;
@@ -339,64 +348,6 @@
   /* the rule under the bar starts where the sidebar ends, in a window of any width */
   .VPNav .VPNavBar.has-sidebar .divider {
     padding-left: var(--vp-sidebar-width);
-  }
-
-  .VPNav .VPNavBar .VPNavBarMenu {
-    position: relative;
-  }
-
-  /*
-   * The first tab stands out of the row, with its right edge on the line the row starts at.
-   * It is never wider than the box, so it cannot leave the bar. It is named as an anchor,
-   * for the brand to learn how wide it is.
-   */
-  .VPNav .VPNavBarMenu > .visually-hidden + * {
-    position: absolute;
-    top: 0;
-    right: 100%;
-    bottom: 0;
-    max-width: calc(var(--vp-sidebar-width) - var(--ws-space-20));
-    anchor-name: --ws-first-tab;
-  }
-
-  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink > span {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup .button {
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  /* neighbors share the pixel of their borders, so the border of either tab at the line is the line */
-  .VPNav .VPNavBarMenu > .visually-hidden + * ~ * {
-    margin-left: calc(-1 * var(--ws-border-width-thin));
-  }
-
-  /*
-   * A brand too long for the room the first tab leaves is cut with an ellipsis, a gap
-   * before the tab. The tab keeps its place: a long name gives way, not the line. For that
-   * the brand takes the width of the tab off the box, by anchor sizing, which works on a
-   * positioned element: the link leaves the flow of its box and stands where it stood.
-   */
-  @supports (width: anchor-size(width)) {
-    .VPNav .VPNavBar .VPNavBarTitle .title {
-      position: absolute;
-      top: 0;
-      left: var(--ws-space-20);
-      max-width: calc(
-        var(--vp-sidebar-width) - var(--ws-space-20) - anchor-size(--ws-first-tab width, 0px) -
-          var(--ws-space-16)
-      );
-    }
-  }
-
-  /* in a browser without anchor sizing the end of such a brand runs under the tab, which covers it */
-  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink:not(.active),
-  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup:not(.active) .button {
-    background: var(--ws-color-bg) padding-box;
   }
 
   .VPNav .VPNavBar .content-body,
@@ -468,11 +419,14 @@
     text-overflow: ellipsis;
   }
 
-  .VPNav .VPNavBarMenu > :first-child {
+  /* the row runs from edge to edge, so the current tab has no border at an end of it */
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink,
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup .button {
     border-left-color: transparent;
   }
 
-  .VPNav .VPNavBarMenu > :last-child {
+  .VPNav .VPNavBarMenu > .VPNavBarMenuLink:last-child,
+  .VPNav .VPNavBarMenu > .VPNavBarMenuGroup:last-child .button {
     border-right-color: transparent;
   }
 

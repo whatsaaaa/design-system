@@ -111,21 +111,26 @@ test.describe('the keys of the status line', () => {
     expect(await theme(page)).toBe('dark')
   })
 
-  test('the keys rest while the search lies over the page and its switch', async ({ page }) => {
+  test('a held key acts once', async ({ page }) => {
+    // a key that stays down is sent again and again
+    for (let sent = 0; sent < 4; sent++) await page.keyboard.down('t')
+    await page.keyboard.up('t')
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+    // and once more for the next press
+    await page.keyboard.press('t')
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  })
+
+  test('the keys act while the search lies over the page and its switch', async ({ page }) => {
     await page.keyboard.press('/')
     await expect(page.locator('.VPLocalSearchBox input')).toBeFocused()
-    // on a button of the search box a key is not typed, and the switch cannot be reached
+    // on a button of the search box a key is not typed
     await page.locator('.VPLocalSearchBox .toggle-layout-button').focus()
     await expect(page.locator('.ws-status-line__mode')).toHaveText('NORMAL')
     await page.keyboard.press('t')
-    await page.keyboard.press('2')
-    await page.waitForTimeout(300)
-    expect(await theme(page)).toBe('dark')
-    expect(page.url()).toContain('/styles/prose')
-    await page.keyboard.press('Escape')
-    await expect(page.locator('.VPLocalSearchBox')).toHaveCount(0)
-    await page.keyboard.press('t')
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+    await page.keyboard.press('2')
+    await expect(page).toHaveURL(/\/tokens\/color/)
   })
 })
 

@@ -1,12 +1,14 @@
 /*
  * The page frame. The status line is fixed to the bottom of the window, and everything
- * that reaches the bottom leaves room for it.
+ * that reaches the bottom leaves room for it. So does the window when it scrolls to a
+ * control that takes the focus: the control comes to rest above the status line, in sight.
  *
  * The default theme scopes its component styles, which makes them more specific than a
  * plain class. The selectors in these files repeat part of the structure to win over them.
  */
 html {
   scroll-padding-top: calc(var(--vp-nav-height) + var(--ws-space-16));
+  scroll-padding-bottom: var(--ws-size-status-line);
 }
 
 body {

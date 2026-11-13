@@ -138,7 +138,7 @@ import { enableShortcuts } from '@whatsaaaa/design-system/shortcuts'
 enableShortcuts()
 ```
 
-Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works only while its hint shows. Do not show a hint any other way. Number keys go to the tabs of a `ws-tabs` bar.
+Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works only while its hint shows. Do not show a hint any other way. Number keys go to the tabs of a `ws-tabs` bar. A held key acts once: the repeats a keyboard sends while the key is down do nothing.
 
 The switch is not optional. The keys are single characters that act on the whole page, so a visitor has to be able to turn them off (WCAG 2.1.4): it matters most with speech input, where a dictated word presses them.
 
@@ -146,7 +146,7 @@ The switch is not optional. The keys are single characters that act on the whole
 - Put it in the status line, outside `ws-status-line__keys`: it shows at every width, the hints do not.
 - Do not write `aria-checked` on the switch or `aria-keyshortcuts` on a control. The module sets both while they are true, and the switch stays hidden until it has its state.
 - With the keys off the controls stay and work by hand. What names a key goes: the key caps and the numbers of the tabs. Hide a control that is nothing but a key cap with `[data-ws-keys='off']`.
-- A key acts only while the switch can be reached. A page without the switch has no shortcuts, and a dialog that covers the status line rests them.
+- A key acts only on a page that has the switch. A page without the switch has no shortcuts.
 - Load `shortcuts/init.js` in the head, next to `theme/init.js`, or inline `keysInitScript`. It marks the page before the first paint when the keys are remembered as off, so the tab numbers are not drawn first and then taken away.
 
 ## 8. The ghost
@@ -196,7 +196,7 @@ export default defineConfig<ThemeConfig>({ extends: whatsaaaaConfig() /* the sit
 
 Keep the site's nav, sidebar and search config as they are. Do not restyle the theme with `--vp-*` variables: change a token here instead.
 
-The brand and the first tab share the width of the sidebar, so the first tab ends on the sidebar's border. Keep the two short: with a logo there is room for about 17 characters in the site title and the first tab's label together, without one about 22. A longer title is cut with an ellipsis before the first tab.
+From 60rem up the brand has a box as wide as the sidebar, and the first tab starts on the sidebar's border, on pages without a sidebar too. With a logo there is room for about 23 characters in the site title, without one about 28. A longer title is cut with an ellipsis, and a short one leaves a gap before the tabs. The labels of the tabs have no such limit. Below 60rem there is no sidebar and the tabs follow the brand, and on a phone they take a row of their own under it.
 
 ## 11. Data
 
