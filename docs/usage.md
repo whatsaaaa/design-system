@@ -195,7 +195,7 @@ A **segmented control** is a few buttons with one pressed, such as a switch betw
 - Keys: each button is a stop of the Tab key, and Enter or Space presses it. No arrow keys: those belong to a radio group. A choice that is a value of a form, sent with it, is a group of radio buttons, not this.
 - The pressed button is raised, in the text color, with an edge of the interactive color twice as thick, at least 3:1 on the page and on the raised fill. In forced colors it takes the system's selection colors. Do not fill it with the interactive color: next to a primary button it would be as loud.
 
-**Terms and values**, a row each, are a `<dl class="ws-pairs">`: the answers of a form on its review step. The term is in the voice of a label, its value in the face of a field, and a long value wraps. The terms share a column as wide as the longest of them, at most two fifths of the list, so the values line up.
+**Terms and values**, a row each, are a `<dl class="ws-pairs">`: the answers of a form on its review step. The term is in the voice of a label, its value in the face of a field. The terms share a column as wide as the longest of them, at most two fifths of the row, so the values line up and have the rest of it. With `ws-pairs--amounts` the amounts take what the widest of them needs, and the terms the rest of the row. A long value wraps: give a long email or URL a `<wbr />` after its `@` or a `/`, so it breaks there. A value that still does not fit breaks anywhere, as a last resort.
 
 ```html
 <dl class="ws-pairs ws-pairs--amounts">

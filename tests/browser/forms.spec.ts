@@ -1,4 +1,4 @@
-import { type Page, expect, test } from '@playwright/test'
+import { type Locator, type Page, expect, test } from '@playwright/test'
 import { wcagContrast } from 'culori'
 import { DESKTOP, PHONE, open } from './pages.ts'
 
@@ -22,6 +22,28 @@ const token = (page: Page, name: string, selector = 'body') =>
       probe.remove()
       return value
     }, name)
+
+/** The email in the review list of the form example. */
+const email = (page: Page) =>
+  page.locator('.ws-pairs dd', { hasText: 'milica.djordjevic@example.com' })
+
+/** The text of each line an element is drawn on, from the top. */
+const drawnLines = (locator: Locator) =>
+  locator.evaluate((element) => {
+    const lines = new Map<number, string>()
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.textContent ?? ''
+      for (let index = 0; index < text.length; index++) {
+        const range = document.createRange()
+        range.setStart(node, index)
+        range.setEnd(node, index + 1)
+        const top = Math.round(range.getBoundingClientRect().top)
+        lines.set(top, (lines.get(top) ?? '') + text[index])
+      }
+    }
+    return [...lines.values()]
+  })
 
 const style = (page: Page, selector: string, property: string) =>
   page
@@ -241,20 +263,28 @@ test.describe('on a phone', () => {
     page,
   }) => {
     await open(page, FORM)
-    const lines = await page
-      .locator('.ws-pairs dd', { hasText: 'milica.djordjevic@example.com' })
-      .evaluate((element) => {
-        const range = document.createRange()
-        range.selectNodeContents(element)
-        return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size
-      })
-    expect(lines).toBe(1)
+    expect(await drawnLines(email(page))).toEqual(['milica.djordjevic@example.com'])
     const lefts = await page
       .locator('.ws-pairs:not(.ws-pairs--amounts) dd')
       .evaluateAll((elements) =>
         elements.map((element) => Math.round(element.getBoundingClientRect().left)),
       )
     expect(new Set(lefts).size).toBe(1)
+  })
+
+  test('an email too long for a narrow phone breaks after its @, not in a word', async ({
+    page,
+  }) => {
+    await open(page, FORM)
+    for (let width = 320; width <= 400; width += 8) {
+      await page.setViewportSize({ width, height: 900 })
+      const lines = await drawnLines(email(page))
+      expect(
+        [['milica.djordjevic@example.com'], ['milica.djordjevic@', 'example.com']],
+        `${width} px`,
+      ).toContainEqual(lines)
+      if (width === 320) expect(lines, 'too long for 320 px').toHaveLength(2)
+    }
   })
 
   test('a large ghost takes its compact size, and its full one on a wide screen', async ({

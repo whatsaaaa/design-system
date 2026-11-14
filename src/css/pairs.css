@@ -2,15 +2,17 @@
  * Terms and their values, a row each: the answers of a form on its review step, or what an
  * order costs. A term is in the voice of a label, its value in the face of a field, and the
  * two share a baseline. The terms share a column as wide as the longest of them, at most two
- * fifths of the list, so the values line up and have the rest of the row.
+ * fifths of the row, so the values line up and have the rest of it. A long email or URL takes
+ * a <wbr /> after its @ or a /, so it breaks there and not in a word.
  *
  *   <dl class="ws-pairs">
  *     <div><dt>Name</dt><dd>Ana Petrović</dd></div>
- *     <div><dt>Email</dt><dd>ana@example.com</dd></div>
+ *     <div><dt>Email</dt><dd>ana@<wbr />example.com</dd></div>
  *   </dl>
  *
  * Amounts take ws-pairs--amounts: each value at the right edge, in figures of one width, so
- * the digits of the rows line up. The total is the last row, ws-pairs__total.
+ * the digits of the rows line up, and the terms take the rest of the row. The total is the
+ * last row, ws-pairs__total.
  *
  *   <dl class="ws-pairs ws-pairs--amounts">
  *     <div><dt>Subtotal</dt><dd>€48.00</dd></div>

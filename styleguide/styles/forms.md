@@ -14,11 +14,11 @@ How to use each piece, and the rules they follow, are in [the usage guide](/docs
 
 ## Sizes
 
-| Token               | Size  | For                                                |
-| ------------------- | ----- | -------------------------------------------------- |
-| `--ws-size-control` | 40 px | A one-line field, a button and a segmented control |
-| `--ws-size-check`   | 20 px | A checkbox or a radio button                       |
-| `--ws-size-step`    | 24 px | The number of a step, in its circle                |
+| Token               | Size       | For                                                |
+| ------------------- | ---------- | -------------------------------------------------- |
+| `--ws-size-control` | 40&nbsp;px | A one-line field, a button and a segmented control |
+| `--ws-size-check`   | 20&nbsp;px | A checkbox or a radio button                       |
+| `--ws-size-step`    | 24&nbsp;px | The number of a step, in its circle                |
 
 ## The primary button
 
@@ -68,7 +68,7 @@ A row each: a term in the voice of a label, its value in the face of a field. Th
   </div>
   <div>
     <dt>Email</dt>
-    <dd>milica.djordjevic@example.com</dd>
+    <dd>milica.djordjevic@<wbr />example.com</dd>
   </div>
 </dl>
 ```
