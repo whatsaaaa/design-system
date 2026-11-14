@@ -4,7 +4,7 @@
   "description": "Whatsaaaa's design system: brand identity, design tokens, typography, docs theme and asset kit",
   "homepage": "https://github.com/whatsaaaa/design-system#readme",
   "bugs": "https://github.com/whatsaaaa/design-system/issues",
-  "license": "MIT",
+  "license": "(MIT AND OFL-1.1)",
   "author": "Whatsaaaa",
   "repository": {
     "type": "git",

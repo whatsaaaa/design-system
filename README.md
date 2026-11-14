@@ -121,6 +121,6 @@ The licenses are in [`licenses/`](./licenses/).
 
 ## License
 
-Everything here is [MIT](./LICENSE), the Whatsaaaa identity artwork included: the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules, the docs theme, and the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons.
+Everything made for Whatsaaaa here is [MIT](./LICENSE), the identity artwork included: the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules, the docs theme, and the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons.
 
 The third-party material in the [credits](#credits) keeps its own license: the Rosé Pine palette is MIT, and the Departure Mono glyph outlines and the JetBrains Mono and Inter fonts are under the SIL Open Font License 1.1.
