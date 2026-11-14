@@ -4,8 +4,9 @@
 //
 // A theme is chosen on an element, <html> or one inside the page, with data-theme="dark" or
 // "light", or with a dark or light class, as Nuxt UI and VueUse's useColorMode set it. No class is
-// no choice, so a library that marks light only by leaving dark off, as Tailwind's toggle script,
-// VueUse's useDark and VitePress do, has to add a light class or data-theme for light.
+// no choice. So where a library marks light only by leaving dark off, as Tailwind's toggle script,
+// VueUse's useDark and VitePress do, a light class is kept in step with dark: on for light, off
+// for dark or the system.
 // On one element data-theme wins over the class, and both classes together choose nothing. The
 // nearest choice around an element holds for it, in whichever way it is made, and any choice on
 // <html> holds over the system's theme.

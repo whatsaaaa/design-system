@@ -66,7 +66,7 @@ The pairs that are checked for contrast are in `tokens/contrast.json`. If you ne
 
 ## 3. Theme
 
-Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and so does a `dark` or `light` class, as Nuxt UI and VueUse's `useColorMode` set it. A library that marks light only by leaving `dark` off, such as the toggle script in Tailwind's docs or VueUse's `useDark`, has to set a `light` class or `data-theme="light"` too when light is chosen by hand: with no class the system decides. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
+Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and so does a `dark` or `light` class, as Nuxt UI and VueUse's `useColorMode` set it. A library that marks light only by leaving `dark` off, such as the toggle script in Tailwind's docs or VueUse's `useDark`, needs a `light` class kept in step with it: on when light is chosen, off for dark or the system. For Tailwind's script that is `classList.toggle('light', localStorage.theme === 'light')` next to its toggle of `dark`. With no class the system decides. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
 
 ```ts
 import { getTheme, setTheme, toggleTheme, themeInitScript } from '@whatsaaaa/design-system/theme'

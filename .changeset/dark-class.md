@@ -2,7 +2,7 @@
 '@whatsaaaa/design-system': minor
 ---
 
-A `dark` or `light` class chooses the theme as `data-theme` does, so an app built on Nuxt UI or VueUse's `useColorMode`, which put a `dark` or a `light` class on `<html>`, needs no script to bridge the two. A library that marks light only by leaving `dark` off, as the toggle script in Tailwind's docs, VueUse's `useDark` and VitePress do, also has to set a `light` class or `data-theme` when light is chosen by hand. With no class the tokens follow the system.
+A `dark` or `light` class chooses the theme as `data-theme` does, so an app built on Nuxt UI or VueUse's `useColorMode`, which put a `dark` or a `light` class on `<html>`, needs no script to bridge the two. A library that marks light only by leaving `dark` off, as the toggle script in Tailwind's docs, VueUse's `useDark` and VitePress do, needs a `light` class kept in step with it: on when light is chosen, off for dark or the system. For Tailwind's script that is `classList.toggle('light', localStorage.theme === 'light')` next to its toggle of `dark`. With no class the tokens follow the system.
 
 - The tokens, `ws-theme-dark` and `ws-theme-light`, the status line's theme names and the head script that keeps `<meta name="theme-color">` in step all follow the class, on `<html>` or on any element around a part of the page.
 - On one element `data-theme` wins over the class, and both classes together choose nothing. The nearest choice around an element holds, made either way, and any choice wins over the system's theme.
