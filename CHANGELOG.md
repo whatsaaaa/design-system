@@ -1,5 +1,11 @@
 # @whatsaaaa/design-system
 
+## 0.3.1
+
+### Patch Changes
+
+- [#10](https://github.com/whatsaaaa/design-system/pull/10) [`1224b68`](https://github.com/whatsaaaa/design-system/commit/1224b68357868e3e154d698ffc15bb80bdc63c95) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - Everything made for Whatsaaaa in the package is now under the MIT License, the identity artwork included: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons. A site that is not Whatsaaaa's own no longer has to hide the ghost. Third-party material keeps its own license, as listed in `licenses/README.md`, so the `license` field of `package.json` now reads `(MIT AND OFL-1.1)`. Versions already published keep the license they were published with.
+
 ## 0.3.0
 
 ### Minor Changes
