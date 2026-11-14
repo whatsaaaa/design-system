@@ -21,7 +21,8 @@ export { whatsaaaaMarkdown } from './markdown.ts'
 
 /**
  * Sets data-theme before the first paint, from the choice VitePress remembers.
- * VitePress itself only sets its `dark` class, which the tokens do not read.
+ * VitePress itself only sets its `dark` class, and no class for light, which the tokens would
+ * read as the system's theme.
  * Where storage is blocked nothing is remembered, and the page follows the system.
  */
 const themeScript = `;(() => {

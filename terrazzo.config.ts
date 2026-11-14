@@ -1,10 +1,14 @@
 import { defineConfig } from '@terrazzo/cli'
 import css from '@terrazzo/plugin-css'
 import js from '@terrazzo/plugin-js'
+import { chosen, rootUnchosen, themeRules } from './scripts/lib/theme-selectors.ts'
 
 /** Re-indents the declarations Terrazzo hands to `prepare`. */
 const indent = (declarations: string, spaces: number) =>
   declarations.replace(/\n\s*/g, '\n' + ' '.repeat(spaces))
+
+/** The selectors of a theme block, one to a line. */
+const selectors = (theme: 'dark' | 'light') => chosen(theme).replace(', ', ',\n')
 
 const notice = `/*
  * Whatsaaaa design tokens.
@@ -15,6 +19,7 @@ const notice = `/*
  *
  * Dark is the default. Light applies when the system asks for it, and data-theme="dark" or
  * data-theme="light" on any element overrides both for that element and everything inside it.
+ * So does a dark or light class, where the element has no data-theme.
  */`
 
 export default defineConfig({
@@ -37,18 +42,23 @@ export default defineConfig({
           input: { theme: 'dark' },
           include: ['color.**'],
           prepare: (declarations) =>
-            `:root,\n[data-theme='dark'] {\n  color-scheme: dark;\n  ${indent(declarations, 2)}\n}`,
+            `:root,\n${selectors('dark')} {\n  color-scheme: dark;\n  ${indent(declarations, 2)}\n}`,
         },
         {
           input: { theme: 'light' },
           include: ['color.**'],
           prepare: (declarations) =>
-            `[data-theme='light'] {\n  color-scheme: light;\n  ${indent(declarations, 2)}\n}\n\n` +
-            `@media (prefers-color-scheme: light) {\n  :root:not([data-theme]) {\n    color-scheme: light;\n    ${indent(declarations, 4)}\n  }\n}`,
+            `${selectors('light')} {\n  color-scheme: light;\n  ${indent(declarations, 2)}\n}\n\n` +
+            `@media (prefers-color-scheme: light) {\n  ${rootUnchosen} {\n    color-scheme: light;\n    ${indent(declarations, 4)}\n  }\n}`,
         },
       ],
     }),
     js({ filename: 'tokens.js' }),
+    {
+      // the rules of an element for one theme only, which src/css/theme.css ships
+      name: 'theme-rules',
+      build: ({ outputFile }) => outputFile('theme-rules.css', `${themeRules()}\n`),
+    },
   ],
   lint: {
     rules: {

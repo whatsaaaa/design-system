@@ -83,10 +83,15 @@ describe('the stylesheet', () => {
   const css = read('dist/tokens.css')
 
   it('is dark by default, light when the system asks, and overridable by hand', () => {
-    expect(css).toMatch(/:root,\n\[data-theme='dark'\] \{\n {2}color-scheme: dark;/)
-    expect(css).toMatch(/\[data-theme='light'\] \{\n {2}color-scheme: light;/)
-    expect(css).toMatch(
-      /@media \(prefers-color-scheme: light\) \{\n {2}:root:not\(\[data-theme\]\) \{/,
+    expect(css).toContain(
+      ":root,\n[data-theme='dark'],\n.dark:where(:not([data-theme], .light)) {\n  color-scheme: dark;",
+    )
+    expect(css).toContain(
+      "[data-theme='light'],\n.light:where(:not([data-theme], .dark)) {\n  color-scheme: light;",
+    )
+    expect(css).toContain(
+      '@media (prefers-color-scheme: light) {\n' +
+        '  :root:not([data-theme], .dark:where(:not(.light)), .light:where(:not(.dark))) {',
     )
   })
 

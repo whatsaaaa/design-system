@@ -14,7 +14,8 @@ const { isDark } = useData()
 /** The slots this layout fills itself. A site's content for them goes inside, next to the theme's. */
 const OWN_SLOTS = ['nav-bar-content-after', 'doc-before', 'not-found', 'layout-bottom']
 
-// VitePress marks dark with a class on <html>. The tokens read data-theme, so mirror it.
+// VitePress marks dark with a dark class on <html> and light with no class, which the tokens
+// read as the system's theme. So data-theme says both.
 watchEffect(() => {
   if (inBrowser) document.documentElement.dataset.theme = isDark.value ? 'dark' : 'light'
 })

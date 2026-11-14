@@ -38,6 +38,7 @@ interface HappyDOMWindow {
 beforeEach(() => {
   localStorage.clear()
   delete root.dataset.theme
+  root.className = ''
   systemChanges = []
   systemPrefers('dark')
 })
@@ -79,6 +80,36 @@ describe('the theme switch', () => {
     expect(root.dataset.theme).toBe('light')
   })
 
+  it('reads a dark or light class on <html> as a choice, as a color mode library sets it', () => {
+    root.classList.add('dark')
+    systemPrefers('light')
+    expect(getThemeChoice()).toBe('dark')
+    expect(getTheme()).toBe('dark')
+    root.classList.replace('dark', 'light')
+    systemPrefers('dark')
+    expect(getThemeChoice()).toBe('light')
+    expect(getTheme()).toBe('light')
+    // both classes choose nothing
+    root.classList.add('dark')
+    expect(getThemeChoice()).toBe('system')
+  })
+
+  it('reads data-theme over the class when both are there', () => {
+    root.classList.add('dark')
+    root.dataset.theme = 'light'
+    expect(getTheme()).toBe('light')
+    // so a toggle switches what shows, and the class is left to whoever set it
+    expect(toggleTheme()).toBe('dark')
+    expect(toggleTheme()).toBe('light')
+    expect(root.classList.contains('dark')).toBe(true)
+  })
+
+  it('toggles from a theme the class chose', () => {
+    root.classList.add('light')
+    expect(toggleTheme()).toBe('dark')
+    expect(root.dataset.theme).toBe('dark')
+  })
+
   it('still switches when storage is blocked', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('blocked')
@@ -117,6 +148,36 @@ describe("the color of the browser's own bars", () => {
     loadStyles()
     systemPrefers('light')
     run()
+    setTheme('dark')
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'dark')]))
+    setTheme('system')
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
+  })
+
+  it('follows a dark or light class on <html>, whoever sets it, against the system too', async () => {
+    loadStyles()
+    systemPrefers('light')
+    run()
+    await nextFrame()
+    expect(colors()).toEqual([hex('color.bg', 'light')])
+    // as Nuxt UI's or VueUse's color mode switches it
+    root.classList.add('dark')
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'dark')]))
+    root.classList.remove('dark')
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
+    systemPrefers('dark')
+    for (const change of systemChanges) change()
+    expect(colors()).toEqual([hex('color.bg', 'dark')])
+    root.classList.add('light')
+    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
+  })
+
+  it('follows data-theme over the class when both are there', async () => {
+    loadStyles()
+    root.classList.add('light')
+    run()
+    await nextFrame()
+    expect(colors()).toEqual([hex('color.bg', 'light')])
     setTheme('dark')
     await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'dark')]))
     setTheme('system')
