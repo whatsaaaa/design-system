@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="sr-Latn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>kafana</title>
+    <link rel="stylesheet" href="./app.css" />
+  </head>
+  <body class="bg-bg p-6 font-sans text-text max-lg:p-4">
+    <main
+      id="card"
+      class="mx-auto max-w-content rounded-lg border-thin border-border bg-surface p-6"
+    >
+      <p id="overline" class="font-mono text-overline text-text-secondary uppercase">Rezervacije</p>
+      <h1 id="title" class="mt-2 font-mono text-h1 max-lg:text-h1-compact">Sto za dvoje</h1>
+      <p id="lead" class="mt-4 text-body text-text-secondary">
+        Otvoreno od osam. Javite nam se dan ranije, i sto je vaš.
+      </p>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <button
+          id="button"
+          type="button"
+          class="h-tab-bar rounded-md bg-interactive px-4 font-mono text-label text-on-interactive transition-colors"
+        >
+          Rezerviši
+        </button>
+        <span
+          id="tag"
+          class="rounded-sm bg-tag-bg px-2 py-0.5 font-mono text-label-sm text-tag-text"
+        >
+          Niš
+        </span>
+      </div>
+      <p
+        id="theme"
+        class="mt-6 border-t-thin border-border pt-4 font-mono text-caption text-text-faint"
+      >
+        tema:
+        <span class="hidden dark:inline">rose-pine</span>
+        <span class="hidden light:inline">rose-pine-dawn</span>
+      </p>
+    </main>
+  </body>
+</html>

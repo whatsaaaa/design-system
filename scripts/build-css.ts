@@ -1,9 +1,11 @@
 // Bundles the stylesheets in src/css/ into dist/: each one on its own in dist/css/, and all
-// of them with the fonts and tokens in dist/index.css. Needs dist/tokens.css,
-// dist/theme-rules.css and dist/fonts.css.
-import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+// of them with the fonts and tokens in dist/index.css. Writes dist/tailwind.css, which imports
+// the same files as index.css, from dist/. Needs dist/tokens.css, dist/theme-rules.css,
+// dist/tailwind/ and dist/fonts.css.
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import { join, relative, resolve } from 'node:path'
 import { bundle } from 'lightningcss'
+import { tailwindEntry } from './lib/tailwind.ts'
 
 const root = resolve(import.meta.dirname, '..')
 const source = join(root, 'src/css')
@@ -37,4 +39,14 @@ const sheets = readdirSync(source)
   .sort()
 for (const file of sheets) writeFileSync(join(dist, 'css', file), build(file))
 writeFileSync(join(dist, 'index.css'), build('index.css'))
-console.log(`wrote dist/index.css and ${sheets.length} stylesheets to dist/css/`)
+
+// the imports of index.css, as the files in dist/ that tailwind.css imports in their place
+const entry = [...readFileSync(join(source, 'index.css'), 'utf8').matchAll(/@import '([^']+)'/g)]
+  .map(([, path]) => resolve(source, path!))
+  .map((path) => (path.startsWith(source) ? join(dist, 'css', relative(source, path)) : path))
+  .map((path) => {
+    if (!existsSync(path)) throw new Error(`tailwind.css would import ${path}, which is not built`)
+    return `./${relative(dist, path)}`
+  })
+writeFileSync(join(dist, 'tailwind.css'), tailwindEntry(entry))
+console.log(`wrote dist/index.css, dist/tailwind.css and ${sheets.length} stylesheets to dist/css/`)

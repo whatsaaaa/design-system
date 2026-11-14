@@ -35,6 +35,43 @@ Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 
 Everything is prefixed: classes with `ws-`, variables with `--ws-`.
 
+### With Tailwind CSS
+
+An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in place of both `tailwindcss` and `index.css`. It goes first in the app's stylesheet, before the app's other imports and its own rules:
+
+```css
+@import '@whatsaaaa/design-system/tailwind.css';
+@import '@nuxt/ui'; /* a library on Tailwind, if the app has one */
+```
+
+Install `tailwindcss` 4 next to the package. Only this entry needs it.
+
+It brings Tailwind and everything `index.css` brings, in cascade layers, so a utility wins over a class of the system and the app's rules outside any layer win over both:
+
+| Layer        | What it has, the later winning                                    |
+| ------------ | ----------------------------------------------------------------- |
+| `theme`      | Tailwind's theme variables, then the tokens                       |
+| `base`       | Tailwind's preflight, then the page defaults of `base.css`        |
+| `components` | The system's classes: `ws-prose`, the terminal frame and the rest |
+| `utilities`  | Tailwind's utilities                                              |
+
+The tokens are Tailwind's theme, and a utility reads its token where it is used, so it follows the theme as the token does:
+
+| Utilities                                                  | Tokens                                                           |
+| ---------------------------------------------------------- | ---------------------------------------------------------------- |
+| `bg-surface`, `text-text-secondary`, `border-field-border` | The color roles. Tailwind's palette is taken out                 |
+| `font-mono`, `font-sans`                                   | The two families, and no others                                  |
+| `text-h1`, `text-body-sm`                                  | The text styles, without their family: write `font-mono text-h1` |
+| `leading-normal`, `font-semibold`                          | Line heights and weights                                         |
+| `p-4`, `gap-2.5`                                           | Space, four pixels to a step: `p-4` is `--ws-space-16`           |
+| `h-tab-bar`, `max-w-content`                               | The sizes, by name, for any width, height or space               |
+| `rounded-md`                                               | The radii. `rounded-full` is Tailwind's own                      |
+| `border-thin`                                              | The border widths. There are no shadow utilities                 |
+| `ease-standard`, `transition`                              | The easings. A transition takes `--ws-motion-duration-fast`      |
+| `max-lg:`                                                  | The one breakpoint: below 64rem                                  |
+
+`dark:` and `light:` follow the theme as the tokens do: the nearest `data-theme` or `dark` or `light` class around the element, then the system, by the rules of [the theme](#_3-theme). The roles already switch, so use them only for what the roles do not cover. A library that defines its own `dark:` or `light:` after the entry, as Nuxt UI does, replaces the system's: import them again after it, with `@import '@whatsaaaa/design-system/tailwind/variants.css';`.
+
 ## 2. Colors
 
 Use the role tokens. Never write a hex value, and never use a `--ws-palette-*` color for interface: a role changes with the theme and carries the contrast rules, the palette does not.
