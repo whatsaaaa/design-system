@@ -174,7 +174,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 - Code block with a caption: `<figure class="ws-code"><figcaption><span>file.ts</span><span>ts</span></figcaption><pre><code>...</code></pre></figure>`. For highlighting, use Shiki with `codeTheme` from `@whatsaaaa/design-system/shiki`. See [code blocks](#code-blocks).
 - Callout: `<aside class="ws-callout ws-callout--warning"><p class="ws-callout__title">Warning</p><p>...</p></aside>`. Modifiers: `--tip`, `--warning`, `--danger`. None is a note.
 - Terminal frame: `ws-term` (the window), `ws-tab-bar` with `ws-tab-bar__brand`, `ws-tabs` and `ws-tab-bar__end`, `ws-prompt` for headings, `ws-output`, `ws-status-line`. Mark the current tab with `aria-current="page"`. The tabs are optional: a site of one page has nothing to tab to, and a tab that only reloads the page would lose what was typed in it. Its bar is the brand and the end.
-- The path above a page title: `<p class="ws-crumb"><span>writing</span><span>form-builder</span><span>conditions</span></p>`, right before the `<h1>`. The slashes between the parts are drawn, and assistive technology does not read them. It comes with `prose.css`.
+- The path above a page title: `<p class="ws-crumb"><span>writing</span><span>form-builder</span><span>conditions</span></p>`, right before the `<h1>`. The slashes between the parts are drawn, and assistive technology reads a comma in their place, so the parts come out as words of their own. It comes with `prose.css`.
 - Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`, and `ws-visually-hidden` for text that only assistive technology reads.
 - Forms: `ws-segmented` and `ws-pairs`. See [forms](#forms).
 

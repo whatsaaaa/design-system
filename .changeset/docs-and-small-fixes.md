@@ -6,7 +6,7 @@ Docs corrections and small fixes the first apps and the website ran into.
 
 - **The markup is in the stylesheets you install.** The comments between the rules, with the markup of each piece, now come along into `dist/css/*.css` and `dist/index.css`, where the usage guide says they are. They were stripped before.
 - **Errors and brand.** The usage guide says an error uses the danger tokens, `--ws-color-danger` for a field's border and icon and `--ws-color-danger-text` for its message, and not brand. Brand marks where you are, such as the current tab, and what you press uses the interactive color.
-- **The tabs are optional**, and `ws-crumb`, the path above a page title, is in the usage guide.
+- **The tabs are optional**, and `ws-crumb`, the path above a page title, is in the usage guide. Assistive technology now reads its parts as words of their own, with a comma in place of each slash, where it ran them into one word before.
 - **Vite.** The usage guide shows a plugin that inlines the head scripts from the package, as a bundler does not copy a plain script out of `node_modules`.
 - **Before you finish** says to measure the terminal window and its bars too, which hide what overflows them, and not only the page.
 - **A state lines up with the text beside it.** `ws-state` takes its baseline from its word, not from its dot, which put it half a pixel low.
