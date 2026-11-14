@@ -1,5 +1,6 @@
 // Bundles the stylesheets in src/css/ into dist/: each one on its own in dist/css/, and all
-// of them with the fonts and tokens in dist/index.css. Needs dist/tokens.css and dist/fonts.css.
+// of them with the fonts and tokens in dist/index.css. Needs dist/tokens.css,
+// dist/theme-rules.css and dist/fonts.css.
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { bundle } from 'lightningcss'
