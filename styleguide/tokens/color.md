@@ -22,6 +22,20 @@ The attribute also works on any element, for a part of a page that has to stay i
 <div data-theme="dark">always dark, on a light page too</div>
 ```
 
+An element for one theme only, such as a cut of the logo, takes `ws-theme-dark` or `ws-theme-light`. Both are in the page and the one of the theme in effect where it stands shows, with no script. Switch the theme with <kbd>t</kbd> and the logo below changes. How to use them is in [the usage guide](/docs/usage#_3-theme).
+
+<p>
+  <img class="ws-theme-dark" src="/kit/whatsaaaa/lockup-dark.svg" alt="whatsaaaa, the cut for the dark theme" width="172" height="32" />
+  <img class="ws-theme-light" src="/kit/whatsaaaa/lockup-light.svg" alt="whatsaaaa, the cut for the light theme" width="172" height="32" />
+</p>
+
+```html
+<img class="ws-theme-dark" src="lockup-dark.svg" alt="whatsaaaa" />
+<img class="ws-theme-light" src="lockup-light.svg" alt="whatsaaaa" />
+```
+
+The browser's own bars, such as a phone's address bar, take the page background of the theme shown, from the [theme module](/docs/usage#_3-theme).
+
 ## Colors that do not change
 
 The mark on its tile and code blocks look the same in both themes.

@@ -12,6 +12,7 @@
 import type { UserConfig } from 'vitepress'
 import { codeTheme } from '../shiki/index.ts'
 import { keysInitScript } from '../shortcuts/index.ts'
+import { themeColorScript } from '../theme/color.ts'
 import type { ThemeConfig } from './types.ts'
 import { whatsaaaaMarkdown } from './markdown.ts'
 
@@ -36,6 +37,8 @@ export function whatsaaaaConfig(): UserConfig<ThemeConfig> {
   return {
     head: [
       ['script', { id: 'ws-theme' }, themeScript],
+      // the browser's own bars take the background of the theme shown, as VitePress switches it
+      ['script', { id: 'ws-theme-color' }, themeColorScript],
       // keys that are remembered as off are off from the first paint: no tab shows its number
       ['script', { id: 'ws-keys' }, keysInitScript],
     ],
@@ -43,6 +46,10 @@ export function whatsaaaaConfig(): UserConfig<ThemeConfig> {
       // one code theme for both page themes: code blocks stay dark
       theme: codeTheme,
       config: whatsaaaaMarkdown,
+      // VitePress loads a language when a block of it comes, but the HTML in a Markdown block
+      // is not a block of its own. Without this, it has its colors only on a build where an
+      // HTML block happened to come first.
+      shikiSetup: (highlighter) => highlighter.loadLanguage('html-derivative'),
     },
     vite: {
       // the theme ships as source, so the site's own build compiles it

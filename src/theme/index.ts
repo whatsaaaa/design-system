@@ -1,8 +1,10 @@
 /**
  * The theme switch. The stylesheet does the work: dark is the default, light applies when
  * the system asks for it, and data-theme="dark" or "light" on <html> overrides both.
- * This module sets that attribute by hand and remembers the choice.
+ * This module sets that attribute by hand and remembers the choice. The head script keeps
+ * the browser's own bars, such as a phone's address bar, at the background of the theme shown.
  */
+import { themeColorScript } from './color.ts'
 
 export type Theme = 'dark' | 'light'
 export type ThemeChoice = Theme | 'system'
@@ -58,7 +60,9 @@ export function toggleTheme(): Theme {
 /**
  * A script for the <head>, before any stylesheet, that applies a remembered choice before
  * the first paint. Without it a page chosen dark by hand flashes light on a light system.
+ * It also keeps <meta name="theme-color"> at the background of the theme shown, from the
+ * first paint on, when the theme is chosen by hand and when the system's theme changes.
  *
  *   <script>{themeInitScript}</script>
  */
-export const themeInitScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}})()`
+export const themeInitScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}})();${themeColorScript}`

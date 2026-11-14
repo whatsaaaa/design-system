@@ -3,6 +3,7 @@
 @import '../../dist/tokens.css';
 @import './icons.css';
 @import './base.css';
+@import './theme.css';
 @import './prose.css';
 @import './code.css';
 @import './callout.css';

@@ -40,6 +40,11 @@ body {
   height: var(--ws-size-status-line);
 }
 
+/* VitePress gives a button the browser's own ring: the status line's controls take the theme's */
+.WsStatusLine button:focus-visible {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+}
+
 .WsStatusLine .WsStatusLine-pair {
   gap: var(--ws-space-6);
 }

@@ -1,5 +1,6 @@
 // Writes the head scripts as files, for a page that would rather load them than inline them:
-// dist/theme/init.js applies a remembered theme, dist/shortcuts/init.js marks the page when
+// dist/theme/init.js applies a remembered theme and keeps the browser's theme-color in step
+// with the theme shown, dist/shortcuts/init.js marks the page when
 // the keys are remembered as off. They are plain scripts, not modules, so they can run before
 // the first paint: <script src=".../theme/init.js"></script>, before the stylesheet.
 import { writeFileSync } from 'node:fs'
@@ -10,7 +11,11 @@ import { themeInitScript } from '../src/theme/index.ts'
 const dist = join(resolve(import.meta.dirname, '..'), 'dist')
 
 for (const [file, script, does] of [
-  ['theme/init.js', themeInitScript, 'Applies a remembered theme before the first paint.'],
+  [
+    'theme/init.js',
+    themeInitScript,
+    'Applies a remembered theme before the first paint, and keeps theme-color in step with the theme shown.',
+  ],
   [
     'shortcuts/init.js',
     keysInitScript,

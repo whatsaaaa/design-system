@@ -114,15 +114,9 @@ onUnmounted(() => {
       Both names are rendered and the styles show the one of the page's theme. The theme is
       not known on the server, so a name rendered from it would differ in the browser.
     -->
-    <span
-      class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--wide ws-status-line__item--dark"
-    >
-      rose-pine
-    </span>
-    <span
-      class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--wide ws-status-line__item--light"
-    >
-      rose-pine-dawn
+    <span class="ws-status-line__item ws-status-line__item--edge ws-status-line__item--wide">
+      <span class="ws-theme-dark">rose-pine</span>
+      <span class="ws-theme-light">rose-pine-dawn</span>
     </span>
   </footer>
 </template>
