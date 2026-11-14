@@ -18,12 +18,14 @@ export const PAGES = [
   { name: 'tokens-space', path: '/tokens/space', shots: 'all' },
   { name: 'styles-prose', path: '/styles/prose', shots: 'all' },
   { name: 'styles-terminal', path: '/styles/terminal', shots: 'all' },
+  { name: 'styles-forms', path: '/styles/forms', shots: 'all' },
   { name: 'docs-theme', path: '/docs/', shots: 'desktop' },
   { name: 'docs-usage', path: '/docs/usage', shots: 'none' },
   { name: 'docs-sample', path: '/docs/sample/conditions', shots: 'all' },
   { name: 'docs-sample-home', path: '/docs/sample/home', shots: 'all' },
   { name: 'example-terminal', path: '/examples/terminal.html', shots: 'all' },
   { name: 'example-prose', path: '/examples/prose.html', shots: 'all' },
+  { name: 'example-form', path: '/examples/form.html', shots: 'all' },
 ] as const
 
 export const PHONE = { width: 390, height: 844 }

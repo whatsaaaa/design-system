@@ -1,6 +1,6 @@
 /*
  * Page defaults for a site that is all this system: box sizing, the page colors, the body
- * face, links, focus and selection. It resets margins and list markers, so content that
+ * face, links, number fields, focus and selection. It resets margins and list markers, so content that
  * should read as a document goes in a .ws-prose container.
  */
 *,
@@ -60,6 +60,20 @@ samp,
 pre {
   font-family: var(--ws-font-family-mono);
   font-variant-ligatures: none;
+}
+
+/*
+ * A number field is typed, and stepped with the arrow keys. The system draws no spin buttons,
+ * and the browser's own have no look of its, so they go.
+ */
+input[type='number'] {
+  appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
 }
 
 :focus-visible {

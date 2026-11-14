@@ -47,6 +47,7 @@ export default defineConfigWithTheme<ThemeConfig>({
           items: [
             { text: 'Prose', link: '/styles/prose' },
             { text: 'Terminal frame', link: '/styles/terminal' },
+            { text: 'Forms', link: '/styles/forms' },
           ],
         },
       ],

@@ -57,6 +57,22 @@
       "$value": "{palette.main.foam}",
       "$description": "Links, the focus ring, checked controls and the primary button fill."
     },
+    "interactive-hover": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.6745, 0.8745, 0.9098],
+        "hex": "#acdfe8"
+      },
+      "$description": "The interactive fill under the pointer, such as a hovered primary button: the interactive color 0.05 further from the page in OKLab lightness."
+    },
+    "interactive-active": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.7373, 0.9412, 0.9765],
+        "hex": "#bcf0f9"
+      },
+      "$description": "The interactive fill while it is pressed: 0.1 further from the page in OKLab lightness."
+    },
     "on-interactive": {
       "$value": "{palette.main.base}",
       "$description": "Text on the interactive fill."

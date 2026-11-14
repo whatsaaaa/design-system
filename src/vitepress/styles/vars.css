@@ -118,10 +118,10 @@
   --vp-button-brand-bg: var(--ws-color-interactive);
   --vp-button-brand-hover-border: transparent;
   --vp-button-brand-hover-text: var(--ws-color-on-interactive);
-  --vp-button-brand-hover-bg: var(--ws-color-interactive);
+  --vp-button-brand-hover-bg: var(--ws-color-interactive-hover);
   --vp-button-brand-active-border: transparent;
   --vp-button-brand-active-text: var(--ws-color-on-interactive);
-  --vp-button-brand-active-bg: var(--ws-color-interactive);
+  --vp-button-brand-active-bg: var(--ws-color-interactive-active);
   --vp-button-alt-border: var(--ws-color-field-border);
   --vp-button-alt-text: var(--ws-color-text);
   --vp-button-alt-bg: transparent;

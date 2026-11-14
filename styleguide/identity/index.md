@@ -63,19 +63,30 @@ The element is `<ws-ghost>`. Load its styles and register it once:
 <ws-ghost px="6"></ws-ghost>
 ```
 
-| Attribute | What it does                                               | Default            |
-| --------- | ---------------------------------------------------------- | ------------------ |
-| `px`      | Size of one sprite pixel, in CSS pixels. Use whole numbers | `2`                |
-| `bubble`  | `above` or `below`, to fix the side the bubble takes       | above when it fits |
-| `shout`   | A number of a's. The ghost shouts at once and holds it     | not set            |
+| Attribute    | What it does                                                                        | Default            |
+| ------------ | ----------------------------------------------------------------------------------- | ------------------ |
+| `px`         | Size of one sprite pixel, in CSS pixels. Use whole numbers                          | `2`                |
+| `bubble`     | `above` or `below`, to fix the side the bubble takes                                | above when it fits |
+| `shout`      | A number of a's. The ghost shouts at once and holds it                              | not set            |
+| `compact-px` | The size of one sprite pixel below 64rem, from 1 to 5, for a large ghost on a phone | `px`               |
 
-To have the ghost in the page before any script runs, render its inside on the server with `ghostMarkup()`. For a ghost that is only a picture or a link, use `ghostSvg()`.
+To have the ghost in the page before any script runs, render its inside on the server with `ghostMarkup()`. For a ghost that is only a picture or a link, use `ghostSvg()`, or `ghostElement()` for the same ghost as an element, built without markup.
 
 ```ts
-import { ghostMarkup, ghostSvg } from '@whatsaaaa/design-system/ghost'
+import { ghostElement, ghostMarkup, ghostSvg } from '@whatsaaaa/design-system/ghost'
 
 const egg = `<ws-ghost px="6">${ghostMarkup({ px: 6 })}</ws-ghost>`
 const home = `<a href="https://whatsaaaa.github.io/" aria-label="A whatsaaaa project">${ghostSvg()}</a>`
+link.append(ghostElement({ px: 2 }))
+```
+
+A page that sets no markup at all, such as a component that would need `innerHTML` for it, takes the ghost as a file: `ghost-on-dark.svg` and `ghost-on-light.svg` in the kit are the ghost without the empty margin of its grid, 20 by 24, one for each theme.
+
+```html
+<a href="https://whatsaaaa.github.io/" aria-label="A whatsaaaa project">
+  <img class="ws-theme-dark" src="ghost-on-dark.svg" alt="" width="20" height="24" />
+  <img class="ws-theme-light" src="ghost-on-light.svg" alt="" width="20" height="24" />
+</a>
 ```
 
 ## Rules

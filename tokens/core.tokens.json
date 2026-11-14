@@ -271,6 +271,38 @@
         }
       }
     },
+    "tagline": {
+      "$description": "The line under the display name on a home page.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": {
+          "value": 1.25,
+          "unit": "rem"
+        },
+        "fontWeight": 500,
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
+    "tagline-compact": {
+      "$description": "The tagline on phones.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": {
+          "value": 1.125,
+          "unit": "rem"
+        },
+        "fontWeight": 500,
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "rem"
+        }
+      }
+    },
     "lead": {
       "$description": "The first paragraph of a page.",
       "$value": {
@@ -606,6 +638,34 @@
         "unit": "rem"
       },
       "$description": "Height of the status line."
+    },
+    "control": {
+      "$value": {
+        "value": 2.5,
+        "unit": "rem"
+      },
+      "$description": "Height of a one-line field, a button and a segmented control."
+    },
+    "check": {
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      },
+      "$description": "A checkbox or a radio button."
+    },
+    "step": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$description": "The number of a step in its circle."
+    },
+    "icon": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$description": "An icon next to a line of text."
     }
   },
   "motion": {

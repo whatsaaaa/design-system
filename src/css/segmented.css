@@ -1,0 +1,89 @@
+/*
+ * A segmented control: buttons in a row that share their edges, one of them pressed, such as
+ * the switch between the languages of a page.
+ *
+ *   <div class="ws-segmented" role="group" aria-label="Language">
+ *     <button type="button" aria-pressed="true">en</button>
+ *     <button type="button" aria-pressed="false">sr</button>
+ *   </div>
+ *
+ * The pressed segment is raised, in the text color, with an edge of the interactive color
+ * that is twice as thick as the others, at least 3:1 on the page and on the raised fill. It is
+ * not filled: next to a primary button a filled segment would be as loud as the button.
+ */
+.ws-segmented {
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.ws-segmented > button {
+  position: relative;
+  min-width: 0;
+  min-height: var(--ws-size-control);
+  margin: 0;
+  padding: 0 var(--ws-space-16);
+  border: var(--ws-border-width-thin) solid var(--ws-color-field-border);
+  border-radius: 0;
+  background: none;
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+  cursor: pointer;
+}
+
+.ws-segmented > button:first-child {
+  border-start-start-radius: var(--ws-radius-md);
+  border-end-start-radius: var(--ws-radius-md);
+}
+
+.ws-segmented > button:last-child {
+  border-start-end-radius: var(--ws-radius-md);
+  border-end-end-radius: var(--ws-radius-md);
+}
+
+/* The edge two segments share is one line: the hovered or pressed one draws it, over the other. */
+.ws-segmented > button + button {
+  margin-inline-start: calc(-1 * var(--ws-border-width-thin));
+}
+
+.ws-segmented > button:hover {
+  z-index: 1;
+  border-color: var(--ws-color-text-secondary);
+  background: var(--ws-color-raised);
+  color: var(--ws-color-text);
+}
+
+.ws-segmented > button[aria-pressed='true'] {
+  z-index: 2;
+  border-color: var(--ws-color-interactive);
+  background: var(--ws-color-raised);
+  box-shadow: inset 0 0 0 var(--ws-border-width-thin) var(--ws-color-interactive);
+  color: var(--ws-color-text);
+  cursor: default;
+}
+
+.ws-segmented > button:focus-visible {
+  z-index: 3;
+}
+
+.ws-segmented > button:disabled {
+  z-index: 0;
+  border-color: var(--ws-color-text-faint);
+  background: none;
+  color: var(--ws-color-text-faint);
+  cursor: not-allowed;
+}
+
+/*
+ * In forced colors the browser drops the shadow and paints every fill in the page's color, so
+ * the pressed segment takes the system's colors of a selection. It keeps them as they are,
+ * as the browser would otherwise put a plate of the page's color behind its text.
+ */
+@media (forced-colors: active) {
+  .ws-segmented > button[aria-pressed='true'] {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+    outline-color: Highlight;
+    forced-color-adjust: none;
+  }
+}

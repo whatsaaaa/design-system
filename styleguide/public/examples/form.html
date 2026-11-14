@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout | form-builder</title>
+    <link rel="icon" href="../kit/form-builder/favicon.svg" type="image/svg+xml" />
+    <!-- apply what is remembered before the first paint, so they come before the stylesheet -->
+    <script src="../ds/theme/init.js"></script>
+    <script src="../ds/shortcuts/init.js"></script>
+    <link rel="stylesheet" href="../ds/index.css" />
+    <link rel="stylesheet" href="./example.css" />
+  </head>
+  <body>
+    <div class="ws-term window">
+      <header class="ws-tab-bar">
+        <span class="ws-tab-bar__brand">
+          <img
+            class="ws-theme-dark brand-mark"
+            src="../kit/form-builder/mark-on-dark.svg"
+            alt=""
+            width="32"
+            height="32"
+          />
+          <img
+            class="ws-theme-light brand-mark"
+            src="../kit/form-builder/mark-on-light.svg"
+            alt=""
+            width="32"
+            height="32"
+          />
+          <a href="./form.html">form-builder</a>
+        </span>
+        <div class="ws-tab-bar__end">
+          <a class="ghost-link" href="./terminal.html" aria-label="A whatsaaaa project">
+            <img
+              class="ws-theme-dark"
+              src="../kit/whatsaaaa/ghost-on-dark.svg"
+              alt=""
+              width="20"
+              height="24"
+            />
+            <img
+              class="ws-theme-light"
+              src="../kit/whatsaaaa/ghost-on-light.svg"
+              alt=""
+              width="20"
+              height="24"
+            />
+          </a>
+        </div>
+      </header>
+
+      <main class="form-page">
+        <div class="form-page__header">
+          <h1 class="form-page__title">Checkout</h1>
+          <div class="ws-segmented" role="group" aria-label="Language" data-segmented>
+            <button type="button" aria-pressed="true" lang="en">English</button>
+            <button type="button" aria-pressed="false" lang="sr">Srpski</button>
+          </div>
+        </div>
+
+        <ol class="steps" aria-label="Steps">
+          <li class="steps__item steps__item--done">
+            <span class="steps__number"><span class="ws-visually-hidden">Done:</span></span
+            >Tickets
+          </li>
+          <li class="steps__item steps__item--current" aria-current="step">
+            <span class="steps__number">2</span>Checkout
+          </li>
+          <li class="steps__item"><span class="steps__number">3</span>Payment</li>
+        </ol>
+
+        <div class="form-page__columns">
+          <form class="form" action="#" aria-label="Checkout" data-example-form>
+            <div class="field">
+              <label class="field__label" for="name">Name</label>
+              <input
+                class="input"
+                id="name"
+                name="name"
+                autocomplete="name"
+                value="Milica Đorđević"
+              />
+            </div>
+            <div class="field">
+              <label class="field__label" for="tickets">Tickets</label>
+              <input
+                class="input input--number"
+                id="tickets"
+                name="tickets"
+                type="number"
+                min="1"
+                max="8"
+                value="2"
+              />
+              <p class="field__hint">Up to eight. The arrow keys step the number.</p>
+            </div>
+            <label class="choice">
+              <input class="choice__input" type="checkbox" name="receipt" checked />
+              <span>Send me the receipt</span>
+            </label>
+
+            <button class="button button--primary" type="submit">Place order</button>
+          </form>
+
+          <aside class="summary" aria-label="Your order">
+            <h2 class="summary__heading">Order</h2>
+            <dl class="ws-pairs ws-pairs--amounts">
+              <div>
+                <dt>2 × workshop ticket</dt>
+                <dd>€96.00</dd>
+              </div>
+              <div>
+                <dt>Lunch</dt>
+                <dd>€12.50</dd>
+              </div>
+              <div>
+                <dt>Booking fee</dt>
+                <dd>€1.00</dd>
+              </div>
+              <div class="ws-pairs__total">
+                <dt>Total</dt>
+                <dd>€109.50</dd>
+              </div>
+            </dl>
+
+            <h2 class="summary__heading">Review</h2>
+            <dl class="ws-pairs">
+              <div>
+                <dt>Name</dt>
+                <dd>Milica Đorđević</dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd>milica.djordjevic@example.com</dd>
+              </div>
+              <div>
+                <dt>Note</dt>
+                <dd>Vegetarian lunch, and a seat near the door for a late arrival from Niš.</dd>
+              </div>
+            </dl>
+
+            <figure class="ws-code ws-code--wrap">
+              <figcaption><span>order.json</span><span>json</span></figcaption>
+              <pre><code><span class="line" style="--ws-code-hang: 2"><span style="color: var(--ws-syntax-punctuation)">{</span></span>
+<span class="line" style="--ws-code-hang: 4">  <span style="color: var(--ws-syntax-type)">"name"</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-string)">"Milica Đorđević"</span><span style="color: var(--ws-syntax-punctuation)">,</span></span>
+<span class="line" style="--ws-code-hang: 4">  <span style="color: var(--ws-syntax-type)">"tickets"</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-constant)">2</span><span style="color: var(--ws-syntax-punctuation)">,</span></span>
+<span class="line" style="--ws-code-hang: 4">  <span style="color: var(--ws-syntax-type)">"note"</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-string)">"Vegetarian lunch, and a seat near the door for a late arrival from Niš."</span></span>
+<span class="line" style="--ws-code-hang: 2"><span style="color: var(--ws-syntax-punctuation)">}</span></span></code></pre>
+            </figure>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="ws-status-line">
+        <span class="ws-status-line__mode">NORMAL</span>
+        <span class="ws-status-line__path">
+          <span class="ws-status-line__file"><span>form-builder/checkout</span></span>
+        </span>
+        <span class="ws-status-line__keys">
+          <button type="button" data-ws-key="t" data-toggle-theme>
+            <kbd class="ws-kbd">t</kbd>theme
+          </button>
+        </span>
+        <button
+          type="button"
+          class="ws-status-line__switch"
+          role="switch"
+          aria-label="Shortcut keys"
+          data-ws-keys-switch
+        >
+          keys
+          <span class="ws-status-line__on" aria-hidden="true">on</span>
+          <span class="ws-status-line__off" aria-hidden="true">off</span>
+        </button>
+        <button type="button" class="ws-status-line__theme" data-toggle-theme>
+          <span class="ws-visually-hidden">Switch theme, now</span>
+          <span class="ws-theme-dark">rose-pine</span>
+          <span class="ws-theme-light">rose-pine-dawn</span>
+        </button>
+      </footer>
+    </div>
+    <script type="module" src="./example.js"></script>
+  </body>
+</html>

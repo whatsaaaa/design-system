@@ -11,6 +11,8 @@ const samples: Record<string, string> = {
   'text.h2-compact': 'Adding the extension',
   'text.h3': 'Operators by kind',
   'text.h4': 'form-builder',
+  'text.tagline': 'Building things end to end.',
+  'text.tagline-compact': 'Building things end to end.',
   'text.lead':
     'A field, a section or a step shows, hides, or hides and clears its value, by the values of other fields.',
   'text.body': 'A condition tests one field, by its dot path, with exactly one operator.',

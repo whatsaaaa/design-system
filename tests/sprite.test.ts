@@ -65,6 +65,16 @@ describe('project sprites', () => {
     expect(checkSprite(sprite, 'project')).toEqual([])
   })
 
+  // The usage guide tells a page to pull a free mark out by an eighth of its size to put its
+  // pixels on an edge. When a sprite leaves another margin, the guide has to say so.
+  it.each(projects)(
+    '$name leaves two empty columns on each side, as the usage guide says',
+    ({ sprite }) => {
+      const { x, width } = spriteBounds(sprite)
+      expect([x, 16 - x - width]).toEqual([2, 2])
+    },
+  )
+
   it('says what is wrong with a sprite, in words', () => {
     expect(checkSprite(blank().slice(1), 'project')).toEqual(['has 15 rows, needs 16'])
     expect(checkSprite(draw(blank(), 4, 2, 'BXB'), 'project')).toEqual([

@@ -7,5 +7,7 @@
 @import './prose.css';
 @import './code.css';
 @import './callout.css';
+@import './segmented.css';
+@import './pairs.css';
 @import './terminal.css';
 @import './ghost.css';

@@ -32,6 +32,14 @@ An element for one theme only, `ws-theme-dark` or `ws-theme-light`, is hidden by
 
 The color of the browser's own bars, `<meta name="theme-color">`, is read from the stylesheet, from `--ws-color-bg` on `<html>`, and not written into the theme module. So it is the token's value in the theme that applies, by the same rules as everything else, and the module carries no copy of a color. The price is that it is known only once the stylesheet is there: the head script sets it in the first animation frame, which a browser runs once the stylesheets of the `<head>` are loaded and before the first paint. Material for MkDocs reads its theme-color from the page the same way.
 
+## Forms: shared measures, not components
+
+The system draws no fields and no buttons. Each app that uses it draws its own from the roles, in a few rules each, and the system gives them what they have to share to look like one family: a control height, the sizes of the small boxes, a hover and a pressed fill, a check icon, and the two pieces that are more than a box, a segmented control and a list of terms and values. A set of field classes would have to cover every state of every control in every framework's markup, which the first three apps did not need.
+
+The hover and pressed fills of the interactive color are that color a step further from the page in OKLab lightness, 0.05 and 0.1: lighter on dark, darker on light, so the label on them gains contrast in both themes. The first apps mixed the text color in instead, which barely moves the fill on Dawn, where pine and the text are about as dark.
+
+The pressed segment of a segmented control is raised, with a thicker edge of the interactive color, not filled. A filled segment next to a filled primary button reads as a second primary button. The edge carries the state at 3:1 or more on the page and on the raised fill.
+
 ## Docs theme: on top of VitePress's default theme
 
 The docs theme extends the default theme and restyles it. It does not replace it.

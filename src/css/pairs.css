@@ -1,0 +1,67 @@
+/*
+ * Terms and their values, a row each: the answers of a form on its review step, or what an
+ * order costs. A term is in the voice of a label, its value in the face of a field, and the
+ * two share a baseline.
+ *
+ *   <dl class="ws-pairs">
+ *     <div><dt>Name</dt><dd>Ana Petrović</dd></div>
+ *     <div><dt>Email</dt><dd>ana@example.com</dd></div>
+ *   </dl>
+ *
+ * Amounts take ws-pairs--amounts: each value at the right edge, in figures of one width, so
+ * the digits of the rows line up. The total is the last row, ws-pairs__total.
+ *
+ *   <dl class="ws-pairs ws-pairs--amounts">
+ *     <div><dt>Subtotal</dt><dd>€48.00</dd></div>
+ *     <div><dt>Shipping</dt><dd>€4.00</dd></div>
+ *     <div class="ws-pairs__total"><dt>Total</dt><dd>€52.00</dd></div>
+ *   </dl>
+ */
+.ws-pairs {
+  margin: 0;
+  border-bottom: var(--ws-border-width-thin) dashed var(--ws-color-border);
+}
+
+.ws-pairs > div {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: baseline;
+  gap: var(--ws-space-16);
+  padding-block: var(--ws-space-8);
+  border-top: var(--ws-border-width-thin) dashed var(--ws-color-border);
+}
+
+.ws-pairs dt {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+  overflow-wrap: anywhere;
+}
+
+.ws-pairs dd {
+  margin: 0;
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-font-size-16);
+  line-height: var(--ws-font-line-height-normal);
+  overflow-wrap: anywhere;
+}
+
+.ws-pairs--amounts > div {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.ws-pairs--amounts dd {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* The total: set off by a solid rule, and both of its parts in the text color, semibold. */
+.ws-pairs > .ws-pairs__total {
+  border-top-style: solid;
+}
+
+.ws-pairs__total :is(dt, dd) {
+  color: var(--ws-color-text);
+  font-weight: var(--ws-font-weight-semibold);
+}

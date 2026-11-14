@@ -9,6 +9,7 @@ import {
   WAG_HOLD,
   attachGhost,
   defineGhost,
+  ghostElement,
   ghostMarkup,
   ghostSvg,
   shoutText,
@@ -66,6 +67,28 @@ describe('the markup', () => {
   it('draws any pose as a picture', () => {
     expect(ghostSvg({ pose: 'lost' })).not.toBe(ghostSvg({ pose: 'idle' }))
     expect(ghostSvg()).toContain('width="20" height="24"')
+  })
+
+  it('is an element built without markup, the same as the markup', () => {
+    const element = ghostElement({ px: 3, pose: 'lost' })
+    expect(element.namespaceURI).toBe('http://www.w3.org/2000/svg')
+    const parsed = document.createElement('div')
+    parsed.innerHTML = ghostSvg({ px: 3, pose: 'lost' })
+    const svg = parsed.querySelector('svg')!
+    for (const name of ['class', 'viewBox', 'width', 'height', 'shape-rendering', 'aria-hidden'])
+      expect(element.getAttribute(name), name).toBe(svg.getAttribute(name))
+    expect([...element.children].map((path) => path.getAttribute('d'))).toEqual(
+      [...svg.children].map((path) => path.getAttribute('d')),
+    )
+    expect(element.querySelector('.ws-ghost__tongue')).not.toBeNull()
+  })
+
+  it('fills the element in without setting markup, so a page that forbids it still has the ghost', () => {
+    const set = vi.spyOn(Element.prototype, 'innerHTML', 'set')
+    const { button } = mount({ px: '2' })
+    expect(button.querySelector('svg.ws-ghost__sprite')).not.toBeNull()
+    // the bubble is drawn once there is a shout, not when the ghost is filled in
+    expect(set).not.toHaveBeenCalled()
   })
 
   it('is filled in by the element when the page did not render it', () => {
