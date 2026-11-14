@@ -10,7 +10,7 @@ A role says what a color is for. Its value differs by theme, and not always in t
 
 <RoleTable group="roles" />
 
-Love is the brand accent and the color of an error. So the things you press are not love: links, the focus ring, checked controls and the primary button take the interactive color, foam on dark and pine on light. A love button next to a love error would read as a warning.
+Love is the brand accent, and an error is love too, through the danger roles. So the things you press are not love: links, the focus ring, checked controls and the primary button take the interactive color, foam on dark and pine on light. A love button next to a love error would read as a warning. Where love is on a control, it says where you are, not what to press: the bar and number of the current tab. Which role goes where is in [the usage guide](/docs/usage#_2-colors).
 
 ## Themes
 

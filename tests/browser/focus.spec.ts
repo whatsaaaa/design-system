@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test'
-import { DESKTOP, PHONE, open } from './pages.ts'
+import { DESKTOP, NARROWEST, PHONE, open } from './pages.ts'
 
 /**
  * The status line lies over the bottom of the window. A control that takes the focus has to
@@ -171,7 +171,7 @@ for (const [name, viewport] of [
   ['on a wide screen', DESKTOP],
   ['in a window too narrow for the key hints', { width: 900, height: 800 }],
   ['on a phone', PHONE],
-  ['on the narrowest phone', { width: 320, height: 640 }],
+  ['on the narrowest phone', NARROWEST],
 ] as const) {
   test.describe(`the focus rings of the window's bars ${name}`, () => {
     test.use({ viewport })
@@ -233,4 +233,35 @@ test.describe("the focus rings of the docs theme's status line on a wide screen"
     expect(names).toContain('"Shortcut keys"')
     for (const [control, ring] of Object.entries(rings)) expect(ring, control).toEqual(WHOLE)
   })
+})
+
+test("a radius of the page's own wins over the focus ring's, wherever it is written", async ({
+  page,
+}) => {
+  // the app's rules come before the system's here, at the same weight
+  await page.route('**/fixtures/focus.html', (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: `<!doctype html>
+        <style>.round { border-radius: 50%; }</style>
+        <link rel="stylesheet" href="/ds/tokens.css" />
+        <link rel="stylesheet" href="/ds/css/base.css" />
+        <button type="button" class="round">round</button>
+        <a href="#">a link</a>`,
+    }),
+  )
+  await page.goto('/fixtures/focus.html')
+  const radius = () =>
+    page.evaluate(() => {
+      const element = document.activeElement!
+      return {
+        focused: element.matches(':focus-visible'),
+        radius: getComputedStyle(element).borderTopLeftRadius,
+      }
+    })
+  await page.keyboard.press('Tab')
+  expect(await radius()).toEqual({ focused: true, radius: '50%' })
+  // a link has no corners of its own: its ring takes small ones
+  await page.keyboard.press('Tab')
+  expect(await radius()).toEqual({ focused: true, radius: '4px' })
 })

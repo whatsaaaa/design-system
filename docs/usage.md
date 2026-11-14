@@ -49,15 +49,17 @@ Use the role tokens. Never write a hex value, and never use a `--ws-palette-*` c
 | Text                               | `--ws-color-text`                                                                                                |
 | Secondary text                     | `--ws-color-text-secondary`                                                                                      |
 | Disabled text, idle marks          | `--ws-color-text-faint`                                                                                          |
-| Brand accent                       | `--ws-color-brand`                                                                                               |
+| Brand accent, where you are        | `--ws-color-brand`, with `--ws-color-on-brand` on `--ws-color-brand-fill` for small text                         |
 | Links, focus ring, primary button  | `--ws-color-interactive`, with `--ws-color-on-interactive` for text on it                                        |
 | Primary button, hovered or pressed | `--ws-color-interactive-hover`, `--ws-color-interactive-active`                                                  |
 | Tags                               | `--ws-color-tag-text` on `--ws-color-tag-bg`                                                                     |
 | Status                             | `--ws-color-tip`, `-note`, `-warning`, `-danger`: each with `-text` for its label and `-tint` for its background |
+| An error                           | `--ws-color-danger` for the border and icon, `--ws-color-danger-text` for the message                            |
 
 Rules:
 
-- **Brand is not for controls.** `--ws-color-brand` is the accent and the color of an error. Buttons, links, focus and checked controls use `--ws-color-interactive`.
+- **Brand is not for controls.** What you press, and its hover, focus and checked states, uses `--ws-color-interactive`: buttons, links, the focus ring, checked boxes. `--ws-color-brand` is the accent: the mark, the cursor, a prompt's chevron, and the marks of where you are, such as the bar and number of the current tab and the mode of the status line. A mark of where you are may sit on a control, as on the current tab, because it says where you are, not what to press. So the current step of a form takes brand too: its number in `--ws-color-on-brand` on `--ws-color-brand-fill`.
+- **An error uses the danger tokens, not brand.** A field in error takes `--ws-color-danger` for its border and its icon, and its message `--ws-color-danger-text`. On the dark theme they have the value of brand, but they are other roles: on the light theme brand is too light for small text, and the message takes the text color.
 - **Brand is for graphics and large type.** For small text on the brand color use `--ws-color-on-brand` on `--ws-color-brand-fill`.
 - **Faint is never body text.** `--ws-color-text-faint` is 3:1.
 - **Status text uses the `-text` token**, not the status color. On the light theme the two differ.
@@ -79,6 +81,33 @@ setTheme('system') // follows the system again
 ```
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
+
+A bundler does not copy a plain script out of `node_modules`, so in an app built with Vite inline both head scripts, this one and the one of [the keys](#_7-keys), with a plugin. They come from the installed package, so they stay in step with it:
+
+```ts
+// vite.config.ts
+import { defineConfig, type Plugin } from 'vite'
+import { keysInitScript } from '@whatsaaaa/design-system/shortcuts'
+import { themeInitScript } from '@whatsaaaa/design-system/theme'
+
+function designSystemHead(): Plugin {
+  return {
+    name: 'design-system-head',
+    transformIndexHtml: {
+      // before Vite adds the stylesheet and the app's script to the <head>
+      order: 'pre',
+      handler: () => [
+        { tag: 'script', children: themeInitScript, injectTo: 'head' },
+        { tag: 'script', children: keysInitScript, injectTo: 'head' },
+      ],
+    },
+  }
+}
+
+export default defineConfig({
+  plugins: [designSystemHead()],
+})
+```
 
 The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme` or the class of `<html>`, and when the system's theme changes. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
 
@@ -144,11 +173,12 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 - Long-form text: put rendered Markdown in `<article class="ws-prose">`. Wrap a table in `<div class="ws-table">` so it scrolls inside itself, and give a cell of running text `class="ws-table__text"` so a narrow frame scrolls instead of squeezing it. A first cell stays on one line unless it has that class. The docs theme does both.
 - Code block with a caption: `<figure class="ws-code"><figcaption><span>file.ts</span><span>ts</span></figcaption><pre><code>...</code></pre></figure>`. For highlighting, use Shiki with `codeTheme` from `@whatsaaaa/design-system/shiki`. See [code blocks](#code-blocks).
 - Callout: `<aside class="ws-callout ws-callout--warning"><p class="ws-callout__title">Warning</p><p>...</p></aside>`. Modifiers: `--tip`, `--warning`, `--danger`. None is a note.
-- Terminal frame: `ws-term` (the window), `ws-tab-bar` with `ws-tab-bar__brand`, `ws-tabs` and `ws-tab-bar__end`, `ws-prompt` for headings, `ws-output`, `ws-status-line`. Mark the current tab with `aria-current="page"`.
+- Terminal frame: `ws-term` (the window), `ws-tab-bar` with `ws-tab-bar__brand`, `ws-tabs` and `ws-tab-bar__end`, `ws-prompt` for headings, `ws-output`, `ws-status-line`. Mark the current tab with `aria-current="page"`. The tabs are optional: a site of one page has nothing to tab to, and a tab that only reloads the page would lose what was typed in it. Its bar is the brand and the end.
+- The path above a page title: `<p class="ws-crumb"><span>writing</span><span>form-builder</span><span>conditions</span></p>`, right before the `<h1>`. The slashes between the parts are drawn, and assistive technology does not read them. It comes with `prose.css`.
 - Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`, and `ws-visually-hidden` for text that only assistive technology reads.
 - Forms: `ws-segmented` and `ws-pairs`. See [forms](#forms).
 
-The markup of each piece is in the comment at the top of its stylesheet, and in the style guide.
+The markup of each piece is in the comment above its rules, in its stylesheet in `dist/css/` and in `dist/index.css`, and in the style guide.
 
 ### Status line
 
@@ -265,7 +295,7 @@ import { enableShortcuts } from '@whatsaaaa/design-system/shortcuts'
 enableShortcuts()
 ```
 
-Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works only while its hint shows. Do not show a hint any other way. Number keys go to the tabs of a `ws-tabs` bar. Keys typed into a field, and keys pressed with Ctrl, Alt or Cmd, are left alone. A held key acts once: the repeats a keyboard sends while the key is down do nothing.
+Hints are hidden until `enableShortcuts()` runs, and below 64rem. A key works only while its hint shows. Do not show a hint any other way. Number keys go to the tabs of a `ws-tabs` bar, and the number of a tab is drawn only while the keys are on, so a page without the module, or without JavaScript, shows none. Keys typed into a field, and keys pressed with Ctrl, Alt or Cmd, are left alone. A held key acts once: the repeats a keyboard sends while the key is down do nothing.
 
 The switch is not optional. The keys are single characters that act on the whole page, so a visitor has to be able to turn them off (WCAG 2.1.4): it matters most with speech input, where a dictated word presses them, and for someone who presses keys without meaning to.
 
@@ -274,7 +304,7 @@ The switch is not optional. The keys are single characters that act on the whole
 - Do not write `aria-checked` on the switch or `aria-keyshortcuts` on a control. The module sets both while they are true, and the switch stays hidden until it has its state.
 - With the keys off the controls stay and work by hand. What names a key goes: the key caps and the numbers of the tabs. Hide a control that is nothing but a key cap with `[data-ws-keys='off']`.
 - A key acts only on a page that has the switch. A page without the switch has no shortcuts.
-- Load `shortcuts/init.js` in the head, next to `theme/init.js`, or inline `keysInitScript`. It marks the page before the first paint when the keys are remembered as off, so the tab numbers are not drawn first and then taken away.
+- Load `shortcuts/init.js` in the head, next to `theme/init.js`, or inline `keysInitScript` (with Vite, see [the theme](#_3-theme)). It marks the page before the first paint: `data-ws-keys="off"` when the keys are remembered as off, and `pending` until the module says `on`. So the numbers of the tabs keep their place unseen while the module loads, and the labels do not move when they show. Do not write `data-ws-keys` yourself: the head script and the module own it.
 
 ## 8. The ghost
 
@@ -350,5 +380,5 @@ The sources are in `tokens/`, in the Design Tokens Community Group format.
 
 - No hex values, no `--ws-palette-*` in interface code, no fonts from elsewhere.
 - It reads in both themes. Check with `data-theme="light"` on `<html>`.
-- Nothing overflows sideways at 390 px.
+- Nothing overflows sideways at 390 px, and nothing is cut off. The window hides what overflows it, so a page can fit while the window clips its content: measure the window too, and its bars, not only the page. Each `scrollWidth` of `document.documentElement`, `.ws-term`, `.ws-tab-bar` and `.ws-status-line` is at most its `clientWidth`.
 - Every key hint works, every status has a word, every control can be reached and seen with the keyboard.

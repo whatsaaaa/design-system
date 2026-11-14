@@ -24,7 +24,7 @@ And the same page as a phone shows it:
 
 ## Tab bar
 
-The brand, the tabs, and whatever goes at the right end. Tabs number themselves, like the windows of a terminal multiplexer, and the number keys go to them. The current tab is the link with `aria-current`.
+The brand, the tabs, and whatever goes at the right end. Tabs number themselves, like the windows of a terminal multiplexer, while the number keys go to them. The current tab is the link with `aria-current`. The tabs are optional: the bar of a site of one page is the brand and the end. The usage guide says when the numbers show, with the rest of the rules: see [classes](/docs/usage#_6-classes) and [keys](/docs/usage#_7-keys).
 
 ```html
 <header class="ws-tab-bar">
@@ -45,7 +45,7 @@ Below 64rem the tabs take a row of their own and share it evenly.
 
 ## Prompts
 
-A prompt is a chevron and a command. As a heading it names a section by the command whose output the section is: `whoami` for the introduction, `ls ~/projects` for the list of projects.
+A prompt is a chevron and a command. As a heading it names a section by the command whose output the section is: `whoami` for the introduction, `ls ~/projects` for the list of projects. A command too long for its line wraps, and the chevron stays on the first line.
 
 ```html
 <h2 class="ws-prompt">ls ~/projects</h2>

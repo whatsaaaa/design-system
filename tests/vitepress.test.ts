@@ -145,12 +145,12 @@ describe('the scripts the base config puts in the head', () => {
     expect(pageAfter(storage, system).dataset.theme).toBe(theme)
   })
 
-  it('mark a page whose keys are remembered as off, and no other', () => {
+  it('mark the keys off where they are remembered so, and pending until the module runs', () => {
     expect(pageAfter({ 'ws-keys': 'off' }, 'dark').dataset.wsKeys).toBe('off')
-    expect(pageAfter({}, 'dark').dataset.wsKeys).toBeUndefined()
-    expect(
-      pageAfter({ 'vitepress-theme-appearance': 'light' }, 'dark').dataset.wsKeys,
-    ).toBeUndefined()
+    expect(pageAfter({}, 'dark').dataset.wsKeys).toBe('pending')
+    expect(pageAfter({ 'vitepress-theme-appearance': 'light' }, 'dark').dataset.wsKeys).toBe(
+      'pending',
+    )
   })
 
   it("keep the color of the browser's own bars at the background of the theme shown", async () => {
@@ -168,7 +168,11 @@ describe('the scripts the base config puts in the head', () => {
   it.each(['dark', 'light'] as const)(
     'follow a %s system and leave the keys on where storage is refused',
     (system) => {
-      expect({ ...pageAfter('blocked', system).dataset }).toEqual({ theme: system })
+      // pending is on to come, once the module runs
+      expect({ ...pageAfter('blocked', system).dataset }).toEqual({
+        theme: system,
+        wsKeys: 'pending',
+      })
     },
   )
 })

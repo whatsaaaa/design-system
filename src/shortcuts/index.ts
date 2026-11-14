@@ -6,12 +6,12 @@
  * tabs of a tab bar, which numbers them. The switch, declared with `data-ws-keys-switch`,
  * turns every key off or on again, and the choice is kept in localStorage.
  *
- * The styles keep key hints hidden until `enableShortcuts()` has run, so a page never shows a
- * hint for a key that does nothing. For the same reason `aria-keyshortcuts` is set here, while
- * the key works, and not written in the markup. The state of the switch, `aria-checked`, is
- * set here too: the styles keep the switch hidden until it has one, so it never shows a state
- * that is not the real one. A key acts only on a page that has that switch: a page without it
- * has no shortcuts.
+ * The styles keep key hints and the numbers of the tabs hidden until `enableShortcuts()` has
+ * run, so a page never shows a hint for a key that does nothing. For the same reason
+ * `aria-keyshortcuts` is set here, while the key works, and not written in the markup. The
+ * state of the switch, `aria-checked`, is set here too: the styles keep the switch hidden
+ * until it has one, so it never shows a state that is not the real one. A key acts only on a
+ * page that has that switch: a page without it has no shortcuts.
  *
  * A held key acts once. The repeats a keyboard sends while a key is down do nothing, so a
  * finger that rests on t does not flash the page between its themes.
@@ -149,10 +149,12 @@ export function enableShortcuts({ tabs = '.ws-tabs a' }: ShortcutOptions = {}): 
 }
 
 /**
- * A script for the <head> that marks the page before the first paint when the keys are
- * remembered as off. The styles then leave out what names a key, the numbers of the tabs
- * among it, from the start instead of taking it away once `enableShortcuts()` runs.
+ * A script for the <head> that marks the page before the first paint: `off` when the keys
+ * are remembered as off, and `pending` otherwise, until `enableShortcuts()` says on or off.
+ * With off the styles leave out what names a key, the numbers of the tabs among it, from the
+ * start instead of taking it away. With pending the numbers keep their place unseen, so the
+ * labels of the tabs do not move when the module shows them.
  *
  *   <script>{keysInitScript}</script>
  */
-export const keysInitScript = `(function(){try{if(localStorage.getItem(${JSON.stringify(KEYS_STORAGE_KEY)})==='off')document.documentElement.dataset.wsKeys='off'}catch(e){}})()`
+export const keysInitScript = `(function(){var keys='pending';try{if(localStorage.getItem(${JSON.stringify(KEYS_STORAGE_KEY)})==='off')keys='off'}catch(e){}document.documentElement.dataset.wsKeys=keys})()`

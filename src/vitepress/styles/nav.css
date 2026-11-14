@@ -84,18 +84,25 @@
   line-height: inherit;
 }
 
-.VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
-.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button::before {
+/*
+ * the number names the key that goes to the tab, so it is drawn only while the keys are on.
+ * While the head script waits for the shortcuts module it keeps its place unseen.
+ */
+:is([data-ws-keys='on'], [data-ws-keys='pending']) .VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
+:is([data-ws-keys='on'], [data-ws-keys='pending'])
+  .VPNav
+  .VPNavBarMenu
+  .VPNavBarMenuGroup
+  .button::before {
   color: var(--ws-color-text-faint);
   font-weight: var(--ws-font-weight-bold);
   content: counter(ws-tab);
   content: counter(ws-tab) / '';
 }
 
-/* the number names the key that goes to the tab. With the keys switched off it is left out. */
-[data-ws-keys='off'] .VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
-[data-ws-keys='off'] .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button::before {
-  content: none;
+[data-ws-keys='pending'] .VPNav .VPNavBarMenu .VPNavBarMenuLink::before,
+[data-ws-keys='pending'] .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button::before {
+  visibility: hidden;
 }
 
 .VPNav .VPNavBarMenu .VPNavBarMenuLink:hover,
