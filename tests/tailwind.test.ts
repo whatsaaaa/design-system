@@ -196,28 +196,40 @@ describe("the tokens as Tailwind's theme, as Tailwind compiles an app on the ent
     ])
   })
 
-  it("takes out Tailwind's defaults that no token stands behind, as the usage guide lists", async () => {
-    const removed = [
-      'bg-white',
-      'text-black',
-      'text-red-500',
-      'border-slate-200',
-      'shadow-lg',
-      'inset-shadow-sm',
-      'drop-shadow-md',
-      'text-shadow-md',
-      'font-serif',
-      'font-thin',
-      'font-extralight',
-      'font-light',
-      'font-black',
-      'rounded-2xl',
-      'rounded-3xl',
-      'rounded-4xl',
-    ]
+  /** Tailwind's defaults that no token stands behind, as the usage guide lists them. */
+  const removed = [
+    'bg-white',
+    'text-black',
+    'text-red-500',
+    'border-slate-200',
+    'shadow-lg',
+    'inset-shadow-sm',
+    'drop-shadow-md',
+    'text-shadow-md',
+    'font-serif',
+    'font-thin',
+    'font-extralight',
+    'font-light',
+    'font-black',
+    'rounded-2xl',
+    'rounded-3xl',
+    'rounded-4xl',
+  ]
+
+  it("takes out Tailwind's defaults that no token stands behind: as classes they make nothing", async () => {
     const tailwind = await utilities(removed, 'tailwindcss/index.css')
     expect(removed.filter((candidate) => !tailwind[candidate])).toEqual([])
     await expectUtilities(removed.map((candidate) => [candidate, undefined]))
+  })
+
+  it('fails the build on an @apply of a default it takes out', async () => {
+    for (const candidate of removed)
+      await expect(
+        compile('app.css', [], {
+          'app.css': `@import '${ENTRY}';\n.panel { @apply ${candidate}; }`,
+        }),
+        candidate,
+      ).rejects.toThrow(`Cannot apply unknown utility class \`${candidate}\``)
   })
 
   describe('as the token build writes it', () => {

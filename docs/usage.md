@@ -70,7 +70,7 @@ The tokens are Tailwind's theme, and a utility reads its token where it is used,
 | `ease-standard`, `transition`                              | The easings. A transition takes `--ws-motion-duration-fast`      |
 | `max-lg:`                                                  | The one breakpoint: below 64rem                                  |
 
-The entry takes out Tailwind's defaults that no token stands behind, as the system colors interface with its roles only and draws edges with borders, not shadows. Their utilities compile to nothing, with no error:
+The entry takes out Tailwind's defaults that no token stands behind, as the system colors interface with its roles only and draws edges with borders, not shadows. As classes their utilities compile to nothing, with no error. In `@apply`, in the app's CSS or a component's `<style>` block, one fails the build with `Cannot apply unknown utility class`:
 
 | Taken out                                    | Utilities that compile to nothing                                  | Use instead                                  |
 | -------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------- |
