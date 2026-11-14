@@ -123,7 +123,7 @@ The licenses are in [`licenses/`](./licenses/).
 
 The code and the styles are [MIT](./LICENSE): the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules and the docs theme.
 
-The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards and the favicons, in `assets/`, as drawn in `src/identity/` and `identity/`, and as compiled into `dist/identity/` and `dist/ghost/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
+The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons, in `assets/`, as drawn in `src/identity/` and `identity/`, and as compiled into `dist/identity/` and `dist/ghost/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
 
 The artwork may be redistributed unmodified as part of this package and of builds made with it. It may not be shown, used as a logo or mark, or used to identify anything other than Whatsaaaa and its projects. That covers the ghost that `<ws-ghost>` and the docs theme draw: the MIT License covers their code, not the ghost. A site that is not Whatsaaaa's own makes sure the ghost is not shown on it. It puts neither `<ws-ghost>` nor the output of `ghostSvg` or `ghostMarkup` on its pages, and with the docs theme it replaces the theme's `NavGhost.vue` and `NotFound.vue`, the way VitePress [overrides an internal component](https://vitepress.dev/guide/extending-default-theme#overriding-internal-components):
 
