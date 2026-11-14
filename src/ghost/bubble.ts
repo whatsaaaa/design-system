@@ -1,4 +1,5 @@
 import { BUBBLE_ADVANCE, BUBBLE_GLYPHS } from './glyphs.ts'
+import { svgElement } from './svg.ts'
 
 /** Height of the bubble's body, and of the tail under or over it, in font pixels. */
 const BODY = 15
@@ -20,8 +21,6 @@ export function lettersThatFit(width: number): number {
 
 /** Furthest the tail can move right, in font pixels. */
 export const maxTailShift = (text: string) => bubbleSize(text).width - 7
-
-const SVG = 'http://www.w3.org/2000/svg'
 
 /**
  * A pixel speech bubble with stepped corners, as an SVG element built without markup.
@@ -53,32 +52,23 @@ export function bubbleElement(
   const shape =
     `M1 ${top}h${width - 2}v1h1v${BODY - 2}h-1v1h${2 - width}v-1h-1v${2 - BODY}h1z` +
     steps.map(([x, y, run]) => `M${x! + tailShift} ${y}h${run}v1h${-run!}z`).join('')
-  const element = <K extends keyof SVGElementTagNameMap>(
-    name: K,
-    attributes: Record<string, string>,
-  ) => {
-    const created = document.createElementNS(SVG, name)
-    for (const [attribute, value] of Object.entries(attributes))
-      created.setAttribute(attribute, value)
-    return created
-  }
-  const letters = element('g', { class: 'ws-ghost__bubble-text' })
+  const letters = svgElement(document, 'g', { class: 'ws-ghost__bubble-text' })
   letters.append(
     ...[...text].map((char, index) => {
       const glyph = BUBBLE_GLYPHS[char]
       if (!glyph) throw new Error(`The speech bubble has no glyph for "${char}"`)
-      return element('path', {
+      return svgElement(document, 'path', {
         d: glyph,
         transform: `translate(${PADDING + index * BUBBLE_ADVANCE} ${top + 11})`,
       })
     }),
   )
-  const svg = element('svg', {
+  const svg = svgElement(document, 'svg', {
     viewBox: `0 0 ${width} ${height}`,
     width: String(width * unit),
     height: String(height * unit),
     'shape-rendering': 'crispEdges',
   })
-  svg.append(element('path', { class: 'ws-ghost__bubble-shape', d: shape }), letters)
+  svg.append(svgElement(document, 'path', { class: 'ws-ghost__bubble-shape', d: shape }), letters)
   return svg
 }

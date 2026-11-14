@@ -78,6 +78,10 @@ And with `ws-pairs--amounts`, what an order costs: each amount at the right edge
 ```html
 <dl class="ws-pairs ws-pairs--amounts">
   <div>
+    <dt>2 × workshop ticket</dt>
+    <dd>€96.00</dd>
+  </div>
+  <div>
     <dt>Lunch</dt>
     <dd>€12.50</dd>
   </div>

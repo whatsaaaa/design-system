@@ -14,6 +14,7 @@ import {
   lettersThatFit,
   maxTailShift,
 } from './bubble.ts'
+import { SVG, svgElement } from './svg.ts'
 
 export type { GhostPose } from '../identity/ghost.ts'
 
@@ -44,15 +45,12 @@ export interface GhostSvgOptions {
   pose?: GhostPose
 }
 
-const SVG = 'http://www.w3.org/2000/svg'
-
 /** The attributes of the ghost's `<svg>`, and its two paths, for the markup and the element. */
 function sprite({ px = 2, pose = 'idle' }: GhostSvgOptions) {
   const { body, love } = spritePaths(GHOST_POSES[pose])
   return {
     attributes: {
       class: 'ws-ghost__sprite',
-      xmlns: SVG,
       viewBox: `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.width} ${BOUNDS.height}`,
       width: String(BOUNDS.width * px),
       height: String(BOUNDS.height * px),
@@ -72,7 +70,7 @@ function sprite({ px = 2, pose = 'idle' }: GhostSvgOptions) {
  */
 export function ghostSvg(options: GhostSvgOptions = {}): string {
   const { attributes, paths } = sprite(options)
-  const attrs = Object.entries(attributes)
+  const attrs = Object.entries({ xmlns: SVG, ...attributes })
     .map(([name, value]) => `${name}="${value}"`)
     .join(' ')
   return `<svg ${attrs}>${paths.map(([name, d]) => `<path class="${name}" d="${d}"/>`).join('')}</svg>`
@@ -87,15 +85,8 @@ export function ghostElement(
   document: Document = globalThis.document,
 ): SVGSVGElement {
   const { attributes, paths } = sprite(options)
-  const svg = document.createElementNS(SVG, 'svg')
-  for (const [name, value] of Object.entries(attributes))
-    if (name !== 'xmlns') svg.setAttribute(name, value)
-  for (const [name, d] of paths) {
-    const path = document.createElementNS(SVG, 'path')
-    path.setAttribute('class', name)
-    path.setAttribute('d', d)
-    svg.append(path)
-  }
+  const svg = svgElement(document, 'svg', attributes)
+  svg.append(...paths.map(([name, d]) => svgElement(document, 'path', { class: name, d })))
   return svg
 }
 

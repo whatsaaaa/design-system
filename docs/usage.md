@@ -18,20 +18,20 @@ One import has everything: fonts, tokens, page defaults and every class.
 
 Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 
-| Import                                       | What it has                                                                                                             |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `@whatsaaaa/design-system/tokens.css`        | Every token as a CSS variable, for both themes                                                                          |
-| `@whatsaaaa/design-system/fonts.css`         | JetBrains Mono and Inter, self-hosted, with Serbian Latin                                                               |
-| `@whatsaaaa/design-system/css/base.css`      | Page defaults. It resets margins and list markers                                                                       |
-| `@whatsaaaa/design-system/css/prose.css`     | Long-form text, in a `.ws-prose` container                                                                              |
-| `@whatsaaaa/design-system/css/code.css`      | `.ws-code`, a code block with a caption                                                                                 |
-| `@whatsaaaa/design-system/css/callout.css`   | `.ws-callout`                                                                                                           |
-| `@whatsaaaa/design-system/css/segmented.css` | `.ws-segmented`, buttons in a row with one pressed                                                                      |
-| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary                                                           |
-| `@whatsaaaa/design-system/css/terminal.css`  | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along                                              |
-| `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                  |
-| `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                  |
-| `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and the check, `--ws-icon-check`. Needed with `callout.css` and `terminal.css` |
+| Import                                       | What it has                                                                                                                                        |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@whatsaaaa/design-system/tokens.css`        | Every token as a CSS variable, for both themes                                                                                                     |
+| `@whatsaaaa/design-system/fonts.css`         | JetBrains Mono and Inter, self-hosted, with Serbian Latin                                                                                          |
+| `@whatsaaaa/design-system/css/base.css`      | Page defaults. It resets margins and list markers                                                                                                  |
+| `@whatsaaaa/design-system/css/prose.css`     | Long-form text, in a `.ws-prose` container                                                                                                         |
+| `@whatsaaaa/design-system/css/code.css`      | `.ws-code`, a code block with a caption                                                                                                            |
+| `@whatsaaaa/design-system/css/callout.css`   | `.ws-callout`                                                                                                                                      |
+| `@whatsaaaa/design-system/css/segmented.css` | `.ws-segmented`, buttons in a row with one pressed                                                                                                 |
+| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary                                                                                      |
+| `@whatsaaaa/design-system/css/terminal.css`  | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along                                                                         |
+| `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                                             |
+| `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                                             |
+| `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and `--ws-icon-check`, the tick of a form. Needed with `callout.css` and `terminal.css`, and for the tick |
 
 Everything is prefixed: classes with `ws-`, variables with `--ws-`.
 
@@ -199,6 +199,10 @@ A **segmented control** is a few buttons with one pressed, such as a switch betw
 
 ```html
 <dl class="ws-pairs ws-pairs--amounts">
+  <div>
+    <dt>2 × workshop ticket</dt>
+    <dd>€96.00</dd>
+  </div>
   <div>
     <dt>Lunch</dt>
     <dd>€12.50</dd>
