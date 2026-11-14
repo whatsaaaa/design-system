@@ -212,7 +212,7 @@ test.describe('themes', () => {
     })
   })
 
-  test.describe('a dark or light class, as Tailwind, Nuxt UI and useColorMode set it', () => {
+  test.describe('a dark or light class, as Nuxt UI and useColorMode set it', () => {
     const DARK = 'rgb(25, 23, 36)'
     const LIGHT = 'rgb(250, 244, 237)'
 

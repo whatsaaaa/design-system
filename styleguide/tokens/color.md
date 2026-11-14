@@ -16,7 +16,7 @@ Love is the brand accent and the color of an error. So the things you press are 
 
 Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and the [theme module](/docs/usage#_3-theme) remembers that choice.
 
-A `dark` or `light` class does the same, as Tailwind, Nuxt UI and VueUse's `useColorMode` set it, so an app built on them needs no bridge. Where both are on one element, `data-theme` wins.
+A `dark` or `light` class does the same, as Nuxt UI and VueUse's `useColorMode` set it, so an app built on them needs no bridge. Where both are on one element, `data-theme` wins. A library that marks light only by leaving `dark` off, such as the toggle script in Tailwind's docs or VueUse's `useDark`, has to set a `light` class too: with no class the system decides.
 
 The attribute and the class also work on any element, for a part of a page that has to stay in one theme:
 

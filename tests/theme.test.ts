@@ -134,6 +134,44 @@ const loadStyles = () => {
 }
 const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve))
 
+describe('the token stylesheet', () => {
+  /** The theme <html> is drawn in: the background its tokens give it and its color-scheme. */
+  const shown = () => {
+    const style = getComputedStyle(root)
+    return {
+      bg: style.getPropertyValue('--ws-color-bg').trim(),
+      colorScheme: style.getPropertyValue('color-scheme'),
+    }
+  }
+  const theme = (name: 'dark' | 'light') => ({ bg: hex('color.bg', name), colorScheme: name })
+
+  for (const [system, className, dataTheme, expected] of [
+    // dark by default, light when the system asks
+    ['dark', '', '', 'dark'],
+    ['light', '', '', 'light'],
+    // a theme chosen by hand wins over the system, made either way
+    ['light', '', 'dark', 'dark'],
+    ['dark', '', 'light', 'light'],
+    ['light', 'dark', '', 'dark'],
+    ['dark', 'light', '', 'light'],
+    // both classes choose nothing: the system decides
+    ['dark', 'dark light', '', 'dark'],
+    ['light', 'dark light', '', 'light'],
+    // data-theme wins over the class
+    ['light', 'light', 'dark', 'dark'],
+    ['dark', 'dark', 'light', 'light'],
+  ] as const) {
+    const marks = [className && `class="${className}"`, dataTheme && `data-theme="${dataTheme}"`]
+    it(`is ${expected} on a ${system} system with ${marks.filter(Boolean).join(' and ') || 'no choice'} on <html>`, () => {
+      loadStyles()
+      systemPrefers(system)
+      root.className = className
+      if (dataTheme) root.dataset.theme = dataTheme
+      expect(shown()).toEqual(theme(expected))
+    })
+  }
+})
+
 describe("the color of the browser's own bars", () => {
   it('is the background of the theme chosen by hand, from the tokens', async () => {
     loadStyles()

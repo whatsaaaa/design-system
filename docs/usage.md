@@ -66,7 +66,7 @@ The pairs that are checked for contrast are in `tokens/contrast.json`. If you ne
 
 ## 3. Theme
 
-Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and so does a `dark` or `light` class, as Tailwind, Nuxt UI and VueUse's `useColorMode` set it. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
+Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and so does a `dark` or `light` class, as Nuxt UI and VueUse's `useColorMode` set it. A library that marks light only by leaving `dark` off, such as the toggle script in Tailwind's docs or VueUse's `useDark`, has to set a `light` class or `data-theme="light"` too when light is chosen by hand: with no class the system decides. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
 
 ```ts
 import { getTheme, setTheme, toggleTheme, themeInitScript } from '@whatsaaaa/design-system/theme'
@@ -108,7 +108,7 @@ On a page with a status line, its theme button is the theme switch at every widt
 
 So a `dark` or `light` class you give an element for something else puts what is inside it in that theme. Use another name for it.
 
-`setTheme` and `toggleTheme` write `data-theme`, and `getTheme` reads it, then the class of `<html>`. In an app whose color mode library owns the class, such as Nuxt UI, Tailwind or `useColorMode`, switch the theme with the library and leave `data-theme` alone: do not call `setTheme` or `toggleTheme`, because the attribute they write wins over the library's class from then on. Keep the head script for the browser's bars. With nothing remembered under `ws-theme` it sets no `data-theme`, and it follows the class. So do not give the library that storage key.
+`setTheme` and `toggleTheme` write `data-theme`, and `getTheme` reads it, then the class of `<html>`. In an app whose color mode library owns the class, such as Nuxt UI or `useColorMode`, switch the theme with the library and leave `data-theme` alone: do not call `setTheme` or `toggleTheme`, because the attribute they write wins over the library's class from then on. Keep the head script for the browser's bars. With nothing remembered under `ws-theme` it sets no `data-theme`, and it follows the class. So do not give the library that storage key.
 
 ## 4. Type
 
