@@ -1,10 +1,10 @@
 /*
  * The few icons the styles draw themselves, as masks, so they take the color of their text
- * and need no markup. All are 16 x 16 strokes of 1.5, drawn at --ws-size-icon next to text.
+ * and need no markup. All are 16 x 16 strokes of 1.5.
  *
  *   .done::before {
- *     width: var(--ws-size-icon);
- *     height: var(--ws-size-icon);
+ *     width: 1rem;
+ *     height: 1rem;
  *     background: currentcolor;
  *     content: '';
  *     mask: var(--ws-icon-check) center / contain no-repeat;

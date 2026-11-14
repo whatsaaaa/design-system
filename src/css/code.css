@@ -69,6 +69,7 @@
 /* A line is a box of its own, so its rest can hang. The line break after it stays text. */
 .ws-code--wrap .line {
   display: inline-block;
+  box-sizing: border-box;
   width: 100%;
   padding-inline-start: calc(var(--ws-code-hang) * 1ch);
   text-indent: calc(var(--ws-code-hang) * -1ch);

@@ -266,8 +266,8 @@
 
 .vp-doc .custom-block .custom-block-title::before {
   flex: none;
-  width: var(--ws-size-icon);
-  height: var(--ws-size-icon);
+  width: 1rem;
+  height: 1rem;
   background: currentcolor;
   content: '';
   mask: var(--ws-callout-icon) center / contain no-repeat;

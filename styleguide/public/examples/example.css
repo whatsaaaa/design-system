@@ -272,8 +272,8 @@ body {
 }
 
 .steps__item--done .steps__number::before {
-  width: var(--ws-size-icon);
-  height: var(--ws-size-icon);
+  width: 1rem;
+  height: 1rem;
   background: currentcolor;
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;
@@ -328,8 +328,7 @@ body {
 }
 
 .input--number {
-  width: 8ch;
-  box-sizing: content-box;
+  width: calc(8ch + 2 * var(--ws-space-12) + 2 * var(--ws-border-width-thin));
 }
 
 .input:hover {
@@ -359,8 +358,8 @@ body {
 }
 
 .choice__input::before {
-  width: var(--ws-size-icon);
-  height: var(--ws-size-icon);
+  width: 1rem;
+  height: 1rem;
   background: var(--ws-color-on-interactive);
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;

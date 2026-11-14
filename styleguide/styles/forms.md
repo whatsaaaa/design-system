@@ -19,7 +19,6 @@ How to use each piece, and the rules they follow, are in [the usage guide](/docs
 | `--ws-size-control` | 40 px | A one-line field, a button and a segmented control |
 | `--ws-size-check`   | 20 px | A checkbox or a radio button                       |
 | `--ws-size-step`    | 24 px | The number of a step, in its circle                |
-| `--ws-size-icon`    | 16 px | An icon next to a line of text, such as the check  |
 
 ## The primary button
 
@@ -34,12 +33,12 @@ Filled with `--ws-color-interactive`, its label in `--ws-color-on-interactive`. 
 
 ## Check
 
-`--ws-icon-check` is drawn like the other icons: a mask, so it takes the color of what it stands on. A done step and a ticked box use it.
+`--ws-icon-check`, in `css/icons.css`, is drawn like the other icons: a mask, so it takes the color of what it stands on. A done step and a ticked box use it.
 
 ```css
 .done::before {
-  width: var(--ws-size-icon);
-  height: var(--ws-size-icon);
+  width: 1rem;
+  height: 1rem;
   background: currentcolor;
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;

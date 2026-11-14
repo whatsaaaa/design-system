@@ -182,6 +182,8 @@ test('a number field has no spin buttons, and the arrow keys step it', async ({ 
   await expect(field).toHaveValue('3')
   // a field has the focus: the mode says so
   await expect(page.locator('.ws-status-line__mode')).toHaveText('INSERT')
+  // as tall as every other control, --ws-size-control
+  expect((await field.boundingBox())!.height).toBe(40)
 })
 
 test.describe('on a phone', () => {
@@ -222,6 +224,17 @@ test.describe('on a phone', () => {
     // the line starts where it is indented, two characters in, and the rest four in
     expect(starts[0]).toBe(0)
     expect(starts.slice(1).every((start) => start === 4)).toBe(true)
+  })
+
+  test('a wrapped line stays inside its block without the box sizing of base.css', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 900 })
+    await open(page, FORM)
+    // a page that takes code.css but not base.css sizes boxes the browser's way
+    await page.addStyleTag({ content: '*, ::before, ::after { box-sizing: content-box }' })
+    const pre = page.locator('.ws-code--wrap pre')
+    expect(await pre.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0)
   })
 
   test('a large ghost takes its compact size, and its full one on a wide screen', async ({

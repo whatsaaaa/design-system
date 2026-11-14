@@ -18,20 +18,20 @@ One import has everything: fonts, tokens, page defaults and every class.
 
 Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 
-| Import                                       | What it has                                                                           |
-| -------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `@whatsaaaa/design-system/tokens.css`        | Every token as a CSS variable, for both themes                                        |
-| `@whatsaaaa/design-system/fonts.css`         | JetBrains Mono and Inter, self-hosted, with Serbian Latin                             |
-| `@whatsaaaa/design-system/css/base.css`      | Page defaults. It resets margins and list markers                                     |
-| `@whatsaaaa/design-system/css/prose.css`     | Long-form text, in a `.ws-prose` container                                            |
-| `@whatsaaaa/design-system/css/code.css`      | `.ws-code`, a code block with a caption                                               |
-| `@whatsaaaa/design-system/css/callout.css`   | `.ws-callout`                                                                         |
-| `@whatsaaaa/design-system/css/segmented.css` | `.ws-segmented`, buttons in a row with one pressed                                    |
-| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary                         |
-| `@whatsaaaa/design-system/css/terminal.css`  | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along            |
-| `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                |
-| `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                |
-| `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw. Needed with `callout.css` and `terminal.css` |
+| Import                                       | What it has                                                                                                             |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `@whatsaaaa/design-system/tokens.css`        | Every token as a CSS variable, for both themes                                                                          |
+| `@whatsaaaa/design-system/fonts.css`         | JetBrains Mono and Inter, self-hosted, with Serbian Latin                                                               |
+| `@whatsaaaa/design-system/css/base.css`      | Page defaults. It resets margins and list markers                                                                       |
+| `@whatsaaaa/design-system/css/prose.css`     | Long-form text, in a `.ws-prose` container                                                                              |
+| `@whatsaaaa/design-system/css/code.css`      | `.ws-code`, a code block with a caption                                                                                 |
+| `@whatsaaaa/design-system/css/callout.css`   | `.ws-callout`                                                                                                           |
+| `@whatsaaaa/design-system/css/segmented.css` | `.ws-segmented`, buttons in a row with one pressed                                                                      |
+| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary                                                           |
+| `@whatsaaaa/design-system/css/terminal.css`  | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along                                              |
+| `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                  |
+| `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                  |
+| `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and the check, `--ws-icon-check`. Needed with `callout.css` and `terminal.css` |
 
 Everything is prefixed: classes with `ws-`, variables with `--ws-`.
 
@@ -133,7 +133,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 ## 5. Space, radius, motion
 
 - Space: `--ws-space-2` to `--ws-space-64`, named by px, set in rem. Use them for padding, margin and gap.
-- Sizes: `--ws-size-control` (40 px) is the height of a one-line field, a button and a segmented control. `--ws-size-check` (20 px) is a checkbox or a radio button, `--ws-size-step` (24 px) the circle of a step number, `--ws-size-icon` (16 px) an icon next to text. Use them for those, not a space token.
+- Sizes: `--ws-size-control` (40 px) is the height of a one-line field, a button and a segmented control. `--ws-size-check` (20 px) is a checkbox or a radio button and `--ws-size-step` (24 px) the circle of a step number. Use them for those, not a space token.
 - Radius: `--ws-radius-xs` (key caps), `-sm` (inline code, tags), `-md` (inputs, buttons), `-lg` (blocks, cards), `-xl` (the window), `-full` (dots).
 - Borders, not shadows: `--ws-border-width-thin`, `-medium`, `-thick`.
 - Motion: `--ws-motion-duration-fast`, `-base`, `-slow` with `--ws-motion-easing-standard`. Wrap movement in `@media (prefers-reduced-motion: no-preference)`.
@@ -179,7 +179,7 @@ The system draws no fields and no buttons: draw them from the roles, with these.
 
 - **One height.** A one-line field, a button and a segmented control are `--ws-size-control` tall. A checkbox or a radio button is `--ws-size-check`, a step number's circle `--ws-size-step`.
 - **The primary button** is filled with `--ws-color-interactive`, its label `--ws-color-on-interactive`. Under the pointer it takes `--ws-color-interactive-hover`, while pressed `--ws-color-interactive-active`. Do not mix a hover color of your own.
-- **A tick** is `--ws-icon-check`, a mask like the other icons: a ticked box, a done step, a sent form. Draw it at `--ws-size-icon` in `currentcolor`, or `--ws-color-on-interactive` on a checked box.
+- **A tick** is `--ws-icon-check` from `css/icons.css`, a mask like the other icons: a ticked box, a done step, a sent form. Draw it at 1rem in `currentcolor`, or `--ws-color-on-interactive` on a checked box.
 - **A number field has no spin buttons.** `base.css` hides the browser's own, and the arrow keys still step the value. Without `base.css`, hide them the same way: `appearance: textfield` on the field, and `appearance: none` on its `::-webkit-inner-spin-button` and `::-webkit-outer-spin-button`.
 
 A **segmented control** is a few buttons with one pressed, such as a switch between the languages of a page:
@@ -280,7 +280,7 @@ import { defineGhost, ghostMarkup, ghostSvg } from '@whatsaaaa/design-system/gho
 defineGhost() // registers <ws-ghost>, in the browser
 ```
 
-- `<ws-ghost px="6"></ws-ghost>` is the ghost with the easter egg. Render `ghostMarkup({ px: 6 })` inside it on the server. It fills itself in when it is empty, without setting `innerHTML`.
+- `<ws-ghost px="6"></ws-ghost>` is the ghost with the easter egg. Render `ghostMarkup({ px: 6 })` inside it on the server. It fills itself in when it is empty, and draws its speech bubble, without setting `innerHTML`.
 - `ghostSvg({ px: 2 })` is the ghost as a picture, for a link or a decoration. `ghostElement({ px: 2 })` is the same picture as an element, for a script that adds it with `append`.
 - In a component, where markup would need `innerHTML`, `v-html` or `dangerouslySetInnerHTML`, take the files instead: `ghost-on-dark.svg` and `ghost-on-light.svg`, the ghost without the margin of its grid, 20 by 24. Put both in, with `ws-theme-dark` and `ws-theme-light`.
 - `px` is the size of one sprite pixel. Use whole numbers. A large ghost, such as the one next to the display name, takes `compact-px="4"` too: its size below 64rem, from 1 to 5.

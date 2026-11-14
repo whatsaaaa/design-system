@@ -7,7 +7,13 @@
  */
 import { GHOST_POSES, type GhostPose } from '../identity/ghost.ts'
 import { spriteBounds, spritePaths } from '../identity/sprite.ts'
-import { type BubbleSide, bubbleSize, bubbleSvg, lettersThatFit, maxTailShift } from './bubble.ts'
+import {
+  type BubbleSide,
+  bubbleElement,
+  bubbleSize,
+  lettersThatFit,
+  maxTailShift,
+} from './bubble.ts'
 
 export type { GhostPose } from '../identity/ghost.ts'
 
@@ -195,7 +201,7 @@ export function attachGhost(host: HTMLElement): () => void {
     // Drawn again only when it looks different. Moving it must not replay its pop.
     const drawing = `${shouting}|${side}|${tailShift}`
     if (drawing !== drawn) {
-      bubble.innerHTML = bubbleSvg(shouting, unit, side, tailShift)
+      bubble.replaceChildren(bubbleElement(shouting, unit, side, tailShift, host.ownerDocument))
       bubble.dataset.side = side
       drawn = drawing
     }
