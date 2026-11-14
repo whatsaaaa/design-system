@@ -1,7 +1,7 @@
 /*
- * Page layout of the two example pages. Everything here is local to the examples: the
- * window that fills the screen, the two panes and the list of projects. The pieces of the
- * terminal frame themselves come from the design system's stylesheet.
+ * Page layout of the example pages. Everything here is local to the examples: the window
+ * that fills the screen, the two panes, the list of projects and the fields of the form. The
+ * pieces of the terminal frame themselves come from the design system's stylesheet.
  */
 body {
   min-height: 100dvh;
