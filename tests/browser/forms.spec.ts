@@ -299,8 +299,9 @@ test.describe('on a phone', () => {
         const term = row.querySelector('dt')!.getBoundingClientRect()
         const value = row.querySelector('dd')!.getBoundingClientRect()
         return {
-          termRight: term.right,
-          valueLeft: value.left,
+          // the gap the list sets between its columns
+          listGap: parseFloat(getComputedStyle(row.parentElement!).columnGap),
+          gap: value.left - term.right,
           sameTop: Math.abs(term.top - value.top) < term.height,
         }
       }),
@@ -308,7 +309,8 @@ test.describe('on a phone', () => {
     expect(rows.length).toBeGreaterThan(0)
     for (const row of rows) {
       expect(row.sameTop).toBe(true)
-      expect(row.valueLeft).toBeGreaterThanOrEqual(row.termRight)
+      expect(row.listGap).toBeGreaterThan(0)
+      expect(row.gap).toBeCloseTo(row.listGap, 0)
     }
   })
 
