@@ -1,7 +1,7 @@
 /*
  * Page defaults for a site that is all this system: box sizing, the page colors, the body
- * face, links, number fields, focus and selection. It resets margins and list markers, so content that
- * should read as a document goes in a .ws-prose container.
+ * face, links, number fields, focus and selection. It resets margins and list markers, so
+ * content that should read as a document goes in a .ws-prose container.
  */
 *,
 *::before,

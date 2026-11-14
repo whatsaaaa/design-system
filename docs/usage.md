@@ -279,7 +279,7 @@ The switch is not optional. The keys are single characters that act on the whole
 ## 8. The ghost
 
 ```ts
-import { defineGhost, ghostMarkup, ghostSvg } from '@whatsaaaa/design-system/ghost'
+import { defineGhost, ghostElement, ghostMarkup, ghostSvg } from '@whatsaaaa/design-system/ghost'
 
 defineGhost() // registers <ws-ghost>, in the browser
 ```

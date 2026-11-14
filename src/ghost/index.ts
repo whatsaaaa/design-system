@@ -3,7 +3,8 @@
  * the easter egg. Press the ghost three times in a row and it shouts the handle in a speech
  * bubble. Every further press holds the a for one letter longer.
  *
- * Everything here is safe to import on a server. Only `defineGhost()` needs a browser.
+ * Everything here is safe to import on a server. Only `defineGhost()` needs a browser, and
+ * `ghostElement()` a document.
  */
 import { GHOST_POSES, type GhostPose } from '../identity/ghost.ts'
 import { spriteBounds, spritePaths } from '../identity/sprite.ts'
