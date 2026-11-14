@@ -244,9 +244,9 @@ test("a radius of the page's own wins over the focus ring's, wherever it is writ
       contentType: 'text/html',
       body: `<!doctype html>
         <style>.round { border-radius: 50%; }</style>
-        <link rel="stylesheet" href="/ds/tokens.css" />
-        <link rel="stylesheet" href="/ds/css/base.css" />
+        <link rel="stylesheet" href="/ds/index.css" />
         <button type="button" class="round">round</button>
+        <button type="button">plain</button>
         <a href="#">a link</a>`,
     }),
   )
@@ -261,7 +261,9 @@ test("a radius of the page's own wins over the focus ring's, wherever it is writ
     })
   await page.keyboard.press('Tab')
   expect(await radius()).toEqual({ focused: true, radius: '50%' })
-  // a link has no corners of its own: its ring takes small ones
+  // a button and a link have no corners of their own: their rings take small ones
+  await page.keyboard.press('Tab')
+  expect(await radius()).toEqual({ focused: true, radius: '4px' })
   await page.keyboard.press('Tab')
   expect(await radius()).toEqual({ focused: true, radius: '4px' })
 })

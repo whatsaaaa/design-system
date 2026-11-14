@@ -73,6 +73,21 @@ const style = (page: Page, selector: string) =>
     }
   })
 
+/** Tabs to an element, as a keyboard does, and reads the corners its focus ring follows. */
+async function focused(page: Page, selector: string) {
+  const target = page.locator(selector)
+  for (
+    let tab = 0;
+    tab < 8 && !(await target.evaluate((element) => element === document.activeElement));
+    tab++
+  )
+    await page.keyboard.press('Tab')
+  return target.evaluate((element) => ({
+    focused: element.matches(':focus-visible'),
+    radius: getComputedStyle(element).borderTopLeftRadius,
+  }))
+}
+
 const THEMES = {
   dark: { bg: 'rgb(25, 23, 36)', surface: 'rgb(31, 29, 46)', interactive: 'rgb(156, 207, 216)' },
   light: {
@@ -141,6 +156,15 @@ test.describe('an app on tailwind.css', () => {
     expect((await style(page, '#title')).marginTop).toBe('8px')
     // a utility over a class of the system, which keeps what the utility leaves alone
     expect(await style(page, '#tag')).toMatchObject({ paddingLeft: '12px', paddingTop: '2px' })
+    await context.close()
+  })
+
+  test("rounds a focus ring as index.css does, under the app's own radius", async ({ browser }) => {
+    const { context, page } = await app(browser, 'dark')
+    // a rounded utility, then a button the preflight squares, then a class of the app's own
+    expect(await focused(page, '#button')).toEqual({ focused: true, radius: '6px' })
+    expect(await focused(page, '#plain')).toEqual({ focused: true, radius: '4px' })
+    expect(await focused(page, '#round')).toEqual({ focused: true, radius: '50%' })
     await context.close()
   })
 

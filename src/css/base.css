@@ -83,10 +83,13 @@ input[type='number']::-webkit-outer-spin-button {
 
 /*
  * A ring follows the corners of what it rings. What has no corners of its own, such as a
- * link, takes small ones while it is focused. The rule weighs nothing, so a radius of the
- * page's own, such as a round radio button's, always wins, wherever it is written.
+ * link, takes small ones while it is focused. The rule weighs no more than an element, so a
+ * class of the page's own, such as a round radio button's, always wins, wherever it is
+ * written. A form control weighs as an element here, to win over Tailwind's preflight, which
+ * squares its corners at that weight before base.css in the same layer.
  */
-:where(:focus-visible) {
+:where(:focus-visible),
+:is(button, input, select, optgroup, textarea):where(:focus-visible) {
   border-radius: var(--ws-radius-sm);
 }
 

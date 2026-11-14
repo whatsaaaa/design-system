@@ -12,7 +12,7 @@ Docs corrections and small fixes the first apps and the website ran into.
 - **A state lines up with the text beside it.** `ws-state` takes its baseline from its word, not from its dot, which put it half a pixel low.
 - **A prompt that wraps keeps its chevron on its first line**, where it sat between the lines before.
 - **The numbers of the tabs show only while their keys work**: not without JavaScript, and not before the shortcuts module runs. The head script marks the page `data-ws-keys="pending"` until then, so the numbers keep their place unseen and the labels of the tabs do not move when they show. The docs theme does the same.
-- **The focus ring's radius gives way.** `base.css` rounds a focused element's corners with no weight, so a radius of the page's own, such as a round radio button's, wins wherever it is written.
+- **The focus ring's radius gives way.** `base.css` rounds a focused element's corners with no more weight than an element, so a class of the page's own, such as a round radio button's, wins wherever it is written, and so does a `rounded-*` utility with the Tailwind entry. A button or field without a radius of its own still takes the small corners, with the Tailwind entry too, over the square ones of its preflight.
 
 A project on an earlier version writes nothing new, but it has to load the head script of the keys from the package: `shortcuts/init.js`, or `keysInitScript` inlined, as with the Vite plugin. A page with no head script, or with a copy of an earlier one, draws the numbers of the tabs only once the shortcuts module runs, and the labels of the tabs move then.
 

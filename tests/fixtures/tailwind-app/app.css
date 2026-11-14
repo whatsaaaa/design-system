@@ -7,3 +7,10 @@
     line-height: var(--ws-font-line-height-normal);
   }
 }
+
+/* A class of the app's own, where Tailwind's docs put one. */
+@layer components {
+  .round {
+    border-radius: 50%;
+  }
+}
