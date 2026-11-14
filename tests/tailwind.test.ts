@@ -1,10 +1,12 @@
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { compileAst } from 'tailwindcss'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { type CssToken, tailwindTheme } from '../scripts/lib/tailwind.ts'
-import { tokens } from '../scripts/lib/tokens.ts'
+import { type TokenId, tokens } from '../scripts/lib/tokens.ts'
 import { buildTailwindApp } from './fixtures/tailwind-app/build.ts'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -13,71 +15,231 @@ const ids = (prefix: string) =>
   Object.keys(tokens('dark'))
     .filter((id) => id.startsWith(`${prefix}.`))
     .map((id) => id.slice(prefix.length + 1))
+const value = (id: string) => tokens('dark')[id as TokenId].$value
+/** A token as CSS reads it: its variable, which every token has under its id. */
+const token = (id: string) => `var(--ws-${id.replaceAll('.', '-')})`
 
-describe("the tokens as Tailwind's theme", () => {
-  const theme = read('dist/tailwind/theme.css')
+const ENTRY = '@whatsaaaa/design-system/tailwind.css'
 
-  it('has every color role, and only the roles', () => {
-    expect(theme).toContain('--color-*: initial;')
-    for (const role of ids('color'))
-      expect(theme).toContain(`--color-${role}: var(--ws-color-${role});`)
-    expect(theme.match(/--color-[\w-]+:/g)).toHaveLength(ids('color').length)
+type AstNode = Parameters<typeof compileAst>[0][number]
+
+/**
+ * What Tailwind's compiler makes of an app's stylesheet that imports the sheet given, for the
+ * candidates it finds in the app. Sheets resolve as an app's build resolves them, the package's
+ * own by its name, and the ones of `sheets` by theirs.
+ */
+async function compile(
+  sheet: string,
+  candidates: string[] = [],
+  sheets: Record<string, string> = {},
+): Promise<AstNode[]> {
+  const { build } = await compileAst(
+    [{ kind: 'at-rule', name: '@import', params: `'${sheet}'`, nodes: [] }],
+    {
+      base: root,
+      loadStylesheet: async (id, base) => {
+        const content = sheets[id]
+        if (content !== undefined) return { path: join(base, id), base, content }
+        const path = id.startsWith('.')
+          ? join(base, id)
+          : createRequire(join(base, 'app.js')).resolve(id)
+        return { path, base: dirname(path), content: readFileSync(path, 'utf8') }
+      },
+    },
+  )
+  return build(candidates)
+}
+
+/**
+ * The declarations of the utility Tailwind makes of each candidate, by candidate, or none where
+ * it makes nothing of it.
+ */
+async function utilities(candidates: string[], sheet = ENTRY, sheets: Record<string, string> = {}) {
+  const rules = new Map<string, Record<string, string | undefined>>()
+  const walk = (nodes: AstNode[], layer?: string): void => {
+    for (const node of nodes)
+      if (node.kind === 'at-rule' && node.name === '@layer') walk(node.nodes, node.params)
+      else if (node.kind === 'context' || node.kind === 'at-root') walk(node.nodes, layer)
+      else if (node.kind === 'rule' && layer === 'utilities')
+        rules.set(
+          node.selector,
+          Object.fromEntries(
+            node.nodes.flatMap((child) =>
+              child.kind === 'declaration' ? [[child.property, child.value]] : [],
+            ),
+          ),
+        )
+  }
+  walk(await compile(sheet, candidates, sheets))
+  return Object.fromEntries(
+    candidates.map((candidate) => [candidate, rules.get(`.${candidate.replaceAll('.', '\\.')}`)]),
+  )
+}
+
+/** Expects Tailwind to make each candidate of an app on the entry into the declarations given. */
+async function expectUtilities(expected: [candidate: string, declarations: unknown][]) {
+  expect(await utilities(expected.map(([candidate]) => candidate))).toEqual(
+    Object.fromEntries(expected),
+  )
+}
+
+/** Tailwind's names of the font weights, by weight, from its docs: font-normal is 400. */
+const tailwindWeights: Record<number, string> = {
+  100: 'thin',
+  200: 'extralight',
+  300: 'light',
+  400: 'normal',
+  500: 'medium',
+  600: 'semibold',
+  700: 'bold',
+  800: 'extrabold',
+  900: 'black',
+}
+
+describe("the tokens as Tailwind's theme, as Tailwind compiles an app on the entry", () => {
+  it('colors with every role', async () => {
+    await expectUtilities(
+      ids('color').map((role) => [`bg-${role}`, { 'background-color': token(`color.${role}`) }]),
+    )
   })
 
-  it('has every text style, with its line height, letter spacing and weight', () => {
-    for (const style of ids('text')) {
-      expect(theme).toContain(`--text-${style}: var(--ws-text-${style}-font-size);`)
-      for (const part of ['line-height', 'letter-spacing', 'font-weight'])
-        expect(theme).toContain(`--text-${style}--${part}: var(--ws-text-${style}-${part});`)
+  it('sets every text style with its line height, letter spacing and weight', async () => {
+    const styles = ids('text')
+    const made = await utilities(styles.map((style) => `text-${style}`))
+    for (const style of styles) {
+      const part = (name: string) => token(`text.${style}.${name}`)
+      // a leading-*, tracking-* or font-* next to the style still wins over its part
+      expect(made[`text-${style}`], style).toEqual({
+        'font-size': part('font-size'),
+        'line-height': expect.stringContaining(part('line-height')),
+        'letter-spacing': expect.stringContaining(part('letter-spacing')),
+        'font-weight': expect.stringContaining(part('font-weight')),
+      })
     }
   })
 
-  it('has both families, the line heights, the weights, the radii, the widths and the sizes', () => {
-    for (const family of ids('font.family'))
-      expect(theme).toContain(`--font-${family}: var(--ws-font-family-${family});`)
-    for (const height of ids('font.line-height'))
-      expect(theme).toContain(`--leading-${height}: var(--ws-font-line-height-${height});`)
-    expect(theme).toContain('--font-weight-normal: var(--ws-font-weight-regular);')
-    for (const radius of ids('radius').filter((name) => name !== 'full'))
-      expect(theme).toContain(`--radius-${radius}: var(--ws-radius-${radius});`)
-    for (const width of ids('border-width'))
-      expect(theme).toContain(`--border-width-${width}: var(--ws-border-width-${width});`)
-    for (const size of ids('size'))
-      expect(theme).toContain(`--spacing-${size}: var(--ws-size-${size});`)
-    expect(theme).toContain('--spacing: var(--ws-space-4);')
+  it("sets the families, the line heights and the weights, the weights by Tailwind's names", async () => {
+    await expectUtilities([
+      ...ids('font.family').map((name): [string, unknown] => [
+        `font-${name}`,
+        { 'font-family': token(`font.family.${name}`) },
+      ]),
+      ...ids('font.line-height').map((name): [string, unknown] => [
+        `leading-${name}`,
+        expect.objectContaining({ 'line-height': token(`font.line-height.${name}`) }),
+      ]),
+      ...ids('font.weight').map((name): [string, unknown] => [
+        `font-${tailwindWeights[Number(value(`font.weight.${name}`))]}`,
+        expect.objectContaining({ 'font-weight': token(`font.weight.${name}`) }),
+      ]),
+    ])
   })
 
-  it('has no value of its own: every one is a token', () => {
-    for (const file of [
-      'dist/tailwind.css',
-      'dist/tailwind/theme.css',
-      'dist/tailwind/variants.css',
+  it("spaces on Tailwind's scale of a quarter rem to a step, and sizes by name", async () => {
+    // p-<n> is n of Tailwind's steps, and the step is space.4, so every space is a p-* of its own
+    expect(value('space.4')).toEqual({ value: 0.25, unit: 'rem' })
+    await expectUtilities([
+      ...ids('space').map((name): [string, unknown] => {
+        const { value: rem, unit } = value(`space.${name}`) as { value: number; unit: string }
+        expect(unit, name).toBe('rem')
+        return [`p-${rem / 0.25}`, { padding: expect.stringContaining(token('space.4')) }]
+      }),
+      ...ids('size').flatMap((name): [string, unknown][] => [
+        [`h-${name}`, { height: token(`size.${name}`) }],
+        [`max-w-${name}`, { 'max-width': token(`size.${name}`) }],
+      ]),
     ])
-      expect(read(file), file).not.toMatch(/#[\da-f]{3,8}\b/i)
-    for (const declaration of theme.match(/^\s+--[\w*-]+: [^;]+;/gm) ?? [])
-      expect(declaration).toMatch(/: (initial|var\(--ws-[\w-]+\));$/)
+  })
+
+  it("rounds with the radii, and rounded-full is Tailwind's own", async () => {
+    const { 'rounded-full': full } = await utilities(['rounded-full'], 'tailwindcss/index.css')
+    expect(full).toBeDefined()
+    await expectUtilities([
+      ...ids('radius')
+        .filter((name) => name !== 'full')
+        .map((name): [string, unknown] => [
+          `rounded-${name}`,
+          { 'border-radius': token(`radius.${name}`) },
+        ]),
+      ['rounded-full', full],
+    ])
+  })
+
+  it('draws borders with the widths by name, on every side or on one', async () => {
+    await expectUtilities(
+      ids('border-width').flatMap((name): [string, unknown][] => [
+        [
+          `border-${name}`,
+          expect.objectContaining({ 'border-width': token(`border-width.${name}`) }),
+        ],
+        [
+          `border-b-${name}`,
+          expect.objectContaining({ 'border-bottom-width': token(`border-width.${name}`) }),
+        ],
+      ]),
+    )
+  })
+
+  it('eases with the easings, and a transition takes the fast duration', async () => {
+    const easing = (name: string) =>
+      expect.objectContaining({ 'transition-timing-function': token(`motion.easing.${name}`) })
+    await expectUtilities([
+      ...ids('motion.easing').map((name): [string, unknown] => [`ease-${name}`, easing(name)]),
+      ['ease-in-out', easing('standard')],
+      [
+        'transition',
+        expect.objectContaining({
+          'transition-duration': expect.stringContaining(token('motion.duration.fast')),
+          'transition-timing-function': expect.stringContaining(token('motion.easing.standard')),
+        }),
+      ],
+    ])
+  })
+
+  it("takes out Tailwind's defaults that no token stands behind, as the usage guide lists", async () => {
+    const removed = [
+      'bg-white',
+      'text-black',
+      'text-red-500',
+      'border-slate-200',
+      'shadow-lg',
+      'inset-shadow-sm',
+      'drop-shadow-md',
+      'text-shadow-md',
+      'font-serif',
+      'font-thin',
+      'font-extralight',
+      'font-light',
+      'font-black',
+      'rounded-2xl',
+      'rounded-3xl',
+      'rounded-4xl',
+    ]
+    const tailwind = await utilities(removed, 'tailwindcss/index.css')
+    expect(removed.filter((candidate) => !tailwind[candidate])).toEqual([])
+    await expectUtilities(removed.map((candidate) => [candidate, undefined]))
   })
 
   describe('as the token build writes it', () => {
     /** A token as the CSS plugin hands it over. */
-    const token = (id: string, value: CssToken['value'] = '1rem'): CssToken => ({
+    const cssToken = (id: string, value: CssToken['value'] = '1rem'): CssToken => ({
       id,
       localID: `--ws-${id.replaceAll('.', '-')}`,
       value,
     })
     const base = [
-      token('space.4', '0.25rem'),
-      token('space.16', '1rem'),
-      token('motion.easing.standard', 'cubic-bezier(0.2, 0, 0, 1)'),
-      token('motion.duration.fast', '120ms'),
+      cssToken('space.4', '0.25rem'),
+      cssToken('space.16', '1rem'),
+      cssToken('motion.easing.standard', 'cubic-bezier(0.2, 0, 0, 1)'),
+      cssToken('motion.duration.fast', '120ms'),
     ]
 
-    it('takes a token added to a group it maps, with no change to the mapping', () => {
-      const written = tailwindTheme([
+    it('takes a token added to a group it maps, with no change to the mapping', async () => {
+      const theme = tailwindTheme([
         ...base,
-        token('color.interactive-hover', '#acdfe8'),
-        token('size.control', '2.5rem'),
-        token('text.tagline', {
+        cssToken('color.interactive-hover', '#acdfe8'),
+        cssToken('size.control', '2.5rem'),
+        cssToken('text.tagline', {
           'font-size': '1.25rem',
           'line-height': '1.5',
           'letter-spacing': '0rem',
@@ -85,44 +247,74 @@ describe("the tokens as Tailwind's theme", () => {
           'font-family': 'var(--ws-font-family-sans)',
         }),
       ])
-      expect(written).toContain('--color-interactive-hover: var(--ws-color-interactive-hover);')
-      expect(written).toContain('--spacing-control: var(--ws-size-control);')
-      expect(written).toContain('--text-tagline--font-weight: var(--ws-text-tagline-font-weight);')
+      const app = `@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+${theme}`
+      const made = await utilities(
+        ['bg-interactive-hover', 'h-control', 'text-tagline'],
+        'app.css',
+        {
+          'app.css': app,
+        },
+      )
+      expect(made['bg-interactive-hover']).toEqual({
+        'background-color': token('color.interactive-hover'),
+      })
+      expect(made['h-control']).toEqual({ height: token('size.control') })
+      expect(made['text-tagline']).toMatchObject({
+        'font-size': token('text.tagline.font-size'),
+        'font-weight': expect.stringContaining(token('text.tagline.font-weight')),
+      })
     })
 
     it('fails on a group it neither maps nor leaves out, so a new group is a decision', () => {
-      expect(() => tailwindTheme([...base, token('elevation.1', '2px')])).toThrow(/elevation\.1/)
+      expect(() => tailwindTheme([...base, cssToken('elevation.1', '2px')])).toThrow(/elevation\.1/)
     })
 
     it('fails on a space that is not on Tailwind’s scale of four pixels to a step', () => {
-      expect(() => tailwindTheme([...base, token('space.10', '0.7rem')])).toThrow(/space\.10/)
+      expect(() => tailwindTheme([...base, cssToken('space.10', '0.7rem')])).toThrow(/space\.10/)
     })
   })
 })
 
+/**
+ * What a stylesheet gives a page, as Tailwind's compiler reads it: the ws- classes it styles,
+ * the --ws- variables it sets and the font files it serves.
+ */
+function vocabulary(nodes: AstNode[]): string[] {
+  return nodes.flatMap((node): string[] => {
+    switch (node.kind) {
+      case 'rule':
+        return [
+          ...[...node.selector.matchAll(/\.ws-[\w-]+/g)].map(([name]) => name),
+          ...vocabulary(node.nodes),
+        ]
+      case 'declaration':
+        if (node.property === 'src')
+          return [...(node.value ?? '').matchAll(/[\w-]+\.woff2/g)].map(([file]) => file)
+        return node.property.startsWith('--ws-') ? [node.property] : []
+      case 'comment':
+        return []
+      default:
+        return vocabulary(node.nodes)
+    }
+  })
+}
+
 describe('the Tailwind entry', () => {
-  it('imports what index.css imports, each in its layer, between Tailwind’s own', () => {
-    const entry = read('dist/tailwind.css')
-    const imports = [...entry.matchAll(/^@import .+;$/gm)].map(([line]) => line)
-    const layers: Record<string, string> = { tokens: 'theme', icons: 'theme', base: 'base' }
-    const sheets = [...read('src/css/index.css').matchAll(/@import '(.+)\/(\w+)\.css'/g)].map(
-      ([, dir, name]) => {
-        const path = dir === '.' ? `./css/${name}.css` : `./${name}.css`
-        return name === 'fonts'
-          ? `@import '${path}';`
-          : `@import '${path}' layer(${layers[name!] ?? 'components'});`
-      },
+  it('brings everything index.css brings', async () => {
+    const index = new Set(vocabulary(await compile('./dist/index.css')))
+    const entry = new Set(vocabulary(await compile(ENTRY)))
+    expect([...index]).toEqual(
+      expect.arrayContaining([
+        '.ws-prose',
+        '.ws-callout',
+        '--ws-color-bg',
+        '--ws-icon-note',
+        'inter-latin-wght-normal.woff2',
+      ]),
     )
-    expect(sheets).toContain("@import './tokens.css' layer(theme);")
-    expect(imports).toEqual([
-      "@import 'tailwindcss/theme.css' layer(theme);",
-      "@import 'tailwindcss/preflight.css' layer(base);",
-      ...sheets,
-      "@import 'tailwindcss/utilities.css' layer(utilities);",
-      "@import './tailwind/theme.css';",
-      "@import './tailwind/variants.css';",
-    ])
-    expect(entry).toContain('@layer theme, base, components, utilities;')
+    expect([...index].filter((word) => !entry.has(word))).toEqual([])
   })
 
   it('is the one file that needs Tailwind, which stays optional', () => {

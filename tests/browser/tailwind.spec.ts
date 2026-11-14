@@ -33,9 +33,44 @@ async function app(browser: Browser, colorScheme: 'dark' | 'light') {
 
 const style = (page: Page, selector: string) =>
   page.locator(selector).evaluate((element) => {
-    const { backgroundColor, color, fontFamily, fontSize, borderRadius, height, padding } =
-      getComputedStyle(element)
-    return { backgroundColor, color, fontFamily, fontSize, borderRadius, height, padding }
+    const {
+      backgroundColor,
+      color,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      lineHeight,
+      letterSpacing,
+      borderRadius,
+      borderTopWidth,
+      height,
+      maxWidth,
+      marginTop,
+      padding,
+      paddingLeft,
+      paddingTop,
+      transitionDuration,
+      transitionTimingFunction,
+    } = getComputedStyle(element)
+    return {
+      backgroundColor,
+      color,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      lineHeight,
+      letterSpacing,
+      borderRadius,
+      borderTopWidth,
+      height,
+      maxWidth,
+      marginTop,
+      padding,
+      paddingLeft,
+      paddingTop,
+      transitionDuration,
+      transitionTimingFunction,
+    }
   })
 
 const THEMES = {
@@ -64,21 +99,48 @@ test.describe('an app on tailwind.css', () => {
       await context.close()
     })
 
-  test('sets type, space, radius and sizes from the tokens', async ({ browser }) => {
+  test('sets type, space, radius, borders, sizes and motion from the tokens', async ({
+    browser,
+  }) => {
     const { context, page } = await app(browser, 'dark')
-    const title = await style(page, '#title')
-    expect(title.fontFamily).toMatch(/^"JetBrains Mono"/)
-    expect(title.fontSize).toBe('40px')
+    // text.h1: 2.5rem, a line height of 1.1, -0.075rem of letter spacing and a weight of 800
+    expect(await style(page, '#title')).toMatchObject({
+      fontFamily: expect.stringMatching(/^"JetBrains Mono"/),
+      fontSize: '40px',
+      lineHeight: '44px',
+      letterSpacing: '-1.2px',
+      fontWeight: '800',
+    })
     expect((await style(page, '#lead')).fontFamily).toMatch(/^Inter/)
-    const button = await style(page, '#button')
-    expect(button.borderRadius).toBe('6px')
-    expect(button.height).toBe('48px')
-    expect((await style(page, '#card')).padding).toBe('24px')
+    expect(await style(page, '#button')).toMatchObject({
+      borderRadius: '6px',
+      height: '48px',
+      transitionDuration: '0.12s',
+      transitionTimingFunction: 'cubic-bezier(0.2, 0, 0, 1)',
+    })
+    expect(await style(page, '#card')).toMatchObject({
+      padding: '24px',
+      borderTopWidth: '1px',
+      maxWidth: '800px',
+    })
     // the fonts are the package's own, served with the app
     const loaded = await page.evaluate(() =>
       [...document.fonts].filter((font) => font.status === 'loaded').map((font) => font.family),
     )
     expect(new Set(loaded)).toEqual(new Set(['Inter', 'JetBrains Mono']))
+    await context.close()
+  })
+
+  test("puts the system's stylesheets in Tailwind's layers", async ({ browser }) => {
+    const { context, page } = await app(browser, 'dark')
+    // base.css over the preflight, which has a link take the color around it
+    expect((await style(page, '#call')).color).toBe(THEMES.dark.interactive)
+    // the app's own base layer over base.css: a line height of 1.5, where base.css has 1.65
+    expect((await style(page, 'body')).lineHeight).toBe('24px')
+    // a utility over base.css, which takes the margin off a heading
+    expect((await style(page, '#title')).marginTop).toBe('8px')
+    // a utility over a class of the system, which keeps what the utility leaves alone
+    expect(await style(page, '#tag')).toMatchObject({ paddingLeft: '12px', paddingTop: '2px' })
     await context.close()
   })
 

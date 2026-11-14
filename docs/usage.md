@@ -70,6 +70,18 @@ The tokens are Tailwind's theme, and a utility reads its token where it is used,
 | `ease-standard`, `transition`                              | The easings. A transition takes `--ws-motion-duration-fast`      |
 | `max-lg:`                                                  | The one breakpoint: below 64rem                                  |
 
+The entry takes out Tailwind's defaults that no token stands behind, as the system colors interface with its roles only and draws edges with borders, not shadows. Their utilities compile to nothing, with no error:
+
+| Taken out                                    | Utilities that compile to nothing                                  | Use instead                                  |
+| -------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------- |
+| Tailwind's palette, white and black included | `bg-white`, `text-black`, `text-red-500`, `border-slate-200`       | A role: `bg-surface`, `text-text`            |
+| Shadows                                      | `shadow-lg`, `inset-shadow-sm`, `drop-shadow-md`, `text-shadow-md` | A border: `border-thin border-border`        |
+| The serif family                             | `font-serif`                                                       | `font-sans` or `font-mono`                   |
+| The weights with no token                    | `font-thin`, `font-extralight`, `font-light`, `font-black`         | `font-normal` to `font-extrabold`            |
+| The radii with no token                      | `rounded-2xl`, `rounded-3xl`, `rounded-4xl`                        | `rounded-xs` to `rounded-xl`, `rounded-full` |
+
+A library imported after the entry loses them too, by design: the overlays of Nuxt UI, for example, have no shadow on the entry.
+
 `dark:` and `light:` follow the theme as the tokens do: the nearest `data-theme` or `dark` or `light` class around the element, then the system, by the rules of [the theme](#_3-theme). The roles already switch, so use them only for what the roles do not cover. A library that defines its own `dark:` or `light:` after the entry, as Nuxt UI does, replaces the system's: import them again after it, with `@import '@whatsaaaa/design-system/tailwind/variants.css';`.
 
 ## 2. Colors

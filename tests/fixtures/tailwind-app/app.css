@@ -1,2 +1,9 @@
 /* An app's whole stylesheet, as the usage guide says: the system's entry in place of tailwindcss. */
 @import '@whatsaaaa/design-system/tailwind.css';
+
+/* The app's own page defaults, where Tailwind's docs put them: over the system's. */
+@layer base {
+  body {
+    line-height: var(--ws-font-line-height-normal);
+  }
+}
