@@ -30,6 +30,9 @@
  *     </nav>
  *     <div class="ws-tab-bar__end">...</div>
  *   </header>
+ *
+ * The tabs are optional. A site of one page has nothing to tab to: its bar is the brand and
+ * the end.
  */
 .ws-tab-bar {
   display: flex;
@@ -98,17 +101,21 @@
   white-space: nowrap;
 }
 
-/* Tabs are numbered like the windows of a terminal multiplexer. */
-.ws-tabs a::before {
+/*
+ * Tabs are numbered like the windows of a terminal multiplexer. The number names the key that
+ * goes to the tab, so it is drawn only while the keys are on: not without the shortcuts
+ * module, and not with the keys switched off. While the head script waits for the module,
+ * the number keeps its place unseen, so the labels do not move when it shows.
+ */
+:is([data-ws-keys='on'], [data-ws-keys='pending']) .ws-tabs a::before {
   color: var(--ws-color-text-faint);
   font-weight: var(--ws-font-weight-bold);
   content: counter(ws-tab);
   content: counter(ws-tab) / '';
 }
 
-/* The number names the key that goes to the tab. With the keys switched off it is left out. */
-[data-ws-keys='off'] .ws-tabs a::before {
-  content: none;
+[data-ws-keys='pending'] .ws-tabs a::before {
+  visibility: hidden;
 }
 
 .ws-tabs a:hover {
@@ -166,10 +173,12 @@
  * whose output the section is.
  *
  *   <h2 class="ws-prompt">ls ~/projects</h2>
+ *
+ * The chevron is centered on the first line, so a command that wraps keeps it there.
  */
 .ws-prompt {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--ws-space-10);
   margin: 0;
   color: var(--ws-color-text);
@@ -181,6 +190,10 @@
   flex: none;
   width: 0.625em;
   height: 0.875em;
+
+  /* half of what the line has left over it. Firefox before 120 knows no lh: the label's line */
+  margin-top: calc((var(--ws-text-label-line-height) * 1em - 0.875em) / 2);
+  margin-top: calc((1lh - 0.875em) / 2);
   background: var(--ws-color-brand);
   content: '';
   mask: var(--ws-icon-chevron) center / contain no-repeat;
@@ -258,10 +271,15 @@
   color: var(--ws-color-text);
 }
 
-/* A state as a dot with its word. The word carries the meaning, the dot only repeats it. */
+/*
+ * A state as a dot with its word. The word carries the meaning, the dot only repeats it.
+ * The word gives the baseline, so a state lines up with the text beside it.
+ *
+ *   <span class="ws-state ws-state--active">active</span>
+ */
 .ws-state {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--ws-space-8);
   color: var(--ws-color-text-secondary);
   font: var(--ws-text-caption);
@@ -270,6 +288,7 @@
 
 .ws-state::before {
   flex: none;
+  align-self: center;
   width: 0.4375rem;
   height: 0.4375rem;
   border-radius: var(--ws-radius-full);
@@ -396,7 +415,8 @@
   padding-inline: var(--ws-space-14);
 }
 
-[data-ws-keys] .ws-status-line__keys {
+/* The module says on or off once it runs. The head script's pending is not yet a yes. */
+:is([data-ws-keys='on'], [data-ws-keys='off']) .ws-status-line__keys {
   display: flex;
 }
 
@@ -562,7 +582,7 @@
   }
 
   /* The key hints and the wide items do not fit. A key whose hint is hidden does nothing. */
-  [data-ws-keys] .ws-status-line__keys,
+  :is([data-ws-keys='on'], [data-ws-keys='off']) .ws-status-line__keys,
   .ws-status-line__item--wide {
     display: none;
   }

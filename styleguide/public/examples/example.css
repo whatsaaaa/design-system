@@ -24,6 +24,7 @@ body {
   min-width: 0;
   padding: var(--ws-space-40) var(--ws-space-48);
   overflow: auto;
+  container-type: inline-size;
 }
 
 .pane + .pane {
@@ -76,14 +77,10 @@ body {
 .entry {
   display: grid;
   grid-template-columns: 9rem minmax(0, 1fr);
+  align-items: baseline;
   column-gap: var(--ws-space-16);
   padding-block: var(--ws-space-20);
   border-bottom: var(--ws-border-width-thin) dashed var(--ws-color-border);
-}
-
-.entry .ws-state {
-  align-self: start;
-  line-height: 1.625rem;
 }
 
 .entry h3 {
@@ -174,6 +171,17 @@ body {
 
   .article .ws-prose {
     padding: var(--ws-space-24) var(--ws-space-20) var(--ws-space-48);
+  }
+}
+
+/*
+ * On the narrowest phones a pane has no room for the ghost and the display name side by side,
+ * and the window would cut the name off: it takes the size of a title.
+ */
+@container (width < 18.5rem) {
+  .who h1 {
+    font: var(--ws-text-h1-compact);
+    letter-spacing: var(--ws-text-h1-compact-letter-spacing);
   }
 }
 

@@ -356,7 +356,12 @@
   font: inherit;
 }
 
-/* The path above a page title. */
+/*
+ * The path above a page title. The slashes between its parts are drawn, and not read out.
+ *
+ *   <p class="ws-crumb"><span>writing</span><span>form-builder</span><span>conditions</span></p>
+ *   <h1>Conditions</h1>
+ */
 .ws-crumb {
   margin: 0;
   color: var(--ws-color-text-secondary);

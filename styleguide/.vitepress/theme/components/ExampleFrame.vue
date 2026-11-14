@@ -11,15 +11,20 @@ const props = defineProps<{
   /**
    * Width the page is laid out at, in px. A page wider than the column is scaled down to
    * fit, so a desktop layout can be shown in a narrow column. Without it the frame is as
-   * wide as the column.
+   * wide as the column, and never narrower than the narrowest phone.
    */
   width?: number
 }>()
+
+/** The narrowest phone a page is made for. A narrower column shows the page at it, scaled down. */
+const NARROWEST = 320
 
 const { isDark } = useData()
 const box = ref<HTMLElement>()
 const frame = ref<HTMLIFrameElement>()
 const scale = ref(1)
+/** The width the page is laid out at, when it is not the column's. */
+const layout = ref(props.width)
 const height = props.height ?? 560
 
 /** The example is a page of its own. It takes the theme of the guide around it. */
@@ -31,9 +36,11 @@ watch(isDark, syncTheme)
 
 let observer: ResizeObserver | undefined
 onMounted(() => {
-  if (!props.width || !box.value) return
+  if (!box.value) return
   const fit = () => {
-    scale.value = Math.min(1, box.value!.clientWidth / props.width!)
+    const column = box.value!.clientWidth
+    layout.value = props.width ?? (column < NARROWEST ? NARROWEST : undefined)
+    scale.value = layout.value ? Math.min(1, column / layout.value) : 1
   }
   observer = new ResizeObserver(fit)
   observer.observe(box.value)
@@ -50,9 +57,9 @@ onUnmounted(() => observer?.disconnect())
         :src="withBase(props.src)"
         :title="props.title"
         :style="{
-          width: props.width ? `${props.width}px` : '100%',
+          width: layout ? `${layout}px` : '100%',
           height: `${height}px`,
-          transform: props.width ? `scale(${scale})` : undefined,
+          transform: scale < 1 ? `scale(${scale})` : undefined,
         }"
         @load="syncTheme"
       />

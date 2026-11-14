@@ -77,9 +77,17 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 :focus-visible {
-  border-radius: var(--ws-radius-sm);
   outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
   outline-offset: 3px;
+}
+
+/*
+ * A ring follows the corners of what it rings. What has no corners of its own, such as a
+ * link, takes small ones while it is focused. The rule weighs nothing, so a radius of the
+ * page's own, such as a round radio button's, always wins, wherever it is written.
+ */
+:where(:focus-visible) {
+  border-radius: var(--ws-radius-sm);
 }
 
 ::selection {

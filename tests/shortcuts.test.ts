@@ -270,20 +270,38 @@ describe('the script for the head', () => {
     expect(root.dataset.wsKeys).toBe('off')
   })
 
-  it('leaves the page alone when nothing is remembered, or something else is', () => {
+  it('marks the keys as pending when nothing is remembered, or something else is', () => {
     run()
-    expect(root.dataset.wsKeys).toBeUndefined()
+    expect(root.dataset.wsKeys).toBe('pending')
     localStorage.setItem(KEYS_STORAGE_KEY, 'sometimes')
     run()
-    expect(root.dataset.wsKeys).toBeUndefined()
+    expect(root.dataset.wsKeys).toBe('pending')
   })
 
-  it('leaves the page alone where storage is blocked', () => {
+  it('marks the keys as pending where storage is blocked, where they will be on', () => {
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
       throw new Error('blocked')
     })
     expect(run).not.toThrow()
+    expect(root.dataset.wsKeys).toBe('pending')
+  })
+
+  it('leaves pending to the module, which says on or off, or takes it away', () => {
+    run()
+    disable = enableShortcuts()
+    expect(root.dataset.wsKeys).toBe('on')
+    expect(shortcutsOn()).toBe(true)
+    disable()
+    run()
+    // a page without the switch has no shortcuts, and nothing that names a key
+    element('keys').remove()
+    disable = enableShortcuts()
     expect(root.dataset.wsKeys).toBeUndefined()
+  })
+
+  it('does not count pending as on', () => {
+    run()
+    expect(shortcutsOn()).toBe(false)
   })
 
   it('is also a file, for a page that loads it instead of inlining it', () => {
