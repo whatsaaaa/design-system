@@ -44,7 +44,7 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in
 @import '@nuxt/ui'; /* a library on Tailwind, if the app has one */
 ```
 
-Install `tailwindcss` 4 next to the package. Only this entry needs it.
+Install `tailwindcss` 4.3.5 or a later 4.x next to the package. Only this entry needs it.
 
 It brings Tailwind and everything `index.css` brings, in cascade layers, so a utility wins over a class of the system and the app's rules outside any layer win over both:
 
