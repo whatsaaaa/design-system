@@ -225,6 +225,7 @@ Generated files are in `assets/<name>/`, for `whatsaaaa` and for each project. `
 | Logo with name         | `lockup-dark.svg`, `lockup-light.svg`                                                                  |
 | Top of a README        | `readme-header.svg`                                                                                    |
 | Link preview           | `social-card.png`                                                                                      |
+| Gravatar header        | `profile-banner.png` (handle only). Profile colors: dark `bg`, `surface`, `interactive`                |
 
 Copy the files you need into the project. Show a mark at 16, 32, 48 or 64 px, where its pixels are sharp.
 

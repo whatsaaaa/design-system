@@ -8,14 +8,14 @@ The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whats
 
 ## What is in it
 
-| Part                    | What it is                                                                                                                      | Source                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| Identity                | The ghost in every cut, the wordmark, six poses, a sprite per project, favicons, README headers and social cards. All generated | `src/identity/ghost.ts`, `identity/`      |
-| Tokens                  | Rosé Pine main for dark and Dawn for light, mapped to roles, with type, space, radii and motion                                 | `tokens/`                                 |
-| Styles                  | Prose, code blocks, tables, lists, callouts, and the terminal frame: tab bar, prompts, status line                              | `src/css/`                                |
-| The ghost as an element | `<ws-ghost>`, with the easter egg                                                                                               | `src/ghost/`                              |
-| Docs theme              | A VitePress theme on top of VitePress's default theme                                                                           | `src/vitepress/`, `src/vitepress-config/` |
-| Style guide             | A site that shows all of it with real content, in dark and light, and offers the assets for download                            | `styleguide/`                             |
+| Part                    | What it is                                                                                                                                        | Source                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| Identity                | The ghost in every cut, the wordmark, six poses, a sprite per project, favicons, README headers, social cards and a profile banner. All generated | `src/identity/ghost.ts`, `identity/`      |
+| Tokens                  | Rosé Pine main for dark and Dawn for light, mapped to roles, with type, space, radii and motion                                                   | `tokens/`                                 |
+| Styles                  | Prose, code blocks, tables, lists, callouts, and the terminal frame: tab bar, prompts, status line                                                | `src/css/`                                |
+| The ghost as an element | `<ws-ghost>`, with the easter egg                                                                                                                 | `src/ghost/`                              |
+| Docs theme              | A VitePress theme on top of VitePress's default theme                                                                                             | `src/vitepress/`, `src/vitepress-config/` |
+| Style guide             | A site that shows all of it with real content, in dark and light, and offers the assets for download                                              | `styleguide/`                             |
 
 To use it in another project, install it with `pnpm add @whatsaaaa/design-system` and read [docs/usage.md](./docs/usage.md). It is written for coding agents and is short.
 
@@ -123,7 +123,7 @@ The licenses are in [`licenses/`](./licenses/).
 
 The code and the styles are [MIT](./LICENSE): the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules and the docs theme.
 
-The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards and the favicons, in `assets/`, as drawn in `src/identity/` and `identity/`, and as compiled into `dist/identity/` and `dist/ghost/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
+The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons, in `assets/`, as drawn in `src/identity/` and `identity/`, and as compiled into `dist/identity/` and `dist/ghost/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
 
 The artwork may be redistributed unmodified as part of this package and of builds made with it. It may not be shown, used as a logo or mark, or used to identify anything other than Whatsaaaa and its projects. That covers the ghost that `<ws-ghost>` and the docs theme draw: the MIT License covers their code, not the ghost. A site that is not Whatsaaaa's own makes sure the ghost is not shown on it. It puts neither `<ws-ghost>` nor the output of `ghostSvg` or `ghostMarkup` on its pages, and with the docs theme it replaces the theme's `NavGhost.vue` and `NotFound.vue`, the way VitePress [overrides an internal component](https://vitepress.dev/guide/extending-default-theme#overriding-internal-components):
 

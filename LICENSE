@@ -6,11 +6,11 @@ the docs theme among them, are provided under the MIT License that follows.
 The Whatsaaaa identity artwork is excluded from the MIT License. It is
 Copyright (c) 2026 Whatsaaaa, all rights reserved. It is the ghost, the
 wordmark, the lockups and marks, the sprite and mark of each project, the README
-headers, the social cards and the favicons, as the generated files in `assets/`,
-as the drawings encoded in `src/identity/` and `identity/`, and as those
-drawings compiled into the package in `dist/identity/` and `dist/ghost/`. The
-code that turns those drawings into files and markup is under the MIT License;
-the drawings are not.
+headers, the social cards, the profile banner and the favicons, as the generated
+files in `assets/`, as the drawings encoded in `src/identity/` and `identity/`,
+and as those drawings compiled into the package in `dist/identity/` and
+`dist/ghost/`. The code that turns those drawings into files and markup is
+under the MIT License; the drawings are not.
 
 The artwork may be redistributed unmodified as part of this package and of
 builds made with it, as the <ws-ghost> element and the docs theme carry it. It

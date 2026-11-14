@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, describe, expect, it } from 'vitest'
 import { buildKit, readProject, writeKit } from '../scripts/lib/kit.ts'
+import { GHOST } from '../src/identity/ghost.ts'
 import { jetBrainsMono } from '../scripts/lib/outline.ts'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -78,6 +79,10 @@ describe('the asset kit', () => {
         names.filter((name) => name.startsWith('pose-')),
         identity,
       ).toHaveLength(identity === 'whatsaaaa' ? 12 : 0)
+      expect(
+        names.filter((name) => name.startsWith('profile-banner')),
+        identity,
+      ).toEqual(identity === 'whatsaaaa' ? ['profile-banner.png'] : [])
     }
   })
 
@@ -91,6 +96,7 @@ describe('the asset kit', () => {
     expect(size('whatsaaaa/icon-512.png')).toEqual([512, 512])
     expect(size('form-builder/social-card.png')).toEqual([1280, 640])
     expect(size('form-builder/readme-header.png')).toEqual([2560, 640])
+    expect(size('whatsaaaa/profile-banner.png')).toEqual([1280, 288])
   })
 
   it('has no text that needs a font: every SVG is paths', () => {
@@ -157,6 +163,16 @@ describe('a new project', () => {
     const file = join(scratch, 'nameless.json')
     writeFileSync(file, JSON.stringify({ tagline: 'x', sprite }))
     expect(() => readProject(file)).toThrow(/has no "name"/)
+  })
+})
+
+describe('the profile banner', () => {
+  const handle = { kind: 'ghost', name: 'whatsaaaa', tagline: 'x', sprite: GHOST } as const
+
+  it('is refused when its command is too long to stay clear of the avatar and the crop', async () => {
+    await expect(buildKit({ ...handle, banner: { command: 'cat ~/.profile' } })).rejects.toThrow(
+      /command of whatsaaaa does not fit the profile banner.*Shorten the command/,
+    )
   })
 })
 

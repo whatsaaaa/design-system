@@ -11,7 +11,7 @@ import {
   svgDocument,
 } from '../../src/identity/marks.ts'
 import { type Sprite, checkSprite } from '../../src/identity/sprite.ts'
-import { type BannerColors, terminalBanner } from './banner.ts'
+import { type BannerColors, PROFILE_BANNER, profileBanner, terminalBanner } from './banner.ts'
 import { jetBrainsMono } from './outline.ts'
 import { renderIco, renderPng } from './raster.ts'
 import { hex } from './tokens.ts'
@@ -21,9 +21,15 @@ export interface Identity {
   /** One line about it, shown in the banners. */
   tagline: string
   banner?: {
-    /** Window title. Defaults to the project's folder under the handle. */
+    /**
+     * Window title. Defaults to the project's folder under the handle, and on the profile banner
+     * to home.
+     */
     title?: string
-    /** The command whose output is the name. Defaults to reading the README. */
+    /**
+     * The command whose output is the name, or on the profile banner the profile. Defaults to
+     * reading the README, and on the profile banner to `whoami`.
+     */
     command?: string
     /** Index of the first letter of the name drawn in love. */
     loveFrom?: number
@@ -223,6 +229,25 @@ export async function buildKit(identity: Identity): Promise<KitFile[]> {
     1280,
     640,
   )
+
+  /* the banner of a profile, whose avatar is the ghost */
+  if (kind === 'ghost') {
+    const { width, height } = PROFILE_BANNER
+    const profile = profileBanner({
+      name,
+      title: identity.banner?.title ?? `${HANDLE}: ~`,
+      command: identity.banner?.command ?? 'whoami',
+      colors: bannerColors(),
+      fonts,
+    })
+    add(
+      'profile-banner.png',
+      renderPng(profile, width * 2),
+      'The profile banner as an image, at twice its size. Upload this one to Gravatar.',
+      width * 2,
+      height * 2,
+    )
+  }
 
   return files
 }
