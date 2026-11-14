@@ -42,6 +42,7 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in
 ```css
 @import '@whatsaaaa/design-system/tailwind.css';
 @import '@nuxt/ui'; /* a library on Tailwind, if the app has one */
+@import '@whatsaaaa/design-system/tailwind/variants.css'; /* after a library with its own dark: and light: */
 ```
 
 Install `tailwindcss` 4.3.5 or a later 4.x next to the package. Only this entry needs it.
