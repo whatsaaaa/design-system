@@ -121,31 +121,6 @@ The licenses are in [`licenses/`](./licenses/).
 
 ## License
 
-The code and the styles are [MIT](./LICENSE): the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules and the docs theme.
+Everything made for Whatsaaaa here is [MIT](./LICENSE), the identity artwork included: the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules, the docs theme, and the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons.
 
-The Whatsaaaa identity is not: the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons, in `assets/`, as drawn in `src/identity/` and `identity/`, and as compiled into `dist/identity/` and `dist/ghost/`, are all rights reserved. [LICENSE](./LICENSE) says which is which.
-
-The artwork may be redistributed unmodified as part of this package and of builds made with it. It may not be shown, used as a logo or mark, or used to identify anything other than Whatsaaaa and its projects. That covers the ghost that `<ws-ghost>` and the docs theme draw: the MIT License covers their code, not the ghost. A site that is not Whatsaaaa's own makes sure the ghost is not shown on it. It puts neither `<ws-ghost>` nor the output of `ghostSvg` or `ghostMarkup` on its pages, and with the docs theme it replaces the theme's `NavGhost.vue` and `NotFound.vue`, the way VitePress [overrides an internal component](https://vitepress.dev/guide/extending-default-theme#overriding-internal-components):
-
-```ts
-// .vitepress/config.ts
-import { fileURLToPath, URL } from 'node:url'
-
-export default defineConfigWithTheme<ThemeConfig>({
-  extends: whatsaaaaConfig(),
-  vite: {
-    resolve: {
-      alias: [
-        {
-          find: /^.*\/components\/NavGhost\.vue$/,
-          replacement: fileURLToPath(new URL('./theme/SiteMark.vue', import.meta.url)),
-        },
-        {
-          find: /^.*\/components\/NotFound\.vue$/,
-          replacement: fileURLToPath(new URL('./theme/SiteNotFound.vue', import.meta.url)),
-        },
-      ],
-    },
-  },
-})
-```
+The third-party material in the [credits](#credits) keeps its own license: the Rosé Pine palette is MIT, and the Departure Mono glyph outlines and the JetBrains Mono and Inter fonts are under the SIL Open Font License 1.1.

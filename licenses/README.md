@@ -1,5 +1,7 @@
 # Licenses of what the system builds on
 
+The design system is under the MIT License, in [`LICENSE`](../LICENSE). The third-party material below keeps its own license.
+
 | What | License | Where it is used | File |
 | --- | --- | --- | --- |
 | Rosé Pine palette, from `@rose-pine/palette` | MIT, Copyright (c) mvllow | The color values in `tokens/palette.tokens.json` and everything built from them | `rose-pine-palette.LICENSE` |
