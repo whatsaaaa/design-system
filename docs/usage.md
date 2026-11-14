@@ -57,32 +57,32 @@ It brings Tailwind and everything `index.css` brings, in cascade layers, so a ut
 
 The tokens are Tailwind's theme, and a utility reads its token where it is used, so it follows the theme as the token does:
 
-| Utilities                                                  | Tokens                                                           |
-| ---------------------------------------------------------- | ---------------------------------------------------------------- |
-| `bg-surface`, `text-text-secondary`, `border-field-border` | The color roles. Tailwind's palette is taken out                 |
-| `font-mono`, `font-sans`                                   | The two families, and no others                                  |
-| `text-h1`, `text-body-sm`                                  | The text styles, without their family: write `font-mono text-h1` |
-| `leading-normal`, `font-semibold`                          | Line heights and weights                                         |
-| `p-4`, `gap-2.5`                                           | Space, four pixels to a step: `p-4` is `--ws-space-16`           |
-| `h-tab-bar`, `max-w-content`                               | The sizes, by name, for any width, height or space               |
-| `rounded-md`                                               | The radii. `rounded-full` is Tailwind's own                      |
-| `border-thin`                                              | The border widths. There are no shadow utilities                 |
-| `ease-standard`, `transition`                              | The easings. A transition takes `--ws-motion-duration-fast`      |
-| `max-lg:`                                                  | The one breakpoint: below 64rem                                  |
+| Utilities                                                  | Tokens                                                                          |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `bg-surface`, `text-text-secondary`, `border-field-border` | The color roles. Tailwind's palette is taken out                                |
+| `font-mono`, `font-sans`                                   | The two families, and no others                                                 |
+| `text-h1`, `text-body-sm`                                  | The text styles, without their family: write `font-mono text-h1`                |
+| `leading-normal`, `font-semibold`                          | Line heights and weights                                                        |
+| `p-4`, `gap-2.5`                                           | Space, four pixels to a step: `p-4` is `--ws-space-16`                          |
+| `h-tab-bar`, `max-w-content`                               | The sizes, by name, for any width, height or space                              |
+| `rounded-md`                                               | The radii, by name only, so no bare `rounded`. `rounded-full` is Tailwind's own |
+| `border-thin`                                              | The border widths. There are no shadow utilities                                |
+| `ease-standard`, `transition`                              | The easings. A transition takes `--ws-motion-duration-fast`                     |
+| `max-lg:`                                                  | The one breakpoint: below 64rem                                                 |
 
 The entry takes out Tailwind's defaults that no token stands behind, as the system colors interface with its roles only and draws edges with borders, not shadows. As classes their utilities compile to nothing, with no error. In `@apply`, in the app's CSS or a component's `<style>` block, one fails the build with `Cannot apply unknown utility class`:
 
-| Taken out                                    | Utilities that compile to nothing                                  | Use instead                                  |
-| -------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------- |
-| Tailwind's palette, white and black included | `bg-white`, `text-black`, `text-red-500`, `border-slate-200`       | A role: `bg-surface`, `text-text`            |
-| Shadows                                      | `shadow-lg`, `inset-shadow-sm`, `drop-shadow-md`, `text-shadow-md` | A border: `border-thin border-border`        |
-| The serif family                             | `font-serif`                                                       | `font-sans` or `font-mono`                   |
-| The weights with no token                    | `font-thin`, `font-extralight`, `font-light`, `font-black`         | `font-normal` to `font-extrabold`            |
-| The radii with no token                      | `rounded-2xl`, `rounded-3xl`, `rounded-4xl`                        | `rounded-xs` to `rounded-xl`, `rounded-full` |
+| Taken out                                    | Utilities that compile to nothing                                                                             | Use instead                                                                             |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Tailwind's palette, white and black included | `bg-white`, `text-black`, `text-red-500`, `border-slate-200`                                                  | A role: `bg-surface`, `text-text`                                                       |
+| Shadows                                      | `shadow`, `shadow-lg`, `inset-shadow-sm`, `drop-shadow`, `text-shadow-md`                                     | A border: `border-thin border-border`                                                   |
+| The serif family                             | `font-serif`                                                                                                  | `font-sans` or `font-mono`                                                              |
+| The weights with no token                    | `font-thin`, `font-extralight`, `font-light`, `font-black`                                                    | `font-normal` to `font-extrabold`                                                       |
+| The radii with no token                      | `rounded` and its sides and corners, such as `rounded-t` and `rounded-tl`, and `rounded-2xl` to `rounded-4xl` | `rounded-sm`, the same 4px, for `rounded`. `rounded-xs` to `rounded-xl`, `rounded-full` |
 
 A library imported after the entry loses them too, by design: the overlays of Nuxt UI, for example, have no shadow on the entry.
 
-`dark:` and `light:` follow the theme as the tokens do: the nearest `data-theme` or `dark` or `light` class around the element, then the system, by the rules of [the theme](#_3-theme). The roles already switch, so use them only for what the roles do not cover. A library that defines its own `dark:` or `light:` after the entry, as Nuxt UI does, replaces the system's: import them again after it, with `@import '@whatsaaaa/design-system/tailwind/variants.css';`.
+`dark:` and `light:` follow the theme as the tokens do: the nearest `data-theme` or `dark` or `light` class around the element, then the system, by the rules of section 3, Theme. The roles already switch, so use them only for what the roles do not cover. A library that defines its own `dark:` or `light:` after the entry, as Nuxt UI does, replaces the system's: import them again after it, with `@import '@whatsaaaa/design-system/tailwind/variants.css';`.
 
 ## 2. Colors
 
