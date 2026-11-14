@@ -274,6 +274,44 @@ test.describe('on a phone', () => {
     expect(new Set(lefts).size).toBe(1)
   })
 
+  test('without subgrid, as before Chrome 117, a term still stands beside its value', async ({
+    page,
+  }) => {
+    await open(page, FORM)
+    // a browser without subgrid ignores the rule that sets it
+    const removed = await page.evaluate(() => {
+      let count = 0
+      for (const sheet of document.styleSheets) {
+        const rules = sheet.cssRules
+        for (let index = rules.length - 1; index >= 0; index--) {
+          const rule = rules[index]
+          if (rule instanceof CSSSupportsRule && rule.conditionText.includes('subgrid')) {
+            sheet.deleteRule(index)
+            count++
+          }
+        }
+      }
+      return count
+    })
+    expect(removed).toBeGreaterThan(0)
+    const rows = await page.locator('.ws-pairs > div').evaluateAll((elements) =>
+      elements.map((row) => {
+        const term = row.querySelector('dt')!.getBoundingClientRect()
+        const value = row.querySelector('dd')!.getBoundingClientRect()
+        return {
+          termRight: term.right,
+          valueLeft: value.left,
+          sameTop: Math.abs(term.top - value.top) < term.height,
+        }
+      }),
+    )
+    expect(rows.length).toBeGreaterThan(0)
+    for (const row of rows) {
+      expect(row.sameTop).toBe(true)
+      expect(row.valueLeft).toBeGreaterThanOrEqual(row.termRight)
+    }
+  })
+
   test('an email too long for a narrow phone breaks after its @, not in a word', async ({
     page,
   }) => {

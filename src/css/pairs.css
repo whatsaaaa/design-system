@@ -28,13 +28,21 @@
   border-bottom: var(--ws-border-width-thin) dashed var(--ws-color-border);
 }
 
+/* Each row takes the columns of the list, so a browser without subgrid (Chrome before 117)
+   still sets a term beside its value; only the terms of different rows may differ in width. */
 .ws-pairs > div {
   display: grid;
   grid-column: 1 / -1;
-  grid-template-columns: subgrid;
+  grid-template-columns: inherit;
   align-items: baseline;
   padding-block: var(--ws-space-8);
   border-top: var(--ws-border-width-thin) dashed var(--ws-color-border);
+}
+
+@supports (grid-template-columns: subgrid) {
+  .ws-pairs > div {
+    grid-template-columns: subgrid;
+  }
 }
 
 .ws-pairs dt {
