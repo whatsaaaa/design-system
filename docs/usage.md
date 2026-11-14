@@ -108,7 +108,7 @@ On a page with a status line, its theme button is the theme switch at every widt
 
 So a `dark` or `light` class you give an element for something else puts what is inside it in that theme. Use another name for it.
 
-`setTheme` and `toggleTheme` write `data-theme`, and `getTheme` reads it, then the class of `<html>`. In an app whose color mode library owns the class, such as Nuxt UI or `useColorMode`, switch the theme with the library and leave `data-theme` alone: do not call `setTheme` or `toggleTheme`, because the attribute they write wins over the library's class from then on. Keep the head script for the browser's bars. With nothing remembered under `ws-theme` it sets no `data-theme`, and it follows the class. So do not give the library that storage key.
+`setTheme` and `toggleTheme` write `data-theme`, and `getTheme` reads it, then the class of `<html>`. In an app whose color mode library owns the class, such as Nuxt UI or `useColorMode`, switch the theme with the library and leave `data-theme` alone: do not call `setTheme` or `toggleTheme`, because the attribute they write wins over the library's class from then on. Keep the head script for the browser's bars. With nothing remembered under `ws-theme` it sets no `data-theme`, and it follows the class. So do not give the library that storage key. An app that called `setTheme` or `toggleTheme` before, such as from a script that bridged the two, has visitors with a choice still remembered there. Remove it before the head script runs, with `localStorage.removeItem('ws-theme')`, or the `data-theme` the head script sets from it wins over the library's class on every load.
 
 ## 4. Type
 
