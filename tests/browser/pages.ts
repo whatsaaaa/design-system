@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 
 /**
- * Every page of the style guide, and the two standalone examples.
+ * Every page of the style guide, and the standalone examples.
  *
  * `shots` says which screenshots a page has. Every page is checked for overflow at phone,
  * tablet and desktop width. Screenshots are kept to what a look can go wrong on: all pages at desktop width,

@@ -237,6 +237,26 @@ test.describe('on a phone', () => {
     expect(await pre.evaluate((element) => element.scrollWidth - element.clientWidth)).toBe(0)
   })
 
+  test('a short term leaves its value the rest of the row, and the values line up', async ({
+    page,
+  }) => {
+    await open(page, FORM)
+    const lines = await page
+      .locator('.ws-pairs dd', { hasText: 'milica.djordjevic@example.com' })
+      .evaluate((element) => {
+        const range = document.createRange()
+        range.selectNodeContents(element)
+        return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size
+      })
+    expect(lines).toBe(1)
+    const lefts = await page
+      .locator('.ws-pairs:not(.ws-pairs--amounts) dd')
+      .evaluateAll((elements) =>
+        elements.map((element) => Math.round(element.getBoundingClientRect().left)),
+      )
+    expect(new Set(lefts).size).toBe(1)
+  })
+
   test('a large ghost takes its compact size, and its full one on a wide screen', async ({
     page,
   }) => {

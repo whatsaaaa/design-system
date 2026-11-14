@@ -1,7 +1,8 @@
 /*
  * Terms and their values, a row each: the answers of a form on its review step, or what an
  * order costs. A term is in the voice of a label, its value in the face of a field, and the
- * two share a baseline.
+ * two share a baseline. The terms share a column as wide as the longest of them, at most two
+ * fifths of the list, so the values line up and have the rest of the row.
  *
  *   <dl class="ws-pairs">
  *     <div><dt>Name</dt><dd>Ana Petrović</dd></div>
@@ -18,15 +19,18 @@
  *   </dl>
  */
 .ws-pairs {
+  display: grid;
+  grid-template-columns: fit-content(40%) minmax(0, 1fr);
+  column-gap: var(--ws-space-16);
   margin: 0;
   border-bottom: var(--ws-border-width-thin) dashed var(--ws-color-border);
 }
 
 .ws-pairs > div {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
   align-items: baseline;
-  gap: var(--ws-space-16);
   padding-block: var(--ws-space-8);
   border-top: var(--ws-border-width-thin) dashed var(--ws-color-border);
 }
@@ -46,7 +50,7 @@
   overflow-wrap: anywhere;
 }
 
-.ws-pairs--amounts > div {
+.ws-pairs--amounts {
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
