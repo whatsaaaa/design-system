@@ -8,11 +8,26 @@ import { holdComments, restoreComments } from '../scripts/lib/css-comments.ts'
 const root = fileURLToPath(new URL('..', import.meta.url))
 const read = (path: string) => readFileSync(join(root, path), 'utf8')
 
-/** The comments of a source stylesheet that stand between its rules. */
+/**
+ * The comments of a source stylesheet that stand between its rules, read line by line: each
+ * comment that opens a line at the top of the file or in the block of an at-rule.
+ */
 const between = (css: string) => {
-  const held: string[] = []
-  holdComments(css, held)
-  return held
+  const comments: string[] = []
+  // for each open block, whether it is an at-rule's
+  const blocks: boolean[] = []
+  const lines = css.split('\n')
+  for (let line = 0; line < lines.length; line++) {
+    const text = lines[line]!.trim()
+    if (text.startsWith('/*')) {
+      let end = line
+      while (!lines[end]!.includes('*/')) end++
+      if (blocks.every(Boolean)) comments.push(lines.slice(line, end + 1).join('\n'))
+      line = end
+    } else if (text.endsWith('{')) blocks.push(text.startsWith('@'))
+    else if (text.startsWith('}')) blocks.pop()
+  }
+  return comments
 }
 
 /** Builds as scripts/build-css.ts does, without the imports. */
@@ -30,28 +45,28 @@ const build = (css: string) => {
 describe('the built stylesheets', () => {
   const sources = readdirSync(join(root, 'src/css')).filter((file) => file.endsWith('.css'))
 
-  it.each(sources.filter((file) => file !== 'index.css'))(
-    'keep the comments between the rules of %s, in index.css too',
-    (file) => {
-      const comments = between(read(`src/css/${file}`))
-      expect(comments.length).toBeGreaterThan(0)
-      // a comment in a block is indented as the block is
-      const flat = (text: string) => text.replaceAll(/^[ \t]+/gm, '')
-      const index = flat(read('dist/index.css'))
-      for (const comment of comments) expect(index).toContain(flat(comment))
-    },
-  )
+  it.each(sources)('keep the comments between the rules of %s', (file) => {
+    const comments = between(read(`src/css/${file}`))
+    expect(comments.length).toBeGreaterThan(0)
+    // breakpoints.css only declares a custom media query, so it ships inside the others
+    const built = ['index.css', 'breakpoints.css'].includes(file)
+      ? ['dist/index.css']
+      : ['dist/index.css', `dist/css/${file}`]
+    // a comment in a block is indented as the block is
+    const flat = (text: string) => text.replaceAll(/^[ \t]+/gm, '')
+    for (const path of built) {
+      const css = flat(read(path))
+      for (const comment of comments) expect(css, path).toContain(flat(comment))
+    }
+  })
 
-  it('carry the markup of each piece, which the usage guide points to', () => {
+  it('carry the markup of each piece', () => {
     const terminal = read('dist/css/terminal.css')
     expect(terminal).toContain(' *   <header class="ws-tab-bar">')
     expect(terminal).toContain(' *   <footer class="ws-status-line">')
     expect(terminal).toContain(' *   <h2 class="ws-prompt">ls ~/projects</h2>')
     expect(terminal).toContain(' *   <span class="ws-state ws-state--active">active</span>')
     expect(read('dist/css/prose.css')).toContain(' *   <p class="ws-crumb">')
-    expect(read('docs/usage.md')).toContain(
-      'The markup of each piece is in the comment above its rules',
-    )
   })
 
   it('are left with no placeholder of a comment', () => {
@@ -123,7 +138,9 @@ describe('the comments of a stylesheet', () => {
   content: '/* not a comment */';
 }
 `
-    expect(between(css)).toEqual([])
+    const held: string[] = []
+    holdComments(css, held)
+    expect(held).toEqual([])
     const built = build(css)
     expect(built).toContain('.a .b {')
     expect(built).toContain('"/* not a comment */"')
