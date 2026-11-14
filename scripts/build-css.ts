@@ -30,19 +30,20 @@ interface Piece {
 
 /**
  * A stylesheet and what it imports, in order: what comes before its first import, then each
- * import, then the rest. A comment at the top of a file so stays above what it imports.
+ * import followed by what comes after it, up to the next import or the end. A comment at the
+ * top of a file so stays above what it imports, and one between two imports stays between.
  */
 function pieces(file: string, times: Map<string, number>): Piece[] {
   const time = (times.get(file) ?? 0) + 1
   times.set(file, time)
   const css = readFileSync(file, 'utf8')
   const imports = [...css.matchAll(IMPORT)]
-  if (imports.length === 0) return [{ file, time, text: css }]
-  const last = imports.at(-1)!
   return [
-    { file, time, text: css.slice(0, imports[0]!.index) },
-    ...imports.flatMap(([, , path]) => pieces(resolve(dirname(file), path!), times)),
-    { file, time, text: css.slice(last.index + last[0].length) },
+    { file, time, text: css.slice(0, imports[0]?.index) },
+    ...imports.flatMap((match, i) => [
+      ...pieces(resolve(dirname(file), match[2]!), times),
+      { file, time, text: css.slice(match.index + match[0].length, imports[i + 1]?.index) },
+    ]),
   ]
 }
 

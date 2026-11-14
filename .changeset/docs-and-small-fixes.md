@@ -14,7 +14,9 @@ Docs corrections and small fixes the first apps and the website ran into.
 - **The numbers of the tabs show only while their keys work**: not without JavaScript, and not before the shortcuts module runs. The head script marks the page `data-ws-keys="pending"` until then, so the numbers keep their place unseen and the labels of the tabs do not move when they show. The docs theme does the same.
 - **The focus ring's radius gives way.** `base.css` rounds a focused element's corners with no weight, so a radius of the page's own, such as a round radio button's, wins wherever it is written.
 
-A project on an earlier version writes nothing new. What it can drop, as in `docs/usage.md`:
+A project on an earlier version writes nothing new, but it has to load the head script of the keys from the package: `shortcuts/init.js`, or `keysInitScript` inlined, as with the Vite plugin. A page with no head script, or with a copy of an earlier one, draws the numbers of the tabs only once the shortcuts module runs, and the labels of the tabs move then.
+
+What it can drop, as in `docs/usage.md`:
 
 - A rule that sets `align-items: baseline` on `ws-state`, or `align-items: flex-start` and a margin on the chevron of `ws-prompt`.
 - A rule that only restates its own `border-radius` on `:focus-visible` to win over `base.css`.

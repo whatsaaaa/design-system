@@ -82,7 +82,7 @@ setTheme('system') // follows the system again
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
 
-A bundler does not copy a plain script out of `node_modules`, so in an app built with Vite inline both head scripts, this one and the one of [the keys](#_7-keys), with a plugin. They come from the installed package, so they stay in step with it:
+A bundler does not copy a plain script out of `node_modules`, so in an app built with Vite inline both head scripts, this one and the one of the keys in section 7, with a plugin. They come from the installed package, so they stay in step with it:
 
 ```ts
 // vite.config.ts
@@ -304,7 +304,7 @@ The switch is not optional. The keys are single characters that act on the whole
 - Do not write `aria-checked` on the switch or `aria-keyshortcuts` on a control. The module sets both while they are true, and the switch stays hidden until it has its state.
 - With the keys off the controls stay and work by hand. What names a key goes: the key caps and the numbers of the tabs. Hide a control that is nothing but a key cap with `[data-ws-keys='off']`.
 - A key acts only on a page that has the switch. A page without the switch has no shortcuts.
-- Load `shortcuts/init.js` in the head, next to `theme/init.js`, or inline `keysInitScript` (with Vite, see [the theme](#_3-theme)). It marks the page before the first paint: `data-ws-keys="off"` when the keys are remembered as off, and `pending` until the module says `on`. So the numbers of the tabs keep their place unseen while the module loads, and the labels do not move when they show. Do not write `data-ws-keys` yourself: the head script and the module own it.
+- Load `shortcuts/init.js` in the head, next to `theme/init.js`, or inline `keysInitScript` (with Vite, see section 3). It marks the page before the first paint: `data-ws-keys="off"` when the keys are remembered as off, and `pending` until the module says `on`. So the numbers of the tabs keep their place unseen while the module loads, and the labels do not move when they show. Do not write `data-ws-keys` yourself: the head script and the module own it.
 
 ## 8. The ghost
 
