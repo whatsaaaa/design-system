@@ -1,4 +1,5 @@
 import { BUBBLE_ADVANCE, BUBBLE_GLYPHS } from './glyphs.ts'
+import { svgElement } from './svg.ts'
 
 /** Height of the bubble's body, and of the tail under or over it, in font pixels. */
 const BODY = 15
@@ -22,11 +23,17 @@ export function lettersThatFit(width: number): number {
 export const maxTailShift = (text: string) => bubbleSize(text).width - 7
 
 /**
- * A pixel speech bubble with stepped corners, as SVG.
+ * A pixel speech bubble with stepped corners, as an SVG element built without markup.
  * `unit` is the size of one font pixel. The tail points down when the bubble sits above the
  * speaker and up when it sits below, and `tailShift` moves it right, in font pixels.
  */
-export function bubbleSvg(text: string, unit: number, side: BubbleSide, tailShift = 0): string {
+export function bubbleElement(
+  text: string,
+  unit: number,
+  side: BubbleSide,
+  tailShift = 0,
+  document: Document = globalThis.document,
+): SVGSVGElement {
   const { width, height } = bubbleSize(text)
   const top = side === 'below' ? TAIL : 0
   // three steps, narrowing toward the speaker
@@ -45,16 +52,23 @@ export function bubbleSvg(text: string, unit: number, side: BubbleSide, tailShif
   const shape =
     `M1 ${top}h${width - 2}v1h1v${BODY - 2}h-1v1h${2 - width}v-1h-1v${2 - BODY}h1z` +
     steps.map(([x, y, run]) => `M${x! + tailShift} ${y}h${run}v1h${-run!}z`).join('')
-  const letters = [...text]
-    .map((char, index) => {
+  const letters = svgElement(document, 'g', { class: 'ws-ghost__bubble-text' })
+  letters.append(
+    ...[...text].map((char, index) => {
       const glyph = BUBBLE_GLYPHS[char]
       if (!glyph) throw new Error(`The speech bubble has no glyph for "${char}"`)
-      return `<path d="${glyph}" transform="translate(${PADDING + index * BUBBLE_ADVANCE} ${top + 11})"/>`
-    })
-    .join('')
-  return (
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width * unit}" height="${height * unit}" shape-rendering="crispEdges">` +
-    `<path class="ws-ghost__bubble-shape" d="${shape}"/>` +
-    `<g class="ws-ghost__bubble-text">${letters}</g></svg>`
+      return svgElement(document, 'path', {
+        d: glyph,
+        transform: `translate(${PADDING + index * BUBBLE_ADVANCE} ${top + 11})`,
+      })
+    }),
   )
+  const svg = svgElement(document, 'svg', {
+    viewBox: `0 0 ${width} ${height}`,
+    width: String(width * unit),
+    height: String(height * unit),
+    'shape-rendering': 'crispEdges',
+  })
+  svg.append(svgElement(document, 'path', { class: 'ws-ghost__bubble-shape', d: shape }), letters)
+  return svg
 }

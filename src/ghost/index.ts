@@ -3,11 +3,19 @@
  * the easter egg. Press the ghost three times in a row and it shouts the handle in a speech
  * bubble. Every further press holds the a for one letter longer.
  *
- * Everything here is safe to import on a server. Only `defineGhost()` needs a browser.
+ * Everything here is safe to import on a server. Only `defineGhost()` needs a browser, and
+ * `ghostElement()` a document.
  */
 import { GHOST_POSES, type GhostPose } from '../identity/ghost.ts'
 import { spriteBounds, spritePaths } from '../identity/sprite.ts'
-import { type BubbleSide, bubbleSize, bubbleSvg, lettersThatFit, maxTailShift } from './bubble.ts'
+import {
+  type BubbleSide,
+  bubbleElement,
+  bubbleSize,
+  lettersThatFit,
+  maxTailShift,
+} from './bubble.ts'
+import { SVG, svgElement } from './svg.ts'
 
 export type { GhostPose } from '../identity/ghost.ts'
 
@@ -38,28 +46,64 @@ export interface GhostSvgOptions {
   pose?: GhostPose
 }
 
+/** The attributes of the ghost's `<svg>`, and its two paths, for the markup and the element. */
+function sprite({ px = 2, pose = 'idle' }: GhostSvgOptions) {
+  const { body, love } = spritePaths(GHOST_POSES[pose])
+  return {
+    attributes: {
+      class: 'ws-ghost__sprite',
+      viewBox: `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.width} ${BOUNDS.height}`,
+      width: String(BOUNDS.width * px),
+      height: String(BOUNDS.height * px),
+      'shape-rendering': 'crispEdges',
+      'aria-hidden': 'true',
+    },
+    paths: [
+      ['ws-ghost__body', body],
+      ['ws-ghost__tongue', love],
+    ] as const,
+  }
+}
+
 /**
  * The free ghost as inline SVG, without its margin, so it sits in a line of text.
  * The body takes the text color and the tongue the brand color (see css/ghost.css).
  */
-export function ghostSvg({ px = 2, pose = 'idle' }: GhostSvgOptions = {}): string {
-  const { body, love } = spritePaths(GHOST_POSES[pose])
-  return (
-    `<svg class="ws-ghost__sprite" xmlns="http://www.w3.org/2000/svg" viewBox="${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.width} ${BOUNDS.height}" width="${BOUNDS.width * px}" height="${BOUNDS.height * px}" shape-rendering="crispEdges" aria-hidden="true">` +
-    `<path class="ws-ghost__body" d="${body}"/><path class="ws-ghost__tongue" d="${love}"/></svg>`
-  )
+export function ghostSvg(options: GhostSvgOptions = {}): string {
+  const { attributes, paths } = sprite(options)
+  const attrs = Object.entries({ xmlns: SVG, ...attributes })
+    .map(([name, value]) => `${name}="${value}"`)
+    .join(' ')
+  return `<svg ${attrs}>${paths.map(([name, d]) => `<path class="${name}" d="${d}"/>`).join('')}</svg>`
+}
+
+/**
+ * The same ghost as `ghostSvg()`, as an element built without markup, for a script that adds
+ * it to a page where setting `innerHTML` is not wanted or not allowed.
+ */
+export function ghostElement(
+  options: GhostSvgOptions = {},
+  document: Document = globalThis.document,
+): SVGSVGElement {
+  const { attributes, paths } = sprite(options)
+  const svg = svgElement(document, 'svg', attributes)
+  svg.append(...paths.map(([name, d]) => svgElement(document, 'path', { class: name, d })))
+  return svg
 }
 
 export interface GhostMarkupOptions {
   px?: number
 }
 
+/** The accessible name of the ghost's button. */
+const BUTTON_LABEL = 'The whatsaaaa ghost'
+
 /**
  * The inside of a <ws-ghost>, for rendering it on a server so the ghost is there before
  * any script runs. The element fills itself in when it is empty.
  */
 export function ghostMarkup({ px = 2 }: GhostMarkupOptions = {}): string {
-  return `<button type="button" class="ws-ghost__button" aria-label="The whatsaaaa ghost">${ghostSvg({ px })}</button>`
+  return `<button type="button" class="ws-ghost__button" aria-label="${BUTTON_LABEL}">${ghostSvg({ px })}</button>`
 }
 
 /** Space kept between the bubble and the edge of the window, and between bubble and ghost. */
@@ -81,7 +125,14 @@ export function attachGhost(host: HTMLElement): () => void {
   const unit = px >= 4 ? 3 : 2
   /** The shout the host asks to hold, as a number of a's. None when it is not set. */
   const held = Number(host.getAttribute('shout'))
-  if (!host.querySelector('.ws-ghost__button')) host.innerHTML = ghostMarkup({ px })
+  if (!host.querySelector('.ws-ghost__button')) {
+    const filled = host.ownerDocument.createElement('button')
+    filled.type = 'button'
+    filled.className = 'ws-ghost__button'
+    filled.setAttribute('aria-label', BUTTON_LABEL)
+    filled.append(ghostElement({ px }, host.ownerDocument))
+    host.replaceChildren(filled)
+  }
   const button = host.querySelector<HTMLButtonElement>('.ws-ghost__button')!
   const body = host.querySelector<SVGPathElement>('.ws-ghost__body')!
   const tongue = host.querySelector<SVGPathElement>('.ws-ghost__tongue')!
@@ -142,7 +193,7 @@ export function attachGhost(host: HTMLElement): () => void {
     // Drawn again only when it looks different. Moving it must not replay its pop.
     const drawing = `${shouting}|${side}|${tailShift}`
     if (drawing !== drawn) {
-      bubble.innerHTML = bubbleSvg(shouting, unit, side, tailShift)
+      bubble.replaceChildren(bubbleElement(shouting, unit, side, tailShift, host.ownerDocument))
       bubble.dataset.side = side
       drawn = drawing
     }

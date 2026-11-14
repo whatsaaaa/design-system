@@ -92,3 +92,34 @@ export const codeTheme = {
     rule(['markup.deleted'], hex('syntax.keyword')),
   ],
 }
+
+/** The part of a Shiki line element the transformer writes to. */
+interface LineElement {
+  properties: Record<string, unknown>
+}
+
+/**
+ * A Shiki transformer for a code block that wraps, `ws-code--wrap`: it gives each line its
+ * hanging indent, `--ws-code-hang`, the width of its indent plus two, a tab counted as two as
+ * the block sets it. The rest of a wrapped line then starts one level in from the line's own
+ * text, so the shape of the code still reads.
+ *
+ *   codeToHtml(code, { lang: 'json', theme: codeTheme, transformers: [hangingIndent()] })
+ */
+export function hangingIndent() {
+  let source = ''
+  let lines: string[] = []
+  return {
+    name: 'whatsaaaa:hanging-indent',
+    line(this: { source: string }, node: LineElement, line: number) {
+      if (this.source !== source) {
+        source = this.source
+        lines = source.split(/\r?\n/)
+      }
+      const indent = /^[\t ]*/.exec(lines[line - 1] ?? '')![0]
+      const hang = indent.replaceAll('\t', '  ').length + 2
+      const style = node.properties.style
+      node.properties.style = `${typeof style === 'string' && style ? `${style.replace(/;?$/, ';')}` : ''}--ws-code-hang:${hang}`
+    },
+  }
+}

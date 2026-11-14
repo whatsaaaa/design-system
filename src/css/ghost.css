@@ -3,6 +3,8 @@
  * The body takes the text color and the tongue the brand color, so the free ghost follows
  * the theme.
  */
+@import './breakpoints.css';
+
 ws-ghost {
   display: inline-flex;
   position: relative;
@@ -25,6 +27,40 @@ ws-ghost {
 
 .ws-ghost__sprite {
   display: block;
+}
+
+/*
+ * A ghost that is large on a wide screen, such as the one next to the display name, takes a
+ * smaller size on a phone with compact-px: the size of one sprite pixel below 64rem, a whole
+ * number from 1 to 5. The ghost is 10 by 12 sprite pixels.
+ *
+ *   <ws-ghost px="6" compact-px="4"></ws-ghost>
+ */
+@media (--ws-compact) {
+  ws-ghost[compact-px='1'] .ws-ghost__sprite {
+    width: 10px;
+    height: 12px;
+  }
+
+  ws-ghost[compact-px='2'] .ws-ghost__sprite {
+    width: 20px;
+    height: 24px;
+  }
+
+  ws-ghost[compact-px='3'] .ws-ghost__sprite {
+    width: 30px;
+    height: 36px;
+  }
+
+  ws-ghost[compact-px='4'] .ws-ghost__sprite {
+    width: 40px;
+    height: 48px;
+  }
+
+  ws-ghost[compact-px='5'] .ws-ghost__sprite {
+    width: 50px;
+    height: 60px;
+  }
 }
 
 .ws-ghost__body {

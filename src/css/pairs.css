@@ -1,0 +1,83 @@
+/*
+ * Terms and their values, a row each: the answers of a form on its review step, or what an
+ * order costs. A term is in the voice of a label, its value in the face of a field, and the
+ * two share a baseline. The terms share a column as wide as the longest of them, at most two
+ * fifths of the row, so the values line up and have the rest of it. A long email or URL takes
+ * a <wbr /> after its @ or a /, so it breaks there and not in a word.
+ *
+ *   <dl class="ws-pairs">
+ *     <div><dt>Name</dt><dd>Ana Petrović</dd></div>
+ *     <div><dt>Email</dt><dd>ana@<wbr />example.com</dd></div>
+ *   </dl>
+ *
+ * Amounts take ws-pairs--amounts: each value at the right edge, in figures of one width, so
+ * the digits of the rows line up, and the terms take the rest of the row. The total is the
+ * last row, ws-pairs__total.
+ *
+ *   <dl class="ws-pairs ws-pairs--amounts">
+ *     <div><dt>Subtotal</dt><dd>€48.00</dd></div>
+ *     <div><dt>Shipping</dt><dd>€4.00</dd></div>
+ *     <div class="ws-pairs__total"><dt>Total</dt><dd>€52.00</dd></div>
+ *   </dl>
+ */
+.ws-pairs {
+  display: grid;
+  grid-template-columns: fit-content(40%) minmax(0, 1fr);
+  column-gap: var(--ws-space-16);
+  margin: 0;
+  border-bottom: var(--ws-border-width-thin) dashed var(--ws-color-border);
+}
+
+/* Each row takes the columns and the gap of the list, so a browser without subgrid (Chrome
+   before 117) still sets a term beside its value; only the terms of different rows may differ
+   in width. */
+.ws-pairs > div {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: inherit;
+  column-gap: inherit;
+  align-items: baseline;
+  padding-block: var(--ws-space-8);
+  border-top: var(--ws-border-width-thin) dashed var(--ws-color-border);
+}
+
+@supports (grid-template-columns: subgrid) {
+  .ws-pairs > div {
+    grid-template-columns: subgrid;
+  }
+}
+
+.ws-pairs dt {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+  overflow-wrap: anywhere;
+}
+
+.ws-pairs dd {
+  margin: 0;
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-font-size-16);
+  line-height: var(--ws-font-line-height-normal);
+  overflow-wrap: anywhere;
+}
+
+.ws-pairs--amounts {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.ws-pairs--amounts dd {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* The total: set off by a solid rule, and both of its parts in the text color, semibold. */
+.ws-pairs > .ws-pairs__total {
+  border-top-style: solid;
+}
+
+.ws-pairs__total :is(dt, dd) {
+  color: var(--ws-color-text);
+  font-weight: var(--ws-font-weight-semibold);
+}

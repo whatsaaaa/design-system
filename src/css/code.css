@@ -8,6 +8,17 @@
  *
  * Code blocks stay on the dark palette in both themes: on dawn no syntax color except
  * pine reaches AA on the surface.
+ *
+ * A block scrolls sideways. ws-code--wrap wraps its lines instead, for text a person typed,
+ * such as a long value, which a phone would cut off. When each line is a .line with
+ * --ws-code-hang, its indent in characters plus two, as the hangingIndent transformer of
+ * @whatsaaaa/design-system/shiki gives it, the rest of a wrapped line hangs one level in from
+ * the line's own text, so the shape of the code still reads.
+ *
+ *   <figure class="ws-code ws-code--wrap">
+ *     <figcaption><span>order.json</span><span>json</span></figcaption>
+ *     <pre><code><span class="line" style="--ws-code-hang: 4">  "note": "..."</span></code></pre>
+ *   </figure>
  */
 .ws-code {
   margin: var(--ws-space-16) 0 0;
@@ -43,6 +54,25 @@
   font: var(--ws-text-code);
   font-variant-ligatures: none;
   tab-size: 2;
+}
+
+.ws-code--wrap {
+  --ws-code-hang: 0;
+}
+
+.ws-code--wrap > pre {
+  overflow-x: visible;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* A line is a box of its own, so its rest can hang. The line break after it stays text. */
+.ws-code--wrap .line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-inline-start: calc(var(--ws-code-hang) * 1ch);
+  text-indent: calc(var(--ws-code-hang) * -1ch);
 }
 
 .ws-code code {

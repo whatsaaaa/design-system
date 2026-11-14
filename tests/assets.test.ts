@@ -83,6 +83,20 @@ describe('the asset kit', () => {
         names.filter((name) => name.startsWith('profile-banner')),
         identity,
       ).toEqual(identity === 'whatsaaaa' ? ['profile-banner.png'] : [])
+      expect(
+        names.filter((name) => name.startsWith('ghost-')),
+        identity,
+      ).toEqual(identity === 'whatsaaaa' ? ['ghost-on-dark.svg', 'ghost-on-light.svg'] : [])
+    }
+  })
+
+  it('has the ghost without the margin of its grid, as the ghost module draws it', () => {
+    for (const mode of ['dark', 'light']) {
+      const svg = readFileSync(join(root, `assets/whatsaaaa/ghost-on-${mode}.svg`), 'utf8')
+      expect(svg, mode).toContain('viewBox="0 0 20 24" width="20" height="24"')
+      // the top row of the dome starts two sprite pixels in, at the left edge of the file's box
+      expect(svg, mode).toMatch(/<path d="M4 0h12v2h-12z/)
+      expect(svg, mode).toContain('aria-label="whatsaaaa ghost"')
     }
   })
 

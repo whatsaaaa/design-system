@@ -1,7 +1,7 @@
 /*
- * Page layout of the two example pages. Everything here is local to the examples: the
- * window that fills the screen, the two panes and the list of projects. The pieces of the
- * terminal frame themselves come from the design system's stylesheet.
+ * Page layout of the example pages. Everything here is local to the examples: the window
+ * that fills the screen, the two panes, the list of projects and the fields of the form. The
+ * pieces of the terminal frame themselves come from the design system's stylesheet.
  */
 body {
   min-height: 100dvh;
@@ -47,8 +47,8 @@ body {
 
 .role {
   margin-top: var(--ws-space-10);
-  font-size: var(--ws-font-size-20);
-  font-weight: var(--ws-font-weight-medium);
+  font: var(--ws-text-tagline);
+  letter-spacing: var(--ws-text-tagline-letter-spacing);
 }
 
 .pane .ws-output {
@@ -158,14 +158,9 @@ body {
     letter-spacing: var(--ws-text-display-compact-letter-spacing);
   }
 
-  /* four screen pixels per sprite pixel instead of six */
-  .who .ws-ghost__sprite {
-    width: 2.5rem;
-    height: 3rem;
-  }
-
   .role {
-    font-size: var(--ws-font-size-18);
+    font: var(--ws-text-tagline-compact);
+    letter-spacing: var(--ws-text-tagline-compact-letter-spacing);
   }
 
   .entry {
@@ -179,5 +174,266 @@ body {
 
   .article .ws-prose {
     padding: var(--ws-space-24) var(--ws-space-20) var(--ws-space-48);
+  }
+}
+
+/*
+ * The form example. The system draws no fields and no buttons: an app draws them from the
+ * roles, at the control height, with the small sizes, the check icon and the hover fill.
+ */
+.form-page {
+  min-height: 0;
+  padding: var(--ws-space-40) var(--ws-space-48) var(--ws-space-48);
+  overflow: auto;
+}
+
+.form-page__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ws-space-48);
+  margin-top: var(--ws-space-32);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ws-space-20);
+}
+
+.summary__heading {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-overline);
+  letter-spacing: var(--ws-text-overline-letter-spacing);
+  text-transform: uppercase;
+}
+
+.summary__heading + .ws-pairs {
+  margin-top: calc(-1 * var(--ws-space-8));
+}
+
+.summary .ws-pairs + .summary__heading {
+  margin-top: var(--ws-space-12);
+}
+
+.summary .ws-code {
+  margin-top: var(--ws-space-12);
+}
+
+.form-page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ws-space-16) var(--ws-space-24);
+}
+
+.form-page__title {
+  font: var(--ws-text-h1);
+  letter-spacing: var(--ws-text-h1-letter-spacing);
+}
+
+/*
+ * A project's mark keeps two empty sprite columns on each side, an eighth of its width: pulled
+ * out by them, its pixels start where the content does.
+ */
+.brand-mark {
+  margin-inline: calc(-1 * var(--ws-space-4));
+}
+
+.ghost-link {
+  display: flex;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ws-space-12) var(--ws-space-24);
+  margin-top: var(--ws-space-24);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-label);
+}
+
+.steps__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-8);
+}
+
+.steps__number {
+  display: grid;
+  place-items: center;
+  width: var(--ws-size-step);
+  height: var(--ws-size-step);
+  border: var(--ws-border-width-thin) solid var(--ws-color-field-border);
+  border-radius: var(--ws-radius-full);
+  font: var(--ws-text-label-sm);
+  font-weight: var(--ws-font-weight-bold);
+}
+
+.steps__item--done .steps__number::before {
+  width: 1rem;
+  height: 1rem;
+  background: currentcolor;
+  content: '';
+  mask: var(--ws-icon-check) center / contain no-repeat;
+}
+
+.steps__item--current {
+  color: var(--ws-color-text);
+}
+
+.steps__item--current .steps__number {
+  border-color: var(--ws-color-brand-fill);
+  background: var(--ws-color-brand-fill);
+  color: var(--ws-color-on-brand);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ws-space-20);
+}
+
+.form > * {
+  align-self: stretch;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ws-space-6);
+}
+
+.field__label {
+  font: var(--ws-text-label);
+}
+
+.field__hint {
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-body-sm);
+}
+
+.input {
+  width: 100%;
+  height: var(--ws-size-control);
+  padding: 0 var(--ws-space-12);
+  border: var(--ws-border-width-thin) solid var(--ws-color-field-border);
+  border-radius: var(--ws-radius-md);
+  background: var(--ws-color-bg);
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-font-size-16);
+}
+
+.input--number {
+  width: calc(8ch + 2 * var(--ws-space-12) + 2 * var(--ws-border-width-thin));
+}
+
+.input:hover {
+  border-color: var(--ws-color-text-secondary);
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--ws-space-10);
+  font-family: var(--ws-font-family-sans);
+  cursor: pointer;
+}
+
+.choice__input {
+  display: grid;
+  flex: none;
+  place-content: center;
+  width: var(--ws-size-check);
+  height: var(--ws-size-check);
+  margin: 0;
+  border: var(--ws-border-width-thin) solid var(--ws-color-field-border);
+  border-radius: var(--ws-radius-xs);
+  background: var(--ws-color-bg);
+  cursor: pointer;
+  appearance: none;
+}
+
+.choice__input::before {
+  width: 1rem;
+  height: 1rem;
+  background: var(--ws-color-on-interactive);
+  content: '';
+  mask: var(--ws-icon-check) center / contain no-repeat;
+  scale: 0;
+}
+
+.choice__input:checked {
+  border-color: var(--ws-color-interactive);
+  background: var(--ws-color-interactive);
+}
+
+.choice__input:checked::before {
+  scale: 1;
+}
+
+.button {
+  align-self: flex-start;
+  min-height: var(--ws-size-control);
+  margin-top: var(--ws-space-8);
+  padding: 0 var(--ws-space-20);
+  border: var(--ws-border-width-thin) solid var(--ws-color-field-border);
+  border-radius: var(--ws-radius-md);
+  background: none;
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-weight: var(--ws-font-weight-semibold);
+  cursor: pointer;
+}
+
+.button--primary {
+  border-color: var(--ws-color-interactive);
+  background: var(--ws-color-interactive);
+  color: var(--ws-color-on-interactive);
+}
+
+.button--primary:hover {
+  border-color: var(--ws-color-interactive-hover);
+  background: var(--ws-color-interactive-hover);
+}
+
+.button--primary:active {
+  border-color: var(--ws-color-interactive-active);
+  background: var(--ws-color-interactive-active);
+}
+
+@media (forced-colors: active) {
+  .choice__input:checked {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .choice__input:checked::before,
+  .steps__item--done .steps__number::before {
+    background: CanvasText;
+  }
+
+  .choice__input:checked::before {
+    background: HighlightText;
+  }
+}
+
+@media (width < 64rem) {
+  .form-page {
+    padding: var(--ws-space-24) var(--ws-space-16) var(--ws-space-40);
+    overflow: visible;
+  }
+
+  .form-page__title {
+    font: var(--ws-text-h1-compact);
+    letter-spacing: var(--ws-text-h1-compact-letter-spacing);
+  }
+
+  .form-page__columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ws-space-40);
   }
 }

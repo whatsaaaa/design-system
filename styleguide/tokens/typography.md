@@ -15,7 +15,7 @@ h1 {
 
 <TypeSpecimens />
 
-The compact styles are for narrow screens, below 64rem. The overline is set in uppercase.
+The compact styles are for narrow screens, below 64rem. The tagline is the line under the display name, next to the ghost. The overline is set in uppercase.
 
 ## Serbian Latin
 

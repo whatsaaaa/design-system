@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { bubbleSize, bubbleSvg, lettersThatFit } from '../src/ghost/bubble.ts'
+import { bubbleElement, bubbleSize, lettersThatFit } from '../src/ghost/bubble.ts'
 import {
   GHOST_HEIGHT,
   GHOST_WIDTH,
@@ -9,6 +9,7 @@ import {
   WAG_HOLD,
   attachGhost,
   defineGhost,
+  ghostElement,
   ghostMarkup,
   ghostSvg,
   shoutText,
@@ -66,6 +67,41 @@ describe('the markup', () => {
   it('draws any pose as a picture', () => {
     expect(ghostSvg({ pose: 'lost' })).not.toBe(ghostSvg({ pose: 'idle' }))
     expect(ghostSvg()).toContain('width="20" height="24"')
+  })
+
+  it('is an element built without markup, the same as the markup', () => {
+    const element = ghostElement({ px: 3, pose: 'lost' })
+    expect(element.namespaceURI).toBe('http://www.w3.org/2000/svg')
+    const parsed = document.createElement('div')
+    parsed.innerHTML = ghostSvg({ px: 3, pose: 'lost' })
+    const svg = parsed.querySelector('svg')!
+    for (const name of ['class', 'viewBox', 'width', 'height', 'shape-rendering', 'aria-hidden'])
+      expect(element.getAttribute(name), name).toBe(svg.getAttribute(name))
+    expect([...element.children].map((path) => path.getAttribute('d'))).toEqual(
+      [...svg.children].map((path) => path.getAttribute('d')),
+    )
+    expect(element.querySelector('.ws-ghost__tongue')).not.toBeNull()
+  })
+
+  it('fills the element in without setting markup, so a page that forbids it still has the ghost', () => {
+    const set = vi.spyOn(Element.prototype, 'innerHTML', 'set')
+    const { button } = mount({ px: '2' })
+    expect(button.querySelector('svg.ws-ghost__sprite')).not.toBeNull()
+    expect(set).not.toHaveBeenCalled()
+  })
+
+  it('shouts without setting markup, so a page that forbids it keeps the easter egg', () => {
+    vi.spyOn(Element.prototype, 'innerHTML', 'set').mockImplementation(() => {
+      throw new TypeError('This document requires a TrustedHTML assignment')
+    })
+    const { host, button, live, bubble } = mount()
+    for (let press = 0; press < 4; press++) button.click()
+    expect(host.dataset.pose).toBe('shout')
+    expect(live.textContent).toBe('whatsaaaa!')
+    expect(bubble.dataset.open).toBe('')
+    expect(shown(bubble)).toBe('whatsaaaaa!'.length)
+    vi.advanceTimersByTime(SHOUT_HOLD)
+    expect(host.dataset.pose).toBe('idle')
   })
 
   it('is filled in by the element when the page did not render it', () => {
@@ -332,20 +368,27 @@ describe('<ws-ghost>', () => {
 })
 
 describe('the speech bubble', () => {
+  const shape = (...args: Parameters<typeof bubbleElement>) =>
+    bubbleElement(...args)
+      .querySelector('.ws-ghost__bubble-shape')!
+      .getAttribute('d')
+
   it('is sized to its text', () => {
     expect(bubbleSize('whatsaaaa!')).toEqual({ width: 76, height: 18 })
     expect(lettersThatFit(76)).toBe(10)
-    expect(bubbleSvg('whats!', 3, 'above')).toContain('width="144" height="54"')
+    const svg = bubbleElement('whats!', 3, 'above')
+    expect(svg.namespaceURI).toBe('http://www.w3.org/2000/svg')
+    expect([svg.getAttribute('width'), svg.getAttribute('height')]).toEqual(['144', '54'])
   })
 
   it('points its tail at the speaker: down when above, up when below', () => {
-    expect(bubbleSvg('a!', 2, 'above')).toContain('M3 15h3v1h-3zM2 16h2v1h-2zM1 17h1v1h-1z')
-    expect(bubbleSvg('a!', 2, 'below')).toContain('M3 2h3v1h-3zM2 1h2v1h-2zM1 0h1v1h-1z')
-    expect(bubbleSvg('a!', 2, 'above', 5)).toContain('M8 15h3v1h-3z')
+    expect(shape('a!', 2, 'above')).toContain('M3 15h3v1h-3zM2 16h2v1h-2zM1 17h1v1h-1z')
+    expect(shape('a!', 2, 'below')).toContain('M3 2h3v1h-3zM2 1h2v1h-2zM1 0h1v1h-1z')
+    expect(shape('a!', 2, 'above', 5)).toContain('M8 15h3v1h-3z')
   })
 
   it('has only the six letters of the shout', () => {
-    expect(() => bubbleSvg('whats!', 2, 'above')).not.toThrow()
-    expect(() => bubbleSvg('boo', 2, 'above')).toThrow('no glyph for "b"')
+    expect(() => bubbleElement('whats!', 2, 'above')).not.toThrow()
+    expect(() => bubbleElement('boo', 2, 'above')).toThrow('no glyph for "b"')
   })
 })

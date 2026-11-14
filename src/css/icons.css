@@ -1,12 +1,21 @@
 /*
  * The few icons the styles draw themselves, as masks, so they take the color of their text
  * and need no markup. All are 16 x 16 strokes of 1.5.
+ *
+ *   .done::before {
+ *     width: 1rem;
+ *     height: 1rem;
+ *     background: currentcolor;
+ *     content: '';
+ *     mask: var(--ws-icon-check) center / contain no-repeat;
+ *   }
  */
 :root {
   --ws-icon-note: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8' cy='8' r='6.2'/%3E%3Cpath d='M8 7.4v3.4M8 5.1v.2'/%3E%3C/svg%3E");
   --ws-icon-tip: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 1.8a4.3 4.3 0 0 0-2.3 7.9v1.5h4.6V9.7A4.3 4.3 0 0 0 8 1.8ZM6.4 13.6h3.2'/%3E%3C/svg%3E");
   --ws-icon-warning: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2.2 14.2 13H1.8ZM8 6.6v3M8 11.3v.2'/%3E%3C/svg%3E");
   --ws-icon-danger: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.4 1.8h5.2l3.6 3.6v5.2l-3.6 3.6H5.4l-3.6-3.6V5.4ZM8 5v3.6M8 10.9v.2'/%3E%3C/svg%3E");
+  --ws-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5 6.5 12 13 4.5'/%3E%3C/svg%3E");
   --ws-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 2 8 7 2 12'/%3E%3C/svg%3E");
   --ws-icon-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9 9 3M4.25 3H9v4.75'/%3E%3C/svg%3E");
 }

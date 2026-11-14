@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 
 /**
- * Every page of the style guide, and the two standalone examples.
+ * Every page of the style guide, and the standalone examples.
  *
  * `shots` says which screenshots a page has. Every page is checked for overflow at phone,
  * tablet and desktop width. Screenshots are kept to what a look can go wrong on: all pages at desktop width,
@@ -18,12 +18,14 @@ export const PAGES = [
   { name: 'tokens-space', path: '/tokens/space', shots: 'all' },
   { name: 'styles-prose', path: '/styles/prose', shots: 'all' },
   { name: 'styles-terminal', path: '/styles/terminal', shots: 'all' },
+  { name: 'styles-forms', path: '/styles/forms', shots: 'all' },
   { name: 'docs-theme', path: '/docs/', shots: 'desktop' },
   { name: 'docs-usage', path: '/docs/usage', shots: 'none' },
   { name: 'docs-sample', path: '/docs/sample/conditions', shots: 'all' },
   { name: 'docs-sample-home', path: '/docs/sample/home', shots: 'all' },
   { name: 'example-terminal', path: '/examples/terminal.html', shots: 'all' },
   { name: 'example-prose', path: '/examples/prose.html', shots: 'all' },
+  { name: 'example-form', path: '/examples/form.html', shots: 'all' },
 ] as const
 
 export const PHONE = { width: 390, height: 844 }

@@ -97,6 +97,24 @@
       "min": 4.5,
       "use": "The label of a primary button"
     },
+    {
+      "foreground": "color.on-interactive",
+      "background": "color.interactive-hover",
+      "min": 4.5,
+      "use": "The label of a primary button under the pointer"
+    },
+    {
+      "foreground": "color.on-interactive",
+      "background": "color.interactive-active",
+      "min": 4.5,
+      "use": "The label of a primary button while it is pressed"
+    },
+    {
+      "foreground": "color.interactive",
+      "background": "color.raised",
+      "min": 3,
+      "use": "The edge of a pressed segment"
+    },
     { "foreground": "color.tag-text", "background": "color.tag-bg", "min": 4.5, "use": "Tags" },
     {
       "foreground": "color.tip",

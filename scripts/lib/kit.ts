@@ -10,7 +10,7 @@ import {
   rasterMarkSvg,
   svgDocument,
 } from '../../src/identity/marks.ts'
-import { type Sprite, checkSprite } from '../../src/identity/sprite.ts'
+import { type Sprite, checkSprite, spriteBounds, spritePaths } from '../../src/identity/sprite.ts'
 import { type BannerColors, PROFILE_BANNER, profileBanner, terminalBanner } from './banner.ts'
 import { jetBrainsMono } from './outline.ts'
 import { renderIco, renderPng } from './raster.ts'
@@ -167,6 +167,30 @@ export async function buildKit(identity: Identity): Promise<KitFile[]> {
         64,
         64,
       )
+  }
+
+  /* the ghost cut to its pixels, for a picture that sits on a line or an edge */
+  if (kind === 'ghost') {
+    const bounds = spriteBounds(sprite)
+    const unit = 2
+    const [width, height] = [bounds.width * unit, bounds.height * unit]
+    const at = { px: unit, x: -bounds.x * unit, y: -bounds.y * unit }
+    const { body, love } = spritePaths(sprite, at)
+    for (const mode of ['dark', 'light'] as const) {
+      const ink = colors[mode]
+      add(
+        `ghost-on-${mode}.svg`,
+        svgDocument(
+          width,
+          height,
+          `<g shape-rendering="crispEdges">${path(body, ink.body)}${path(love, ink.love)}</g>`,
+          `${name} ghost`,
+        ),
+        `The ghost without the margin of its grid, for ${mode} backgrounds: in a link, on a line of text, against an edge.`,
+        width,
+        height,
+      )
+    }
   }
 
   /* favicon set */

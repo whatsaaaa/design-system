@@ -123,6 +123,18 @@
         "use": "The ghost in its lost pose, for light backgrounds."
       },
       {
+        "file": "ghost-on-dark.svg",
+        "width": 20,
+        "height": 24,
+        "use": "The ghost without the margin of its grid, for dark backgrounds: in a link, on a line of text, against an edge."
+      },
+      {
+        "file": "ghost-on-light.svg",
+        "width": 20,
+        "height": 24,
+        "use": "The ghost without the margin of its grid, for light backgrounds: in a link, on a line of text, against an edge."
+      },
+      {
         "file": "favicon.svg",
         "width": 64,
         "height": 64,

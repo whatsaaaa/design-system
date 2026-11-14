@@ -57,6 +57,22 @@
       "$value": "{palette.dawn.pine}",
       "$description": "Links, the focus ring, checked controls and the primary button fill."
     },
+    "interactive-hover": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0863, 0.3569, 0.4549],
+        "hex": "#165b74"
+      },
+      "$description": "The interactive fill under the pointer, such as a hovered primary button: the interactive color 0.05 further from the page in OKLab lightness."
+    },
+    "interactive-active": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0, 0.302, 0.3961],
+        "hex": "#004d65"
+      },
+      "$description": "The interactive fill while it is pressed: 0.1 further from the page in OKLab lightness."
+    },
     "on-interactive": {
       "$value": "{palette.dawn.base}",
       "$description": "Text on the interactive fill."

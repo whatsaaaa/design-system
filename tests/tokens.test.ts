@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { variants } from '@rose-pine/palette'
+import { clampChroma, formatHex, oklab } from 'culori'
 import { describe, expect, it } from 'vitest'
 import { hex, tokens } from '../scripts/lib/tokens.ts'
 
@@ -63,6 +64,23 @@ describe('the color roles', () => {
       expect(of(tint).alpha, theme).toBeLessThan(1)
     }
   })
+
+  // Written out as hex like every role, so nothing ties them to the interactive color but this.
+  it.each([
+    ['color.interactive-hover', 0.05],
+    ['color.interactive-active', 0.1],
+  ] as const)(
+    '%s is the interactive color %s further from the page in OKLab lightness',
+    (id, step) => {
+      for (const theme of ['dark', 'light'] as const) {
+        const fill = oklab(hex('color.interactive', theme))!
+        const page = oklab(hex('color.bg', theme))!
+        const away = Math.sign(fill.l - page.l)
+        const expected = formatHex(clampChroma({ ...fill, l: fill.l + away * step }, 'oklab'))
+        expect(hex(id, theme), theme).toBe(expected)
+      }
+    },
+  )
 
   it('keeps code blocks and the mark on the dark palette in both themes', () => {
     for (const id of [
