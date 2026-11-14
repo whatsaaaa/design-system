@@ -40,7 +40,8 @@ export function whatsaaaaConfig(): UserConfig<ThemeConfig> {
       ['script', { id: 'ws-theme' }, themeScript],
       // the browser's own bars take the background of the theme shown, as VitePress switches it
       ['script', { id: 'ws-theme-color' }, themeColorScript],
-      // keys that are remembered as off are off from the first paint: no tab shows its number
+      // from the first paint the keys are pending, so the numbers of the tabs keep their place
+      // unseen until the module runs, or off where they are remembered so, with no numbers
       ['script', { id: 'ws-keys' }, keysInitScript],
     ],
     markdown: {
