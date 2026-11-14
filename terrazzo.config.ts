@@ -1,6 +1,7 @@
 import { defineConfig } from '@terrazzo/cli'
 import css from '@terrazzo/plugin-css'
 import js from '@terrazzo/plugin-js'
+import { tailwindTheme, tailwindVariants } from './scripts/lib/tailwind.ts'
 import { chosen, rootUnchosen, themeRules } from './scripts/lib/theme-selectors.ts'
 
 /** Re-indents the declarations Terrazzo hands to `prepare`. */
@@ -58,6 +59,17 @@ export default defineConfig({
       // the rules of an element for one theme only, which src/css/theme.css ships
       name: 'theme-rules',
       build: ({ outputFile }) => outputFile('theme-rules.css', `${themeRules()}\n`),
+    },
+    {
+      // the tokens as Tailwind's theme and the dark: and light: variants, which tailwind.css brings
+      name: 'tailwind',
+      build: ({ getTransforms, outputFile }) => {
+        // the variables the CSS plugin wrote, of every token: the colors under their dark names,
+        // which are the light ones too
+        const tokens = getTransforms({ format: 'css', input: { theme: 'dark' } })
+        outputFile('tailwind/theme.css', tailwindTheme(tokens))
+        outputFile('tailwind/variants.css', tailwindVariants())
+      },
     },
   ],
   lint: {

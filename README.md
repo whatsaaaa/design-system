@@ -28,21 +28,21 @@ pnpm install
 pnpm styleguide:dev   # builds the package and starts the style guide
 ```
 
-| Command                    | What it does                                                                                          |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `pnpm build`               | Builds the package into `dist/`: tokens, fonts, stylesheets and modules                               |
-| `pnpm assets`              | Regenerates the asset kit in `assets/` from its sources                                               |
-| `pnpm styleguide:dev`      | Starts the style guide                                                                                |
-| `pnpm styleguide:build`    | Builds the style guide                                                                                |
-| `pnpm test`                | Runs the unit tests, the contrast checks among them                                                   |
-| `pnpm test:browser`        | Builds the style guide and runs the browser tests against it. The screenshot tests skip outside Linux |
-| `pnpm test:browser:docker` | Runs the browser tests in the Playwright container, screenshots included, as CI does                  |
-| `pnpm test:browser:update` | Takes the screenshots again, in the container                                                         |
-| `pnpm lint`                | Checks the tokens, the code, the stylesheets and the package                                          |
-| `pnpm type-check`          | Type-checks everything                                                                                |
-| `pnpm format`              | Formats everything                                                                                    |
-| `pnpm contrast`            | Prints the contrast of every pair the system relies on                                                |
-| `pnpm changeset`           | Records a change to the package for the next release                                                  |
+| Command                    | What it does                                                                                                                           |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm build`               | Builds the package into `dist/`: tokens, fonts, stylesheets and modules                                                                |
+| `pnpm assets`              | Regenerates the asset kit in `assets/` from its sources                                                                                |
+| `pnpm styleguide:dev`      | Starts the style guide                                                                                                                 |
+| `pnpm styleguide:build`    | Builds the style guide                                                                                                                 |
+| `pnpm test`                | Runs the unit tests, the contrast checks among them                                                                                    |
+| `pnpm test:browser`        | Builds the style guide and runs the browser tests against it and an app on the Tailwind entry. The screenshot tests skip outside Linux |
+| `pnpm test:browser:docker` | Runs the browser tests in the Playwright container, screenshots included, as CI does                                                   |
+| `pnpm test:browser:update` | Takes the screenshots again, in the container                                                                                          |
+| `pnpm lint`                | Checks the tokens, the code, the stylesheets and the package                                                                           |
+| `pnpm type-check`          | Type-checks everything                                                                                                                 |
+| `pnpm format`              | Formats everything                                                                                                                     |
+| `pnpm contrast`            | Prints the contrast of every pair the system relies on                                                                                 |
+| `pnpm changeset`           | Records a change to the package for the next release                                                                                   |
 
 Every script builds what it needs first, so each one works on a fresh checkout.
 
@@ -65,7 +65,7 @@ CI runs on every pull request:
 - the unit tests, with the contrast of every role pair in both themes,
 - that `assets/` is what the sources produce,
 - that the package and the style guide build,
-- the browser tests: no page overflows sideways at phone, tablet and desktop width in either theme, no page logs an error when it loads, the easter egg works with the mouse, the keyboard and reduced motion, the keys of the status line work and their switch turns them off, the path of the status line gives way at every width from 320 px and the theme button switches the theme, a `dark` or `light` class chooses the theme as `data-theme` does, an element for one theme shows only in it, the browser's theme-color follows the theme, a control that takes the focus is not left under the status line and no bar or corner of the window cuts off its focus ring, the first tab starts on the border of the sidebar, the pieces of a form fit every width from 320 px (a segmented control works with the keyboard, stands out at 3:1 and takes the selection colors in forced colors, amounts line up at the right in figures of one width, a number field has no spin buttons and its arrow keys step it, wrapped code hangs and stays inside its block, a long email breaks after its @, and the check icon and the ghost files draw), both fonts draw Serbian Latin, and the pages of the style guide look like their stored screenshots.
+- the browser tests: no page overflows sideways at phone, tablet and desktop width in either theme, no page logs an error when it loads, the easter egg works with the mouse, the keyboard and reduced motion, the keys of the status line work and their switch turns them off, the path of the status line gives way at every width from 320 px and the theme button switches the theme, a `dark` or `light` class chooses the theme as `data-theme` does, an element for one theme shows only in it, the browser's theme-color follows the theme, a control that takes the focus is not left under the status line and no bar or corner of the window cuts off its focus ring, the first tab starts on the border of the sidebar, the pieces of a form fit every width from 320 px (a segmented control works with the keyboard, stands out at 3:1 and takes the selection colors in forced colors, amounts line up at the right in figures of one width, a number field has no spin buttons and its arrow keys step it, wrapped code hangs and stays inside its block, a long email breaks after its @, and the check icon and the ghost files draw), both fonts draw Serbian Latin, an app built on the Tailwind entry takes its utilities, layers and `dark:` and `light:` from the tokens and their theme, and the pages of the style guide look like their stored screenshots.
 
 The screenshots are in `tests/browser/__screenshots__/` and are taken on Linux, in the Playwright container, so they are the same on every machine. After a change that is meant to be seen, update them:
 
@@ -107,7 +107,7 @@ scripts/         the builds and the asset generator
 assets/          the generated asset kit
 styleguide/      the style guide
 tests/           unit tests, and browser tests in tests/browser/
-docs/            the usage guide, and the decisions behind the build
+docs/            the usage guide, the decisions behind the build, and follow-ups
 licenses/        licenses of what the system builds on
 ```
 
