@@ -74,14 +74,16 @@
 }
 
 /*
- * In forced colors the browser drops the shadow and paints every fill in the page's color, so
- * the pressed segment takes the system's colors of a selection. It keeps them as they are,
- * as the browser would otherwise put a plate of the page's color behind its text.
+ * In forced colors the browser paints every fill in the page's color, so the pressed segment
+ * takes the system's colors of a selection. It keeps them as they are, as the browser would
+ * otherwise put a plate of the page's color behind its text. Kept colors keep the shadow too,
+ * so it drops the shadow itself: the fill already shows the segment is pressed.
  */
 @media (forced-colors: active) {
   .ws-segmented > button[aria-pressed='true'] {
     border-color: Highlight;
     background: Highlight;
+    box-shadow: none;
     color: HighlightText;
     outline-color: Highlight;
     forced-color-adjust: none;

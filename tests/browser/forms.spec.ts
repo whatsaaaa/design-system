@@ -162,6 +162,8 @@ test('the pressed segment takes the selection colors in forced colors', async ({
     return getComputedStyle(probe).color
   })
   expect(await style(page, pressed, 'background-color')).toBe(highlight)
+  // no ring of the brand's color is left inside it
+  expect(await style(page, pressed, 'box-shadow')).toBe('none')
   expect(await style(page, '.ws-segmented [aria-pressed="false"]', 'background-color')).not.toBe(
     highlight,
   )
