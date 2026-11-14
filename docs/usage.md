@@ -47,7 +47,22 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in
 
 Install `tailwindcss` 4.3.5 or a later 4.x next to the package. Only this entry needs it.
 
-It brings Tailwind and everything `index.css` brings, in cascade layers, so a utility wins over a class of the system and the app's rules outside any layer win over both:
+The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not its colors. Nuxt UI takes its colors from its own `--ui-*` variables, which fall back to its green and slate, and without `--ui-bg` it paints the body in its own background. Pointing them at the roles is the app's job, in its stylesheet outside any layer. A variable takes the role's value where it is set, so set it on `:root`, which follows the system, and on every element that chooses a theme, with `data-theme` or the `dark` or `light` class:
+
+```css
+:root,
+[data-theme],
+.dark,
+.light {
+  --ui-primary: var(--ws-color-interactive);
+  --ui-bg: var(--ws-color-bg);
+  --ui-text: var(--ws-color-text);
+  --ui-border: var(--ws-color-border);
+  /* and the rest of Nuxt UI's colors, such as --ui-error and --ui-bg-elevated */
+}
+```
+
+The entry brings Tailwind and everything `index.css` brings, in cascade layers, so a utility wins over a class of the system and the app's rules outside any layer win over both:
 
 | Layer        | What it has, the later winning                                    |
 | ------------ | ----------------------------------------------------------------- |
