@@ -28,21 +28,21 @@ pnpm install
 pnpm styleguide:dev   # builds the package and starts the style guide
 ```
 
-| Command                    | What it does                                                                                          |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `pnpm build`               | Builds the package into `dist/`: tokens, fonts, stylesheets and modules                               |
-| `pnpm assets`              | Regenerates the asset kit in `assets/` from its sources                                               |
-| `pnpm styleguide:dev`      | Starts the style guide                                                                                |
-| `pnpm styleguide:build`    | Builds the style guide                                                                                |
-| `pnpm test`                | Runs the unit tests, the contrast checks among them                                                   |
-| `pnpm test:browser`        | Builds the style guide and runs the browser tests against it. The screenshot tests skip outside Linux |
-| `pnpm test:browser:docker` | Runs the browser tests in the Playwright container, screenshots included, as CI does                  |
-| `pnpm test:browser:update` | Takes the screenshots again, in the container                                                         |
-| `pnpm lint`                | Checks the tokens, the code, the stylesheets and the package                                          |
-| `pnpm type-check`          | Type-checks everything                                                                                |
-| `pnpm format`              | Formats everything                                                                                    |
-| `pnpm contrast`            | Prints the contrast of every pair the system relies on                                                |
-| `pnpm changeset`           | Records a change to the package for the next release                                                  |
+| Command                    | What it does                                                                                                                           |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm build`               | Builds the package into `dist/`: tokens, fonts, stylesheets and modules                                                                |
+| `pnpm assets`              | Regenerates the asset kit in `assets/` from its sources                                                                                |
+| `pnpm styleguide:dev`      | Starts the style guide                                                                                                                 |
+| `pnpm styleguide:build`    | Builds the style guide                                                                                                                 |
+| `pnpm test`                | Runs the unit tests, the contrast checks among them                                                                                    |
+| `pnpm test:browser`        | Builds the style guide and runs the browser tests against it and an app on the Tailwind entry. The screenshot tests skip outside Linux |
+| `pnpm test:browser:docker` | Runs the browser tests in the Playwright container, screenshots included, as CI does                                                   |
+| `pnpm test:browser:update` | Takes the screenshots again, in the container                                                                                          |
+| `pnpm lint`                | Checks the tokens, the code, the stylesheets and the package                                                                           |
+| `pnpm type-check`          | Type-checks everything                                                                                                                 |
+| `pnpm format`              | Formats everything                                                                                                                     |
+| `pnpm contrast`            | Prints the contrast of every pair the system relies on                                                                                 |
+| `pnpm changeset`           | Records a change to the package for the next release                                                                                   |
 
 Every script builds what it needs first, so each one works on a fresh checkout.
 

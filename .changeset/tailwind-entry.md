@@ -7,5 +7,6 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports `@whatsaaaa/design-sy
 - `dark:` and `light:` follow the theme as the tokens do: the nearest `data-theme` or `dark` or `light` class, on `<html>` or on any element around a part of the page, then the system. A library that defines its own after the entry, as Nuxt UI does, replaces them: import `@whatsaaaa/design-system/tailwind/variants.css` again after it.
 - `tailwindcss` 4.3.5 or a later 4.x is an optional peer dependency: only the Tailwind entry needs it.
 - Tailwind's defaults that no token stands behind are taken out on the entry, in the app and in a library imported after it: the palette, white and black included, the shadows, `font-serif`, and the weights and radii with no token. As classes they compile to nothing, and in `@apply` they fail the build.
+- The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not its colors: Nuxt UI takes them from its own `--ui-*` variables, which the app points at the roles.
 
-The usage guide shows the import order, which utility reads which token, and what to use in place of the defaults taken out.
+The usage guide shows the import order, how to point Nuxt UI's colors at the roles, which utility reads which token, and what to use in place of the defaults taken out.
