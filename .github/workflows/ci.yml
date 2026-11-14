@@ -46,7 +46,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # builds the package and the style guide, then tests the built guide
+      # builds the package and the style guide, then tests the built guide and an app on tailwind.css
       - run: pnpm test:browser
       - name: Keep the report when a test fails
         if: ${{ !cancelled() && failure() }}

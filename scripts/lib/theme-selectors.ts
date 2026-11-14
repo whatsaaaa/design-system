@@ -1,6 +1,7 @@
 // Where the stylesheets see a theme chosen by hand. The token build writes these selectors into
-// dist/tokens.css and the rules of an element for one theme only into dist/theme-rules.css, so
-// both read a theme the same way and neither has a copy of a value.
+// dist/tokens.css, the rules of an element for one theme only into dist/theme-rules.css and
+// Tailwind's dark: and light: variants into dist/tailwind/variants.css, so all three read a
+// theme the same way and none has a copy of a value.
 //
 // A theme is chosen on an element, <html> or one inside the page, with data-theme="dark" or
 // "light", or with a dark or light class, as Nuxt UI and VueUse's useColorMode set it. No class is
