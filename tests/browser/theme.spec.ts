@@ -212,6 +212,98 @@ test.describe('themes', () => {
     })
   })
 
+  test.describe('a dark or light class, as Nuxt UI and useColorMode set it', () => {
+    const DARK = 'rgb(25, 23, 36)'
+    const LIGHT = 'rgb(250, 244, 237)'
+
+    /** A plain page with no script of the system's: the stylesheet alone reads the class. */
+    async function plainPage(
+      browser: import('@playwright/test').Browser,
+      colorScheme: 'dark' | 'light',
+    ) {
+      const context = await browser.newContext({ colorScheme, javaScriptEnabled: false })
+      const page = await context.newPage()
+      await page.goto('/examples/prose.html')
+      return { context, page }
+    }
+    /** Sets the class and data-theme of an element, as markup would have them. */
+    const mark = (
+      page: import('@playwright/test').Page,
+      selector: string,
+      { theme, className }: { theme?: string; className?: string },
+    ) =>
+      page.locator(selector).evaluate(
+        (element, [theme, className]) => {
+          if (theme) element.setAttribute('data-theme', theme)
+          if (className) element.classList.add(...className.split(' '))
+        },
+        [theme, className] as const,
+      )
+
+    for (const [colorScheme, className, shown] of [
+      ['light', 'dark', DARK],
+      ['dark', 'light', LIGHT],
+      ['dark', 'dark', DARK],
+      ['light', 'light', LIGHT],
+      // both classes choose nothing: the system decides
+      ['light', 'dark light', LIGHT],
+      ['dark', 'dark light', DARK],
+    ] as const) {
+      test(`on <html> chooses the theme: ${className} on a ${colorScheme} system`, async ({
+        browser,
+      }) => {
+        const { context, page } = await plainPage(browser, colorScheme)
+        await mark(page, 'html', { className })
+        expect(await color(page, 'body', 'backgroundColor')).toBe(shown)
+        expect(await color(page, 'html', 'colorScheme')).toBe(shown === DARK ? 'dark' : 'light')
+        await context.close()
+      })
+    }
+
+    for (const [theme, className, shown] of [
+      ['dark', 'light', DARK],
+      ['light', 'dark', LIGHT],
+    ] as const) {
+      test(`loses to data-theme on the same element: ${theme} with a ${className} class`, async ({
+        browser,
+      }) => {
+        for (const colorScheme of ['dark', 'light'] as const) {
+          const { context, page } = await plainPage(browser, colorScheme)
+          await mark(page, 'html', { theme, className })
+          expect(await color(page, 'body', 'backgroundColor'), colorScheme).toBe(shown)
+          await context.close()
+        }
+      })
+    }
+
+    test('holds a part of a page, and the nearest choice wins, in either way', async ({
+      browser,
+    }) => {
+      const { context, page } = await plainPage(browser, 'dark')
+      await page.evaluate(() =>
+        document.body.insertAdjacentHTML(
+          'beforeend',
+          `<div id="light" class="light">
+            <div id="dark" data-theme="dark"><div id="light-again" class="light"></div></div>
+          </div>
+          <div id="both" class="light" data-theme="dark"></div>`,
+        ),
+      )
+      for (const [selector, shown] of [
+        ['#light', LIGHT],
+        ['#dark', DARK],
+        ['#light-again', LIGHT],
+        ['#both', DARK],
+      ] as const) {
+        await page.locator(selector).evaluate((element) => {
+          ;(element as HTMLElement).style.background = 'var(--ws-color-bg)'
+        })
+        expect(await color(page, selector, 'backgroundColor'), selector).toBe(shown)
+      }
+      await context.close()
+    })
+  })
+
   test('a theme chosen by hand wins over the system', async ({ page }) => {
     await open(page, '/')
     await page.keyboard.press('t')
@@ -227,64 +319,122 @@ test.describe('an element for one theme only', () => {
    * One element of each theme on the page, in a part of it held light, in a dark part inside
    * that, and in a part held dark. The status line's older names for the classes are there too.
    */
-  const FIXTURE = `
+  type Way = 'data-theme' | 'class'
+  /** The markup that holds an element in a theme, one way or the other. */
+  const held = (way: Way, theme: 'dark' | 'light') =>
+    way === 'data-theme' ? `data-theme="${theme}"` : `class="${theme}"`
+  /** An element of each theme in a part of it held light, a dark part inside that, a light part inside that again, and a part held dark. The status line's older names for the classes are there too. */
+  const fixture = (way: Way) => `
     <div id="fixture">
       <span id="page-dark" class="ws-theme-dark"></span>
       <span id="page-light" class="ws-theme-light"></span>
       <span id="old-dark" class="ws-status-line__item ws-status-line__item--dark"></span>
       <span id="old-light" class="ws-status-line__item ws-status-line__item--light"></span>
-      <div data-theme="light">
+      <div ${held(way, 'light')}>
         <span id="light-dark" class="ws-theme-dark"></span>
         <span id="light-light" class="ws-theme-light"></span>
-        <div data-theme="dark">
+        <div ${held(way, 'dark')}>
           <span id="nested-dark" class="ws-theme-dark"></span>
           <span id="nested-light" class="ws-theme-light"></span>
+          <div ${held(way, 'light')}>
+            <span id="deeper-dark" class="ws-theme-dark"></span>
+            <span id="deeper-light" class="ws-theme-light"></span>
+          </div>
         </div>
       </div>
-      <div data-theme="dark">
+      <div ${held(way, 'dark')}>
         <span id="dark-dark" class="ws-theme-dark"></span>
         <span id="dark-light" class="ws-theme-light"></span>
       </div>
-      <span id="own-light" class="ws-theme-dark" data-theme="light"></span>
+      ${
+        way === 'data-theme'
+          ? '<span id="own-light" class="ws-theme-dark" data-theme="light"></span>'
+          : '<span id="own-light" class="ws-theme-dark light"></span>'
+      }
+      <div data-theme="dark" class="light">
+        <span id="both-dark" class="ws-theme-dark"></span>
+        <span id="both-light" class="ws-theme-light"></span>
+      </div>
     </div>`
 
   /** The elements of the fixture that show, each made a box so a shown one has one. */
-  const shown = (page: import('@playwright/test').Page) =>
-    page.evaluate((fixture) => {
+  const shown = (page: import('@playwright/test').Page, way: Way = 'data-theme') =>
+    page.evaluate((markup) => {
       document.querySelector('#fixture')?.remove()
-      document.body.insertAdjacentHTML('beforeend', fixture)
+      document.body.insertAdjacentHTML('beforeend', markup)
       const elements = [...document.querySelectorAll<HTMLElement>('#fixture span')]
       for (const element of elements) element.style.cssText = 'width: 1px; height: 1px'
       return elements.filter((element) => element.getClientRects().length > 0).map(({ id }) => id)
-    }, FIXTURE)
+    }, fixture(way))
 
-  for (const [colorScheme, chosen, page] of [
-    ['dark', undefined, 'dark'],
-    ['light', undefined, 'light'],
-    ['dark', 'light', 'light'],
-    ['light', 'dark', 'dark'],
-  ] as const) {
-    test(`shows where its theme applies: ${chosen ?? 'no'} theme chosen on a ${colorScheme} system`, async ({
-      browser,
-    }) => {
-      // a plain page, with no script of the system's: the styles alone do it
-      const context = await browser.newContext({ colorScheme })
-      const tab = await context.newPage()
-      await tab.route('**/example.js', (route) => route.abort())
-      await tab.route('**/init.js', (route) => route.abort())
-      await tab.goto('/examples/terminal.html')
-      if (chosen)
-        await tab.evaluate((theme) => (document.documentElement.dataset.theme = theme), chosen)
-      expect(await shown(tab)).toEqual([
-        `page-${page}`,
-        `old-${page}`,
-        'light-light',
-        'nested-dark',
-        'dark-dark',
-      ])
-      await context.close()
-    })
-  }
+  for (const way of ['data-theme', 'class'] as const)
+    for (const [colorScheme, chosen, page] of [
+      ['dark', undefined, 'dark'],
+      ['light', undefined, 'light'],
+      ['dark', 'light', 'light'],
+      ['light', 'dark', 'dark'],
+    ] as const) {
+      test(`shows where its theme applies, chosen with ${way}: ${chosen ?? 'no'} theme chosen on a ${colorScheme} system`, async ({
+        browser,
+      }) => {
+        // a plain page, with no script of the system's: the styles alone do it
+        const context = await browser.newContext({ colorScheme })
+        const tab = await context.newPage()
+        await tab.route('**/example.js', (route) => route.abort())
+        await tab.route('**/init.js', (route) => route.abort())
+        await tab.goto('/examples/terminal.html')
+        if (chosen)
+          await tab.evaluate(
+            ([way, theme]) => {
+              const root = document.documentElement
+              if (way === 'class') root.classList.add(theme)
+              else root.dataset.theme = theme
+            },
+            [way, chosen] as const,
+          )
+        expect(await shown(tab, way)).toEqual([
+          `page-${page}`,
+          `old-${page}`,
+          'light-light',
+          'nested-dark',
+          'deeper-light',
+          'dark-dark',
+          // data-theme wins over the class on one element
+          'both-dark',
+        ])
+        await context.close()
+      })
+    }
+
+  test('takes data-theme over the class on <html>, and a class against the system', async ({
+    browser,
+  }) => {
+    const context = await browser.newContext({ colorScheme: 'light' })
+    const tab = await context.newPage()
+    await tab.route('**/example.js', (route) => route.abort())
+    await tab.route('**/init.js', (route) => route.abort())
+    await tab.goto('/examples/terminal.html')
+    const root = (className: string, theme?: string) =>
+      tab.evaluate(
+        ([className, theme]) => {
+          const html = document.documentElement
+          html.className = className
+          if (theme) html.dataset.theme = theme
+          else delete html.dataset.theme
+        },
+        [className, theme] as const,
+      )
+    await root('dark')
+    expect(await shown(tab)).toContain('page-dark')
+    await root('dark', 'light')
+    expect(await shown(tab)).toContain('page-light')
+    await root('light', 'dark')
+    expect(await shown(tab)).toContain('page-dark')
+    // both classes choose nothing: the system decides
+    await root('dark light')
+    expect(await shown(tab)).toContain('page-light')
+    await context.close()
+  })
 
   test('changes with the theme, at once', async ({ page }) => {
     await open(page, '/examples/terminal.html')
@@ -347,6 +497,25 @@ test.describe("the color of the browser's own bars", () => {
     await page.goto('/examples/terminal.html')
     await expect.poll(() => themeColor(page)).toEqual([LIGHT])
     await context.close()
+  })
+
+  test('follows a dark or light class on <html>, against the system too', async ({ browser }) => {
+    for (const [colorScheme, className, shown, system] of [
+      ['light', 'dark', DARK, LIGHT],
+      ['dark', 'light', LIGHT, DARK],
+    ] as const) {
+      const context = await browser.newContext({ colorScheme })
+      const page = await context.newPage()
+      await page.route('**/example.js', (route) => route.abort())
+      await page.goto('/examples/terminal.html')
+      await expect.poll(() => themeColor(page)).toEqual([system])
+      // as a color mode library switches it, with no call to the theme module
+      await page.evaluate((name) => document.documentElement.classList.add(name), className)
+      await expect.poll(() => themeColor(page), colorScheme).toEqual([shown])
+      await page.evaluate((name) => document.documentElement.classList.remove(name), className)
+      await expect.poll(() => themeColor(page), colorScheme).toEqual([system])
+      await context.close()
+    }
   })
 
   test('follows the docs theme, its key and a reload', async ({ page }) => {

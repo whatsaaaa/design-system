@@ -66,7 +66,7 @@ The pairs that are checked for contrast are in `tokens/contrast.json`. If you ne
 
 ## 3. Theme
 
-Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
+Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and so does a `dark` or `light` class, as Nuxt UI and VueUse's `useColorMode` set it. A library that marks light only by leaving `dark` off, such as the toggle script in Tailwind's docs or VueUse's `useDark`, needs a `light` class kept in step with it: on when light is chosen, off for dark or the system. For Tailwind's script that is `classList.toggle('light', localStorage.theme === 'light')` next to its toggle of `dark`. With no class the system decides. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
 
 ```ts
 import { getTheme, setTheme, toggleTheme, themeInitScript } from '@whatsaaaa/design-system/theme'
@@ -77,7 +77,7 @@ setTheme('system') // follows the system again
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
 
-The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme`, and when the system's theme changes. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
+The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme` or the class of `<html>`, and when the system's theme changes. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
 
 ```html
 <head>
@@ -91,7 +91,7 @@ The browser's own bars, such as a phone's address bar, take the background of th
 
 A theme-color tag that is there, with or without `media`, takes the theme's color too. Do not set it from a script of your own. A docs site gets the same script from the base config of the docs theme.
 
-An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or `ws-theme-light`. Put both in the page and the styles show the one of the theme in effect where it stands: the nearest `data-theme`, on `<html>` or on an element around it, or the system's theme. So the right one shows before any script runs. Do not swap them from a script.
+An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or `ws-theme-light`. Put both in the page and the styles show the one of the theme in effect where it stands: the nearest `data-theme` or `dark` or `light` class, on `<html>` or on an element around it, or the system's theme. So the right one shows before any script runs. Do not swap them from a script.
 
 ```html
 <img class="ws-theme-dark" src="mark-on-dark.svg" alt="whatsaaaa" width="32" height="32" />
@@ -100,7 +100,15 @@ An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or
 
 On a page with a status line, its theme button is the theme switch at every width: see [the status line](#status-line).
 
-`data-theme` also works on any element, to keep a part of a page in one theme.
+`data-theme` also works on any element, to keep a part of a page in one theme, and so does the class. Where they meet:
+
+- On one element, `data-theme` wins over the class. An element with both the `dark` and the `light` class chooses nothing.
+- The nearest choice around an element holds for it, made either way: a `light` part in a page with `data-theme="dark"` is light.
+- Any choice, the attribute or the class, wins over the system's theme.
+
+So a `dark` or `light` class you give an element for something else puts what is inside it in that theme. Use another name for it.
+
+`setTheme` and `toggleTheme` write `data-theme`, and `getTheme` reads it, then the class of `<html>`. In an app whose color mode library owns the class, such as Nuxt UI or `useColorMode`, switch the theme with the library and leave `data-theme` alone: do not call `setTheme` or `toggleTheme`, because the attribute they write wins over the library's class from then on. Keep the head script for the browser's bars. With nothing remembered under `ws-theme` it sets no `data-theme`, and it follows the class. So do not give the library that storage key. An app that called `setTheme` or `toggleTheme` before, such as from a script that bridged the two, has visitors with a choice still remembered there. Remove it before the head script runs, with `localStorage.removeItem('ws-theme')`, or the `data-theme` the head script sets from it wins over the library's class on every load.
 
 ## 4. Type
 

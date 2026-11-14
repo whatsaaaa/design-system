@@ -16,10 +16,13 @@ Love is the brand accent and the color of an error. So the things you press are 
 
 Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and the [theme module](/docs/usage#_3-theme) remembers that choice.
 
-The attribute also works on any element, for a part of a page that has to stay in one theme:
+A `dark` or `light` class does the same, as Nuxt UI and VueUse's `useColorMode` set it, so an app built on them needs no bridge. Where both are on one element, `data-theme` wins. A library that marks light only by leaving `dark` off, such as the toggle script in Tailwind's docs or VueUse's `useDark`, needs a `light` class kept in step with it: on for light, off for dark or the system. With no class the system decides.
+
+The attribute and the class also work on any element, for a part of a page that has to stay in one theme:
 
 ```html
 <div data-theme="dark">always dark, on a light page too</div>
+<div class="light">always light, on a dark page too</div>
 ```
 
 An element for one theme only, such as a cut of the logo, takes `ws-theme-dark` or `ws-theme-light`. Both are in the page and the one of the theme in effect where it stands shows, with no script. Switch the theme with <kbd>t</kbd> and the logo below changes. How to use them is in [the usage guide](/docs/usage#_3-theme).

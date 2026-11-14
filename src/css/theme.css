@@ -5,8 +5,9 @@
  *   <img class="ws-theme-light" src="mark-on-light.svg" alt="whatsaaaa" />
  *
  * Both are in the page and the styles show the one of the theme in effect where it stands:
- * the nearest data-theme, on <html> or on an element around it, or the system's preference
- * when there is none. So the right one shows before any script runs.
+ * the nearest choice, data-theme or a dark or light class, on <html> or on an element around
+ * it, or the system's preference when there is none. So the right one shows before any script
+ * runs.
  *
  * It hides with !important because it has to win over whatever else gives the element a
  * display, such as a flex item of the status line. The status line's --dark and --light
@@ -14,52 +15,7 @@
  */
 
 /*
- * Where the nearest data-theme around it, or on it, is the other theme. A selector cannot ask
- * for the nearest one, so each rule takes a depth: a part held in a theme, unless a part of
- * the other theme inside it is nearer, and then the same once more inside that. It holds for
- * a theme on <html> and three parts held in a theme, one in the other.
+ * The rules are written by the token build, from the same selectors as the theme blocks of the
+ * tokens: scripts/lib/theme-selectors.ts.
  */
-:is(.ws-theme-dark, .ws-status-line__item--dark) {
-  &:where([data-theme='light'], [data-theme='light'] *):not(
-      [data-theme='light'] [data-theme='dark'],
-      [data-theme='light'] [data-theme='dark'] *
-    ),
-  &:where(
-      [data-theme='light'] [data-theme='dark'] [data-theme='light'],
-      [data-theme='light'] [data-theme='dark'] [data-theme='light'] *
-    ):not(
-      [data-theme='light'] [data-theme='dark'] [data-theme='light'] [data-theme='dark'],
-      [data-theme='light'] [data-theme='dark'] [data-theme='light'] [data-theme='dark'] *
-    ) {
-    display: none !important;
-  }
-}
-
-:is(.ws-theme-light, .ws-status-line__item--light) {
-  &:where([data-theme='dark'], [data-theme='dark'] *):not(
-      [data-theme='dark'] [data-theme='light'],
-      [data-theme='dark'] [data-theme='light'] *
-    ),
-  &:where(
-      [data-theme='dark'] [data-theme='light'] [data-theme='dark'],
-      [data-theme='dark'] [data-theme='light'] [data-theme='dark'] *
-    ):not(
-      [data-theme='dark'] [data-theme='light'] [data-theme='dark'] [data-theme='light'],
-      [data-theme='dark'] [data-theme='light'] [data-theme='dark'] [data-theme='light'] *
-    ) {
-    display: none !important;
-  }
-}
-
-/* no data-theme anywhere around it: the system decides, and dark is the default */
-@media (prefers-color-scheme: light) {
-  :is(.ws-theme-dark, .ws-status-line__item--dark):not([data-theme], [data-theme] *) {
-    display: none !important;
-  }
-}
-
-@media not (prefers-color-scheme: light) {
-  :is(.ws-theme-light, .ws-status-line__item--light):not([data-theme], [data-theme] *) {
-    display: none !important;
-  }
-}
+@import '../../dist/theme-rules.css';

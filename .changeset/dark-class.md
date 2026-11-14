@@ -1,0 +1,11 @@
+---
+'@whatsaaaa/design-system': minor
+---
+
+A `dark` or `light` class chooses the theme as `data-theme` does, so an app built on Nuxt UI or VueUse's `useColorMode`, which put a `dark` or a `light` class on `<html>`, needs no script to bridge the two. A library that marks light only by leaving `dark` off, as the toggle script in Tailwind's docs, VueUse's `useDark` and VitePress do, needs a `light` class kept in step with it: on when light is chosen, off for dark or the system. For Tailwind's script that is `classList.toggle('light', localStorage.theme === 'light')` next to its toggle of `dark`. With no class the tokens follow the system.
+
+- The tokens, `ws-theme-dark` and `ws-theme-light`, the status line's theme names and the head script that keeps `<meta name="theme-color">` in step all follow the class, on `<html>` or on any element around a part of the page.
+- On one element `data-theme` wins over the class, and both classes together choose nothing. The nearest choice around an element holds, made either way, and any choice wins over the system's theme.
+- `setTheme` and `toggleTheme` still write `data-theme`. `getTheme` and `getThemeChoice` read the class of `<html>` where there is no `data-theme`.
+
+Upgrading: a `dark` or `light` class an app gives an element for something else now puts what is inside it in that theme. Rename it. An app whose color mode library owns the class switches the theme with the library and does not call `setTheme` or `toggleTheme`. Where the library sets a `light` class too, the app can drop its bridge script and keep the head script. If the bridge called `setTheme` or `toggleTheme`, visitors still have a choice remembered under `ws-theme`, and the head script sets `data-theme` from it on every load, over the library's class. So remove it before the head script runs, with `localStorage.removeItem('ws-theme')`.

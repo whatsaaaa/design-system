@@ -82,14 +82,6 @@ describe('the color roles', () => {
 describe('the stylesheet', () => {
   const css = read('dist/tokens.css')
 
-  it('is dark by default, light when the system asks, and overridable by hand', () => {
-    expect(css).toMatch(/:root,\n\[data-theme='dark'\] \{\n {2}color-scheme: dark;/)
-    expect(css).toMatch(/\[data-theme='light'\] \{\n {2}color-scheme: light;/)
-    expect(css).toMatch(
-      /@media \(prefers-color-scheme: light\) \{\n {2}:root:not\(\[data-theme\]\) \{/,
-    )
-  })
-
   it('defines every role in every theme block', () => {
     const roles = Object.keys(tokens('dark')).filter((id) => id.startsWith('color.'))
     for (const role of roles) {

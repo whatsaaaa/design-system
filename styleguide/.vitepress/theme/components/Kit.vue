@@ -40,17 +40,8 @@ function surface(file: string) {
 <template>
   <div class="kit" :class="{ wide }">
     <figure v-for="entry in files" :key="entry.file" class="card">
-      <div
-        class="preview"
-        :class="surface(entry.file)"
-        :data-theme="
-          surface(entry.file) === 'light'
-            ? 'light'
-            : surface(entry.file) === 'dark'
-              ? 'dark'
-              : undefined
-        "
-      >
+      <!-- the dark or light class holds the preview in the theme it names -->
+      <div class="preview" :class="surface(entry.file)">
         <!-- an image cannot take the text color, so the one-color cut is drawn as a mask of it -->
         <span
           v-if="isMono(entry.file)"

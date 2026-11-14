@@ -1,8 +1,9 @@
 /**
  * The theme switch. The stylesheet does the work: dark is the default, light applies when
- * the system asks for it, and data-theme="dark" or "light" on <html> overrides both.
- * This module sets that attribute by hand and remembers the choice. The head script keeps
- * the browser's own bars, such as a phone's address bar, at the background of the theme shown.
+ * the system asks for it, and data-theme="dark" or "light" on <html> overrides both, as does
+ * a dark or light class where there is no data-theme. This module sets the attribute by hand
+ * and remembers the choice. The head script keeps the browser's own bars, such as a phone's
+ * address bar, at the background of the theme shown.
  */
 import { themeColorScript } from './color.ts'
 
@@ -24,10 +25,20 @@ function stored(): Theme | null {
   }
 }
 
-/** The theme chosen by hand, or `system`. */
+/** The theme a dark or light class on <html> chooses, as a color mode library sets it. */
+function classTheme(): Theme | null {
+  const { classList } = document.documentElement
+  const dark = classList.contains('dark')
+  if (dark === classList.contains('light')) return null
+  return dark ? 'dark' : 'light'
+}
+
+/** The theme chosen by hand, with data-theme or a dark or light class, or `system`. */
 export function getThemeChoice(): ThemeChoice {
   const attribute = document.documentElement.dataset.theme
-  return isTheme(attribute) ? attribute : (stored() ?? 'system')
+  if (isTheme(attribute)) return attribute
+  // on one element data-theme wins over the class, as in the stylesheet
+  return (attribute === undefined ? classTheme() : null) ?? stored() ?? 'system'
 }
 
 /** The theme the page shows right now. */
