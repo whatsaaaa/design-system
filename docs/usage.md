@@ -32,8 +32,9 @@ Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 | `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                                             |
 | `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                                             |
 | `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and `--ws-icon-check`, the tick of a form. Needed with `callout.css` and `terminal.css`, and for the tick |
+| `@whatsaaaa/design-system/css/nuxt-ui.css`   | Nuxt UI's colors on the roles. Only in an app on Nuxt UI, after it: see With Tailwind CSS below                                                    |
 
-Everything is prefixed: classes with `ws-`, variables with `--ws-`.
+Everything is prefixed: classes with `ws-`, variables with `--ws-`. Only `nuxt-ui.css` sets variables of another prefix, Nuxt UI's `--ui-*`.
 
 ### With Tailwind CSS
 
@@ -47,20 +48,18 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in
 
 Install `tailwindcss` 4.3.5 or a later 4.x next to the package. Only this entry needs it.
 
-The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not its colors. Nuxt UI takes its colors from its own `--ui-*` variables, which fall back to its green and slate, and without `--ui-bg` it paints the body in its own background. Pointing them at the roles is the app's job, in its stylesheet outside any layer. A variable takes the role's value where it is set, so set it on `:root`, which follows the system, and on every element that chooses a theme, with `data-theme` or the `dark` or `light` class:
+The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not its colors. Nuxt UI takes its colors from its own `--ui-*` variables, which fall back to its green and slate, and without `--ui-bg` it paints the body in its own background. `css/nuxt-ui.css` points them at the roles. It is not in the entry, as it has to come after Nuxt UI, so an app on Nuxt UI imports it last:
 
 ```css
-:root,
-[data-theme],
-.dark,
-.light {
-  --ui-primary: var(--ws-color-interactive);
-  --ui-bg: var(--ws-color-bg);
-  --ui-text: var(--ws-color-text);
-  --ui-border: var(--ws-color-border);
-  /* and the rest of Nuxt UI's colors, such as --ui-error and --ui-bg-elevated */
-}
+@import '@whatsaaaa/design-system/tailwind.css';
+@import '@nuxt/ui';
+@import '@whatsaaaa/design-system/tailwind/variants.css';
+@import '@whatsaaaa/design-system/css/nuxt-ui.css';
 ```
+
+It sets them outside any layer, so they win over Nuxt UI's own, which it keeps in its theme layer and in a style it adds at runtime. A variable takes the role's value where it is set, so it sets them on `:root`, which follows the system, and again on every element that chooses a theme, with `data-theme` or the `dark` or `light` class, where Nuxt UI sets its own. The primary color is `--ws-color-interactive`, success, info, warning and error are tip, note, warning and danger, and `secondary` has no role, so it is left out. A step the system has no role for, such as `--ui-bg-accented` or a shade of a color other than 500, is mixed from the roles around it in oklab: a color's shades run from the page at 50 through the color at 500 to the text at 950, so a low shade is a faint tint in both themes. It also sets `--ui-radius` to `--ws-radius-sm` and `--ui-header-height`, the header of a modal, to the height of the tab bar.
+
+To change one of them, set it after the import, outside any layer, on the same selectors: `:root, :host, [data-theme], .dark, .light`. On `:root` alone it holds only where no element around chooses a theme, as the stylesheet sets its own value again on each one that does.
 
 The entry brings Tailwind and everything `index.css` brings, in cascade layers, so a utility wins over a class of the system and the app's rules outside any layer win over both:
 
