@@ -361,7 +361,7 @@ describe('the Tailwind entry', () => {
     expect([...index].filter((word) => !entry.has(word))).toEqual([])
   })
 
-  it('is the one stylesheet that needs Tailwind, which stays optional', async () => {
+  it('leaves the plain stylesheets free of Tailwind, which stays optional', async () => {
     const pkg = JSON.parse(read('package.json'))
     expect(pkg.peerDependencies.tailwindcss).toMatch(/^\^4\./)
     expect(pkg.peerDependenciesMeta.tailwindcss.optional).toBe(true)
@@ -375,7 +375,7 @@ describe('the Tailwind entry', () => {
     await expect(plainCss('dist/tailwind/variants.css')).rejects.toThrow('@custom-variant')
   })
 
-  it('is needed by none of the modules', () => {
+  it('leaves the modules free of Tailwind', () => {
     const files = (dir: string): string[] =>
       readdirSync(join(root, dir), { withFileTypes: true }).flatMap((entry) =>
         entry.isDirectory() ? files(join(dir, entry.name)) : [join(dir, entry.name)],
