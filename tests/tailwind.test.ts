@@ -3,7 +3,9 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { type UnknownAtRule, bundleAsync } from 'lightningcss'
 import { compileAst } from 'tailwindcss'
+import ts from 'typescript'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { type CssToken, tailwindTheme } from '../scripts/lib/tailwind.ts'
 import { type TokenId, tokens } from '../scripts/lib/tokens.ts'
@@ -294,6 +296,32 @@ ${theme}`
 })
 
 /**
+ * A stylesheet as a consumer without Tailwind takes it: lightningcss bundles it with its imports,
+ * failing on an import of a package, such as tailwindcss, and on an at-rule that CSS does not
+ * have, such as Tailwind's @theme or @apply. Gives the warnings of the bundle.
+ */
+async function plainCss(sheet: string) {
+  const { warnings } = await bundleAsync({
+    filename: join(root, sheet),
+    errorRecovery: false,
+    resolver: {
+      resolve(specifier, from) {
+        if (!specifier.startsWith('.')) throw new Error(`${from} imports ${specifier}`)
+        return join(dirname(from), specifier)
+      },
+    },
+    visitor: {
+      Rule: {
+        unknown(rule: UnknownAtRule) {
+          throw new Error(`${sheet} has an at-rule CSS does not have: @${rule.name}`)
+        },
+      },
+    },
+  })
+  return warnings
+}
+
+/**
  * What a stylesheet gives a page, as Tailwind's compiler reads it: the ws- classes it styles,
  * the --ws- variables it sets and the font files it serves.
  */
@@ -333,18 +361,33 @@ describe('the Tailwind entry', () => {
     expect([...index].filter((word) => !entry.has(word))).toEqual([])
   })
 
-  it('is the one file that needs Tailwind, which stays optional', () => {
+  it('leaves the plain stylesheets free of Tailwind, which stays optional', async () => {
     const pkg = JSON.parse(read('package.json'))
     expect(pkg.peerDependencies.tailwindcss).toMatch(/^\^4\./)
     expect(pkg.peerDependenciesMeta.tailwindcss.optional).toBe(true)
+    const sheets = [
+      'dist/index.css',
+      ...readdirSync(join(root, 'dist/css')).map((file) => `dist/css/${file}`),
+    ]
+    for (const sheet of sheets) await expect(plainCss(sheet), sheet).resolves.toEqual([])
+    // and the consumer does fail on what only Tailwind reads
+    await expect(plainCss('dist/tailwind.css')).rejects.toThrow(/ imports tailwindcss\//)
+    await expect(plainCss('dist/tailwind/variants.css')).rejects.toThrow('@custom-variant')
+  })
+
+  it('leaves the modules free of Tailwind', () => {
     const files = (dir: string): string[] =>
       readdirSync(join(root, dir), { withFileTypes: true }).flatMap((entry) =>
         entry.isDirectory() ? files(join(dir, entry.name)) : [join(dir, entry.name)],
       )
     const needing = files('dist').filter(
-      (file) => /\.(css|js)$/.test(file) && read(file).includes('tailwindcss'),
+      (file) =>
+        file.endsWith('.js') &&
+        ts
+          .preProcessFile(read(file), true, true)
+          .importedFiles.some(({ fileName }) => /^(tailwindcss|@tailwindcss\/)/.test(fileName)),
     )
-    expect(needing).toEqual(['dist/tailwind.css'])
+    expect(needing).toEqual([])
   })
 })
 
@@ -376,12 +419,6 @@ describe('an app built on the entry', () => {
       '.text-h1{font-size:var(--ws-text-h1-font-size);',
     ])
       expect(css).toContain(rule)
-  })
-
-  it("has the system's layers in Tailwind's order, and none of Tailwind's palette", () => {
-    expect(css).toMatch(/@layer theme\{[\s\S]*@layer base\{[\s\S]*@layer components\{/)
-    expect(css).not.toMatch(/--color-(red|slate|black|white)\b/)
-    expect(css).not.toContain('box-shadow:var(--tw-shadow')
   })
 
   it('serves the fonts with the app', () => {

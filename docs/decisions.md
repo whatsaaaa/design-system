@@ -40,6 +40,14 @@ The hover and pressed fills of the interactive color are that color a step furth
 
 The pressed segment of a segmented control is raised, with a thicker edge of the interactive color, not filled. A filled segment next to a filled primary button reads as a second primary button. The edge carries the state at 3:1 or more on the page and on the raised fill.
 
+## Tailwind entry: plain CSS, with an entry for Tailwind CSS v4
+
+The stylesheets stay plain CSS, which any page can import, and an app on Tailwind CSS v4 imports `tailwind.css` in their place: Tailwind and the same stylesheets in Tailwind's cascade layers, with the tokens as its theme. Rewriting the system in Tailwind, as utilities and `@apply`, was the alternative. It would make Tailwind a dependency of everything that uses the system, the docs theme and the framework-free pages included, for what one entry already gives the apps on it. Tailwind stays an optional peer, and only that entry needs it.
+
+The theme is `@theme inline`, so a utility reads the token where it is used: `bg-surface` is `background-color: var(--ws-color-surface)`. Without `inline`, Tailwind declares a variable of its own, `--color-surface`, on `:root`, and the utility reads that. It takes the token's value once, at the root, so the utility keeps the theme of the page and ignores a `data-theme` or a `dark` or `light` class on a part of it. Inline, a utility follows the theme as the system's classes do.
+
+Tailwind's defaults that no token stands behind are taken out: its palette, its shadows, and the families, weights and radii the system does not have. As a class one makes nothing, and in `@apply` one fails the build, so an app does not reach for a color or a shadow outside the system by habit. The token build maps every group of tokens or names why it leaves one out, so a new group is a decision.
+
 ## Docs theme: on top of VitePress's default theme
 
 The docs theme extends the default theme and restyles it. It does not replace it.
