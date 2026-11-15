@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Window } from 'happy-dom'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { hex } from '../scripts/lib/tokens.ts'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const site = join(root, 'tests/fixtures/docs-site')
@@ -43,6 +44,14 @@ describe('a docs site on the theme', () => {
   it('fills a slot the theme leaves alone', () => {
     const document = page('guide/index.html')
     expect(document.querySelector('#site-doc-after')?.textContent).toBe('Vidimo se u Čačku.')
+  })
+
+  it('sends the color of the browser bars of both themes, for a visitor without JavaScript', () => {
+    const tags = [...page('guide/index.html').querySelectorAll('meta[name="theme-color"]')]
+    expect(tags.map((tag) => [tag.getAttribute('content'), tag.getAttribute('media')])).toEqual([
+      [hex('color.bg', 'dark'), 'not all and (prefers-color-scheme: light)'],
+      [hex('color.bg', 'light'), '(prefers-color-scheme: light)'],
+    ])
   })
 
   it('shows the path on the index page of a section: tab, sidebar group, page', () => {

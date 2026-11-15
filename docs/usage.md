@@ -146,13 +146,14 @@ setTheme('system') // follows the system again
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
 
-A bundler does not copy a plain script out of `node_modules`, so in an app built with Vite inline both head scripts, this one and the one of the keys in section 7, with a plugin. They come from the installed package, so they stay in step with it:
+A bundler does not copy a plain script out of `node_modules`, so in an app built with Vite inline both head scripts, this one and the one of the keys in section 7, with a plugin, and the theme-color tags below with them. They come from the installed package, so they stay in step with it:
 
 ```ts
 // vite.config.ts
 import { defineConfig, type Plugin } from 'vite'
 import { keysInitScript } from '@whatsaaaa/design-system/shortcuts'
 import { themeInitScript } from '@whatsaaaa/design-system/theme'
+import { themeColorMeta } from '@whatsaaaa/design-system/theme/meta'
 
 function designSystemHead(): Plugin {
   return {
@@ -161,6 +162,11 @@ function designSystemHead(): Plugin {
       // before Vite adds the stylesheet and the app's script to the <head>
       order: 'pre',
       handler: () => [
+        ...themeColorMeta.map((attrs) => ({
+          tag: 'meta',
+          attrs: { ...attrs },
+          injectTo: 'head' as const,
+        })),
         { tag: 'script', children: themeInitScript, injectTo: 'head' },
         { tag: 'script', children: keysInitScript, injectTo: 'head' },
       ],
@@ -173,19 +179,21 @@ export default defineConfig({
 })
 ```
 
-The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme` or the class of `<html>`, and when the system's theme changes. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
+The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. Put the two theme-color tags in the `<head>` the server sends: the background of the dark theme, and of the light one where the system asks for light, as the stylesheet chooses. So a visitor without JavaScript, and a link preview such as a chat app's, which reads the page as it is sent, get the color too. The dark tag comes first, for a reader that takes the first tag and ignores `media`. The head script then keeps every theme-color tag at the theme shown, from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme` or the class of `<html>`, and when the system's theme changes:
 
 ```html
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#191724" media="not all and (prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#faf4ed" media="(prefers-color-scheme: light)" />
   <script src=".../theme/init.js"></script>
   <script src=".../shortcuts/init.js"></script>
   <link rel="stylesheet" href=".../index.css" />
 </head>
 ```
 
-A theme-color tag that is there, with or without `media`, takes the theme's color too. Do not set it from a script of your own. A docs site gets the same script from the base config of the docs theme.
+These are the only colors to write out by hand, as a `<meta>` cannot read a variable. Take them from the package where a build writes the `<head>`: `themeColorTags` from `@whatsaaaa/design-system/theme/meta` is the two tags as HTML, and `themeColorMeta` their attributes, as in the Vite plugin above. They read the tokens, so import them in the build or on the server, not in the page's own script. Without the tags the head script adds one, so a page still gets the color once its script runs. Do not set it from a script of your own. A docs site gets the tags and the script from the base config of the docs theme.
 
 An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or `ws-theme-light`. Put both in the page and the styles show the one of the theme in effect where it stands: the nearest `data-theme` or `dark` or `light` class, on `<html>` or on an element around it, or the system's theme. So the right one shows before any script runs. Do not swap them from a script.
 
@@ -317,7 +325,6 @@ A **segmented control** is a few buttons with one pressed, such as a switch betw
 
 - `ws-pairs--amounts` is for money and other numbers: each value at the right edge, in figures of one width, so the digits of the rows line up. Write each amount whole, with its currency and the same number of decimals.
 - `ws-pairs__total` is the last row: set off by a solid rule, and semibold.
-
 - **Sections that line up.** A review step of several sections, each a list under its own heading, puts them in one `ws-pairs-group`: the lists share a term column, as wide as the longest term of them all, so the values of every section start at one edge. Each heading, or anything else in the group, takes a row of its own. A list of amounts in the group keeps its own columns.
 
 ```html

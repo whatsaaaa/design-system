@@ -95,12 +95,36 @@ describe('markdown in the docs theme', () => {
   })
 })
 
+describe('the tags the base config puts in the head', () => {
+  it('give the page the color of each theme as it is sent, dark first and light for a light system', () => {
+    const tags = whatsaaaaConfig().head!.filter(([tag]) => tag === 'meta')
+    expect(tags).toEqual([
+      [
+        'meta',
+        {
+          name: 'theme-color',
+          content: hex('color.bg', 'dark'),
+          media: 'not all and (prefers-color-scheme: light)',
+        },
+      ],
+      [
+        'meta',
+        {
+          name: 'theme-color',
+          content: hex('color.bg', 'light'),
+          media: '(prefers-color-scheme: light)',
+        },
+      ],
+    ])
+  })
+})
+
 describe('the scripts the base config puts in the head', () => {
   const tokens = readFileSync(new URL('../dist/tokens.css', import.meta.url), 'utf8')
 
   /**
-   * Runs every head script of the config, in their order, in a page that has the token
-   * stylesheet, and returns its <html>. `remembered` is what the browser's storage holds,
+   * Puts the tags of the config in the head of a page that has the token stylesheet, and runs
+   * each script among them in their order. Returns its <html>. `remembered` is what the browser's storage holds,
    * or `blocked` for a browser that refuses storage.
    */
   function pageAfter(remembered: Record<string, string> | 'blocked', system: 'dark' | 'light') {
@@ -125,9 +149,19 @@ describe('the scripts the base config puts in the head', () => {
       requestAnimationFrame: window.requestAnimationFrame,
       addEventListener: window.addEventListener,
     }
-    for (const [tag, , script] of whatsaaaaConfig().head as [string, object, string][]) {
-      expect(tag).toBe('script')
-      new Function(...Object.keys(globals), script)(...Object.values(globals))
+    for (const [tag, attributes, script] of whatsaaaaConfig().head as [
+      string,
+      Record<string, string>,
+      string?,
+    ][]) {
+      if (tag === 'script') {
+        new Function(...Object.keys(globals), script!)(...Object.values(globals))
+        continue
+      }
+      expect(tag).toBe('meta')
+      const meta = window.document.createElement('meta')
+      for (const [name, value] of Object.entries(attributes)) meta.setAttribute(name, value)
+      window.document.head.append(meta)
     }
     return window.document.documentElement
   }
@@ -159,10 +193,15 @@ describe('the scripts the base config puts in the head', () => {
       [...root.ownerDocument.querySelectorAll('meta[name="theme-color"]')].map((tag) =>
         tag.getAttribute('content'),
       )
-    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'light')]))
+    // both tags, whatever their media, take the theme shown
+    await vi.waitFor(() =>
+      expect(colors()).toEqual([hex('color.bg', 'light'), hex('color.bg', 'light')]),
+    )
     // as the docs theme does, from VitePress's own switch
     root.dataset.theme = 'dark'
-    await vi.waitFor(() => expect(colors()).toEqual([hex('color.bg', 'dark')]))
+    await vi.waitFor(() =>
+      expect(colors()).toEqual([hex('color.bg', 'dark'), hex('color.bg', 'dark')]),
+    )
   })
 
   it.each(['dark', 'light'] as const)(

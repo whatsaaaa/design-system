@@ -448,6 +448,7 @@ test.describe('an element for one theme only', () => {
 test.describe("the color of the browser's own bars", () => {
   const DARK = '#191724'
   const LIGHT = '#faf4ed'
+  /** The color of each theme-color tag: the page sends two, one for each theme. */
   const themeColor = (page: import('@playwright/test').Page) =>
     page.evaluate(() =>
       [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map(
@@ -455,22 +456,53 @@ test.describe("the color of the browser's own bars", () => {
       ),
     )
 
+  for (const [colorScheme, background] of [
+    ['dark', DARK],
+    ['light', LIGHT],
+  ] as const)
+    test(`is the page's own on a ${colorScheme} system without JavaScript, as a link preview reads it`, async ({
+      browser,
+    }) => {
+      const context = await browser.newContext({ colorScheme, javaScriptEnabled: false })
+      const page = await context.newPage()
+      for (const path of ['/examples/terminal.html', '/docs/sample/conditions']) {
+        await page.goto(path)
+        const tags = await page
+          .locator('meta[name="theme-color"]')
+          .evaluateAll((elements) =>
+            elements.map((tag) => [tag.getAttribute('content'), tag.getAttribute('media')]),
+          )
+        // the dark one first, for a reader that takes the first and ignores media
+        expect(tags, path).toEqual([
+          [DARK, 'not all and (prefers-color-scheme: light)'],
+          [LIGHT, '(prefers-color-scheme: light)'],
+        ])
+        // the browser takes the first whose media holds: the background of the page
+        const applies = await page.evaluate(
+          (tags) => tags.find(([, media]) => matchMedia(media!).matches)?.[0],
+          tags,
+        )
+        expect(applies, path).toBe(background)
+      }
+      await context.close()
+    })
+
   test('is the background of the theme shown, chosen by hand and after a reload', async ({
     page,
   }) => {
     await open(page, '/examples/terminal.html')
-    expect(await themeColor(page)).toEqual([DARK])
+    expect(await themeColor(page)).toEqual([DARK, DARK])
     await page.locator('.ws-status-line__theme').click()
-    await expect.poll(() => themeColor(page)).toEqual([LIGHT])
+    await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
     await page.reload()
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
-    await expect.poll(() => themeColor(page)).toEqual([LIGHT])
+    await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
     // and with the key, on the next page
     await page.keyboard.press('t')
-    await expect.poll(() => themeColor(page)).toEqual([DARK])
+    await expect.poll(() => themeColor(page)).toEqual([DARK, DARK])
     await page.locator('.ws-tabs a', { hasText: 'writing' }).click()
     await expect(page).toHaveURL(/\/examples\/prose\.html/)
-    await expect.poll(() => themeColor(page)).toEqual([DARK])
+    await expect.poll(() => themeColor(page)).toEqual([DARK, DARK])
   })
 
   test('follows the system while the page does, and a choice by hand after that', async ({
@@ -478,15 +510,15 @@ test.describe("the color of the browser's own bars", () => {
   }) => {
     await open(page, '/examples/terminal.html')
     await page.emulateMedia({ colorScheme: 'light' })
-    await expect.poll(() => themeColor(page)).toEqual([LIGHT])
+    await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
     await page.emulateMedia({ colorScheme: 'dark' })
-    await expect.poll(() => themeColor(page)).toEqual([DARK])
+    await expect.poll(() => themeColor(page)).toEqual([DARK, DARK])
     // chosen by hand, the system no longer decides
     await page.locator('.ws-status-line__theme').click()
-    await expect.poll(() => themeColor(page)).toEqual([LIGHT])
+    await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
     await page.emulateMedia({ colorScheme: 'dark' })
     await page.waitForTimeout(100)
-    expect(await themeColor(page)).toEqual([LIGHT])
+    expect(await themeColor(page)).toEqual([LIGHT, LIGHT])
   })
 
   test('is set from the head script alone, before the page has its module', async ({ browser }) => {
@@ -495,7 +527,7 @@ test.describe("the color of the browser's own bars", () => {
     const page = await context.newPage()
     await page.route('**/example.js', (route) => route.abort())
     await page.goto('/examples/terminal.html')
-    await expect.poll(() => themeColor(page)).toEqual([LIGHT])
+    await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
     await context.close()
   })
 
@@ -508,22 +540,22 @@ test.describe("the color of the browser's own bars", () => {
       const page = await context.newPage()
       await page.route('**/example.js', (route) => route.abort())
       await page.goto('/examples/terminal.html')
-      await expect.poll(() => themeColor(page)).toEqual([system])
+      await expect.poll(() => themeColor(page)).toEqual([system, system])
       // as a color mode library switches it, with no call to the theme module
       await page.evaluate((name) => document.documentElement.classList.add(name), className)
-      await expect.poll(() => themeColor(page), colorScheme).toEqual([shown])
+      await expect.poll(() => themeColor(page), colorScheme).toEqual([shown, shown])
       await page.evaluate((name) => document.documentElement.classList.remove(name), className)
-      await expect.poll(() => themeColor(page), colorScheme).toEqual([system])
+      await expect.poll(() => themeColor(page), colorScheme).toEqual([system, system])
       await context.close()
     }
   })
 
   test('follows the docs theme, its key and a reload', async ({ page }) => {
     await open(page, '/styles/prose')
-    expect(await themeColor(page)).toEqual([DARK])
+    expect(await themeColor(page)).toEqual([DARK, DARK])
     await page.keyboard.press('t')
-    await expect.poll(() => themeColor(page)).toEqual([LIGHT])
+    await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
     await page.reload()
-    await expect.poll(() => themeColor(page)).toEqual([LIGHT])
+    await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
   })
 })

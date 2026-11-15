@@ -9,10 +9,11 @@
  *     title: 'form-builder',
  *   })
  */
-import type { UserConfig } from 'vitepress'
+import type { HeadConfig, UserConfig } from 'vitepress'
 import { codeTheme } from '../shiki/index.ts'
 import { keysInitScript } from '../shortcuts/index.ts'
 import { themeColorScript } from '../theme/color.ts'
+import { themeColorMeta } from '../theme/meta.ts'
 import type { ThemeConfig } from './types.ts'
 import { whatsaaaaMarkdown } from './markdown.ts'
 
@@ -40,6 +41,8 @@ export function whatsaaaaConfig(): UserConfig<ThemeConfig> {
       ['script', { id: 'ws-theme' }, themeScript],
       // the browser's own bars take the background of the theme shown, as VitePress switches it
       ['script', { id: 'ws-theme-color' }, themeColorScript],
+      // and the served page has their colors, for a visitor without JavaScript and a link preview
+      ...themeColorMeta.map((meta): HeadConfig => ['meta', { ...meta }]),
       // from the first paint the keys are pending, so the numbers of the tabs keep their place
       // unseen until the module runs, or off where they are remembered so, with no numbers
       ['script', { id: 'ws-keys' }, keysInitScript],

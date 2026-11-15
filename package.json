@@ -45,6 +45,10 @@
       "default": "./dist/theme/index.js"
     },
     "./theme/init.js": "./dist/theme/init.js",
+    "./theme/meta": {
+      "types": "./dist/theme/meta.d.ts",
+      "default": "./dist/theme/meta.js"
+    },
     "./shortcuts": {
       "types": "./dist/shortcuts/index.d.ts",
       "default": "./dist/shortcuts/index.js"

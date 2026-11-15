@@ -11,6 +11,7 @@ import {
   themeInitScript,
   toggleTheme,
 } from '../src/theme/index.ts'
+import { themeColorMeta, themeColorTags } from '../src/theme/meta.ts'
 
 const root = document.documentElement
 /** What a change of the system's theme calls: the listeners the scripts gave matchMedia. */
@@ -298,5 +299,37 @@ describe('the script for the head', () => {
     const file = readFileSync(join(process.cwd(), 'dist/theme/init.js'), 'utf8')
     expect(file).toContain(themeInitScript)
     expect(file).not.toMatch(/\bimport\b|\bexport\b/)
+  })
+})
+
+describe('the theme-color tags of the page as it is sent', () => {
+  const read = (path: string) => readFileSync(join(process.cwd(), path), 'utf8')
+  /** The theme-color tags of a page or a snippet, one to a line. */
+  const tagsOf = (html: string) =>
+    [...html.matchAll(/<meta\s+name="theme-color"[^>]*>/g)].map(([tag]) => tag.replace(/\s+/g, ' '))
+
+  it('are the background of the dark theme, then of the light one for a light system', () => {
+    expect(themeColorMeta).toEqual([
+      {
+        name: 'theme-color',
+        content: hex('color.bg', 'dark'),
+        media: 'not all and (prefers-color-scheme: light)',
+      },
+      {
+        name: 'theme-color',
+        content: hex('color.bg', 'light'),
+        media: '(prefers-color-scheme: light)',
+      },
+    ])
+    expect(tagsOf(themeColorTags)).toHaveLength(2)
+  })
+
+  it.each([
+    'docs/usage.md',
+    'styleguide/public/examples/terminal.html',
+    'styleguide/public/examples/prose.html',
+    'styleguide/public/examples/form.html',
+  ])('are written out as the tokens have them in %s', (file) => {
+    expect(tagsOf(read(file))).toEqual(tagsOf(themeColorTags))
   })
 })
