@@ -44,18 +44,17 @@ const build = (css: string) => {
 
 describe('the built stylesheets', () => {
   const sources = readdirSync(join(root, 'src/css')).filter((file) => file.endsWith('.css'))
-  // what index.css brings; nuxt-ui.css comes after Nuxt UI, so it ships on its own only
-  const inIndex = [...read('src/css/index.css').matchAll(/@import '\.\/([^']+)'/g)].map(
-    ([, file]) => file,
-  )
 
   it.each(sources)('keep the comments between the rules of %s', (file) => {
     const comments = between(read(`src/css/${file}`))
     expect(comments.length).toBeGreaterThan(0)
-    // breakpoints.css only declares a custom media query, so it ships inside the others
+    // breakpoints.css only declares a custom media query, so it ships inside the others, and
+    // nuxt-ui.css comes after Nuxt UI, so it ships on its own only
     const built = ['index.css', 'breakpoints.css'].includes(file)
       ? ['dist/index.css']
-      : [...(inIndex.includes(file) ? ['dist/index.css'] : []), `dist/css/${file}`]
+      : file === 'nuxt-ui.css'
+        ? [`dist/css/${file}`]
+        : ['dist/index.css', `dist/css/${file}`]
     // a comment in a block is indented as the block is
     const flat = (text: string) => text.replaceAll(/^[ \t]+/gm, '')
     for (const path of built) {
