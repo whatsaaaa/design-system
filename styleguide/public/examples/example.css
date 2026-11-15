@@ -136,8 +136,9 @@ body {
     display: block;
   }
 
+  /* the gutter of a phone: the content starts where the brand of the tab bar does */
   .pane {
-    padding: var(--ws-space-24) var(--ws-space-20);
+    padding: var(--ws-space-24) var(--ws-space-16);
     overflow: visible;
   }
 
@@ -170,7 +171,7 @@ body {
   }
 
   .article .ws-prose {
-    padding: var(--ws-space-24) var(--ws-space-20) var(--ws-space-48);
+    padding: var(--ws-space-24) var(--ws-space-16) var(--ws-space-48);
   }
 }
 

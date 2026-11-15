@@ -18,7 +18,7 @@
 }
 
 .VPNav .VPNavBar .wrapper {
-  padding: 0 var(--ws-space-8) 0 var(--ws-space-16);
+  padding: 0 var(--ws-space-16);
 }
 
 .VPNav .VPNavBar .wrapper > .container {
@@ -225,6 +225,19 @@
 
 .VPNav .VPNavBarHamburger .container > span {
   background-color: var(--ws-color-text);
+}
+
+/*
+ * The menu button is wider than its lines by 16 px on each side: pulled out by that much, its
+ * lines end at the gutter, under the end of the page. Its ring goes inside it, at the edge of
+ * the window.
+ */
+.VPNav .VPNavBarHamburger {
+  margin-right: calc(-1 * var(--ws-space-16));
+}
+
+.VPNav .VPNavBarHamburger:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
 
 @media (width >= 48rem) {

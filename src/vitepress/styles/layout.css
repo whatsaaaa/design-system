@@ -66,6 +66,25 @@ button:focus-visible {
   font: var(--ws-text-caption);
 }
 
+/*
+ * The gutter of a phone, 16 px, as in the terminal frame: below 48rem, where the default theme
+ * lays out for a phone, the page and the row of the menu start where the brand does and end
+ * where the lines of the menu button do. The default theme pads them 24 px.
+ */
+@media (width < 48rem) {
+  .VPDoc.VPDoc,
+  .VPFooter.VPFooter,
+  .VPLocalNav.VPLocalNav .menu,
+  .WsNotFound {
+    padding-inline: var(--ws-space-16);
+  }
+
+  /* the chevron is drawn 4 px inside its box */
+  .VPLocalNav.VPLocalNav .VPLocalNavOutlineDropdown {
+    padding-right: var(--ws-space-12);
+  }
+}
+
 /* skip link */
 .VPSkipLink.VPSkipLink {
   border-radius: var(--ws-radius-md);

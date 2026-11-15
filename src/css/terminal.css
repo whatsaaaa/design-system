@@ -392,13 +392,23 @@
 }
 
 /*
- * No room for "~…" between the padding of the path, --ws-space-14 on each side. The padding
- * is written out, as a container query takes no var(). The browser test of the path,
- * tests/browser/status-line.spec.ts, holds the two together.
+ * No room for "~…" between the padding of the path, --ws-space-14 on each side, and
+ * --ws-space-10 below 64rem. The padding is written out, as a container query takes no var().
+ * The browser test of the path, tests/browser/status-line.spec.ts, holds them together.
  */
-@container ws-status-line-path (width < calc(2ch + 2 * 0.875rem)) {
-  .ws-status-line__file {
-    display: none;
+@media not (--ws-compact) {
+  @container ws-status-line-path (width < calc(2ch + 2 * 0.875rem)) {
+    .ws-status-line__file {
+      display: none;
+    }
+  }
+}
+
+@media (--ws-compact) {
+  @container ws-status-line-path (width < calc(2ch + 2 * 0.625rem)) {
+    .ws-status-line__file {
+      display: none;
+    }
   }
 }
 
@@ -579,6 +589,15 @@
 
   .ws-tabs li:last-child a[aria-current] {
     border-right-color: transparent;
+  }
+
+  /* The items are padded less on a phone, so the path keeps room for more of itself. */
+  .ws-status-line__mode,
+  .ws-status-line__file,
+  .ws-status-line__item,
+  .ws-status-line__switch,
+  .ws-status-line__theme {
+    padding-inline: var(--ws-space-10);
   }
 
   /* The key hints and the wide items do not fit. A key whose hint is hidden does nothing. */

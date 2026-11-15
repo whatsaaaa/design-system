@@ -42,6 +42,12 @@ Icons have one size, `--ws-size-icon`, 16 px, and no scale of sizes. Each is dra
 
 The pressed segment of a segmented control is raised, with a thicker edge of the interactive color, not filled. A filled segment next to a filled primary button reads as a second primary button. The edge carries the state at 3:1 or more on the page and on the raised fill.
 
+## The frame on a phone: a gutter of 16 px
+
+Below 64rem one length, `--ws-space-16`, is the gutter: the brand of the tab bar starts that far in from the window's edge, and the content under it, a pane, a page or a form, is padded by the same, so the two start at one pixel. The style guide's example padded a pane 20 px, which left it 4 px off the brand, and the apps each chose for themselves. 16 px was chosen over 20 because the brand already had it, the form example and the apps used it, and on a 320 px phone the four pixels a side go to the content. The docs theme takes it on a phone too, below 48rem, where the default theme lays out for one: it padded the brand 16 px and the page and the row of its menu 24 px. From 48rem the default theme centers the page, which then shares no edge with the brand.
+
+The status line pads its items 10 px below 64rem, and 14 px from there up. At 390 px, with the mode, the keys switch and the theme button, 14 px left the path a few characters. The website set 10 px on a phone for that reason, and with it the path keeps about 32 px more. Every item takes the smaller padding, not only the path, so the items still look alike.
+
 ## Tailwind entry: plain CSS, with an entry for Tailwind CSS v4
 
 The stylesheets stay plain CSS, which any page can import, and an app on Tailwind CSS v4 imports `tailwind.css` in their place: Tailwind and the same stylesheets in Tailwind's cascade layers, with the tokens as its theme. Rewriting the system in Tailwind, as utilities and `@apply`, was the alternative. It would make Tailwind a dependency of everything that uses the system, the docs theme and the framework-free pages included, for what one entry already gives the apps on it. Tailwind stays an optional peer, and only that entry needs it.

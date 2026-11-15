@@ -226,6 +226,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 ## 5. Space, radius, motion
 
 - Space: `--ws-space-2` to `--ws-space-64`, named by px, set in rem. Use them for padding, margin and gap.
+- The gutter of a phone is `--ws-space-16`. Below 64rem the tab bar starts its brand that far in from the window's edge, and ends its end that far from the other. Pad what is under it by the same, a pane, a page or a form, and its content starts at the pixel the brand starts at. From 64rem a pane takes the padding of its own design.
 - Sizes: `--ws-size-control` (40 px) is the height of a one-line field, a button and a segmented control. `--ws-size-check` (20 px) is a checkbox or a radio button, `--ws-size-step` (24 px) the circle of a step number and `--ws-size-icon` (16 px) an icon next to text. Use them for those, not a space token.
 - Radius: `--ws-radius-xs` (key caps), `-sm` (inline code, tags), `-md` (inputs, buttons), `-lg` (blocks, cards), `-xl` (the window), `-full` (dots).
 - Borders, not shadows: `--ws-border-width-thin`, `-medium`, `-thick`.
@@ -262,7 +263,7 @@ The markup of each piece is in the comment above its rules, in its stylesheet in
 ```
 
 - **The mode** says whether the key hints work. It reads `NORMAL`, and `INSERT` while the focus is in a field, where a key is typed and not a shortcut. Use those two words and no others. `isTyping` from `@whatsaaaa/design-system/shortcuts` tells which: check `isTyping(document.activeElement)` on `focusin` and `focusout`. A page without fields stays `NORMAL`.
-- **The path** goes in `ws-status-line__path`, which takes the room the other items leave and puts the items after it at the right edge. The path gives way to them on its own: it is cut with an ellipsis, and when not even its first character fits, it goes as a whole. Write no breakpoint or width for it. A status line without a path puts `<span class="ws-status-line__spacer"></span>` where the path would be.
+- **The path** goes in `ws-status-line__path`, which takes the room the other items leave and puts the items after it at the right edge. The path gives way to them on its own: it is cut with an ellipsis, and when not even its first character fits, it goes as a whole. Write no breakpoint or width for it. The status line pads its items `--ws-space-14` on each side, and `--ws-space-10` below 64rem, so on a phone the path has more room. A status line without a path puts `<span class="ws-status-line__spacer"></span>` where the path would be.
 - **The theme button** names the theme shown and switches it, at every width: below 64rem, where the key hints are hidden, it is the only theme switch. Call `toggleTheme` when it is clicked. It holds both names, and the styles show the one of the theme, so the name is right before any script runs and the button keeps the focus when the theme changes. Its name for assistive technology is "Switch theme, now rose-pine". Where the key hints show, keep the theme's `t` hint as well.
 - An item for wide screens only takes `ws-status-line__item--wide`, and one with a border on its left `ws-status-line__item--edge`.
 - A focus ring in the window's bars is drawn inside its control, so neither the bars nor the window's corners cut it off. A control of your own in a bar does the same: `outline-offset: calc(-1 * var(--ws-border-width-medium))`.
@@ -426,7 +427,7 @@ export default defineConfigWithTheme<ThemeConfig>({
 
 Keep the site's nav, sidebar and search config as they are. Do not restyle the theme with `--vp-*` variables: change a token here instead.
 
-From 60rem up the brand has a box as wide as the sidebar, 17rem with the sidebar's padding, and the first tab starts on the sidebar's border, on pages without a sidebar too. With a logo there is room for about 23 characters in the site title, without one about 28. A longer title is cut with an ellipsis: shorten it with `themeConfig.siteTitle`. A short one leaves a gap before the tabs. The labels of the tabs have no such limit: a long one moves the tabs after it. Below 60rem there is no sidebar and the tabs follow the brand, and on a phone they take a row of their own under it.
+From 60rem up the brand has a box as wide as the sidebar, 17rem with the sidebar's padding, and the first tab starts on the sidebar's border, on pages without a sidebar too. With a logo there is room for about 23 characters in the site title, without one about 28. A longer title is cut with an ellipsis: shorten it with `themeConfig.siteTitle`. A short one leaves a gap before the tabs. The labels of the tabs have no such limit: a long one moves the tabs after it. Below 60rem there is no sidebar and the tabs follow the brand, and on a phone they take a row of their own under it. On a phone, below 48rem, the page, the row of its menu and the home page's hero and features take the gutter of a phone, as the brand does.
 
 ## 11. Data
 
