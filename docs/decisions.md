@@ -38,6 +38,8 @@ The system draws no fields and no buttons. Each app that uses it draws its own f
 
 The hover and pressed fills of the interactive color are that color a step further from the page in OKLab lightness, 0.05 and 0.1: lighter on dark, darker on light, so the label on them gains contrast in both themes. The first apps mixed the text color in instead, which barely moves the fill on Dawn, where pine and the text are about as dark.
 
+Icons have one size, `--ws-size-icon`, 16 px, and no scale of sizes. Each is drawn on a grid of 16 in strokes of 1.5, the weight of the text it stands next to. Drawn at another size the stroke scales with it: at 12 px it is just over a pixel and blurs, at 24 px it is heavier than the text beside it. The apps drew every icon at 16 px already, the tick, the icon of a field in error and the calendar of a date picker. An icon that has to be larger is a drawing of its own. The chevron of a prompt and the arrow of a link are not on the grid: they are glyphs, sized in `em` with their text.
+
 The pressed segment of a segmented control is raised, with a thicker edge of the interactive color, not filled. A filled segment next to a filled primary button reads as a second primary button. The edge carries the state at 3:1 or more on the page and on the raised fill.
 
 ## Tailwind entry: plain CSS, with an entry for Tailwind CSS v4

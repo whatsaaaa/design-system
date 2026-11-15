@@ -1,10 +1,12 @@
 /*
  * The few icons the styles draw themselves, as masks, so they take the color of their text
- * and need no markup. All are 16 x 16 strokes of 1.5.
+ * and need no markup. The icons of the callouts, the tick and the calendar are 16 x 16 strokes
+ * of 1.5, drawn at --ws-size-icon, 16 px, the size they are drawn for. The chevron of a
+ * prompt and the arrow of a link take the size of their text.
  *
  *   .done::before {
- *     width: 1rem;
- *     height: 1rem;
+ *     width: var(--ws-size-icon);
+ *     height: var(--ws-size-icon);
  *     background: currentcolor;
  *     content: '';
  *     mask: var(--ws-icon-check) center / contain no-repeat;
@@ -16,6 +18,7 @@
   --ws-icon-warning: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2.2 14.2 13H1.8ZM8 6.6v3M8 11.3v.2'/%3E%3C/svg%3E");
   --ws-icon-danger: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.4 1.8h5.2l3.6 3.6v5.2l-3.6 3.6H5.4l-3.6-3.6V5.4ZM8 5v3.6M8 10.9v.2'/%3E%3C/svg%3E");
   --ws-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5 6.5 12 13 4.5'/%3E%3C/svg%3E");
+  --ws-icon-calendar: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='1.8' y='3' width='12.4' height='11.2' rx='1.8'/%3E%3Cpath d='M1.8 6.8h12.4M5.2 1.8v2.4M10.8 1.8v2.4'/%3E%3C/svg%3E");
   --ws-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 2 8 7 2 12'/%3E%3C/svg%3E");
   --ws-icon-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9 9 3M4.25 3H9v4.75'/%3E%3C/svg%3E");
 }

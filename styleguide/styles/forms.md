@@ -1,6 +1,6 @@
 # Forms
 
-The system draws no fields and no buttons of its own: an app draws them from the color roles, and the system gives it what they share. One height for every control, the sizes of the small boxes, a hover and a pressed fill for the primary button, a check icon, a segmented control, a list of terms and values, and code blocks that wrap.
+The system draws no fields and no buttons of its own: an app draws them from the color roles, and the system gives it what they share. One height for every control, the sizes of the small boxes, a hover and a pressed fill for the primary button, a check and a calendar icon, a segmented control, a list of terms and values, and code blocks that wrap.
 
 This is a checkout built from them. Its fields, checkbox, steps and buttons are the page's own, in a dozen rules each:
 
@@ -19,6 +19,7 @@ How to use each piece, and the rules they follow, are in [the usage guide](/docs
 | `--ws-size-control` | 40&nbsp;px | A one-line field, a button and a segmented control |
 | `--ws-size-check`   | 20&nbsp;px | A checkbox or a radio button                       |
 | `--ws-size-step`    | 24&nbsp;px | The number of a step, in its circle                |
+| `--ws-size-icon`    | 16&nbsp;px | An icon next to text, such as the tick             |
 
 ## The primary button
 
@@ -31,14 +32,16 @@ Filled with `--ws-color-interactive`, its label in `--ws-color-on-interactive`. 
 }
 ```
 
-## Check
+## Icons
 
-`--ws-icon-check`, in `css/icons.css`, is drawn like the other icons: a mask, so it takes the color of what it stands on. A done step and a ticked box use it.
+The icons are masks, in `css/icons.css`, so they take the color of what they stand on. They are drawn at `--ws-size-icon`, 16 px, the size their strokes of 1.5 are drawn for: `--ws-icon-check` for a done step and a ticked box, `--ws-icon-calendar` for a field that takes a date.
+
+<Icons />
 
 ```css
 .done::before {
-  width: 1rem;
-  height: 1rem;
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
   background: currentcolor;
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;

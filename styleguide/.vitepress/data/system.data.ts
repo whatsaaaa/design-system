@@ -72,6 +72,8 @@ export interface SystemData {
   size: Scalar[]
   duration: Scalar[]
   easing: Scalar[]
+  /** The variables of the icons, in the order of src/css/icons.css. */
+  icons: string[]
 }
 
 declare const data: SystemData
@@ -95,7 +97,7 @@ function colorValue(id: string, theme: Theme, sources: Record<string, unknown>):
 const dimension = (value: { value: number; unit: string }) => `${value.value}${value.unit}`
 
 export default {
-  watch: ['../../../tokens/*.json', '../../../dist/tokens.js'],
+  watch: ['../../../tokens/*.json', '../../../dist/tokens.js', '../../../src/css/icons.css'],
   load(): SystemData {
     const dark = tokens('dark')
     const themeSources = {
@@ -205,6 +207,11 @@ export default {
         'motion.easing.',
         (id) => `cubic-bezier(${(dark[id].$value as number[]).join(', ')})`,
       ),
+      icons: [
+        ...readFileSync(join(root, 'src/css/icons.css'), 'utf8').matchAll(
+          /^\s*(--ws-icon-[\w-]+):/gm,
+        ),
+      ].map(([, name]) => name!),
     }
   },
 }

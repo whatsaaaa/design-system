@@ -280,8 +280,8 @@ body {
 }
 
 .steps__item--done .steps__number::before {
-  width: 1rem;
-  height: 1rem;
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
   background: currentcolor;
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;
@@ -366,8 +366,8 @@ body {
 }
 
 .choice__input::before {
-  width: 1rem;
-  height: 1rem;
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
   background: var(--ws-color-on-interactive);
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;

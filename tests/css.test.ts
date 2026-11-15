@@ -153,3 +153,26 @@ describe('the comments of a stylesheet', () => {
     expect(() => restoreComments('.a { color: red }', ['/* lost */'])).toThrow()
   })
 })
+
+describe('the icons', () => {
+  const icons = Object.fromEntries(
+    [
+      ...read('src/css/icons.css').matchAll(
+        /(--ws-icon-[\w-]+): url\("data:image\/svg\+xml,(.+?)"\);/g,
+      ),
+    ].map(([, name, svg]) => [name!, decodeURIComponent(svg!)]),
+  )
+
+  it.each([
+    '--ws-icon-note',
+    '--ws-icon-tip',
+    '--ws-icon-warning',
+    '--ws-icon-danger',
+    '--ws-icon-check',
+    '--ws-icon-calendar',
+  ])('draw %s as the others, 16 by 16 in round strokes of 1.5', (name) => {
+    expect(icons[name]).toMatch(
+      /^<svg xmlns='http:\/\/www\.w3\.org\/2000\/svg' viewBox='0 0 16 16' fill='none' stroke='#000' stroke-width='1\.5' stroke-linecap='round' stroke-linejoin='round'>/,
+    )
+  })
+})

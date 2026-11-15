@@ -3,6 +3,7 @@ import DocsTheme from '../../../src/vitepress/index.ts'
 import ContrastTable from './components/ContrastTable.vue'
 import ExampleFrame from './components/ExampleFrame.vue'
 import GhostDemo from './components/GhostDemo.vue'
+import Icons from './components/Icons.vue'
 import Kit from './components/Kit.vue'
 import MarkSizes from './components/MarkSizes.vue'
 import Poses from './components/Poses.vue'
@@ -19,6 +20,7 @@ export default {
       ContrastTable,
       ExampleFrame,
       GhostDemo,
+      Icons,
       Kit,
       MarkSizes,
       Poses,

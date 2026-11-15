@@ -659,6 +659,13 @@
         "unit": "rem"
       },
       "$description": "The number of a step in its circle."
+    },
+    "icon": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$description": "An icon next to text, such as a tick, the icon of a callout or a calendar."
     }
   },
   "motion": {
