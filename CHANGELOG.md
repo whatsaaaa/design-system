@@ -1,5 +1,15 @@
 # @whatsaaaa/design-system
 
+## 0.7.0
+
+### Minor Changes
+
+- [#21](https://github.com/whatsaaaa/design-system/pull/21) [`b739738`](https://github.com/whatsaaaa/design-system/commit/b739738c51e4ef9465fd10fcf24048e8fb6ecbdd) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - An app on Nuxt UI takes its colors from the roles with one import: `@whatsaaaa/design-system/css/nuxt-ui.css`, after Nuxt UI and the variants. It points Nuxt UI's `--ui-*` variables at the `--ws-color-*` roles, outside any layer so it wins over Nuxt UI's own, on `:root` and again on every element that chooses a theme with `data-theme` or a `dark` or `light` class, so both themes follow by themselves. The primary color is the interactive role, success, info, warning and error are tip, note, warning and danger, and the steps the system has no role for, such as the shades of each color, are mixed from the roles around them in oklab. It also sets `--ui-radius` to the small radius and `--ui-header-height` to the height of the tab bar.
+
+  It is not in `index.css` or `tailwind.css`, as it has to come after Nuxt UI. The usage guide shows the import order.
+
+  What an app on Nuxt UI drops: the `--ui-*` variables it pointed at the roles itself, as the usage guide asked before. Set one again after the import only to change it.
+
 ## 0.6.1
 
 ### Patch Changes
