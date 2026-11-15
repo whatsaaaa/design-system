@@ -48,6 +48,12 @@ Below 64rem one length, `--ws-space-16`, is the gutter: the brand of the tab bar
 
 The status line pads its items 10 px below 64rem, and 14 px from there up. At 390 px, with the mode, the keys switch and the theme button, 14 px left the path a few characters. The website set 10 px on a phone for that reason, and with it the path keeps about 32 px more. Every item takes the smaller padding, not only the path, so the items still look alike.
 
+## Breakpoints: 64rem and 40rem
+
+The system has two widths where a layout changes, and no scale of them. Below 64rem, `--ws-compact`, a page has one column. Below 40rem, `--ws-narrow`, a row of fields stacks. The first apps had only the first, so a tablet showed one field to a line in a column that had room for two: a field such as a name or a date reads well from about 17rem, and two with the gap between them and the gutters of the page fit in about 38rem.
+
+40rem is Tailwind's `sm`, as 64rem is its `lg`, so the Tailwind entry needs no breakpoints of its own: `max-sm:` and `max-lg:` are the system's two. The name says what the width is, narrow, as compact does, and not a device. A third width, such as Tailwind's `md` at 48rem, was left out: each is a layout to design and to check, and no app needed one.
+
 ## Tailwind entry: plain CSS, with an entry for Tailwind CSS v4
 
 The stylesheets stay plain CSS, which any page can import, and an app on Tailwind CSS v4 imports `tailwind.css` in their place: Tailwind and the same stylesheets in Tailwind's cascade layers, with the tokens as its theme. Rewriting the system in Tailwind, as utilities and `@apply`, was the alternative. It would make Tailwind a dependency of everything that uses the system, the docs theme and the framework-free pages included, for what one entry already gives the apps on it. Tailwind stays an optional peer, and only that entry needs it.

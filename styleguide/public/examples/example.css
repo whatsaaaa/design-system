@@ -309,6 +309,13 @@ body {
   align-self: stretch;
 }
 
+/* two fields that belong together share a row, down to the narrow breakpoint */
+.form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--ws-space-20);
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -444,5 +451,11 @@ body {
   .form-page__columns {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--ws-space-40);
+  }
+}
+
+@media (width < 40rem) {
+  .form__row {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

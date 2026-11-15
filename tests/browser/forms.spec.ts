@@ -4,8 +4,8 @@ import { DESKTOP, PHONE, open } from './pages.ts'
 
 /**
  * The pieces forms share: the segmented control, terms and values, number fields, code that
- * wraps, the check icon, the hover fill and the phone size of a large ghost. The form example
- * uses all of them the way an app would.
+ * wraps, the icons, the hover fill, rows of fields and the phone size of a large ghost. The
+ * form example uses all of them the way an app would.
  */
 const FORM = '/examples/form.html'
 
@@ -338,6 +338,49 @@ test.describe('on a phone', () => {
     await page.setViewportSize(DESKTOP)
     await expect.poll(async () => (await sprite.boundingBox())?.width).toBe(60)
   })
+})
+
+test('two fields share a row from 40rem, and below it each takes a line', async ({ page }) => {
+  await open(page, FORM)
+  const fields = page.locator('.form__row .field')
+  const tops = () =>
+    fields.evaluateAll((elements) => elements.map((field) => field.getBoundingClientRect().top))
+  for (const [width, row] of [
+    [320, false],
+    [639, false],
+    [640, true],
+    [768, true],
+    [DESKTOP.width, true],
+  ] as const) {
+    await page.setViewportSize({ width, height: 900 })
+    const [first, second] = await tops()
+    expect(first === second, `${width} px`).toBe(row)
+  }
+})
+
+test('the icons of the guide are drawn at the icon size, the calendar among them', async ({
+  page,
+}) => {
+  await open(page, '/styles/forms')
+  const icons = page.locator('.icons .icon')
+  await expect(icons.filter({ hasText: '--ws-icon-calendar' })).toHaveCount(1)
+  const drawn = await icons.evaluateAll((elements) =>
+    elements.map((icon) => {
+      const mark = icon.querySelector('.drawn')!
+      const { width, height } = mark.getBoundingClientRect()
+      return {
+        name: icon.textContent!.trim(),
+        width,
+        height,
+        mask: getComputedStyle(mark).maskImage,
+      }
+    }),
+  )
+  expect(drawn.length).toBeGreaterThan(6)
+  for (const icon of drawn) {
+    expect(icon, icon.name).toMatchObject({ width: 16, height: 16 })
+    expect(icon.mask, icon.name).toMatch(/^url\("data:image\/svg\+xml,/)
+  }
 })
 
 test('a done step and a ticked box draw the check icon', async ({ page }) => {

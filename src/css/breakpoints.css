@@ -1,6 +1,9 @@
 /*
- * The one breakpoint of the system. Below it there is one column, the tab bar wraps and
- * headings take their compact sizes. Custom properties cannot be used in media queries,
- * so in another project write the query out: @media (width < 64rem).
+ * The two breakpoints of the system. Below --ws-compact there is one column, the tab bar
+ * wraps and headings take their compact sizes. Below --ws-narrow, on a phone, a row of
+ * fields has no room and each takes a line of its own: from 40rem up two fields fit side
+ * by side. Custom properties cannot be used in media queries, so in another project write
+ * the queries out: @media (width < 64rem) and @media (width < 40rem).
  */
 @custom-media --ws-compact (width < 64rem);
+@custom-media --ws-narrow (width < 40rem);

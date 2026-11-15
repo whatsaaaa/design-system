@@ -83,7 +83,7 @@ The tokens are Tailwind's theme, and a utility reads its token where it is used,
 | `rounded-md`                                               | The radii, by name only, so no bare `rounded`. `rounded-full` is Tailwind's own |
 | `border-thin`                                              | The border widths. There are no shadow utilities                                |
 | `ease-standard`, `transition`                              | The easings. A transition takes `--ws-motion-duration-fast`                     |
-| `max-lg:`                                                  | The one breakpoint: below 64rem                                                 |
+| `max-lg:`, `max-sm:`                                       | The two breakpoints: below 64rem and below 40rem                                |
 
 The entry takes out Tailwind's defaults that no token stands behind, as the system colors interface with its roles only and draws edges with borders, not shadows. As classes their utilities compile to nothing, with no error. In `@apply`, in the app's CSS or a component's `<style>` block, one fails the build with `Cannot apply unknown utility class`:
 
@@ -231,7 +231,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 - Radius: `--ws-radius-xs` (key caps), `-sm` (inline code, tags), `-md` (inputs, buttons), `-lg` (blocks, cards), `-xl` (the window), `-full` (dots).
 - Borders, not shadows: `--ws-border-width-thin`, `-medium`, `-thick`.
 - Motion: `--ws-motion-duration-fast`, `-base`, `-slow` with `--ws-motion-easing-standard`. Wrap movement in `@media (prefers-reduced-motion: no-preference)`.
-- One breakpoint: `@media (width < 64rem)`.
+- Two breakpoints. Below `64rem`, `@media (width < 64rem)`, a page has one column, the tab bar wraps and headings take their compact sizes. Below `40rem`, `@media (width < 40rem)`, a row of fields stacks, one field to a line: from 40rem up two fields fit side by side.
 
 ## 6. Classes
 
@@ -273,6 +273,7 @@ The markup of each piece is in the comment above its rules, in its stylesheet in
 The system draws no fields and no buttons: draw them from the roles, with these.
 
 - **One height.** A one-line field, a button and a segmented control are `--ws-size-control` tall. A checkbox or a radio button is `--ws-size-check`, a step number's circle `--ws-size-step`.
+- **Rows of fields.** Fields that belong together, such as a date and a time, may share a row from 40rem up. Below it, `@media (width < 40rem)`, each takes a line of its own.
 - **The primary button** is filled with `--ws-color-interactive`, its label `--ws-color-on-interactive`. Under the pointer it takes `--ws-color-interactive-hover`, while pressed `--ws-color-interactive-active`. Do not mix a hover color of your own.
 - **A tick** is `--ws-icon-check` from `css/icons.css`, a mask like the other icons: a ticked box, a done step, a sent form. Draw it at `--ws-size-icon` in `currentcolor`, or `--ws-color-on-interactive` on a checked box.
 - **A date** has `--ws-icon-calendar`, such as on the button that opens a date picker, at `--ws-size-icon` in `currentcolor`. Do not draw your own.
