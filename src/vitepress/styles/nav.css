@@ -105,6 +105,16 @@
   visibility: hidden;
 }
 
+/*
+ * A tab and the brand fill the bar from the top edge of the window, which cuts off what
+ * crosses it: their ring goes inside them, as in the tab bar of the terminal frame.
+ */
+.VPNav .VPNavBarTitle .title:focus-visible,
+.VPNav .VPNavBarMenu .VPNavBarMenuLink:focus-visible,
+.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
 .VPNav .VPNavBarMenu .VPNavBarMenuLink:hover,
 .VPNav .VPNavBarMenu .VPNavBarMenuGroup:hover .button {
   color: var(--ws-color-text);
