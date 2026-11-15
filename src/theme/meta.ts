@@ -31,10 +31,3 @@ export const themeColorMeta: readonly ThemeColorMeta[] = [
   },
   { name: 'theme-color', content: background('light'), media: '(prefers-color-scheme: light)' },
 ]
-
-/** The tags as HTML, for the <head> of a page. */
-export const themeColorTags = themeColorMeta
-  .map(
-    ({ name, content, media }) => `<meta name="${name}" content="${content}" media="${media}" />`,
-  )
-  .join('\n')

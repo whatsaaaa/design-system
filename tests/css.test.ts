@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { Window } from 'happy-dom'
 import { transform } from 'lightningcss'
 import { describe, expect, it } from 'vitest'
 import { holdComments, restoreComments } from '../scripts/lib/css-comments.ts'
@@ -155,13 +156,24 @@ describe('the comments of a stylesheet', () => {
 })
 
 describe('the icons', () => {
-  const icons = Object.fromEntries(
-    [
-      ...read('src/css/icons.css').matchAll(
-        /(--ws-icon-[\w-]+): url\("data:image\/svg\+xml,(.+?)"\);/g,
-      ),
-    ].map(([, name, svg]) => [name!, decodeURIComponent(svg!)]),
-  )
+  /** The SVG of each icon of the published stylesheet, by its custom property. */
+  const icons = new Map<string, string>()
+  const { DOMParser } = new Window()
+  transform({
+    filename: 'icons.css',
+    code: Buffer.from(read('dist/css/icons.css')),
+    visitor: {
+      Declaration: {
+        custom({ name, value }) {
+          for (const token of value) {
+            if (token.type !== 'url') continue
+            const { url } = token.value
+            icons.set(name, decodeURIComponent(url.slice(url.indexOf(',') + 1)))
+          }
+        },
+      },
+    },
+  })
 
   it.each([
     '--ws-icon-note',
@@ -171,8 +183,30 @@ describe('the icons', () => {
     '--ws-icon-check',
     '--ws-icon-calendar',
   ])('draw %s as the others, 16 by 16 in round strokes of 1.5', (name) => {
-    expect(icons[name]).toMatch(
-      /^<svg xmlns='http:\/\/www\.w3\.org\/2000\/svg' viewBox='0 0 16 16' fill='none' stroke='#000' stroke-width='1\.5' stroke-linecap='round' stroke-linejoin='round'>/,
-    )
+    const svg = new DOMParser().parseFromString(icons.get(name)!, 'image/svg+xml').documentElement
+    expect(svg.tagName).toBe('svg')
+    const drawing = ['viewBox', 'fill', 'stroke-width', 'stroke-linecap', 'stroke-linejoin']
+    expect(
+      Object.fromEntries(drawing.map((attribute) => [attribute, svg.getAttribute(attribute)])),
+    ).toEqual({
+      viewBox: '0 0 16 16',
+      fill: 'none',
+      'stroke-width': '1.5',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
+    })
+    // every part is drawn in the stroke of the whole, at its scale
+    for (const part of svg.querySelectorAll('*'))
+      for (const attribute of [
+        'fill',
+        'stroke',
+        'stroke-width',
+        'stroke-linecap',
+        'stroke-linejoin',
+        'transform',
+        'vector-effect',
+        'style',
+      ])
+        expect(part.getAttribute(attribute), `${part.tagName} ${attribute}`).toBeNull()
   })
 })

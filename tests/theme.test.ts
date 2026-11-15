@@ -11,7 +11,7 @@ import {
   themeInitScript,
   toggleTheme,
 } from '../src/theme/index.ts'
-import { themeColorMeta, themeColorTags } from '../src/theme/meta.ts'
+import { themeColorMeta } from '../src/theme/meta.ts'
 
 const root = document.documentElement
 /** What a change of the system's theme calls: the listeners the scripts gave matchMedia. */
@@ -304,9 +304,14 @@ describe('the script for the head', () => {
 
 describe('the theme-color tags of the page as it is sent', () => {
   const read = (path: string) => readFileSync(join(process.cwd(), path), 'utf8')
-  /** The theme-color tags of a page or a snippet, one to a line. */
+  /** The attributes of each theme-color tag of a page or a snippet. */
   const tagsOf = (html: string) =>
-    [...html.matchAll(/<meta\s+name="theme-color"[^>]*>/g)].map(([tag]) => tag.replace(/\s+/g, ' '))
+    [...html.matchAll(/<meta\b[^>]*>/g)]
+      .map(([tag]) => new DOMParser().parseFromString(tag, 'text/html').querySelector('meta')!)
+      .filter((meta) => meta.getAttribute('name') === 'theme-color')
+      .map((meta) =>
+        Object.fromEntries([...meta.attributes].map(({ name, value }) => [name, value])),
+      )
 
   it('are the background of the dark theme, then of the light one for a light system', () => {
     expect(themeColorMeta).toEqual([
@@ -321,7 +326,6 @@ describe('the theme-color tags of the page as it is sent', () => {
         media: '(prefers-color-scheme: light)',
       },
     ])
-    expect(tagsOf(themeColorTags)).toHaveLength(2)
   })
 
   it.each([
@@ -330,6 +334,6 @@ describe('the theme-color tags of the page as it is sent', () => {
     'styleguide/public/examples/prose.html',
     'styleguide/public/examples/form.html',
   ])('are written out as the tokens have them in %s', (file) => {
-    expect(tagsOf(read(file))).toEqual(tagsOf(themeColorTags))
+    expect(tagsOf(read(file))).toEqual(themeColorMeta)
   })
 })

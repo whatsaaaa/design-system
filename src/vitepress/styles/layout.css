@@ -75,7 +75,7 @@ button:focus-visible {
   .VPDoc.VPDoc,
   .VPFooter.VPFooter,
   .VPLocalNav.VPLocalNav .menu,
-  .WsNotFound {
+  .WsNotFound.WsNotFound {
     padding-inline: var(--ws-space-16);
   }
 

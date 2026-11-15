@@ -390,13 +390,11 @@ test('two fields share a row from 40rem, and below it each takes a line', async 
   }
 })
 
-test('the icons of the guide are drawn at the icon size, the calendar among them', async ({
+test('the guide draws the icons of the grid at the icon size, the calendar among them', async ({
   page,
 }) => {
   await open(page, '/styles/forms')
-  const icons = page.locator('.icons .icon')
-  await expect(icons.filter({ hasText: '--ws-icon-calendar' })).toHaveCount(1)
-  const drawn = await icons.evaluateAll((elements) =>
+  const drawn = await page.locator('.icons .icon').evaluateAll((elements) =>
     elements.map((icon) => {
       const mark = icon.querySelector('.drawn')!
       const { width, height } = mark.getBoundingClientRect()
@@ -408,7 +406,15 @@ test('the icons of the guide are drawn at the icon size, the calendar among them
       }
     }),
   )
-  expect(drawn.length).toBeGreaterThan(6)
+  // the chevron and the arrow are glyphs, sized with their text, and not drawn at the icon size
+  expect(drawn.map(({ name }) => name)).toEqual([
+    '--ws-icon-note',
+    '--ws-icon-tip',
+    '--ws-icon-warning',
+    '--ws-icon-danger',
+    '--ws-icon-check',
+    '--ws-icon-calendar',
+  ])
   for (const icon of drawn) {
     expect(icon, icon.name).toMatchObject({ width: 16, height: 16 })
     expect(icon.mask, icon.name).toMatch(/^url\("data:image\/svg\+xml,/)

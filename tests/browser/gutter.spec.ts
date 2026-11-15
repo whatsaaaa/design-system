@@ -45,9 +45,11 @@ for (const [name, viewport] of [
   })
 }
 
+/** Below 48rem the docs theme lays out for a phone, up to the widest of them. */
 for (const [name, viewport] of [
   ['on a phone', PHONE],
   ['on the narrowest phone', NARROWEST],
+  ['just below 48rem', { width: 700, height: 1024 }],
 ] as const) {
   test.describe(`the gutter of the docs theme ${name}`, () => {
     test.use({ viewport })
@@ -55,16 +57,32 @@ for (const [name, viewport] of [
     for (const [path, content] of [
       ['/docs/sample/conditions', '.vp-doc'],
       ['/docs/sample/home', '.VPHero .main'],
+      ['/docs/sample/home', '.VPFeatures .container'],
+      ['/nope', '.WsNotFound'],
     ] as const)
-      test(`lines up ${path} with the brand and the lines of the menu button`, async ({ page }) => {
+      test(`lines up ${content} of ${path} with the brand and the lines of the menu button`, async ({
+        page,
+      }) => {
         await open(page, path)
+        // the server sends the page of an address that is not there empty, and the app draws it
+        await expect(page.locator(content)).toBeVisible()
         const edges = await page.evaluate((content) => {
           const box = (selector: string) =>
             document.querySelector(selector)!.getBoundingClientRect()
+          /** The edges of the content box of an element: inside its border and padding. */
+          const inside = (element: Element) => {
+            const box = element.getBoundingClientRect()
+            const style = getComputedStyle(element)
+            return {
+              left: box.left + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft),
+              right:
+                box.right - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight),
+            }
+          }
           return {
             brand: box('.VPNavBarTitle .title').left,
             menu: box('.VPNavBarHamburger .container').right,
-            content: { left: box(content).left, right: box(content).right },
+            content: inside(document.querySelector(content)!),
             localNav: document.querySelector('.VPLocalNav .menu-icon')?.getBoundingClientRect()
               .left,
           }

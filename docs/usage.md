@@ -193,7 +193,7 @@ The browser's own bars, such as a phone's address bar, take the background of th
 </head>
 ```
 
-These are the only colors to write out by hand, as a `<meta>` cannot read a variable. Take them from the package where a build writes the `<head>`: `themeColorTags` from `@whatsaaaa/design-system/theme/meta` is the two tags as HTML, and `themeColorMeta` their attributes, as in the Vite plugin above. They read the tokens, so import them in the build or on the server, not in the page's own script. Without the tags the head script adds one, so a page still gets the color once its script runs. Do not set it from a script of your own. A docs site gets the tags and the script from the base config of the docs theme.
+These are the only colors to write out by hand, as a `<meta>` cannot read a variable. Take them from the package where a build writes the `<head>`: `themeColorMeta` from `@whatsaaaa/design-system/theme/meta` is the attributes of the two tags, as in the Vite plugin above. It reads the tokens, so import it in the build or on the server, not in the page's own script. Without the tags the head script adds one, so a page still gets the color once its script runs. Do not set it from a script of your own. A docs site gets the tags and the script from the base config of the docs theme.
 
 An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or `ws-theme-light`. Put both in the page and the styles show the one of the theme in effect where it stands: the nearest `data-theme` or `dark` or `light` class, on `<html>` or on an element around it, or the system's theme. So the right one shows before any script runs. Do not swap them from a script.
 

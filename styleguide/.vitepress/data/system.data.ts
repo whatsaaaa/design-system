@@ -72,7 +72,10 @@ export interface SystemData {
   size: Scalar[]
   duration: Scalar[]
   easing: Scalar[]
-  /** The variables of the icons, in the order of src/css/icons.css. */
+  /**
+   * The variables of the icons drawn on the grid of 16, at --ws-size-icon, in the order of
+   * src/css/icons.css. The chevron and the arrow are glyphs, sized with their text.
+   */
   icons: string[]
 }
 
@@ -209,9 +212,11 @@ export default {
       ),
       icons: [
         ...readFileSync(join(root, 'src/css/icons.css'), 'utf8').matchAll(
-          /^\s*(--ws-icon-[\w-]+):/gm,
+          /^\s*(--ws-icon-[\w-]+): url\("data:image\/svg\+xml,(.+)"\);$/gm,
         ),
-      ].map(([, name]) => name!),
+      ]
+        .filter(([, , svg]) => decodeURIComponent(svg!).includes("viewBox='0 0 16 16'"))
+        .map(([, name]) => name!),
     }
   },
 }

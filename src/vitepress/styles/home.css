@@ -48,9 +48,9 @@
 
 /*
  * The gutter of a phone, as on every page: the hero and the cards of the features start where
- * the brand does. The default theme pads them 24 px there.
+ * the brand does. The default theme pads them 24 px there, and 48 px from 40rem.
  */
-@media (width < 40rem) {
+@media (width < 48rem) {
   .VPHome .VPHero.VPHero,
   .VPHome .VPFeatures.VPFeatures {
     padding-inline: var(--ws-space-16);
