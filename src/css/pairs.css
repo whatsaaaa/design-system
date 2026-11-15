@@ -10,6 +10,18 @@
  *     <div><dt>Email</dt><dd>ana@<wbr />example.com</dd></div>
  *   </dl>
  *
+ * The sections of one review step, each a list under its own heading, share a term column in
+ * ws-pairs-group, so the values of every section line up. The column is as wide as the longest
+ * term of them all, at most two fifths of the row. A heading, or anything else in the group,
+ * takes a row of its own.
+ *
+ *   <div class="ws-pairs-group">
+ *     <h3>About you</h3>
+ *     <dl class="ws-pairs">...</dl>
+ *     <h3>Your visit</h3>
+ *     <dl class="ws-pairs">...</dl>
+ *   </div>
+ *
  * Amounts take ws-pairs--amounts: each value at the right edge, in figures of one width, so
  * the digits of the rows line up, and the terms take the rest of the row. The total is the
  * last row, ws-pairs__total.
@@ -43,6 +55,27 @@
 
 @supports (grid-template-columns: subgrid) {
   .ws-pairs > div {
+    grid-template-columns: subgrid;
+  }
+}
+
+/*
+ * The group holds the columns, and each list in it takes them as its own. A browser without
+ * subgrid sizes the term column of each list apart, as without a group. A list of amounts
+ * keeps its own columns: its amounts stand at the right edge.
+ */
+.ws-pairs-group {
+  display: grid;
+  grid-template-columns: fit-content(40%) minmax(0, 1fr);
+  column-gap: var(--ws-space-16);
+}
+
+.ws-pairs-group > * {
+  grid-column: 1 / -1;
+}
+
+@supports (grid-template-columns: subgrid) {
+  .ws-pairs-group > .ws-pairs:not(.ws-pairs--amounts) {
     grid-template-columns: subgrid;
   }
 }

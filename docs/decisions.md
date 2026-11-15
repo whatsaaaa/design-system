@@ -40,6 +40,8 @@ The hover and pressed fills of the interactive color are that color a step furth
 
 Icons have one size, `--ws-size-icon`, 16 px, and no scale of sizes. Each is drawn on a grid of 16 in strokes of 1.5, the weight of the text it stands next to. Drawn at another size the stroke scales with it: at 12 px it is just over a pixel and blurs, at 24 px it is heavier than the text beside it. The apps drew every icon at 16 px already, the tick, the icon of a field in error and the calendar of a date picker. An icon that has to be larger is a drawing of its own. The chevron of a prompt and the arrow of a link are not on the grid: they are glyphs, sized in `em` with their text.
 
+The sections of a review step share their term column through a group around their lists, `ws-pairs-group`, that holds the columns, with each list and each row in it a subgrid of them. So the column is as wide as the longest term of all the sections, measured by the browser, and a section of short terms lines up with the rest. A fixed width for the terms, a variable an app would set, was the alternative: it needs no group, but it is a guess, too wide for short terms and too narrow for a long one in another language. One list with the headings as rows of it was another, but a heading inside a `<dl>` is not a term or a value. A browser without subgrid, Chrome before 117, sizes each list apart, as before.
+
 The pressed segment of a segmented control is raised, with a thicker edge of the interactive color, not filled. A filled segment next to a filled primary button reads as a second primary button. The edge carries the state at 3:1 or more on the page and on the raised fill.
 
 ## The frame on a phone: a gutter of 16 px

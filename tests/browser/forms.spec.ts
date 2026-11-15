@@ -216,7 +216,7 @@ test.describe('on a phone', () => {
   test('a wrapped line of code hangs one level in from its own text', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 900 })
     await open(page, FORM)
-    const line = page.locator('.ws-code--wrap .line').nth(3)
+    const line = page.locator('.ws-code--wrap .line', { hasText: '"note"' })
     const { lines, starts, ch } = await line.evaluate((element) => {
       const range = document.createRange()
       range.selectNodeContents(element)
@@ -272,6 +272,38 @@ test.describe('on a phone', () => {
         elements.map((element) => Math.round(element.getBoundingClientRect().left)),
       )
     expect(new Set(lefts).size).toBe(1)
+  })
+
+  test('the sections of a review share one term column, as wide as their longest term', async ({
+    page,
+  }) => {
+    await open(page, FORM)
+    // the group, found by what it holds, so it is still found once it is no longer one
+    const group = page.locator('.summary div:has(> .summary__section)')
+    await expect(group).toHaveClass('ws-pairs-group')
+    await expect(group.locator('.ws-pairs')).toHaveCount(2)
+    const columns = () =>
+      group.evaluate((element) => {
+        const left = (selector: string) =>
+          [...element.querySelectorAll(selector)].map((item) =>
+            Math.round(item.getBoundingClientRect().left),
+          )
+        const terms = [...element.querySelectorAll('dt')].map((term) => {
+          // the width of its text, as one line
+          const range = document.createRange()
+          range.selectNodeContents(term)
+          return range.getBoundingClientRect().width
+        })
+        const column = element.querySelector('dt')!.getBoundingClientRect().width
+        return { values: new Set(left('dd')).size, longest: Math.max(...terms), column }
+      })
+    const shared = await columns()
+    expect(shared.values).toBe(1)
+    // the longest term, Workshop, is in the second section: the first takes its width too
+    expect(shared.column).toBeCloseTo(shared.longest, 0)
+    // each list on its own sizes its terms apart, so the sections no longer line up
+    await group.evaluate((element) => element.classList.remove('ws-pairs-group'))
+    expect((await columns()).values).toBe(2)
   })
 
   test('without subgrid, as before Chrome 117, a term still stands beside its value', async ({

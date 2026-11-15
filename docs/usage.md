@@ -27,7 +27,7 @@ Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 | `@whatsaaaa/design-system/css/code.css`      | `.ws-code`, a code block with a caption                                                                                                                                              |
 | `@whatsaaaa/design-system/css/callout.css`   | `.ws-callout`                                                                                                                                                                        |
 | `@whatsaaaa/design-system/css/segmented.css` | `.ws-segmented`, buttons in a row with one pressed                                                                                                                                   |
-| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary                                                                                                                        |
+| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary, and `.ws-pairs-group`                                                                                                 |
 | `@whatsaaaa/design-system/css/terminal.css`  | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along                                                                                                           |
 | `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                                                                               |
 | `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                                                                               |
@@ -241,7 +241,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 - Terminal frame: `ws-term` (the window), `ws-tab-bar` with `ws-tab-bar__brand`, `ws-tabs` and `ws-tab-bar__end`, `ws-prompt` for headings, `ws-output`, `ws-status-line`. Mark the current tab with `aria-current="page"`. The tabs are optional: a site of one page has nothing to tab to, and a tab that only reloads the page would lose what was typed in it. Its bar is the brand and the end.
 - The path above a page title: `<p class="ws-crumb"><span>writing</span><span>form-builder</span><span>conditions</span></p>`, right before the `<h1>`. The slashes between the parts are drawn, and assistive technology reads a comma in their place, so the parts come out as words of their own. It comes with `prose.css`.
 - Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`, and `ws-visually-hidden` for text that only assistive technology reads.
-- Forms: `ws-segmented` and `ws-pairs`. See [forms](#forms).
+- Forms: `ws-segmented`, `ws-pairs` and `ws-pairs-group`. See [forms](#forms).
 
 The markup of each piece is in the comment above its rules, in its stylesheet in `dist/css/` and in `dist/index.css`, and in the style guide.
 
@@ -317,6 +317,27 @@ A **segmented control** is a few buttons with one pressed, such as a switch betw
 
 - `ws-pairs--amounts` is for money and other numbers: each value at the right edge, in figures of one width, so the digits of the rows line up. Write each amount whole, with its currency and the same number of decimals.
 - `ws-pairs__total` is the last row: set off by a solid rule, and semibold.
+
+- **Sections that line up.** A review step of several sections, each a list under its own heading, puts them in one `ws-pairs-group`: the lists share a term column, as wide as the longest term of them all, so the values of every section start at one edge. Each heading, or anything else in the group, takes a row of its own. A list of amounts in the group keeps its own columns.
+
+```html
+<div class="ws-pairs-group">
+  <h3>About you</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Name</dt>
+      <dd>Milica Đorđević</dd>
+    </div>
+  </dl>
+  <h3>Your visit</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Workshop</dt>
+      <dd>Forms that check themselves</dd>
+    </div>
+  </dl>
+</div>
+```
 
 ### Code blocks
 

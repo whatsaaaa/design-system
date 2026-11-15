@@ -217,8 +217,20 @@ body {
   text-transform: uppercase;
 }
 
-.summary__heading + .ws-pairs {
+.summary__heading + :is(.ws-pairs, .ws-pairs-group) {
   margin-top: calc(-1 * var(--ws-space-8));
+}
+
+/* the sections of the review share the term column of their ws-pairs-group */
+.summary__section {
+  padding-bottom: var(--ws-space-8);
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-weight: var(--ws-font-weight-bold);
+}
+
+.ws-pairs + .summary__section {
+  margin-top: var(--ws-space-20);
 }
 
 .summary .ws-pairs + .summary__heading {

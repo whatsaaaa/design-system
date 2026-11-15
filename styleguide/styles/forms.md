@@ -76,6 +76,27 @@ A row each: a term in the voice of a label, its value in the face of a field. Th
 </dl>
 ```
 
+The sections of one review step share a term column in `ws-pairs-group`, so the values of every section line up, however short the terms of one of them:
+
+```html
+<div class="ws-pairs-group">
+  <h3>About you</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Name</dt>
+      <dd>Milica Đorđević</dd>
+    </div>
+  </dl>
+  <h3>Your visit</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Workshop</dt>
+      <dd>Forms that check themselves</dd>
+    </div>
+  </dl>
+</div>
+```
+
 And with `ws-pairs--amounts`, what an order costs: each amount at the right edge, in figures of one width so the digits line up, and the total in its own row.
 
 ```html
