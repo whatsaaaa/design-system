@@ -162,6 +162,16 @@
   font-family: var(--ws-font-family-mono);
 }
 
+/*
+ * The default theme gives the search button the browser's ring, by a rule that weighs more than
+ * the theme's. On a phone the button fills its row of the bar from the top edge of the window,
+ * so its ring goes inside it, as the menu button's does.
+ */
+.VPNav .VPNavBarSearch .DocSearch-Button:focus-visible {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
 .VPNav .DocSearch-Button .DocSearch-Button-Placeholder {
   margin: 0;
   padding: 0;
@@ -297,7 +307,6 @@
   /* with the focus it takes the color of the ring, as the field of the search dialog does */
   .VPNav .VPNavBarSearch .DocSearch-Button:focus-visible {
     border-color: var(--ws-color-interactive);
-    outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
     outline-offset: 2px;
   }
 

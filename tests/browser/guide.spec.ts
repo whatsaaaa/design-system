@@ -115,16 +115,25 @@ test.describe('the focus ring of the docs theme', () => {
     expect(linkRing).toEqual({ visible: true, outline: 'solid 2px rgb(156, 207, 216)' })
   })
 
-  for (const [name, viewport, selector] of [
-    ['a tab', DESKTOP, '.VPNavBarMenuLink'],
-    ['the button of a menu', { width: 1000, height: 800 }, '.VPNavBarExtra > .button'],
+  for (const [name, viewport, selector, scrolled] of [
+    ['a tab of the bar', DESKTOP, '.VPNavBarMenuLink', false],
+    [
+      'the button of a menu in the bar',
+      { width: 1000, height: 800 },
+      '.VPNavBarExtra > .button',
+      false,
+    ],
+    ['the search button of the bar on a phone', PHONE, '.VPNavBarSearch .DocSearch-Button', false],
+    // the row under the bar sticks to the top of the window once the page scrolls past it
+    ['the menu button of the row under the bar on a phone', PHONE, '.VPLocalNav .menu', true],
   ] as const)
-    test(`${name} of the bar draws it inside, where the top of the window would cut it off`, async ({
+    test(`${name} draws it inside, where the top of the window would cut it off`, async ({
       page,
     }) => {
       await page.setViewportSize(viewport)
       await open(page, '/styles/prose')
       await page.keyboard.press('Tab')
+      if (scrolled) await page.evaluate(() => window.scrollTo(0, 900))
       const target = page.locator(selector).first()
       await target.focus()
       const ring = await target.evaluate((element) => {
@@ -132,10 +141,17 @@ test.describe('the focus ring of the docs theme', () => {
         const box = element.getBoundingClientRect()
         return {
           visible: element.matches(':focus-visible'),
+          outline: `${style.outlineStyle} ${style.outlineWidth} ${style.outlineColor}`,
+          edge: box.top,
           top: box.top - parseFloat(style.outlineOffset) - parseFloat(style.outlineWidth),
         }
       })
-      expect(ring.visible).toBe(true)
+      // the control starts at the top edge of the window, where a ring outside it is cut off
+      expect(ring).toMatchObject({
+        visible: true,
+        outline: 'solid 2px rgb(156, 207, 216)',
+        edge: 0,
+      })
       expect(ring.top).toBeGreaterThanOrEqual(0)
     })
 })
