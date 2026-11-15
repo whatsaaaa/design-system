@@ -361,6 +361,25 @@ describe('the Tailwind entry', () => {
     expect([...index].filter((word) => !entry.has(word))).toEqual([])
   })
 
+  it("leaves out Nuxt UI's colors, which an app imports after Nuxt UI", async () => {
+    /** The variables of Nuxt UI a stylesheet sets, as Tailwind compiles it. */
+    const nuxtUi = (nodes: AstNode[]): string[] =>
+      nodes.flatMap((node): string[] => {
+        switch (node.kind) {
+          case 'declaration':
+            return node.property.startsWith('--ui-') ? [node.property] : []
+          case 'comment':
+            return []
+          default:
+            return nuxtUi(node.nodes)
+        }
+      })
+    expect(nuxtUi(await compile(ENTRY))).toEqual([])
+    // and an app that imports them after the entry has them
+    const app = `@import '${ENTRY}';\n@import '@whatsaaaa/design-system/css/nuxt-ui.css';`
+    expect(nuxtUi(await compile('app.css', [], { 'app.css': app }))).toContain('--ui-primary')
+  })
+
   it('leaves the plain stylesheets free of Tailwind, which stays optional', async () => {
     const pkg = JSON.parse(read('package.json'))
     expect(pkg.peerDependencies.tailwindcss).toMatch(/^\^4\./)
