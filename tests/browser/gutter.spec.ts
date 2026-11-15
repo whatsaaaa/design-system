@@ -86,10 +86,13 @@ for (const [name, viewport] of [
             content: inside(document.querySelector(content)!),
             localNav: document.querySelector('.VPLocalNav .menu-icon')?.getBoundingClientRect()
               .left,
+            width: { page: document.documentElement.scrollWidth, window: innerWidth },
           }
         }, content)
         expect(edges.brand).toBe(16)
         expect(edges.content).toEqual({ left: edges.brand, right: edges.menu })
+        // nothing reaches past the edges of the window, such as the image of a hero
+        expect(edges.width.page).toBe(edges.width.window)
         if (edges.localNav !== undefined) expect(edges.localNav).toBe(edges.brand)
       })
   })

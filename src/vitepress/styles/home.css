@@ -57,4 +57,9 @@
   .VPHome > .vp-doc.container {
     padding-inline: var(--ws-space-16);
   }
+
+  /* the image of the hero reaches the edges of the window, through the gutter */
+  .VPHome .VPHero.VPHero .image {
+    margin-inline: calc(-1 * var(--ws-space-16));
+  }
 }

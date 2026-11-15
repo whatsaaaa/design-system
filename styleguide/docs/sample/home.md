@@ -5,6 +5,11 @@ hero:
   name: form-builder
   text: Forms from JSON
   tagline: Describe forms in JSON and get validated Formisch forms out, built on typed Valibot schemas.
+  image:
+    src: /kit/form-builder/mark.svg
+    alt: form-builder
+    width: 320
+    height: 320
   actions:
     - theme: brand
       text: Get started

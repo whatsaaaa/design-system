@@ -115,25 +115,29 @@ test.describe('the focus ring of the docs theme', () => {
     expect(linkRing).toEqual({ visible: true, outline: 'solid 2px rgb(156, 207, 216)' })
   })
 
-  test('a tab of the bar draws it inside, where the top of the window would cut it off', async ({
-    page,
-  }) => {
-    await page.setViewportSize(DESKTOP)
-    await open(page, '/styles/prose')
-    await page.keyboard.press('Tab')
-    const tab = page.locator('.VPNavBarMenuLink').first()
-    await tab.focus()
-    const ring = await tab.evaluate((element) => {
-      const style = getComputedStyle(element)
-      const box = element.getBoundingClientRect()
-      return {
-        visible: element.matches(':focus-visible'),
-        top: box.top - parseFloat(style.outlineOffset) - parseFloat(style.outlineWidth),
-      }
+  for (const [name, viewport, selector] of [
+    ['a tab', DESKTOP, '.VPNavBarMenuLink'],
+    ['the button of a menu', { width: 1000, height: 800 }, '.VPNavBarExtra > .button'],
+  ] as const)
+    test(`${name} of the bar draws it inside, where the top of the window would cut it off`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport)
+      await open(page, '/styles/prose')
+      await page.keyboard.press('Tab')
+      const target = page.locator(selector).first()
+      await target.focus()
+      const ring = await target.evaluate((element) => {
+        const style = getComputedStyle(element)
+        const box = element.getBoundingClientRect()
+        return {
+          visible: element.matches(':focus-visible'),
+          top: box.top - parseFloat(style.outlineOffset) - parseFloat(style.outlineWidth),
+        }
+      })
+      expect(ring.visible).toBe(true)
+      expect(ring.top).toBeGreaterThanOrEqual(0)
     })
-    expect(ring.visible).toBe(true)
-    expect(ring.top).toBeGreaterThanOrEqual(0)
-  })
 })
 
 test.describe('links to a section', () => {

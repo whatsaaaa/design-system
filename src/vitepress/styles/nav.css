@@ -106,12 +106,13 @@
 }
 
 /*
- * A tab and the brand fill the bar from the top edge of the window, which cuts off what
- * crosses it: their ring goes inside them, as in the tab bar of the terminal frame.
+ * A tab, the button of a menu and the brand fill the bar from the top edge of the window,
+ * which cuts off what crosses it: their ring goes inside them, as in the tab bar of the
+ * terminal frame.
  */
 .VPNav .VPNavBarTitle .title:focus-visible,
 .VPNav .VPNavBarMenu .VPNavBarMenuLink:focus-visible,
-.VPNav .VPNavBarMenu .VPNavBarMenuGroup .button:focus-visible {
+.VPNav .VPNavBar .VPFlyout > .button:focus-visible {
   outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
 
