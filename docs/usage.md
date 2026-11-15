@@ -18,21 +18,21 @@ One import has everything: fonts, tokens, page defaults and every class.
 
 Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 
-| Import                                       | What it has                                                                                                                                        |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@whatsaaaa/design-system/tokens.css`        | Every token as a CSS variable, for both themes                                                                                                     |
-| `@whatsaaaa/design-system/fonts.css`         | JetBrains Mono and Inter, self-hosted, with Serbian Latin                                                                                          |
-| `@whatsaaaa/design-system/css/base.css`      | Page defaults. It resets margins and list markers                                                                                                  |
-| `@whatsaaaa/design-system/css/prose.css`     | Long-form text, in a `.ws-prose` container                                                                                                         |
-| `@whatsaaaa/design-system/css/code.css`      | `.ws-code`, a code block with a caption                                                                                                            |
-| `@whatsaaaa/design-system/css/callout.css`   | `.ws-callout`                                                                                                                                      |
-| `@whatsaaaa/design-system/css/segmented.css` | `.ws-segmented`, buttons in a row with one pressed                                                                                                 |
-| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary                                                                                      |
-| `@whatsaaaa/design-system/css/terminal.css`  | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along                                                                         |
-| `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                                             |
-| `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                                             |
-| `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and `--ws-icon-check`, the tick of a form. Needed with `callout.css` and `terminal.css`, and for the tick |
-| `@whatsaaaa/design-system/css/nuxt-ui.css`   | Nuxt UI's colors on the roles. Only in an app on Nuxt UI, after it: see With Tailwind CSS below                                                    |
+| Import                                       | What it has                                                                                                                                                                          |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@whatsaaaa/design-system/tokens.css`        | Every token as a CSS variable, for both themes                                                                                                                                       |
+| `@whatsaaaa/design-system/fonts.css`         | JetBrains Mono and Inter, self-hosted, with Serbian Latin                                                                                                                            |
+| `@whatsaaaa/design-system/css/base.css`      | Page defaults. It resets margins and list markers                                                                                                                                    |
+| `@whatsaaaa/design-system/css/prose.css`     | Long-form text, in a `.ws-prose` container                                                                                                                                           |
+| `@whatsaaaa/design-system/css/code.css`      | `.ws-code`, a code block with a caption                                                                                                                                              |
+| `@whatsaaaa/design-system/css/callout.css`   | `.ws-callout`                                                                                                                                                                        |
+| `@whatsaaaa/design-system/css/segmented.css` | `.ws-segmented`, buttons in a row with one pressed                                                                                                                                   |
+| `@whatsaaaa/design-system/css/pairs.css`     | `.ws-pairs`, terms and their values, such as an order summary, and `.ws-pairs-group`                                                                                                 |
+| `@whatsaaaa/design-system/css/terminal.css`  | Tab bar, prompts, status line, key caps, tags. It brings `theme.css` along                                                                                                           |
+| `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                                                                               |
+| `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                                                                               |
+| `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and the icons of a form: `--ws-icon-check`, the tick, and `--ws-icon-calendar`. Needed with `callout.css` and `terminal.css`, and for those |
+| `@whatsaaaa/design-system/css/nuxt-ui.css`   | Nuxt UI's colors on the roles. Only in an app on Nuxt UI, after it: see With Tailwind CSS below                                                                                      |
 
 Everything is prefixed: classes with `ws-`, variables with `--ws-`. Only `nuxt-ui.css` sets variables of another prefix, Nuxt UI's `--ui-*`.
 
@@ -83,7 +83,7 @@ The tokens are Tailwind's theme, and a utility reads its token where it is used,
 | `rounded-md`                                               | The radii, by name only, so no bare `rounded`. `rounded-full` is Tailwind's own |
 | `border-thin`                                              | The border widths. There are no shadow utilities                                |
 | `ease-standard`, `transition`                              | The easings. A transition takes `--ws-motion-duration-fast`                     |
-| `max-lg:`                                                  | The one breakpoint: below 64rem                                                 |
+| `max-lg:`, `max-sm:`                                       | The two breakpoints: below 64rem and below 40rem                                |
 
 The entry takes out Tailwind's defaults that no token stands behind, as the system colors interface with its roles only and draws edges with borders, not shadows. As classes their utilities compile to nothing, with no error. In `@apply`, in the app's CSS or a component's `<style>` block, one fails the build with `Cannot apply unknown utility class`:
 
@@ -146,13 +146,14 @@ setTheme('system') // follows the system again
 
 Run the head script before the stylesheet, so a remembered choice applies before the first paint. Inline `themeInitScript` in a `<script>`, or load it as a file: `<script src=".../theme/init.js"></script>`. It is a plain script, not a module.
 
-A bundler does not copy a plain script out of `node_modules`, so in an app built with Vite inline both head scripts, this one and the one of the keys in section 7, with a plugin. They come from the installed package, so they stay in step with it:
+A bundler does not copy a plain script out of `node_modules`, so in an app built with Vite inline both head scripts, this one and the one of the keys in section 7, with a plugin, and the theme-color tags below with them. They come from the installed package, so they stay in step with it:
 
 ```ts
 // vite.config.ts
 import { defineConfig, type Plugin } from 'vite'
 import { keysInitScript } from '@whatsaaaa/design-system/shortcuts'
 import { themeInitScript } from '@whatsaaaa/design-system/theme'
+import { themeColorMeta } from '@whatsaaaa/design-system/theme/meta'
 
 function designSystemHead(): Plugin {
   return {
@@ -161,6 +162,11 @@ function designSystemHead(): Plugin {
       // before Vite adds the stylesheet and the app's script to the <head>
       order: 'pre',
       handler: () => [
+        ...themeColorMeta.map((attrs) => ({
+          tag: 'meta',
+          attrs: { ...attrs },
+          injectTo: 'head' as const,
+        })),
         { tag: 'script', children: themeInitScript, injectTo: 'head' },
         { tag: 'script', children: keysInitScript, injectTo: 'head' },
       ],
@@ -173,19 +179,21 @@ export default defineConfig({
 })
 ```
 
-The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. The head script keeps `<meta name="theme-color">` at it from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme` or the class of `<html>`, and when the system's theme changes. A page that has no theme-color tag gets one, so the head needs no tag of its own and no color in it:
+The browser's own bars, such as a phone's address bar, take the background of the theme shown, `--ws-color-bg`. Put the two theme-color tags in the `<head>` the server sends: the background of the dark theme, and of the light one where the system asks for light, as the stylesheet chooses. So a visitor without JavaScript, and a link preview such as a chat app's, which reads the page as it is sent, get the color too. The dark tag comes first, for a reader that takes the first tag and ignores `media`. The head script then keeps every theme-color tag at the theme shown, from the first paint on, when the theme is chosen by hand, with `setTheme`, `toggleTheme` or anything else that sets `data-theme` or the class of `<html>`, and when the system's theme changes:
 
 ```html
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#191724" media="not all and (prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#faf4ed" media="(prefers-color-scheme: light)" />
   <script src=".../theme/init.js"></script>
   <script src=".../shortcuts/init.js"></script>
   <link rel="stylesheet" href=".../index.css" />
 </head>
 ```
 
-A theme-color tag that is there, with or without `media`, takes the theme's color too. Do not set it from a script of your own. A docs site gets the same script from the base config of the docs theme.
+These are the only colors to write out by hand, as a `<meta>` cannot read a variable. Take them from the package where a build writes the `<head>`: `themeColorMeta` from `@whatsaaaa/design-system/theme/meta` is the attributes of the two tags, as in the Vite plugin above. It reads the tokens, so import it in the build or on the server, not in the page's own script. Without the tags the head script adds one, so a page still gets the color once its script runs. Do not set it from a script of your own. A docs site gets the tags and the script from the base config of the docs theme.
 
 An element for one theme only, such as a cut of a mark, takes `ws-theme-dark` or `ws-theme-light`. Put both in the page and the styles show the one of the theme in effect where it stands: the nearest `data-theme` or `dark` or `light` class, on `<html>` or on an element around it, or the system's theme. So the right one shows before any script runs. Do not swap them from a script.
 
@@ -226,11 +234,12 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 ## 5. Space, radius, motion
 
 - Space: `--ws-space-2` to `--ws-space-64`, named by px, set in rem. Use them for padding, margin and gap.
-- Sizes: `--ws-size-control` (40 px) is the height of a one-line field, a button and a segmented control. `--ws-size-check` (20 px) is a checkbox or a radio button and `--ws-size-step` (24 px) the circle of a step number. Use them for those, not a space token.
+- The gutter of a phone is `--ws-space-16`. Below 64rem the tab bar starts its brand that far in from the window's edge, and ends its end that far from the other. Pad what is under it by the same, a pane, a page or a form, and its content starts at the pixel the brand starts at. From 64rem a pane takes the padding of its own design.
+- Sizes: `--ws-size-control` (40 px) is the height of a one-line field, a button and a segmented control. `--ws-size-check` (20 px) is a checkbox or a radio button, `--ws-size-step` (24 px) the circle of a step number and `--ws-size-icon` (16 px) an icon next to text. Use them for those, not a space token.
 - Radius: `--ws-radius-xs` (key caps), `-sm` (inline code, tags), `-md` (inputs, buttons), `-lg` (blocks, cards), `-xl` (the window), `-full` (dots).
 - Borders, not shadows: `--ws-border-width-thin`, `-medium`, `-thick`.
 - Motion: `--ws-motion-duration-fast`, `-base`, `-slow` with `--ws-motion-easing-standard`. Wrap movement in `@media (prefers-reduced-motion: no-preference)`.
-- One breakpoint: `@media (width < 64rem)`.
+- Two breakpoints. Below `64rem`, `@media (width < 64rem)`, a page has one column, the tab bar wraps and headings take their compact sizes. Below `40rem`, `@media (width < 40rem)`, a row of fields stacks, one field to a line: from 40rem up two fields fit side by side.
 
 ## 6. Classes
 
@@ -240,7 +249,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 - Terminal frame: `ws-term` (the window), `ws-tab-bar` with `ws-tab-bar__brand`, `ws-tabs` and `ws-tab-bar__end`, `ws-prompt` for headings, `ws-output`, `ws-status-line`. Mark the current tab with `aria-current="page"`. The tabs are optional: a site of one page has nothing to tab to, and a tab that only reloads the page would lose what was typed in it. Its bar is the brand and the end.
 - The path above a page title: `<p class="ws-crumb"><span>writing</span><span>form-builder</span><span>conditions</span></p>`, right before the `<h1>`. The slashes between the parts are drawn, and assistive technology reads a comma in their place, so the parts come out as words of their own. It comes with `prose.css`.
 - Small pieces: `ws-kbd`, `ws-tag`, `ws-tag--outline`, `ws-state` with `--active` or `--experimental`, `ws-arrow`, `ws-cursor`, and `ws-visually-hidden` for text that only assistive technology reads.
-- Forms: `ws-segmented` and `ws-pairs`. See [forms](#forms).
+- Forms: `ws-segmented`, `ws-pairs` and `ws-pairs-group`. See [forms](#forms).
 
 The markup of each piece is in the comment above its rules, in its stylesheet in `dist/css/` and in `dist/index.css`, and in the style guide.
 
@@ -262,7 +271,7 @@ The markup of each piece is in the comment above its rules, in its stylesheet in
 ```
 
 - **The mode** says whether the key hints work. It reads `NORMAL`, and `INSERT` while the focus is in a field, where a key is typed and not a shortcut. Use those two words and no others. `isTyping` from `@whatsaaaa/design-system/shortcuts` tells which: check `isTyping(document.activeElement)` on `focusin` and `focusout`. A page without fields stays `NORMAL`.
-- **The path** goes in `ws-status-line__path`, which takes the room the other items leave and puts the items after it at the right edge. The path gives way to them on its own: it is cut with an ellipsis, and when not even its first character fits, it goes as a whole. Write no breakpoint or width for it. A status line without a path puts `<span class="ws-status-line__spacer"></span>` where the path would be.
+- **The path** goes in `ws-status-line__path`, which takes the room the other items leave and puts the items after it at the right edge. The path gives way to them on its own: it is cut with an ellipsis, and when not even its first character fits, it goes as a whole. Write no breakpoint or width for it. The status line pads its items `--ws-space-14` on each side, and `--ws-space-10` below 64rem, so on a phone the path has more room. A status line without a path puts `<span class="ws-status-line__spacer"></span>` where the path would be.
 - **The theme button** names the theme shown and switches it, at every width: below 64rem, where the key hints are hidden, it is the only theme switch. Call `toggleTheme` when it is clicked. It holds both names, and the styles show the one of the theme, so the name is right before any script runs and the button keeps the focus when the theme changes. Its name for assistive technology is "Switch theme, now rose-pine". Where the key hints show, keep the theme's `t` hint as well.
 - An item for wide screens only takes `ws-status-line__item--wide`, and one with a border on its left `ws-status-line__item--edge`.
 - A focus ring in the window's bars is drawn inside its control, so neither the bars nor the window's corners cut it off. A control of your own in a bar does the same: `outline-offset: calc(-1 * var(--ws-border-width-medium))`.
@@ -272,8 +281,10 @@ The markup of each piece is in the comment above its rules, in its stylesheet in
 The system draws no fields and no buttons: draw them from the roles, with these.
 
 - **One height.** A one-line field, a button and a segmented control are `--ws-size-control` tall. A checkbox or a radio button is `--ws-size-check`, a step number's circle `--ws-size-step`.
+- **Rows of fields.** Fields that belong together, such as a date and a time, may share a row from 40rem up. Below it, `@media (width < 40rem)`, each takes a line of its own.
 - **The primary button** is filled with `--ws-color-interactive`, its label `--ws-color-on-interactive`. Under the pointer it takes `--ws-color-interactive-hover`, while pressed `--ws-color-interactive-active`. Do not mix a hover color of your own.
-- **A tick** is `--ws-icon-check` from `css/icons.css`, a mask like the other icons: a ticked box, a done step, a sent form. Draw it at 1rem in `currentcolor`, or `--ws-color-on-interactive` on a checked box.
+- **A tick** is `--ws-icon-check` from `css/icons.css`, a mask like the other icons: a ticked box, a done step, a sent form. Draw it at `--ws-size-icon` in `currentcolor`, or `--ws-color-on-interactive` on a checked box.
+- **A date** has `--ws-icon-calendar`, such as on the button that opens a date picker, at `--ws-size-icon` in `currentcolor`. Do not draw your own.
 - **A number field has no spin buttons.** `base.css` hides the browser's own, and the arrow keys still step the value. Without `base.css`, hide them the same way: `appearance: textfield` on the field, and `appearance: none` on its `::-webkit-inner-spin-button` and `::-webkit-outer-spin-button`.
 
 A **segmented control** is a few buttons with one pressed, such as a switch between the languages of a page:
@@ -314,6 +325,26 @@ A **segmented control** is a few buttons with one pressed, such as a switch betw
 
 - `ws-pairs--amounts` is for money and other numbers: each value at the right edge, in figures of one width, so the digits of the rows line up. Write each amount whole, with its currency and the same number of decimals.
 - `ws-pairs__total` is the last row: set off by a solid rule, and semibold.
+- **Sections that line up.** A review step of several sections, each a list under its own heading, puts them in one `ws-pairs-group`: the lists share a term column, as wide as the longest term of them all, so the values of every section start at one edge. Each heading, or anything else in the group, takes a row of its own. A list of amounts in the group keeps its own columns.
+
+```html
+<div class="ws-pairs-group">
+  <h3>About you</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Name</dt>
+      <dd>Milica Đorđević</dd>
+    </div>
+  </dl>
+  <h3>Your visit</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Workshop</dt>
+      <dd>Forms that check themselves</dd>
+    </div>
+  </dl>
+</div>
+```
 
 ### Code blocks
 
@@ -425,7 +456,7 @@ export default defineConfigWithTheme<ThemeConfig>({
 
 Keep the site's nav, sidebar and search config as they are. Do not restyle the theme with `--vp-*` variables: change a token here instead.
 
-From 60rem up the brand has a box as wide as the sidebar, 17rem with the sidebar's padding, and the first tab starts on the sidebar's border, on pages without a sidebar too. With a logo there is room for about 23 characters in the site title, without one about 28. A longer title is cut with an ellipsis: shorten it with `themeConfig.siteTitle`. A short one leaves a gap before the tabs. The labels of the tabs have no such limit: a long one moves the tabs after it. Below 60rem there is no sidebar and the tabs follow the brand, and on a phone they take a row of their own under it.
+From 60rem up the brand has a box as wide as the sidebar, 17rem with the sidebar's padding, and the first tab starts on the sidebar's border, on pages without a sidebar too. With a logo there is room for about 23 characters in the site title, without one about 28. A longer title is cut with an ellipsis: shorten it with `themeConfig.siteTitle`. A short one leaves a gap before the tabs. The labels of the tabs have no such limit: a long one moves the tabs after it. Below 60rem there is no sidebar and the tabs follow the brand, and on a phone they take a row of their own under it. On a phone, below 48rem, the page, the row of its menu and the home page's hero, features and content take the gutter of a phone, as the brand does.
 
 ## 11. Data
 

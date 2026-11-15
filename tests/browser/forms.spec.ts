@@ -4,8 +4,8 @@ import { DESKTOP, PHONE, open } from './pages.ts'
 
 /**
  * The pieces forms share: the segmented control, terms and values, number fields, code that
- * wraps, the check icon, the hover fill and the phone size of a large ghost. The form example
- * uses all of them the way an app would.
+ * wraps, the icons, the hover fill, rows of fields and the phone size of a large ghost. The
+ * form example uses all of them the way an app would.
  */
 const FORM = '/examples/form.html'
 
@@ -216,7 +216,7 @@ test.describe('on a phone', () => {
   test('a wrapped line of code hangs one level in from its own text', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 900 })
     await open(page, FORM)
-    const line = page.locator('.ws-code--wrap .line').nth(3)
+    const line = page.locator('.ws-code--wrap .line', { hasText: '"note"' })
     const { lines, starts, ch } = await line.evaluate((element) => {
       const range = document.createRange()
       range.selectNodeContents(element)
@@ -272,6 +272,38 @@ test.describe('on a phone', () => {
         elements.map((element) => Math.round(element.getBoundingClientRect().left)),
       )
     expect(new Set(lefts).size).toBe(1)
+  })
+
+  test('the sections of a review share one term column, as wide as their longest term', async ({
+    page,
+  }) => {
+    await open(page, FORM)
+    // the group, found by what it holds, so it is still found once it is no longer one
+    const group = page.locator('.summary div:has(> .summary__section)')
+    await expect(group).toHaveClass('ws-pairs-group')
+    await expect(group.locator('.ws-pairs')).toHaveCount(2)
+    const columns = () =>
+      group.evaluate((element) => {
+        const left = (selector: string) =>
+          [...element.querySelectorAll(selector)].map((item) =>
+            Math.round(item.getBoundingClientRect().left),
+          )
+        const terms = [...element.querySelectorAll('dt')].map((term) => {
+          // the width of its text, as one line
+          const range = document.createRange()
+          range.selectNodeContents(term)
+          return range.getBoundingClientRect().width
+        })
+        const column = element.querySelector('dt')!.getBoundingClientRect().width
+        return { values: new Set(left('dd')).size, longest: Math.max(...terms), column }
+      })
+    const shared = await columns()
+    expect(shared.values).toBe(1)
+    // the longest term, Workshop, is in the second section: the first takes its width too
+    expect(shared.column).toBeCloseTo(shared.longest, 0)
+    // each list on its own sizes its terms apart, so the sections no longer line up
+    await group.evaluate((element) => element.classList.remove('ws-pairs-group'))
+    expect((await columns()).values).toBe(2)
   })
 
   test('without subgrid, as before Chrome 117, a term still stands beside its value', async ({
@@ -338,6 +370,55 @@ test.describe('on a phone', () => {
     await page.setViewportSize(DESKTOP)
     await expect.poll(async () => (await sprite.boundingBox())?.width).toBe(60)
   })
+})
+
+test('two fields share a row from 40rem, and below it each takes a line', async ({ page }) => {
+  await open(page, FORM)
+  const fields = page.locator('.form__row .field')
+  const tops = () =>
+    fields.evaluateAll((elements) => elements.map((field) => field.getBoundingClientRect().top))
+  for (const [width, row] of [
+    [320, false],
+    [639, false],
+    [640, true],
+    [768, true],
+    [DESKTOP.width, true],
+  ] as const) {
+    await page.setViewportSize({ width, height: 900 })
+    const [first, second] = await tops()
+    expect(first === second, `${width} px`).toBe(row)
+  }
+})
+
+test('the guide draws the icons of the grid at the icon size, the calendar among them', async ({
+  page,
+}) => {
+  await open(page, '/styles/forms')
+  const drawn = await page.locator('.icons .icon').evaluateAll((elements) =>
+    elements.map((icon) => {
+      const mark = icon.querySelector('.drawn')!
+      const { width, height } = mark.getBoundingClientRect()
+      return {
+        name: icon.textContent!.trim(),
+        width,
+        height,
+        mask: getComputedStyle(mark).maskImage,
+      }
+    }),
+  )
+  // the chevron and the arrow are glyphs, sized with their text, and not drawn at the icon size
+  expect(drawn.map(({ name }) => name)).toEqual([
+    '--ws-icon-note',
+    '--ws-icon-tip',
+    '--ws-icon-warning',
+    '--ws-icon-danger',
+    '--ws-icon-check',
+    '--ws-icon-calendar',
+  ])
+  for (const icon of drawn) {
+    expect(icon, icon.name).toMatchObject({ width: 16, height: 16 })
+    expect(icon.mask, icon.name).toMatch(/^url\("data:image\/svg\+xml,/)
+  }
 })
 
 test('a done step and a ticked box draw the check icon', async ({ page }) => {

@@ -72,6 +72,11 @@ export interface SystemData {
   size: Scalar[]
   duration: Scalar[]
   easing: Scalar[]
+  /**
+   * The variables of the icons drawn on the grid of 16, at --ws-size-icon, in the order of
+   * src/css/icons.css. The chevron and the arrow are glyphs, sized with their text.
+   */
+  icons: string[]
 }
 
 declare const data: SystemData
@@ -95,7 +100,7 @@ function colorValue(id: string, theme: Theme, sources: Record<string, unknown>):
 const dimension = (value: { value: number; unit: string }) => `${value.value}${value.unit}`
 
 export default {
-  watch: ['../../../tokens/*.json', '../../../dist/tokens.js'],
+  watch: ['../../../tokens/*.json', '../../../dist/tokens.js', '../../../src/css/icons.css'],
   load(): SystemData {
     const dark = tokens('dark')
     const themeSources = {
@@ -205,6 +210,13 @@ export default {
         'motion.easing.',
         (id) => `cubic-bezier(${(dark[id].$value as number[]).join(', ')})`,
       ),
+      icons: [
+        ...readFileSync(join(root, 'src/css/icons.css'), 'utf8').matchAll(
+          /^\s*(--ws-icon-[\w-]+): url\("data:image\/svg\+xml,(.+)"\);$/gm,
+        ),
+      ]
+        .filter(([, , svg]) => decodeURIComponent(svg!).includes("viewBox='0 0 16 16'"))
+        .map(([, name]) => name!),
     }
   },
 }

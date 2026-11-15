@@ -86,6 +86,7 @@ onUnmounted(() => observer?.disconnect())
 
 .example iframe {
   display: block;
+  margin-inline: auto;
   border: 0;
   transform-origin: 0 0;
 }

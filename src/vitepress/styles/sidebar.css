@@ -121,6 +121,14 @@
   padding: 0;
 }
 
+/*
+ * The row sticks to the top edge of the window as the page scrolls, so the ring of its menu
+ * button goes inside it.
+ */
+.VPLocalNav .menu:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
 .VPLocalNav .VPLocalNavOutlineDropdown .items {
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
   border-radius: var(--ws-radius-lg);

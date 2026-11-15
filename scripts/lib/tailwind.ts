@@ -186,8 +186,9 @@ ${Object.entries(leftOut)
 ${body}
 
   /*
-   * The one breakpoint is Tailwind's lg, 64rem: max-lg: is the system's compact width,
-   * width < 64rem. The other breakpoints stay for code that expects them.
+   * The two breakpoints are Tailwind's lg, 64rem, and sm, 40rem: max-lg: is the system's
+   * compact width, width < 64rem, and max-sm: its narrow width, width < 40rem, where a row of
+   * fields stacks. The other breakpoints stay for code that expects them.
    */
 }
 `

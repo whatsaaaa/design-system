@@ -1,6 +1,6 @@
 # Forms
 
-The system draws no fields and no buttons of its own: an app draws them from the color roles, and the system gives it what they share. One height for every control, the sizes of the small boxes, a hover and a pressed fill for the primary button, a check icon, a segmented control, a list of terms and values, and code blocks that wrap.
+The system draws no fields and no buttons of its own: an app draws them from the color roles, and the system gives it what they share. One height for every control, the sizes of the small boxes, a hover and a pressed fill for the primary button, a check and a calendar icon, a segmented control, a list of terms and values, and code blocks that wrap.
 
 This is a checkout built from them. Its fields, checkbox, steps and buttons are the page's own, in a dozen rules each:
 
@@ -8,7 +8,7 @@ This is a checkout built from them. Its fields, checkbox, steps and buttons are 
 
 And as a phone shows it:
 
-<ExampleFrame src="/examples/form.html" title="A form on the system, at the width of this column" :height="1240" />
+<ExampleFrame src="/examples/form.html" title="A form on the system, at 390 px" :width="390" :height="1614" />
 
 How to use each piece, and the rules they follow, are in [the usage guide](/docs/usage#forms).
 
@@ -19,6 +19,7 @@ How to use each piece, and the rules they follow, are in [the usage guide](/docs
 | `--ws-size-control` | 40&nbsp;px | A one-line field, a button and a segmented control |
 | `--ws-size-check`   | 20&nbsp;px | A checkbox or a radio button                       |
 | `--ws-size-step`    | 24&nbsp;px | The number of a step, in its circle                |
+| `--ws-size-icon`    | 16&nbsp;px | An icon next to text, such as the tick             |
 
 ## The primary button
 
@@ -31,14 +32,16 @@ Filled with `--ws-color-interactive`, its label in `--ws-color-on-interactive`. 
 }
 ```
 
-## Check
+## Icons
 
-`--ws-icon-check`, in `css/icons.css`, is drawn like the other icons: a mask, so it takes the color of what it stands on. A done step and a ticked box use it.
+The icons are masks, in `css/icons.css`, so they take the color of what they stand on. They are drawn at `--ws-size-icon`, 16 px, the size their strokes of 1.5 are drawn for: `--ws-icon-check` for a done step and a ticked box, `--ws-icon-calendar` for a field that takes a date.
+
+<Icons />
 
 ```css
 .done::before {
-  width: 1rem;
-  height: 1rem;
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
   background: currentcolor;
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;
@@ -71,6 +74,27 @@ A row each: a term in the voice of a label, its value in the face of a field. Th
     <dd>milica.djordjevic@<wbr />example.com</dd>
   </div>
 </dl>
+```
+
+The sections of one review step share a term column in `ws-pairs-group`, so the values of every section line up, however short the terms of one of them:
+
+```html
+<div class="ws-pairs-group">
+  <h3>About you</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Name</dt>
+      <dd>Milica Đorđević</dd>
+    </div>
+  </dl>
+  <h3>Your visit</h3>
+  <dl class="ws-pairs">
+    <div>
+      <dt>Workshop</dt>
+      <dd>Forms that check themselves</dd>
+    </div>
+  </dl>
+</div>
 ```
 
 And with `ws-pairs--amounts`, what an order costs: each amount at the right edge, in figures of one width so the digits line up, and the total in its own row.

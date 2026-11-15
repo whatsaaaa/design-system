@@ -136,8 +136,9 @@ body {
     display: block;
   }
 
+  /* the gutter of a phone: the content starts where the brand of the tab bar does */
   .pane {
-    padding: var(--ws-space-24) var(--ws-space-20);
+    padding: var(--ws-space-24) var(--ws-space-16);
     overflow: visible;
   }
 
@@ -170,7 +171,7 @@ body {
   }
 
   .article .ws-prose {
-    padding: var(--ws-space-24) var(--ws-space-20) var(--ws-space-48);
+    padding: var(--ws-space-24) var(--ws-space-16) var(--ws-space-48);
   }
 }
 
@@ -216,8 +217,20 @@ body {
   text-transform: uppercase;
 }
 
-.summary__heading + .ws-pairs {
+.summary__heading + :is(.ws-pairs, .ws-pairs-group) {
   margin-top: calc(-1 * var(--ws-space-8));
+}
+
+/* the sections of the review share the term column of their ws-pairs-group */
+.summary__section {
+  padding-bottom: var(--ws-space-8);
+  color: var(--ws-color-text);
+  font: var(--ws-text-label);
+  font-weight: var(--ws-font-weight-bold);
+}
+
+.ws-pairs + .summary__section {
+  margin-top: var(--ws-space-20);
 }
 
 .summary .ws-pairs + .summary__heading {
@@ -280,8 +293,8 @@ body {
 }
 
 .steps__item--done .steps__number::before {
-  width: 1rem;
-  height: 1rem;
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
   background: currentcolor;
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;
@@ -306,6 +319,13 @@ body {
 
 .form > * {
   align-self: stretch;
+}
+
+/* two fields that belong together share a row, down to the narrow breakpoint */
+.form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--ws-space-20);
 }
 
 .field {
@@ -366,8 +386,8 @@ body {
 }
 
 .choice__input::before {
-  width: 1rem;
-  height: 1rem;
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
   background: var(--ws-color-on-interactive);
   content: '';
   mask: var(--ws-icon-check) center / contain no-repeat;
@@ -443,5 +463,11 @@ body {
   .form-page__columns {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--ws-space-40);
+  }
+}
+
+@media (width < 40rem) {
+  .form__row {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -32,13 +32,31 @@ An element for one theme only, `ws-theme-dark` or `ws-theme-light`, is hidden by
 
 The color of the browser's own bars, `<meta name="theme-color">`, is read from the stylesheet, from `--ws-color-bg` on `<html>`, and not written into the theme module. So it is the token's value in the theme that applies, by the same rules as everything else, and the module carries no copy of a color. The price is that it is known only once the stylesheet is there: the head script sets it in the first animation frame, which a browser runs once the stylesheets of the `<head>` are loaded and before the first paint. Material for MkDocs reads its theme-color from the page the same way.
 
+A page without JavaScript, and a link preview, which reads the HTML as it is sent, would get no color at all that way. So the served `<head>` has two tags of its own: the dark background, and the light one under `media="(prefers-color-scheme: light)"`, which is the theme the stylesheet chooses with no choice by hand. They are written from the tokens when a site is built, by `themeColorMeta` in its own entry, `theme/meta`, which reads the token data: the theme module, which runs in the page, still carries no color. The head script then takes both tags over. The dark one comes first, under `not all and (prefers-color-scheme: light)`, so a reader that takes the first tag and ignores `media` gets the default theme, and a browser that knows `media` gets the same as the stylesheet. One tag without `media` would have left a light system with the dark color until the script ran, and none at all without it.
+
 ## Forms: shared measures, not components
 
 The system draws no fields and no buttons. Each app that uses it draws its own from the roles, in a few rules each, and the system gives them what they have to share to look like one family: a control height, the sizes of the small boxes, a hover and a pressed fill, a check icon, and the two pieces that are more than a box, a segmented control and a list of terms and values. A set of field classes would have to cover every state of every control in every framework's markup, which the first three apps did not need.
 
 The hover and pressed fills of the interactive color are that color a step further from the page in OKLab lightness, 0.05 and 0.1: lighter on dark, darker on light, so the label on them gains contrast in both themes. The first apps mixed the text color in instead, which barely moves the fill on Dawn, where pine and the text are about as dark.
 
+Icons have one size, `--ws-size-icon`, 16 px, and no scale of sizes. Each is drawn on a grid of 16 in strokes of 1.5, the weight of the text it stands next to. Drawn at another size the stroke scales with it: at 12 px it is just over a pixel and blurs, at 24 px it is heavier than the text beside it. The apps drew every icon at 16 px already, the tick, the icon of a field in error and the calendar of a date picker. An icon that has to be larger is a drawing of its own. The chevron of a prompt and the arrow of a link are not on the grid: they are glyphs, sized in `em` with their text.
+
+The sections of a review step share their term column through a group around their lists, `ws-pairs-group`, that holds the columns, with each list and each row in it a subgrid of them. So the column is as wide as the longest term of all the sections, measured by the browser, and a section of short terms lines up with the rest. A fixed width for the terms, a variable an app would set, was the alternative: it needs no group, but it is a guess, too wide for short terms and too narrow for a long one in another language. One list with the headings as rows of it was another, but a heading inside a `<dl>` is not a term or a value. A browser without subgrid, Chrome before 117, sizes each list apart, as before.
+
 The pressed segment of a segmented control is raised, with a thicker edge of the interactive color, not filled. A filled segment next to a filled primary button reads as a second primary button. The edge carries the state at 3:1 or more on the page and on the raised fill.
+
+## The frame on a phone: a gutter of 16 px
+
+Below 64rem one length, `--ws-space-16`, is the gutter: the brand of the tab bar starts that far in from the window's edge, and the content under it, a pane, a page or a form, is padded by the same, so the two start at one pixel. The style guide's example padded a pane 20 px, which left it 4 px off the brand, and the apps each chose for themselves. 16 px was chosen over 20 because the brand already had it, the form example and the apps used it, and on a 320 px phone the four pixels a side go to the content. The docs theme takes it on a phone too, below 48rem, where the default theme lays out for one: it padded the brand 16 px and the page and the row of its menu 24 px. From 48rem the default theme centers the page, which then shares no edge with the brand.
+
+The status line pads its items 10 px below 64rem, and 14 px from there up. At 390 px, with the mode, the keys switch and the theme button, 14 px left the path a few characters. The website set 10 px on a phone for that reason, and with it the path keeps about 32 px more. Every item takes the smaller padding, not only the path, so the items still look alike.
+
+## Breakpoints: 64rem and 40rem
+
+The system has two widths where a layout changes, and no scale of them. Below 64rem, `--ws-compact`, a page has one column. Below 40rem, `--ws-narrow`, a row of fields stacks. The first apps had only the first, so a tablet showed one field to a line in a column that had room for two: a field such as a name or a date reads well from about 17rem, and two with the gap between them and the gutters of the page fit in about 38rem.
+
+40rem is Tailwind's `sm`, as 64rem is its `lg`, so the Tailwind entry needs no breakpoints of its own: `max-sm:` and `max-lg:` are the system's two. The name says what the width is, narrow, as compact does, and not a device. A third width, such as Tailwind's `md` at 48rem, was left out: each is a layout to design and to check, and no app needed one.
 
 ## Tailwind entry: plain CSS, with an entry for Tailwind CSS v4
 

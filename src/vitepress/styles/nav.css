@@ -18,7 +18,7 @@
 }
 
 .VPNav .VPNavBar .wrapper {
-  padding: 0 var(--ws-space-8) 0 var(--ws-space-16);
+  padding: 0 var(--ws-space-16);
 }
 
 .VPNav .VPNavBar .wrapper > .container {
@@ -105,6 +105,17 @@
   visibility: hidden;
 }
 
+/*
+ * A tab, the button of a menu and the brand fill the bar from the top edge of the window,
+ * which cuts off what crosses it: their ring goes inside them, as in the tab bar of the
+ * terminal frame.
+ */
+.VPNav .VPNavBarTitle .title:focus-visible,
+.VPNav .VPNavBarMenu .VPNavBarMenuLink:focus-visible,
+.VPNav .VPNavBar .VPFlyout > .button:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
 .VPNav .VPNavBarMenu .VPNavBarMenuLink:hover,
 .VPNav .VPNavBarMenu .VPNavBarMenuGroup:hover .button {
   color: var(--ws-color-text);
@@ -149,6 +160,16 @@
 /* search: a field that names its own key */
 .VPNav .VPNavBarSearch .DocSearch-Button {
   font-family: var(--ws-font-family-mono);
+}
+
+/*
+ * The default theme gives the search button the browser's ring, by a rule that weighs more than
+ * the theme's. On a phone the button fills its row of the bar from the top edge of the window,
+ * so its ring goes inside it, as the menu button's does.
+ */
+.VPNav .VPNavBarSearch .DocSearch-Button:focus-visible {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
 
 .VPNav .DocSearch-Button .DocSearch-Button-Placeholder {
@@ -217,6 +238,19 @@
   background-color: var(--ws-color-text);
 }
 
+/*
+ * The menu button is wider than its lines by 16 px on each side: pulled out by that much, its
+ * lines end at the gutter, under the end of the page. Its ring goes inside it, at the edge of
+ * the window.
+ */
+.VPNav .VPNavBarHamburger {
+  margin-right: calc(-1 * var(--ws-space-16));
+}
+
+.VPNav .VPNavBarHamburger:focus-visible {
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
 @media (width >= 48rem) {
   .VPNav .VPNavBar .wrapper,
   .VPNav .VPNavBar.has-sidebar .wrapper {
@@ -273,7 +307,6 @@
   /* with the focus it takes the color of the ring, as the field of the search dialog does */
   .VPNav .VPNavBarSearch .DocSearch-Button:focus-visible {
     border-color: var(--ws-color-interactive);
-    outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
     outline-offset: 2px;
   }
 

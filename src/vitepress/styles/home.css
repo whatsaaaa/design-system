@@ -45,3 +45,21 @@
   border-radius: var(--ws-radius-md);
   background: var(--ws-color-raised);
 }
+
+/*
+ * The gutter of a phone, as on every page: the hero, the cards of the features and the page's
+ * own content start where the brand does. The default theme pads them 24 px there, and 48 px
+ * from 40rem.
+ */
+@media (width < 48rem) {
+  .VPHome .VPHero.VPHero,
+  .VPHome .VPFeatures.VPFeatures,
+  .VPHome > .vp-doc.container {
+    padding-inline: var(--ws-space-16);
+  }
+
+  /* the image of the hero reaches the edges of the window, through the gutter */
+  .VPHome .VPHero.VPHero .image {
+    margin-inline: calc(-1 * var(--ws-space-16));
+  }
+}

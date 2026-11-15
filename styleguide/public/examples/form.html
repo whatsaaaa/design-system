@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- the color of the browser's bars as the page is sent, for a visitor without JavaScript -->
+    <meta name="theme-color" content="#191724" media="not all and (prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#faf4ed" media="(prefers-color-scheme: light)" />
     <title>Checkout | form-builder</title>
     <link rel="icon" href="../kit/form-builder/favicon.svg" type="image/svg+xml" />
     <!-- apply what is remembered before the first paint, so they come before the stylesheet -->
@@ -73,15 +76,28 @@
 
         <div class="form-page__columns">
           <form class="form" action="#" aria-label="Checkout" data-example-form>
-            <div class="field">
-              <label class="field__label" for="name">Name</label>
-              <input
-                class="input"
-                id="name"
-                name="name"
-                autocomplete="name"
-                value="Milica Đorđević"
-              />
+            <div class="form__row">
+              <div class="field">
+                <label class="field__label" for="name">Name</label>
+                <input
+                  class="input"
+                  id="name"
+                  name="name"
+                  autocomplete="name"
+                  value="Milica Đorđević"
+                />
+              </div>
+              <div class="field">
+                <label class="field__label" for="email">Email</label>
+                <input
+                  class="input"
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  value="milica.djordjevic@example.com"
+                />
+              </div>
             </div>
             <div class="field">
               <label class="field__label" for="tickets">Tickets</label>
@@ -126,25 +142,36 @@
             </dl>
 
             <h2 class="summary__heading">Review</h2>
-            <dl class="ws-pairs">
-              <div>
-                <dt>Name</dt>
-                <dd>Milica Đorđević</dd>
-              </div>
-              <div>
-                <dt>Email</dt>
-                <dd>milica.djordjevic@<wbr />example.com</dd>
-              </div>
-              <div>
-                <dt>Note</dt>
-                <dd>Vegetarian lunch, and a seat near the door for a late arrival from Niš.</dd>
-              </div>
-            </dl>
+            <div class="ws-pairs-group">
+              <h3 class="summary__section">About you</h3>
+              <dl class="ws-pairs">
+                <div>
+                  <dt>Name</dt>
+                  <dd>Milica Đorđević</dd>
+                </div>
+                <div>
+                  <dt>Email</dt>
+                  <dd>milica.djordjevic@<wbr />example.com</dd>
+                </div>
+              </dl>
+              <h3 class="summary__section">Your visit</h3>
+              <dl class="ws-pairs">
+                <div>
+                  <dt>Workshop</dt>
+                  <dd>Forms that check themselves</dd>
+                </div>
+                <div>
+                  <dt>Note</dt>
+                  <dd>Vegetarian lunch, and a seat near the door for a late arrival from Niš.</dd>
+                </div>
+              </dl>
+            </div>
 
             <figure class="ws-code ws-code--wrap">
               <figcaption><span>order.json</span><span>json</span></figcaption>
               <pre><code><span class="line" style="--ws-code-hang: 2"><span style="color: var(--ws-syntax-punctuation)">{</span></span>
 <span class="line" style="--ws-code-hang: 4">  <span style="color: var(--ws-syntax-type)">"name"</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-string)">"Milica Đorđević"</span><span style="color: var(--ws-syntax-punctuation)">,</span></span>
+<span class="line" style="--ws-code-hang: 4">  <span style="color: var(--ws-syntax-type)">"email"</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-string)">"milica.djordjevic@example.com"</span><span style="color: var(--ws-syntax-punctuation)">,</span></span>
 <span class="line" style="--ws-code-hang: 4">  <span style="color: var(--ws-syntax-type)">"tickets"</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-constant)">2</span><span style="color: var(--ws-syntax-punctuation)">,</span></span>
 <span class="line" style="--ws-code-hang: 4">  <span style="color: var(--ws-syntax-type)">"note"</span><span style="color: var(--ws-syntax-punctuation)">:</span> <span style="color: var(--ws-syntax-string)">"Vegetarian lunch, and a seat near the door for a late arrival from Niš."</span></span>
 <span class="line" style="--ws-code-hang: 2"><span style="color: var(--ws-syntax-punctuation)">}</span></span></code></pre>

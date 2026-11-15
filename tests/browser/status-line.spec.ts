@@ -91,6 +91,26 @@ for (const colorScheme of ['dark', 'light'] as const) {
   }
 }
 
+test('pads its items less on a phone, so the path keeps more room', async ({ page }) => {
+  const paddings = () =>
+    page.locator('.ws-status-line').evaluate((line) =>
+      [...line.querySelectorAll(':scope > *, .ws-status-line__file')]
+        .filter(
+          (item) => item.getClientRects().length > 0 && !item.matches('.ws-status-line__path'),
+        )
+        .map((item) => {
+          const style = getComputedStyle(item)
+          return `${style.paddingLeft} ${style.paddingRight}`
+        }),
+    )
+  await page.setViewportSize(PHONE)
+  await open(page, '/examples/terminal.html')
+  // the mode, the file, the keys switch and the theme button
+  expect(await paddings()).toEqual(Array(4).fill('10px 10px'))
+  await page.setViewportSize(DESKTOP)
+  expect(new Set(await paddings())).toEqual(new Set(['14px 14px']))
+})
+
 test.describe('the theme button', () => {
   const themeButton = (page: Page) => page.locator('.ws-status-line__theme')
 

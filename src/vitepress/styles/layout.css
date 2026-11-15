@@ -22,7 +22,13 @@ body {
   color: var(--ws-color-text);
 }
 
-:focus-visible {
+/*
+ * The default theme gives a button the browser's own ring, as button:focus-visible, which
+ * weighs more than :focus-visible alone. A button takes the theme's ring too: a tab that opens
+ * a menu, the copy button of a code block, the controls of the status line.
+ */
+:focus-visible,
+button:focus-visible {
   outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
   outline-offset: 2px;
 }
@@ -38,11 +44,6 @@ body {
   left: 0;
   z-index: var(--vp-z-index-nav);
   height: var(--ws-size-status-line);
-}
-
-/* VitePress gives a button the browser's own ring: the status line's controls take the theme's */
-.WsStatusLine button:focus-visible {
-  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
 }
 
 .WsStatusLine .WsStatusLine-pair {
@@ -63,6 +64,25 @@ body {
   background: var(--ws-color-bg);
   color: var(--ws-color-text-secondary);
   font: var(--ws-text-caption);
+}
+
+/*
+ * The gutter of a phone, 16 px, as in the terminal frame: below 48rem, where the default theme
+ * lays out for a phone, the page and the row of the menu start where the brand does and end
+ * where the lines of the menu button do. The default theme pads them 24 px.
+ */
+@media (width < 48rem) {
+  .VPDoc.VPDoc,
+  .VPFooter.VPFooter,
+  .VPLocalNav.VPLocalNav .menu,
+  .WsNotFound.WsNotFound {
+    padding-inline: var(--ws-space-16);
+  }
+
+  /* the chevron is drawn 4 px inside its box */
+  .VPLocalNav.VPLocalNav .VPLocalNavOutlineDropdown {
+    padding-right: var(--ws-space-12);
+  }
 }
 
 /* skip link */
