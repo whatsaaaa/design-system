@@ -8,7 +8,7 @@ This is a checkout built from them. Its fields, checkbox, steps and buttons are 
 
 And as a phone shows it:
 
-<ExampleFrame src="/examples/form.html" title="A form on the system, at the width of this column" :height="1240" />
+<ExampleFrame src="/examples/form.html" title="A form on the system, at 390 px" :width="390" :height="1614" />
 
 How to use each piece, and the rules they follow, are in [the usage guide](/docs/usage#forms).
 

@@ -58,6 +58,7 @@ for (const [name, viewport] of [
       ['/docs/sample/conditions', '.vp-doc'],
       ['/docs/sample/home', '.VPHero .main'],
       ['/docs/sample/home', '.VPFeatures .container'],
+      ['/docs/sample/home', '.VPHome > .vp-doc p'],
       ['/nope', '.WsNotFound'],
     ] as const)
       test(`lines up ${content} of ${path} with the brand and the lines of the menu button`, async ({
