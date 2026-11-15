@@ -1,8 +1,8 @@
-// Bundles the stylesheets in src/css/ into dist/: each one on its own in dist/css/, and all
-// of them with the fonts and tokens in dist/index.css. Writes dist/tailwind.css, which imports
-// the same files as index.css, from dist/. Needs dist/tokens.css, dist/theme-rules.css,
-// dist/tailwind/ and dist/fonts.css. The comments between rules come along, as they carry the
-// markup of each piece.
+// Bundles the stylesheets in src/css/ into dist/: each one on its own in dist/css/, and the
+// ones index.css imports with the fonts and tokens in dist/index.css. Writes dist/tailwind.css,
+// which imports the same files as index.css, from dist/. Needs dist/tokens.css,
+// dist/theme-rules.css, dist/tailwind/ and dist/fonts.css. The comments between rules come
+// along, as they carry the markup of each piece.
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'node:path'
 import { transform } from 'lightningcss'
