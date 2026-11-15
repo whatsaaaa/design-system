@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test'
-import { PHONE, open } from './pages.ts'
+import { NARROWEST, PHONE, open } from './pages.ts'
 
 const theme = (page: Page) => page.evaluate(() => document.documentElement.dataset.theme)
 const keySwitch = (page: Page) => page.getByRole('switch', { name: 'Shortcut keys' })
@@ -12,7 +12,9 @@ const named = (page: Page) =>
   page.evaluate(() => {
     const drawn = (selector: string, pseudo: string) => {
       const element = document.querySelector(selector)
-      return !!element && getComputedStyle(element, pseudo).content !== 'none'
+      if (!element) return false
+      const style = getComputedStyle(element, pseudo)
+      return style.content !== 'none' && style.visibility === 'visible'
     }
     const caps = [...document.querySelectorAll('.ws-status-line__keys .ws-kbd')]
     return {
@@ -257,7 +259,7 @@ test.describe('where the browser refuses storage', () => {
 
 for (const [name, viewport] of [
   ['on a phone', PHONE],
-  ['on the narrowest phone', { width: 320, height: 640 }],
+  ['on the narrowest phone', NARROWEST],
   ['in a window too narrow for the key hints', { width: 900, height: 800 }],
 ] as const) {
   test.describe(`the keys switch ${name}`, () => {

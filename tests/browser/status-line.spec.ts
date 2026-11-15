@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test'
-import { DESKTOP, PHONE, open } from './pages.ts'
+import { DESKTOP, NARROWEST, PHONE, open } from './pages.ts'
 
 /** A path too long for any of the widths swept here, so it always has to give way. */
 const LONG_PATH = '~/projects/form-builder/docs/guide/conditions.md'
@@ -64,7 +64,7 @@ for (const colorScheme of ['dark', 'light'] as const) {
 
       test.beforeEach(async ({ page }) => {
         if (keys === 'off') await page.addInitScript(() => localStorage.setItem('ws-keys', 'off'))
-        await page.setViewportSize({ width: 320, height: 640 })
+        await page.setViewportSize(NARROWEST)
         await open(page, '/examples/terminal.html')
         await expect(page.getByRole('switch', { name: 'Shortcut keys' })).toHaveAttribute(
           'aria-checked',
@@ -95,7 +95,7 @@ test.describe('the theme button', () => {
   const themeButton = (page: Page) => page.locator('.ws-status-line__theme')
 
   for (const [name, viewport] of [
-    ['on the narrowest phone', { width: 320, height: 640 }],
+    ['on the narrowest phone', NARROWEST],
     ['on a phone', PHONE],
     ['on a wide screen', DESKTOP],
   ] as const) {
