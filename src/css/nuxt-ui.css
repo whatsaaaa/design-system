@@ -143,6 +143,9 @@
   /* Radius: the small one, which Nuxt UI multiplies for the sizes past xl */
   --ui-radius: var(--ws-radius-sm);
 
-  /* A modal's header is as tall as the tab bar */
+  /*
+   * Nuxt UI's headers, the app's, a dashboard's and a modal's, are as tall as the tab bar, and
+   * so is the room it leaves for the app's header above a page and what sticks below it
+   */
   --ui-header-height: var(--ws-size-tab-bar);
 }
