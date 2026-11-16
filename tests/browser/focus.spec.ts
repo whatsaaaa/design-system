@@ -235,6 +235,66 @@ test.describe("the focus rings of the docs theme's status line on a wide screen"
   })
 })
 
+/**
+ * The brand of the docs theme with a project's mark as the logo, as the guide tells a site to
+ * have it. The theme pulls the mark's empty columns out of the link, so they leave the ring,
+ * which goes inside the link, no room: the link keeps room of its own around the mark and the
+ * name, and its ring paints over neither, with the site's title and without one.
+ */
+for (const [name, viewport] of [
+  ['on a wide screen', DESKTOP],
+  ['below 60rem, where the tabs follow the brand', { width: 900, height: 800 }],
+  ['on a phone', PHONE],
+  ['on the narrowest phone', NARROWEST],
+] as const) {
+  test.describe(`the focus ring of the docs theme's brand ${name}`, () => {
+    test.use({ viewport })
+
+    for (const title of [true, false])
+      test(`goes around the mark${title ? ' and the name' : ''}, whole, and keeps clear of the bar`, async ({
+        page,
+      }) => {
+        await open(page, '/docs/sample/conditions')
+        const brand = page.locator('.VPNavBarTitle .title')
+        await brand.evaluate(async (link, title) => {
+          const logo = document.createElement('img')
+          logo.className = 'VPImage logo'
+          logo.alt = ''
+          logo.src = '/kit/form-builder/mark-on-dark.svg'
+          link.prepend(logo)
+          // themeConfig.siteTitle: false leaves the mark alone in the link
+          if (!title) link.querySelector(':scope > span')!.remove()
+          await logo.decode()
+        }, title)
+        // Tab comes to the brand from the control before it
+        await brand.evaluate((link: HTMLElement) => link.focus())
+        await page.keyboard.press('Shift+Tab')
+        await page.keyboard.press('Tab')
+        await expect(brand).toBeFocused()
+        expect(await page.evaluate(cutRing)).toEqual({ cuts: [], visible: true })
+        expect(await page.evaluate(crowdedRing, '.VPNavBar')).toEqual([])
+
+        // between the inner edge of the ring and what the link draws: the mark's pixels, an
+        // eighth of its width in from each side, and the name
+        const gap = await brand.evaluate((link) => {
+          const style = getComputedStyle(link)
+          const box = link.getBoundingClientRect()
+          const inset = -parseFloat(style.outlineOffset)
+          const mark = link.querySelector('.logo')!.getBoundingClientRect()
+          const drawn = [{ left: mark.left + mark.width / 8, right: mark.right - mark.width / 8 }]
+          const name = link.querySelector(':scope > span')
+          if (name) drawn.push(name.getBoundingClientRect())
+          return {
+            left: Math.min(...drawn.map(({ left }) => left)) - (box.left + inset),
+            right: box.right - inset - Math.max(...drawn.map(({ right }) => right)),
+          }
+        })
+        expect(gap.left).toBeGreaterThan(0)
+        expect(gap.right).toBeGreaterThan(0)
+      })
+  })
+}
+
 test("a radius of the page's own wins over the focus ring's, wherever it is written", async ({
   page,
 }) => {
