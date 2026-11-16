@@ -122,7 +122,7 @@
     "@terrazzo/cli": "^2.10.0",
     "@terrazzo/plugin-css": "^2.10.0",
     "@terrazzo/plugin-js": "^2.10.0",
-    "@tsconfig/node24": "^24.0.5",
+    "@tsconfig/node26": "^26.0.0",
     "@types/culori": "^4.0.1",
     "@types/fontkit": "^2.0.9",
     "@types/node": "^24.19.2",

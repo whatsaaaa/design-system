@@ -1,7 +1,7 @@
 // The VitePress theme, the style guide, the browser tests and the docs site the unit tests
 // build: code that a bundler compiles.
 {
-  "extends": "@tsconfig/node24/tsconfig.json",
+  "extends": "@tsconfig/node26/tsconfig.json",
   "compilerOptions": {
     "target": "es2022",
     "lib": ["es2022", "dom", "dom.iterable"],
