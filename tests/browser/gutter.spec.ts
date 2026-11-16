@@ -97,3 +97,39 @@ for (const [name, viewport] of [
       })
   })
 }
+
+/**
+ * A project's mark as the logo of a docs site: its pixels start where the page does on a phone,
+ * and where the sidebar's headings do from 60rem up. Its file keeps two empty sprite columns
+ * on each side, an eighth of its width, which the theme pulls out. The style guide has no logo,
+ * so the test puts in the one the guide tells a site to use.
+ */
+for (const [name, viewport, edge] of [
+  ['on the narrowest phone', NARROWEST, '.vp-doc'],
+  ['on a phone', PHONE, '.vp-doc'],
+  ['just below 48rem', { width: 700, height: 1024 }, '.vp-doc'],
+  ['on a wide screen', { width: 1440, height: 900 }, '.VPSidebarItem.level-0 > .item .text'],
+] as const) {
+  test(`the mark of a docs site lines up with the page ${name}`, async ({ page }) => {
+    await page.setViewportSize(viewport)
+    await open(page, '/docs/sample/conditions')
+    const edges = await page.evaluate(async (edge) => {
+      const logo = document.createElement('img')
+      logo.className = 'VPImage logo'
+      logo.alt = ''
+      logo.src = '/kit/form-builder/mark-on-dark.svg'
+      document.querySelector('.VPNavBarTitle .title')!.prepend(logo)
+      await logo.decode()
+      const box = logo.getBoundingClientRect()
+      const content = document.querySelector(edge)!
+      const style = getComputedStyle(content)
+      return {
+        mark: box.left + box.width / 8,
+        size: box.height,
+        content: content.getBoundingClientRect().left + parseFloat(style.paddingLeft),
+      }
+    }, edge)
+    expect(edges.size).toBe(32)
+    expect(edges.mark).toBe(edges.content)
+  })
+}

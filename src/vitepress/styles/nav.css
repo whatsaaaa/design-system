@@ -50,11 +50,15 @@
   letter-spacing: -0.02em;
 }
 
-/* a mark in a 64 box at 32 px draws each sprite pixel as 2 px */
+/*
+ * A mark in a 64 box at 32 px draws each sprite pixel as 2 px. A project's mark keeps two
+ * empty sprite columns on each side, 4 px here: pulled out by them, its pixels start where
+ * the brand's text would, on the edge of the page on a phone and of the sidebar's text above.
+ */
 .VPNav .VPNavBarTitle .logo {
   width: auto;
   height: 2rem;
-  margin-right: 0;
+  margin-inline: calc(-1 * var(--ws-space-4));
   image-rendering: pixelated;
 }
 
