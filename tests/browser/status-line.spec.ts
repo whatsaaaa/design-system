@@ -92,6 +92,31 @@ for (const colorScheme of ['dark', 'light'] as const) {
   }
 }
 
+for (const colorScheme of ['dark', 'light'] as const) {
+  test.describe(`the path of the docs theme's status line, ${colorScheme}`, () => {
+    test.use({ colorScheme })
+
+    test('gives way at every width, and nothing reaches past the window', async ({ page }) => {
+      await page.setViewportSize(NARROWEST)
+      await open(page, '/docs/sample/conditions')
+      await page
+        .locator('.ws-status-line__file > span')
+        .evaluate((text, path) => (text.textContent = path), LONG_PATH)
+      // from 180 px, the least the mode, the keys switch and the position fit in on their own
+      const widths = Array.from({ length: 301 }, (_, step) => 180 + step)
+      const seen = await sweep(page, [...widths, 768, 1023, 1024, 1280, DESKTOP.width])
+      expect(seen.has('hidden') && seen.has('cut')).toBe(true)
+    })
+
+    test('shows its own path whole on a phone and up', async ({ page }) => {
+      await page.setViewportSize(NARROWEST)
+      await open(page, '/docs/sample/conditions')
+      const seen = await sweep(page, [PHONE.width, 768, DESKTOP.width])
+      expect(seen).toEqual(new Set(['whole']))
+    })
+  })
+}
+
 test('pads its items less on a phone, so the path keeps more room', async ({ page }) => {
   const paddings = () =>
     page.locator('.ws-status-line').evaluate((line) =>

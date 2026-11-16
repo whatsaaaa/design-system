@@ -65,11 +65,16 @@ onUnmounted(() => {
 <template>
   <footer class="ws-status-line WsStatusLine" aria-label="Status">
     <span class="ws-status-line__mode">{{ mode }}</span>
-    <span v-if="file" class="ws-status-line__file"><span>{{ file }}</span></span>
-    <span v-if="theme.whatsaaaa?.branch" class="ws-status-line__item ws-status-line__item--wide">
-      {{ theme.whatsaaaa.branch }}
+    <!--
+      The path takes the room the other items leave, and gives way to them on its own. The
+      branch goes in it too, so it stays next to the file.
+    -->
+    <span class="ws-status-line__path">
+      <span v-if="file" class="ws-status-line__file"><span>{{ file }}</span></span>
+      <span v-if="theme.whatsaaaa?.branch" class="ws-status-line__item ws-status-line__item--wide">
+        {{ theme.whatsaaaa.branch }}
+      </span>
     </span>
-    <span class="ws-status-line__spacer" />
     <!-- Each hint is the control it names: the key clicks the button. -->
     <span class="ws-status-line__keys">
       <button
