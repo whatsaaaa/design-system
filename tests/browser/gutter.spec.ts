@@ -81,7 +81,7 @@ for (const [name, viewport] of [
             }
           }
           return {
-            brand: box('.VPNavBarTitle .title').left,
+            brand: inside(document.querySelector('.VPNavBarTitle .title')!).left,
             menu: box('.VPNavBarHamburger .container').right,
             content: inside(document.querySelector(content)!),
             localNav: document.querySelector('.VPLocalNav .menu-icon')?.getBoundingClientRect()
@@ -96,4 +96,50 @@ for (const [name, viewport] of [
         if (edges.localNav !== undefined) expect(edges.localNav).toBe(edges.brand)
       })
   })
+}
+
+/**
+ * A project's mark as the logo of a docs site: its pixels start where the page does on a phone,
+ * and where the sidebar's headings do from 60rem up, with the site's title after it and without
+ * one. Its file keeps two empty sprite columns on each side, an eighth of its width, which the
+ * theme pulls out. The style guide has no logo, so the test puts in the one the guide tells a
+ * site to use.
+ */
+for (const [name, viewport, edge] of [
+  ['on the narrowest phone', NARROWEST, '.vp-doc'],
+  ['on a phone', PHONE, '.vp-doc'],
+  ['just below 48rem', { width: 700, height: 1024 }, '.vp-doc'],
+  ['on a wide screen', { width: 1440, height: 900 }, '.VPSidebarItem.level-0 > .item .text'],
+] as const) {
+  for (const title of [true, false])
+    test(`the mark of a docs site lines up with the page ${name}${title ? '' : ', without a site title'}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport)
+      await open(page, '/docs/sample/conditions')
+      const edges = await page.evaluate(
+        async ({ edge, title }) => {
+          const brand = document.querySelector('.VPNavBarTitle .title')!
+          const logo = document.createElement('img')
+          logo.className = 'VPImage logo'
+          logo.alt = ''
+          logo.src = '/kit/form-builder/mark-on-dark.svg'
+          brand.prepend(logo)
+          // themeConfig.siteTitle: false leaves the mark alone in the link
+          if (!title) brand.querySelector(':scope > span')!.remove()
+          await logo.decode()
+          const box = logo.getBoundingClientRect()
+          const content = document.querySelector(edge)!
+          const style = getComputedStyle(content)
+          return {
+            mark: box.left + box.width / 8,
+            size: { width: box.width, height: box.height },
+            content: content.getBoundingClientRect().left + parseFloat(style.paddingLeft),
+          }
+        },
+        { edge, title },
+      )
+      expect(edges.size).toEqual({ width: 32, height: 32 })
+      expect(edges.mark).toBe(edges.content)
+    })
 }

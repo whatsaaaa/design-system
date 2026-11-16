@@ -91,7 +91,7 @@ The mode, where you are, the keys, and one or two facts at the right edge.
 </footer>
 ```
 
-The mode reads `NORMAL`, or `INSERT` while you type in a field. The path takes the room the others leave and gives way to them: it is cut with an ellipsis, and where not even its first character fits, it goes as a whole. The last item is the name of the theme, and a button that switches it, at every width. It holds both names and shows the one of the theme. The rules for each are in [the usage guide](/docs/usage#status-line).
+The mode reads `NORMAL`, or `INSERT` while you type in a field. The path takes the room the others leave and gives way to them: it is cut with an ellipsis, down to five characters, and where those do not fit it goes as a whole. The last item is the name of the theme, and a button that switches it, at every width. It holds both names and shows the one of the theme. The rules for each are in [the usage guide](/docs/usage#status-line).
 
 A focus ring in the bars is drawn inside its control, so the bars and the corners of the window do not cut it off.
 

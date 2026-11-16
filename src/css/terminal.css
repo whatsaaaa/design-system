@@ -368,9 +368,9 @@
 
 /*
  * The room the other items leave, which the path takes: the items after it go to the right
- * edge, as after a spacer. The path gives way to them inside it. It shrinks to its first
- * character and the ellipsis, then goes as a whole, padding and all, so a part of a
- * character never shows.
+ * edge, as after a spacer. The path gives way to them inside it. It is cut with an ellipsis
+ * down to five characters, then goes as a whole, padding and all: a letter or two before
+ * the ellipsis reads as a glitch, not a path.
  */
 .ws-status-line__path {
   display: flex;
@@ -392,12 +392,13 @@
 }
 
 /*
- * No room for "~…" between the padding of the path, --ws-space-14 on each side, and
- * --ws-space-10 below 64rem. The padding is written out, as a container query takes no var().
- * The browser test of the path, tests/browser/status-line.spec.ts, holds them together.
+ * No room for five characters and the ellipsis, 6ch of the caption's mono face, between the
+ * padding of the path, --ws-space-14 on each side, and --ws-space-10 below 64rem. The padding
+ * is written out, as a container query takes no var(). The browser test of the path,
+ * tests/browser/status-line.spec.ts, holds them together.
  */
 @media not (--ws-compact) {
-  @container ws-status-line-path (width < calc(2ch + 2 * 0.875rem)) {
+  @container ws-status-line-path (width < calc(6ch + 2 * 0.875rem)) {
     .ws-status-line__file {
       display: none;
     }
@@ -405,7 +406,7 @@
 }
 
 @media (--ws-compact) {
-  @container ws-status-line-path (width < calc(2ch + 2 * 0.625rem)) {
+  @container ws-status-line-path (width < calc(6ch + 2 * 0.625rem)) {
     .ws-status-line__file {
       display: none;
     }

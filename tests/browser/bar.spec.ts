@@ -23,7 +23,10 @@ const measure = (page: Page) =>
           color: style.borderLeftColor,
         }
       })
-      const brand = document.querySelector(selector.brand)!.getBoundingClientRect()
+      // the brand inside the room the link keeps around it for its ring
+      const brand = document.querySelector(selector.brand)!
+      const brandBox = brand.getBoundingClientRect()
+      const brandStyle = getComputedStyle(brand)
       return {
         sidebar: sidebar && {
           right: sidebar.getBoundingClientRect().right,
@@ -36,7 +39,10 @@ const measure = (page: Page) =>
             parseFloat(line!.paddingRight),
         },
         tabs,
-        brand: { left: brand.left, right: brand.right },
+        brand: {
+          left: brandBox.left + parseFloat(brandStyle.paddingLeft),
+          right: brandBox.right - parseFloat(brandStyle.paddingRight),
+        },
         // the rule under the bar
         rule: document.querySelector('.VPNavBar .divider-line')!.getBoundingClientRect().left,
       }

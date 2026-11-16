@@ -40,9 +40,15 @@
   background: none;
 }
 
-/* brand */
+/*
+ * brand, with room for the focus ring of the link around the mark and the name, taken from
+ * the gutter at its left, as in the tab bar of the terminal frame
+ */
 .VPNav .VPNavBarTitle .title {
   gap: var(--ws-space-10);
+  width: fit-content;
+  margin-left: calc(-1 * var(--ws-space-10));
+  padding-inline: var(--ws-space-10);
   border-bottom: 0;
   color: var(--ws-color-text);
   font: var(--ws-text-label);
@@ -50,11 +56,16 @@
   letter-spacing: -0.02em;
 }
 
-/* a mark in a 64 box at 32 px draws each sprite pixel as 2 px */
+/*
+ * A mark in a 64 box at 32 px draws each sprite pixel as 2 px. A project's mark keeps two
+ * empty sprite columns on each side, 4 px here: pulled out by them, its pixels start where
+ * the brand's text would, on the edge of the page on a phone and of the sidebar's text above.
+ */
 .VPNav .VPNavBarTitle .logo {
   width: auto;
+  max-width: none;
   height: 2rem;
-  margin-right: 0;
+  margin-inline: calc(-1 * var(--ws-space-4));
   image-rendering: pixelated;
 }
 
@@ -367,12 +378,14 @@
     padding: 0 var(--ws-space-20) 0 0;
   }
 
-  /* the link is as wide as the brand, and a brand too long for the box is cut with an ellipsis */
+  /*
+   * A brand too long for the box is cut with an ellipsis. The room for the ring at the right
+   * of the link is taken from the padding of the box, so the brand keeps the whole box.
+   */
   .VPNav .VPNavBar .VPNavBarTitle .title {
-    width: fit-content;
-    max-width: 100%;
+    max-width: calc(100% + 2 * var(--ws-space-10));
     height: var(--vp-nav-height);
-    padding: 0;
+    margin-right: calc(-1 * var(--ws-space-10));
   }
 
   .VPNav .VPNavBar .VPNavBarTitle .title > span {

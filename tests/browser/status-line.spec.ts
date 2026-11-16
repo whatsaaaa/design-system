@@ -6,8 +6,9 @@ const LONG_PATH = '~/projects/form-builder/docs/guide/conditions.md'
 
 /**
  * How far the status line's items reach past its right edge, and how its path shows: hidden,
- * cut, or whole. `room` is the width the path has, `least` the width of "~…" in the path's
- * face, and `padding` the padding the path has on its two sides together.
+ * cut, or whole. `room` is the width the path has, `least` the width of the least it shows
+ * when cut, five characters and the ellipsis, in the path's face, and `padding` the padding
+ * the path has on its two sides together.
  */
 const measure = () => {
   const line = document.querySelector('.ws-status-line')!
@@ -17,7 +18,7 @@ const measure = () => {
   const file = line.querySelector<HTMLElement>('.ws-status-line__file')!
   const text = file.querySelector('span')!
   const probe = document.createElement('span')
-  probe.textContent = '~…'
+  probe.textContent = '~/pro…'
   probe.style.cssText = `position: absolute; visibility: hidden; font: ${getComputedStyle(text).font}`
   document.body.append(probe)
   const least = probe.getBoundingClientRect().width
@@ -45,10 +46,10 @@ async function sweep(page: Page, widths: number[]) {
     // the items after the path always fit
     expect(shown.overflow, at).toBeLessThanOrEqual(0)
     if (shown.path === 'hidden') {
-      // it goes only when "~…" and the padding no longer fit
+      // it goes only when five characters, the ellipsis and the padding no longer fit
       expect(shown.room, at).toBeLessThan(shown.least + shown.padding)
     } else {
-      // never a part of a character: at least "~…", between the whole padding
+      // never a stub or a part of a character: at least five and the ellipsis, in the whole padding
       expect(shown.text, at).toBeGreaterThanOrEqual(shown.least - 0.5)
       expect(shown.around, at).toBeCloseTo(shown.padding, 1)
     }
