@@ -52,6 +52,8 @@ Below 64rem one length, `--ws-space-16`, is the gutter: the brand of the tab bar
 
 The status line pads its items 10 px below 64rem, and 14 px from there up. At 390 px, with the mode, the keys switch and the theme button, 14 px left the path a few characters. The website set 10 px on a phone for that reason, and with it the path keeps about 32 px more. Every item takes the smaller padding, not only the path, so the items still look alike.
 
+The path shows only with room for five characters and the ellipsis, `6ch` of the status line's mono face, and goes as a whole with less. With 10 px the path got the room for a letter and the ellipsis where it had gone before, `w…` on a 320 px phone, which reads as a glitch and not as a path cut on purpose. Five characters are a short word or the start of one, such as `~/pro…` or `docs/…`. Fewer leave a stub. The width is in `ch` of the line's own face, not a length from the spacing scale, so it holds characters at any font size. It is written out in the container query, next to the padding, as a query takes no `var()`.
+
 ## Breakpoints: 64rem and 40rem
 
 The system has two widths where a layout changes, and no scale of them. Below 64rem, `--ws-compact`, a page has one column. Below 40rem, `--ws-narrow`, a row of fields stacks. The first apps had only the first, so a tablet showed one field to a line in a column that had room for two: a field such as a name or a date reads well from about 17rem, and two with the gap between them and the gutters of the page fit in about 38rem.
