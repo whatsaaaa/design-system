@@ -92,6 +92,45 @@ for (const colorScheme of ['dark', 'light'] as const) {
   }
 }
 
+/**
+ * The narrowest the docs theme's status line fits in once the path is hidden: the mode, the
+ * keys switch and the position, "top" here, on their own. Off is a letter longer than on.
+ */
+const DOCS_LEAST = { on: 180, off: 187 }
+
+for (const colorScheme of ['dark', 'light'] as const) {
+  for (const keys of ['on', 'off'] as const) {
+    test.describe(`the path of the docs theme's status line, ${colorScheme}, keys ${keys}`, () => {
+      test.use({ colorScheme })
+
+      test.beforeEach(async ({ page }) => {
+        if (keys === 'off') await page.addInitScript(() => localStorage.setItem('ws-keys', 'off'))
+        await page.setViewportSize(NARROWEST)
+        await open(page, '/docs/sample/conditions')
+        await expect(page.getByRole('switch', { name: 'Shortcut keys' })).toHaveAttribute(
+          'aria-checked',
+          String(keys === 'on'),
+        )
+      })
+
+      test('gives way at every width it fits in', async ({ page }) => {
+        await page
+          .locator('.ws-status-line__file > span')
+          .evaluate((text, path) => (text.textContent = path), LONG_PATH)
+        const least = DOCS_LEAST[keys]
+        const widths = Array.from({ length: 481 - least }, (_, step) => least + step)
+        const seen = await sweep(page, [...widths, 768, 1023, 1024, 1280, DESKTOP.width])
+        expect(seen.has('hidden') && seen.has('cut')).toBe(true)
+      })
+
+      test('shows its own path whole on a phone and up', async ({ page }) => {
+        const seen = await sweep(page, [PHONE.width, 768, DESKTOP.width])
+        expect(seen).toEqual(new Set(['whole']))
+      })
+    })
+  }
+}
+
 test('pads its items less on a phone, so the path keeps more room', async ({ page }) => {
   const paddings = () =>
     page.locator('.ws-status-line').evaluate((line) =>
