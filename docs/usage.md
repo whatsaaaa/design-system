@@ -479,6 +479,33 @@ A token id reads as its variable, `--ws-button-primary-bg-hover`, and a text sty
 
 Draw a component the system specifies as its spec says, and read the spec in a test where you can, rather than copying values from it.
 
+**Parity tests.** `@whatsaaaa/design-system/testing` is a helper for Playwright that holds an implementation's gallery to the specs. Install `@playwright/test` 1.50 or a later 1.x next to the package. Only this entry needs it. The gallery shows the examples of each spec's gallery contract, marked as the contract says:
+
+- Each example has its id in `data-spec`, on the component or on an element around it, and shows one component.
+- Each part has its name in `data-slot`, or the slot the spec's `implementations` maps it to: ui-vue's `root` is `base`.
+- A hover, a pressed state and the focus are drawn when `data-demo` on the example or around it names them, `hover`, `active` or `focus`, as the pointer and the keyboard draw them. With Tailwind, a custom variant adds `[data-demo~='hover'], [data-demo~='hover'] *` to `hover`. The helper adds the attribute while it measures, and never moves the pointer. Every other state is the example's own markup: `disabled`, `aria-invalid="true"`, `aria-busy="true"`.
+- A checked, current or selected example shows the same content as the example of its kind at rest, so only the state differs.
+
+```ts
+// tests/browser/spec.spec.ts
+import { test } from '@playwright/test'
+import { expectSpec, specNames } from '@whatsaaaa/design-system/testing'
+
+for (const name of specNames())
+  test(`the gallery meets the ${name} spec`, async ({ page }) => {
+    await page.goto('/')
+    await expectSpec(page, name, { implementation: 'ui-vue' })
+  })
+```
+
+`expectSpec(page, spec, options)` takes a spec's name or its data, checks the gallery in both themes and fails the test with every failure listed:
+
+- **coverage**: every id of the gallery has an example, no `data-spec` names an id the spec does not have, and every row of the state table is drawn by an example it holds for. A row of a part that no example shows, such as an icon at xs, fails, so show the part in one.
+- **tokens**: each property of each part of each example is what its row says. An example takes the rows of its kind and size at rest, and over them the rows of its state. A token is resolved on a probe in the part, so a part of the page held in the other theme is measured in that theme. Colors are compared as colors, lengths to a 64th of a pixel.
+- **forced colors**: with `forcedColors: 'active'`, each part whose border or outline the spec gives a width keeps a border on every side or an outline, in a color other than the page's, and a focus ring stays an outline. An image of a checked, current or selected example differs from its example at rest.
+
+Its options: `implementation`, the name of an entry of the spec's `implementations` whose part map to read; `parts`, parts mapped by hand over it, a slot or a slot and a pseudo-element, such as `{ required: 'label::after' }`; `themes`, `['dark', 'light']` by default; and `setTheme(page, theme)`, by default `data-theme` on `<html>` and the system's color scheme to match. `checkSpec` takes the same and returns the failures in place of failing. `specNames()` and `loadSpec(name)` read the published specs. The helper checks what a spec says a part draws. Keys and accessibility stay with each implementation's own tests.
+
 **The component tier.** Where every implementation has to make the same decision, a spec's row names a component token. Each is an alias of a role or a measure, and follows the theme as the roles do, in a part held in the other theme too. Three groups so far:
 
 - `--ws-control-*`, every one-line control: a button, a field, a select's trigger. For each of the five sizes, `xs`, `sm`, `md` (the default), `lg` and `xl`: `--ws-control-height-<size>`, `--ws-control-gap-<size>` between the icon and the label or value, and `--ws-control-icon-size-<size>`. At every size `--ws-control-radius`, and the edge `--ws-control-border-width-rest`, `-invalid` with an error.
