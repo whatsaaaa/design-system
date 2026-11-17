@@ -1,5 +1,19 @@
 # @whatsaaaa/design-system
 
+## 0.9.0
+
+### Minor Changes
+
+- [#44](https://github.com/whatsaaaa/design-system/pull/44) [`f4a7bbe`](https://github.com/whatsaaaa/design-system/commit/f4a7bbee5e6a55ab1fe405211e31a6be329899d3) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - Component specs: what every implementation of a component draws alike, as data. `specs/<component>.spec.json`, in the package as `@whatsaaaa/design-system/specs/button.spec.json`, checked against `specs/spec.schema.json`, names a component's parts, kinds, sizes and states, its state table (for each kind, state and part, the token each CSS property takes), its keys and accessibility rules, how each implementation maps onto it and where it does not meet it yet, and the examples its gallery shows by `data-spec` id. The first two are drafts: `button`, in the kinds primary, secondary, ghost, quiet and danger, an outline in both themes, in the five sizes, and `input`, the field with its label, help and error. The style guide has a page for each, drawn from its file, in a components section next to the styles, and `docs/usage.md` explains specs and the tier in section 12.
+
+  The component tier gains the `button` group, the colors of each kind in each state: `--ws-button-<kind>-<bg|border|text>-<state>`, such as `--ws-button-primary-bg-hover`, and `--ws-button-text-disabled` and `--ws-button-border-disabled`. Nothing that exists changes.
+
+- [#41](https://github.com/whatsaaaa/design-system/pull/41) [`4d39c4c`](https://github.com/whatsaaaa/design-system/commit/4d39c4c05a5324c7339d954c197b6876c958cf38) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - A component token tier: the names every implementation of a control reads alike, such as ui-vue on Nuxt UI or an app that draws its own fields. Its first two groups are `--ws-control-*`, the height, gap and icon size of a one-line control for each of Nuxt UI's five sizes, `xs` to `xl`, with its radius and border widths, and `--ws-field-*`, the colors of a text field, a select and a select menu and of every field's label, help, error and required mark. Each is an alias of a role or a measure, declared wherever a theme is chosen, so it follows a part of the page held in the other theme. They are in `tokens/components/`, in the resolver's new `components` set and in the token data, and not in Tailwind's theme: read them by name, as `h-(--ws-control-height-md)`. `docs/usage.md` describes them, and `docs/decisions.md` says why the tier is thin.
+
+  New semantic tokens for them: `--ws-color-brand-text`, the brand red as small text, love on dark and a darker love on light that reads at 4.5:1, for the required mark; `--ws-size-control-xs`, `-sm`, `-lg` and `-xl`, the heights of the other control sizes, 28, 32, 44 and 48 px; and `--ws-size-icon-lg`, 20 px, the icon of the two large sizes. In the Tailwind entry they are `text-brand-text`, `h-control-sm` and the like. Nothing that exists changes.
+
+- [#37](https://github.com/whatsaaaa/design-system/pull/37) [`e977973`](https://github.com/whatsaaaa/design-system/commit/e977973dc10fe58ab1df3381d666fa0fc4370205) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - Remove `css/nuxt-ui.css`, deprecated in 0.8.3. ui-vue now ships the stylesheet that points Nuxt UI's colors at the roles. An app on Nuxt UI imports `@whatsaaaa/ui-vue/index.css`, which brings it; an app that imported `@whatsaaaa/design-system/css/nuxt-ui.css` directly copies the file from 0.8.3 into its own stylesheets or moves to ui-vue.
+
 ## 0.8.3
 
 ### Patch Changes
