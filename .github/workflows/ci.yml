@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     # The screenshots in tests/browser/__screenshots__ are taken in this image, so they are
     # compared in it. Its version is the version of @playwright/test, and a unit test holds the two together.
-    container: mcr.microsoft.com/playwright:v1.65.0-noble
+    container: mcr.microsoft.com/playwright:v1.65.1-noble
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
