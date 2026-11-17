@@ -2,7 +2,8 @@ import { defineConfig } from '@terrazzo/cli'
 import css from '@terrazzo/plugin-css'
 import js from '@terrazzo/plugin-js'
 import { tailwindTheme, tailwindVariants } from './scripts/lib/tailwind.ts'
-import { chosen, rootUnchosen, themeRules } from './scripts/lib/theme-selectors.ts'
+import { anyChosen, chosen, rootUnchosen, themeRules } from './scripts/lib/theme-selectors.ts'
+import { tierGroups } from './scripts/lib/tier.ts'
 
 /** Re-indents the declarations Terrazzo hands to `prepare`. */
 const indent = (declarations: string, spaces: number) =>
@@ -10,6 +11,9 @@ const indent = (declarations: string, spaces: number) =>
 
 /** The selectors of a theme block, one to a line. */
 const selectors = (theme: 'dark' | 'light') => chosen(theme).replace(', ', ',\n')
+
+/** The groups of the component tier, as globs of their tokens. */
+const tier = tierGroups.map((group) => `${group}.**`)
 
 const notice = `/*
  * Whatsaaaa design tokens.
@@ -36,7 +40,7 @@ export default defineConfig({
         {
           // everything that is the same in both themes
           input: { theme: 'dark' },
-          exclude: ['color.**'],
+          exclude: ['color.**', ...tier],
           prepare: (declarations) => `${notice}\n\n:root {\n  ${indent(declarations, 2)}\n}`,
         },
         {
@@ -51,6 +55,15 @@ export default defineConfig({
           prepare: (declarations) =>
             `${selectors('light')} {\n  color-scheme: light;\n  ${indent(declarations, 2)}\n}\n\n` +
             `@media (prefers-color-scheme: light) {\n  ${rootUnchosen} {\n    color-scheme: light;\n    ${indent(declarations, 4)}\n  }\n}`,
+        },
+        {
+          // the component tier: aliases of the roles and measures, declared again on every element
+          // that can choose a theme, since a variable that reads another is read where it is
+          // declared. So a tier token follows a part of the page held in the other theme.
+          input: { theme: 'dark' },
+          include: tier,
+          prepare: (declarations) =>
+            `:root,\n${anyChosen.replaceAll(', ', ',\n')} {\n  ${indent(declarations, 2)}\n}`,
         },
       ],
     }),

@@ -1,0 +1,40 @@
+{
+  "field": {
+    "$description": "What a text field, a select and a select menu share, and every field's label, help, error and required mark.",
+    "bg": { "$type": "color", "$value": "{color.bg}" },
+    "text": {
+      "$type": "color",
+      "$description": "The value.",
+      "rest": { "$value": "{color.text}" },
+      "disabled": { "$value": "{color.text-faint}" }
+    },
+    "border": {
+      "$type": "color",
+      "rest": { "$value": "{color.field-border}" },
+      "hover": { "$value": "{color.text-secondary}" },
+      "invalid": { "$value": "{color.danger}" },
+      "disabled": { "$value": "{color.text-faint}" }
+    },
+    "icon": {
+      "$type": "color",
+      "$description": "An icon in the field, such as a select's chevron.",
+      "$value": "{color.text-secondary}"
+    },
+    "label": {
+      "text": { "$type": "color", "$value": "{color.text}" }
+    },
+    "help": {
+      "text": { "$type": "color", "$value": "{color.text-secondary}" }
+    },
+    "error": {
+      "$description": "The message under a field in error, a word with the danger icon before it.",
+      "text": { "$type": "color", "$value": "{color.danger-text}" },
+      "icon": { "$type": "color", "$value": "{color.danger}" },
+      "font-weight": { "$type": "fontWeight", "$value": "{font.weight.medium}" }
+    },
+    "required": {
+      "$description": "The asterisk after the label of a field that must be filled in.",
+      "text": { "$type": "color", "$value": "{color.brand-text}" }
+    }
+  }
+}

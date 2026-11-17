@@ -302,6 +302,51 @@ test.describe('themes', () => {
       }
       await context.close()
     })
+
+    // A variable that reads another is read where it is declared: declared on <html> alone, a
+    // token of the component tier would keep the page's theme inside a part held in the other.
+    for (const colorScheme of ['dark', 'light'] as const)
+      test(`the component tier follows a part held in a theme, on a ${colorScheme} system`, async ({
+        browser,
+      }) => {
+        const { context, page } = await plainPage(browser, colorScheme)
+        await page.evaluate(() =>
+          document.body.insertAdjacentHTML(
+            'beforeend',
+            `<div id="light" data-theme="light"><div id="dark" class="dark">
+              <div id="light-again" class="light"></div>
+            </div></div>
+            <div id="dark-again" data-theme="dark"></div>`,
+          ),
+        )
+        for (const selector of ['body', '#light', '#dark', '#light-again', '#dark-again']) {
+          const pairs = await page.locator(selector).evaluate((element) => {
+            const read = (value: string) => {
+              const probe = element.appendChild(document.createElement('span'))
+              probe.style.color = value
+              const color = getComputedStyle(probe).color
+              probe.remove()
+              return color
+            }
+            return [
+              ['--ws-field-border-invalid', '--ws-color-danger'],
+              ['--ws-field-required-text', '--ws-color-brand-text'],
+              ['--ws-field-bg', '--ws-color-bg'],
+            ].map(([tier, role]) => [read(`var(${tier})`), read(`var(${role})`)])
+          })
+          for (const [tier, role] of pairs) expect(tier, selector).toBe(role)
+        }
+        // and the two themes differ there, so a part that kept the page's theme would show
+        const required = (selector: string) =>
+          page.locator(selector).evaluate((element) => {
+            element.style.color = 'var(--ws-field-required-text)'
+            return getComputedStyle(element).color
+          })
+        expect(await required('#light')).not.toBe(await required('#dark'))
+        expect(await required('#light-again')).toBe(await required('#light'))
+        expect(await required('#dark-again')).toBe(await required('#dark'))
+        await context.close()
+      })
   })
 
   test('a theme chosen by hand wins over the system', async ({ page }) => {

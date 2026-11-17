@@ -45,6 +45,10 @@
       "$value": "{palette.main.love}",
       "$description": "The brand accent: tongue, cursor, prompt chevron, active markers. Graphics and large type."
     },
+    "brand-text": {
+      "$value": "{palette.main.love}",
+      "$description": "Brand red as small text, such as the required mark of a field. Love on dark; on light love 0.05 further from the page in OKLab lightness, so it reads at 4.5:1."
+    },
     "brand-fill": {
       "$value": "{palette.main.love}",
       "$description": "Solid chip behind small text, such as the mode segment."

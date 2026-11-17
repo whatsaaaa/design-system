@@ -112,14 +112,14 @@ Rules:
 
 - **Brand is not for controls.** What you press, and its hover, focus and checked states, uses `--ws-color-interactive`: buttons, links, the focus ring, checked boxes. `--ws-color-brand` is the accent: the mark, the cursor, a prompt's chevron, and the marks of where you are, such as the bar and number of the current tab and the mode of the status line. A mark of where you are may sit on a control, as on the current tab, because it says where you are, not what to press. So the current step of a form takes brand too: its number in `--ws-color-on-brand` on `--ws-color-brand-fill`.
 - **An error uses the danger tokens, not brand.** A field in error takes `--ws-color-danger` for its border and its icon, and its message `--ws-color-danger-text`. On the dark theme they have the value of brand, but they are other roles: on the light theme brand is too light for small text, and the message takes the text color.
-- **Brand is for graphics and large type.** For small text on the brand color use `--ws-color-on-brand` on `--ws-color-brand-fill`.
+- **Brand is for graphics and large type.** For small text on the brand color use `--ws-color-on-brand` on `--ws-color-brand-fill`. For small text in the brand red, such as the required mark of a field, use `--ws-color-brand-text`, which reads at 4.5:1 in both themes.
 - **Faint is never body text.** `--ws-color-text-faint` is 3:1.
 - **Status text uses the `-text` token**, not the status color. On the light theme the two differ.
 - **A status is never color alone.** Give it a label, an icon or a word.
 - **Code blocks are dark in both themes.** Use `--ws-code-*` and `--ws-syntax-*` for them, not the roles.
 - **No placeholders in fields.** Put the hint under the field.
 
-The pairs that are checked for contrast are in `tokens/contrast.json`. If you need a new pair, add it there.
+The pairs that are checked for contrast are in `tokens/contrast.json`, and those of the component tokens of section 12 follow from their names. If you need a new pair, add it there.
 
 ## 3. Theme
 
@@ -223,7 +223,7 @@ Do not load other fonts, and do not load these from a CDN. Set `font-variant-lig
 
 - Space: `--ws-space-2` to `--ws-space-64`, named by px, set in rem. Use them for padding, margin and gap.
 - The gutter of a phone is `--ws-space-16`. Below 64rem the tab bar starts its brand that far in from the window's edge, and ends its end that far from the other. Pad what is under it by the same, a pane, a page or a form, and its content starts at the pixel the brand starts at. From 64rem a pane takes the padding of its own design.
-- Sizes: `--ws-size-control` (40 px) is the height of a one-line field, a button and a segmented control. `--ws-size-check` (20 px) is a checkbox or a radio button, `--ws-size-step` (24 px) the circle of a step number and `--ws-size-icon` (16 px) an icon next to text. Use them for those, not a space token.
+- Sizes: `--ws-size-control` (40 px) is the height of a one-line field, a button and a segmented control. `--ws-size-check` (20 px) is a checkbox or a radio button, `--ws-size-step` (24 px) the circle of a step number and `--ws-size-icon` (16 px) an icon next to text. Use them for those, not a space token. A control of another size takes its height and its icon size from the component tokens of section 12.
 - Radius: `--ws-radius-xs` (key caps), `-sm` (inline code, tags), `-md` (inputs, buttons), `-lg` (blocks, cards), `-xl` (the window), `-full` (dots).
 - Borders, not shadows: `--ws-border-width-thin`, `-medium`, `-thick`.
 - Motion: `--ws-motion-duration-fast`, `-base`, `-slow` with `--ws-motion-easing-standard`. Wrap movement in `@media (prefers-reduced-motion: no-preference)`.
@@ -266,7 +266,7 @@ The markup of each piece is in the comment above its rules, in its stylesheet in
 
 ### Forms
 
-The system draws no fields and no buttons: draw them from the roles, with these.
+The system draws no fields and no buttons: draw them from the roles and the component tokens of section 12, with these.
 
 - **One height.** A one-line field, a button and a segmented control are `--ws-size-control` tall. A checkbox or a radio button is `--ws-size-check`, a step number's circle `--ws-size-step`.
 - **Rows of fields.** Fields that belong together, such as a date and a time, may share a row from 40rem up. Below it, `@media (width < 40rem)`, each takes a line of its own.
@@ -458,6 +458,32 @@ dark['color.bg'].$value.hex // '#191724'
 ```
 
 The sources are in `tokens/`, in the Design Tokens Community Group format.
+
+## 12. Component tokens
+
+The component tier names what every implementation of a control has to draw alike, such as ui-vue on Nuxt UI or an app that draws its own fields. Each token is an alias of a role or a measure, and follows the theme as the roles do, in a part held in the other theme too. Two groups so far:
+
+- `--ws-control-*`, every one-line control: a button, a field, a select's trigger. For each of the five sizes, `xs`, `sm`, `md` (the default), `lg` and `xl`: `--ws-control-height-<size>`, `--ws-control-gap-<size>` between the icon and the label or value, and `--ws-control-icon-size-<size>`. At every size `--ws-control-radius`, and the edge `--ws-control-border-width-rest`, `-invalid` with an error.
+- `--ws-field-*`, a text field, a select and a select menu: `--ws-field-bg`, the value `--ws-field-text-rest` and `-disabled`, the edge `--ws-field-border-rest`, `-hover`, `-invalid` and `-disabled`, an icon in it `--ws-field-icon`, and around it `--ws-field-label-text`, `--ws-field-help-text`, `--ws-field-error-text` with `--ws-field-error-icon` and `--ws-field-error-font-weight`, and `--ws-field-required-text` for the asterisk.
+
+Read them by name, where the control is drawn, and they keep in step with the system:
+
+```css
+.field {
+  height: var(--ws-control-height-md);
+  border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
+  border-radius: var(--ws-control-radius);
+  background: var(--ws-field-bg);
+  color: var(--ws-field-text-rest);
+}
+
+.field[aria-invalid='true'] {
+  border-color: var(--ws-field-border-invalid);
+  border-width: var(--ws-control-border-width-invalid);
+}
+```
+
+They are not in Tailwind's theme, so no other element takes a field's color by accident. With Tailwind, read them with the variable shorthand: `h-(--ws-control-height-md) rounded-(--ws-control-radius) border-(--ws-field-border-rest)`. The tokens are in `tokens/components/`, one file per group, and in the data of section 11.
 
 ## Before you finish
 

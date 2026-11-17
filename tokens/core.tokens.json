@@ -639,12 +639,40 @@
       },
       "$description": "Height of the status line."
     },
+    "control-xs": {
+      "$value": {
+        "value": 1.75,
+        "unit": "rem"
+      },
+      "$description": "Height of a one-line control of the extra small size, xs."
+    },
+    "control-sm": {
+      "$value": {
+        "value": 2,
+        "unit": "rem"
+      },
+      "$description": "Height of a one-line control of the small size, sm."
+    },
     "control": {
       "$value": {
         "value": 2.5,
         "unit": "rem"
       },
-      "$description": "Height of a one-line field, a button and a segmented control."
+      "$description": "Height of a one-line field, a button and a segmented control. The medium size, md, and the default."
+    },
+    "control-lg": {
+      "$value": {
+        "value": 2.75,
+        "unit": "rem"
+      },
+      "$description": "Height of a one-line control of the large size, lg."
+    },
+    "control-xl": {
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      },
+      "$description": "Height of a one-line control of the extra large size, xl."
     },
     "check": {
       "$value": {
@@ -666,6 +694,13 @@
         "unit": "rem"
       },
       "$description": "An icon next to text, such as a tick, the icon of a callout or a calendar."
+    },
+    "icon-lg": {
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      },
+      "$description": "An icon in a control of the two large sizes, lg and xl."
     }
   },
   "motion": {

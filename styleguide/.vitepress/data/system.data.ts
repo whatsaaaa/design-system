@@ -2,7 +2,7 @@
 // sources and the built tokens, so the guide cannot drift from the system.
 import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { type Measured, measureAll } from '../../../scripts/lib/contrast.ts'
+import { type Measured, measureAll, readPairs } from '../../../scripts/lib/contrast.ts'
 import { type Theme, type TokenId, tokens } from '../../../scripts/lib/tokens.ts'
 import { colorHex } from '../../../src/color.ts'
 
@@ -130,7 +130,8 @@ export default {
           parseFloat(b.value) * (b.value.endsWith('rem') ? 16 : 1),
       )
 
-    const measured = measureAll()
+    // the pairs of the roles; the component tier's come with the pages of its components
+    const measured = measureAll(readPairs())
     const contrast: ContrastRow[] = []
     for (const pair of measured.filter((entry) => entry.theme === 'dark')) {
       const of = (theme: Theme) => {

@@ -27,7 +27,7 @@ export const chosen = (theme: Theme): string =>
  * An element that chooses a theme, either one. Any data-theme counts, as it always has, and so
  * does a class that names one theme.
  */
-const anyChosen = '[data-theme], .dark:where(:not(.light)), .light:where(:not(.dark))'
+export const anyChosen = '[data-theme], .dark:where(:not(.light)), .light:where(:not(.dark))'
 
 /** <html> when it chooses nothing, so the system decides. */
 export const rootUnchosen = `:root:not(${anyChosen})`
