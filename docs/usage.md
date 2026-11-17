@@ -52,7 +52,7 @@ The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not 
 
 `css/nuxt-ui.css` is deprecated and is removed in 0.9.0. An app on Nuxt UI gets it from ui-vue, which `@whatsaaaa/ui-vue/index.css` brings, and imports none of the lines below. An app that imports it directly copies the file from 0.8.3 into its own stylesheets and imports that copy in its place.
 
-It is not in the entry, as it has to come after Nuxt UI, so an app on Nuxt UI imports it last:
+It is not in the entry, as it has to come after Nuxt UI, so an app on Nuxt UI without ui-vue imports it last, until 0.9.0:
 
 ```css
 @import '@whatsaaaa/design-system/tailwind.css';

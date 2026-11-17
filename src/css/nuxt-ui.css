@@ -16,7 +16,7 @@
  * color (500) to the text (950), so a low shade is a faint tint in both themes.
  *
  * It reads the tokens and comes after Nuxt UI's own stylesheet, so it is not in index.css or
- * tailwind.css. An app's stylesheet ends its imports with it:
+ * tailwind.css. An app on Nuxt UI without ui-vue ends its imports with it, until 0.9.0:
  *
  *   @import '@whatsaaaa/design-system/tailwind.css';
  *   @import '@nuxt/ui';

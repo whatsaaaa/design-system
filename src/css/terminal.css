@@ -609,11 +609,11 @@
   }
 
   /* The row runs from edge to edge, so the current tab has no border at an end of it. */
-  .ws-tabs li:first-child a[aria-current] {
+  .ws-tabs li:first-child a[aria-current]:not([aria-current='false']) {
     border-left-color: transparent;
   }
 
-  .ws-tabs li:last-child a[aria-current] {
+  .ws-tabs li:last-child a[aria-current]:not([aria-current='false']) {
     border-right-color: transparent;
   }
 
