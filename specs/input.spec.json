@@ -347,6 +347,14 @@
     },
     {
       "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "height",
@@ -413,6 +421,14 @@
       "variant": "*",
       "state": "rest",
       "part": "help",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
       "property": "font-size",
       "size": "sm",
       "token": "text.body-sm"
@@ -491,6 +507,14 @@
     },
     {
       "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "height",
@@ -563,6 +587,14 @@
     },
     {
       "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "height",
@@ -629,6 +661,14 @@
       "variant": "*",
       "state": "rest",
       "part": "help",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
       "property": "font-size",
       "size": "xl",
       "token": "text.body"

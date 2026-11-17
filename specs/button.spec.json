@@ -261,6 +261,20 @@
       "variant": "quiet",
       "state": "rest",
       "part": "root",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "value": "0"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
       "property": "color",
       "token": "button.quiet.text.rest"
     },
@@ -270,6 +284,20 @@
       "part": "root",
       "property": "font-weight",
       "token": "font.weight.regular"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "value": "auto"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "value": "0"
     },
     {
       "variant": "quiet",

@@ -25,7 +25,7 @@ const spec = computed(() => data[props.of]!)
       <!-- the rows of every kind first, then each kind's own -->
       <tbody v-for="group in spec.stateGroups" :key="group.variant ?? '*'">
         <tr class="group">
-          <th colspan="3" scope="colgroup">{{ group.variant ?? 'every kind' }}</th>
+          <th colspan="3" scope="rowgroup">{{ group.variant ?? 'every kind' }}</th>
         </tr>
         <tr v-for="row in group.rows" :key="`${row.state} ${row.part} ${row.property}`">
           <td class="ws-table__text">

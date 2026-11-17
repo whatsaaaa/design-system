@@ -28,5 +28,6 @@ defineProps<{
   margin-top: var(--ws-space-4);
   color: var(--ws-color-text-secondary);
   font: var(--ws-text-caption);
+  white-space: nowrap;
 }
 </style>

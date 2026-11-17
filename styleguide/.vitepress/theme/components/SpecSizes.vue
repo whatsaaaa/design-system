@@ -42,7 +42,7 @@ function kinds(variants: string[]) {
             >
               <code>{{ target.part }}</code> <code>{{ target.property }}</code>
             </span>
-            <span v-if="row.pattern" class="use">{{ row.pattern }}</span>
+            <span v-if="row.pattern" class="use pattern">{{ row.pattern }}</span>
             <span v-if="row.variants" class="use">{{ kinds(row.variants) }}</span>
           </td>
           <td v-for="size in sizes" :key="size">
@@ -60,7 +60,11 @@ function kinds(variants: string[]) {
 <style scoped>
 /* six columns of short values: a narrower padding keeps them in a column of text */
 .ws-table :is(th, td) {
-  padding-inline: var(--ws-space-10);
+  padding-inline: var(--ws-space-6);
+}
+
+.ws-table :is(th, td):first-child {
+  padding-inline-start: var(--ws-space-10);
 }
 
 .target {
@@ -81,5 +85,9 @@ function kinds(variants: string[]) {
   margin-top: var(--ws-space-4);
   color: var(--ws-color-text-secondary);
   font: var(--ws-text-caption);
+}
+
+.pattern {
+  white-space: nowrap;
 }
 </style>
