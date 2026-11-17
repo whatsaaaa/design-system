@@ -18,7 +18,7 @@ The tokens are written in the Design Tokens Community Group format (the 2025.10 
 | Style Dictionary 5                                                                  | The long-standing tool, with DTCG support since version 4 | Its own docs say the 2025.10 format is not fully supported yet, and a theme switch needs a custom format                                                                                                                                          |
 | Hand-written, as Open Props, Radix Colors, the Rosé Pine and Catppuccin palettes do | A script that turns a JavaScript object into CSS          | The least machinery, but a format of our own. Nothing else could read the tokens                                                                                                                                                                  |
 
-Two things Terrazzo does not do are done here. Its contrast rule only checks the default theme, so the contrast of every pair is a unit test over both themes, driven by `tokens/contrast.json`. And its JavaScript output is the resolver API, which is right for build scripts and is what the package exports as data.
+Two things Terrazzo does not do are done here. Its contrast rule only checks the default theme, so the contrast of every pair is a unit test over both themes, driven by `tokens/contrast.json` and by the names of the component tier. And its JavaScript output is the resolver API, which is right for build scripts and is what the package exports as data.
 
 Colors are written as sRGB hex, the exact Rosé Pine values, not converted to another color space, because the contrast figures are measured from those values.
 
@@ -124,7 +124,7 @@ Depending on the Fontsource packages at runtime was the alternative. It would ma
 
 ## Checks
 
-- Contrast is a unit test, not a manual table: `tokens/contrast.json` lists the pairs and their bars.
+- Contrast is a unit test, not a manual table: `tokens/contrast.json` lists the pairs and their bars, and the component tier's pairs follow from its names.
 - Stylelint rejects a color that is not a token in the stylesheets.
 - The screenshots are taken and compared in the Playwright container, on Linux, because text is drawn differently on every system. They are committed, so a visual change shows in a pull request.
 - Lint and format follow form-builder: oxlint, ESLint for Vue and TypeScript, and oxfmt.

@@ -1,6 +1,7 @@
 // The component tier: tokens/components/, one file per group, named for its group. The token build
 // emits the groups on the theme selectors and leaves them out of Tailwind's theme, and the contrast
-// check pairs their colors by name, all from this list, so a new file is the whole of a new group.
+// check pairs their colors by name, all from this list. So a new group is a new file here and a
+// line in the components set of tokens/whatsaaaa.resolver.json, which the build reads.
 import { readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 

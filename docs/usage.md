@@ -135,7 +135,7 @@ Rules:
 - **Code blocks are dark in both themes.** Use `--ws-code-*` and `--ws-syntax-*` for them, not the roles.
 - **No placeholders in fields.** Put the hint under the field.
 
-The pairs that are checked for contrast are in `tokens/contrast.json`. If you need a new pair, add it there.
+The pairs that are checked for contrast are in `tokens/contrast.json`, and those of the component tokens of section 12 follow from their names. If you need a new pair, add it there.
 
 ## 3. Theme
 
