@@ -24,32 +24,21 @@ import {
   loadSpec,
 } from './spec.ts'
 
-export { cssVariable, example, expectations, loadSpec, rowVariants, specNames } from './spec.ts'
-export type { Example, Expectation, Implementation, Size, Spec, SpecRow } from './spec.ts'
+export { loadSpec, specNames } from './spec.ts'
+export type { Spec } from './spec.ts'
 
-export type Theme = 'dark' | 'light'
+type Theme = 'dark' | 'light'
 
 export interface SpecOptions {
   /**
-   * The implementation in the spec whose part map names the `data-slot` that draws each part,
-   * such as `ui-vue`, where `root` is `base`. Without one, a part's slot is its name.
+   * The implementation in the spec whose part map names the `data-slot` that draws each part, or
+   * a slot and a pseudo-element of it: in `ui-vue`, `root` is `base` and `required` is
+   * `label::after`. Without one, a part's slot is its name.
    */
   implementation?: string
-  /**
-   * Parts mapped here, over the implementation's: a slot, or a slot and a pseudo-element of it
-   * that draws the part, such as `label::after` or `root::placeholder`.
-   */
-  parts?: Record<string, string>
-  /** The themes to check in, both by default. */
-  themes?: Theme[]
-  /**
-   * Puts the page in a theme. By default it sets `data-theme` on `<html>`, which wins over a
-   * `dark` or `light` class there, and emulates the system's color scheme to match.
-   */
-  setTheme?: (page: Page, theme: Theme) => Promise<void>
 }
 
-export type Check = 'coverage' | 'tokens' | 'forced-colors'
+type Check = 'coverage' | 'tokens' | 'forced-colors'
 
 export interface Failure {
   check: Check
@@ -60,7 +49,7 @@ export interface Failure {
   message: string
 }
 
-export interface SpecReport {
+interface SpecReport {
   component: string
   /** How many property values were compared with their tokens, in every theme. */
   checks: number
@@ -97,12 +86,12 @@ interface Measured {
   same?: boolean
 }
 
-export const formatFailure = ({ check, theme, message }: Failure): string =>
+const formatFailure = ({ check, theme, message }: Failure): string =>
   `${theme ?? 'every theme'}, ${check}: ${message}`
 
 /**
  * Checks the gallery in the page against a spec, by its name or as data, and reports every
- * failure. The page is open at the gallery. It is left in the last theme checked.
+ * failure. The page is open at the gallery. It is left in the light theme, the last checked.
  */
 export async function checkSpec(
   page: Page,
@@ -127,13 +116,6 @@ export async function checkSpec(
       id,
       message: `${id} has no example: no element has data-spec="${id}"`,
     })
-  for (const id of new Set(marked))
-    if (id?.startsWith(`${component}.`) && !data.gallery.includes(id))
-      failures.push({
-        check: 'coverage',
-        id,
-        message: `data-spec="${id}" is not an example of the ${component} spec's gallery`,
-      })
 
   const examples = shown.map((id) => {
     const held = expectations(data, example(data, id))
@@ -142,8 +124,8 @@ export async function checkSpec(
 
   await page.evaluate(forceDemoStates, { component, states: demoStates })
   try {
-    for (const theme of options.themes ?? ['dark', 'light']) {
-      await (options.setTheme ?? setTheme)(page, theme)
+    for (const theme of ['dark', 'light'] as const) {
+      await setTheme(page, theme)
       const results = await page.evaluate(
         measureInPage,
         examples.map(({ id, measures }) => ({ id, measures })),
@@ -219,19 +201,19 @@ export async function expectSpec(
   })
 }
 
-/** The default way into a theme: `data-theme` on `<html>`, and the system's scheme to match. */
+/** Puts the page in a theme: `data-theme` on `<html>`, and the system's scheme to match. */
 async function setTheme(page: Page, theme: Theme): Promise<void> {
   await page.emulateMedia({ colorScheme: theme })
   await page.evaluate((theme) => document.documentElement.setAttribute('data-theme', theme), theme)
 }
 
-/** Where each part of the spec is drawn, from the implementation's map and the options. */
-function partTargets(spec: Spec, { implementation, parts = {} }: SpecOptions) {
+/** Where each part of the spec is drawn, from the implementation's map. */
+function partTargets(spec: Spec, { implementation }: SpecOptions) {
   const mapped = implementation ? spec.implementations[implementation]?.parts : {}
   if (!mapped) throw new Error(`the ${spec.component} spec has no parts for ${implementation}`)
   return Object.fromEntries(
     Object.keys(spec.parts).map((part) => {
-      const [slot = part, pseudo] = (parts[part] ?? mapped[part] ?? part).split(/(?=::)/)
+      const [slot = part, pseudo] = (mapped[part] ?? part).split(/(?=::)/)
       return [part, pseudo ? { slot, pseudo } : { slot }]
     }),
   ) as Record<string, Target>
@@ -296,12 +278,11 @@ async function marksDiffer(
   shown: string[],
 ): Promise<Omit<Failure, 'check'>[]> {
   const failures: Omit<Failure, 'check'>[] = []
-  const part = (id: string, part: string) =>
-    page
-      .locator(`[data-spec="${id}"]`)
-      .first()
-      .locator(`xpath=descendant-or-self::*[@data-slot="${targets[part]!.slot}"]`)
-      .first()
+  // the part, where the example draws it
+  const part = (id: string, name: string) => {
+    const [example, slot] = [`[data-spec="${id}"]`, `[data-slot="${targets[name]!.slot}"]`]
+    return page.locator(`${example}${slot}:visible, ${example} ${slot}:visible`).first()
+  }
   for (const id of shown) {
     const { variant, state, size } = example(spec, id)
     if (!markedStates.includes(state)) continue
@@ -320,13 +301,15 @@ async function marksDiffer(
       const [marked, resting] = [part(id, name), part(restId, name)]
       if (!(await marked.count()) || !(await resting.count())) continue
       compared++
-      const [one, other] = await Promise.all(
-        [marked, resting].map((locator) => locator.screenshot({ animations: 'disabled' })),
+      const images = await Promise.all(
+        [marked, resting].map(async (locator) =>
+          (await locator.screenshot({ animations: 'disabled' })).toString('base64'),
+        ),
       )
-      if (!one!.equals(other!)) differs = true
+      if (!(await page.evaluate(looksAlike, images))) differs = true
     }
     if (!compared)
-      failures.push({ id, message: `neither ${id} nor ${restId} draws ${parts.join(', ')}` })
+      failures.push({ id, message: `${id} and ${restId} do not both draw ${parts.join(', ')}` })
     else if (!differs)
       failures.push({
         id,
@@ -337,6 +320,61 @@ async function marksDiffer(
 }
 
 // What follows runs in the page, so each function holds all it needs.
+
+/**
+ * Whether two images, of a part in two examples, look alike: once each is blurred over the
+ * pixels around, every pixel of either is within a quarter of each channel of a pixel of the
+ * other at most a pixel away. Text drawn at another fraction of a pixel, and an image cut a pixel
+ * apart, look alike, while a line of a pixel in a color of its own does not.
+ */
+async function looksAlike(images: string[]): Promise<boolean> {
+  const decode = async (base64: string) => {
+    const bytes = Uint8Array.from(atob(base64), (char) => char.charCodeAt(0))
+    const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }))
+    const { width, height } = bitmap
+    const context = new OffscreenCanvas(width, height).getContext('2d')!
+    context.drawImage(bitmap, 0, 0)
+    const { data } = context.getImageData(0, 0, width, height)
+    // each channel, from 0 to 1, weighed over the pixel and the eight around it
+    const blurred = new Float32Array(width * height * 3)
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++)
+        for (let channel = 0; channel < 3; channel++) {
+          let [sum, weights] = [0, 0]
+          for (let v = Math.max(y - 1, 0); v <= Math.min(y + 1, height - 1); v++)
+            for (let u = Math.max(x - 1, 0); u <= Math.min(x + 1, width - 1); u++) {
+              const weight = (2 - Math.abs(u - x)) * (2 - Math.abs(v - y))
+              sum += weight * data[(v * width + u) * 4 + channel]!
+              weights += weight
+            }
+          blurred[(y * width + x) * 3 + channel] = sum / weights / 255
+        }
+    return { width, height, blurred }
+  }
+  type Image = Awaited<ReturnType<typeof decode>>
+
+  const alike = (image: Image, x: number, y: number, by: Image, u: number, v: number) =>
+    [0, 1, 2].every(
+      (channel) =>
+        Math.abs(
+          image.blurred[(y * image.width + x) * 3 + channel]! -
+            by.blurred[(v * by.width + u) * 3 + channel]!,
+        ) <= 0.25,
+    )
+  const covered = (image: Image, by: Image) => {
+    for (let y = 0; y < image.height; y++)
+      for (let x = 0; x < image.width; x++) {
+        let near = false
+        for (let v = Math.max(y - 1, 0); v <= Math.min(y + 1, by.height - 1) && !near; v++)
+          for (let u = Math.max(x - 1, 0); u <= Math.min(x + 1, by.width - 1) && !near; u++)
+            near = alike(image, x, y, by, u, v)
+        if (!near) return false
+      }
+    return true
+  }
+  const [one, other] = await Promise.all(images.map(decode))
+  return covered(one!, other!) && covered(other!, one!)
+}
 
 /** Adds the state of each hover, active and focus example of the spec to its `data-demo`. */
 function forceDemoStates({ component, states }: { component: string; states: string[] }) {

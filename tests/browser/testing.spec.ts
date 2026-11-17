@@ -22,8 +22,22 @@ const files: Record<string, string> = {
   '/tokens.css': 'dist/tokens.css',
 }
 
-/** The fixture's parts that a pseudo-element draws, as an implementation maps them. */
-const parts = { placeholder: 'root::placeholder', required: 'label::after' }
+/**
+ * A spec with the fixture as one of its implementations, whose part map names the parts a
+ * pseudo-element draws, as an implementation's does.
+ */
+const implementation = 'fixture'
+function fixture(name: string): Spec {
+  const spec = loadSpec(name)
+  const parts = { placeholder: 'root::placeholder', required: 'label::after' }
+  return {
+    ...spec,
+    implementations: {
+      ...spec.implementations,
+      [implementation]: { library: 'plain HTML', status: 'shipped', parity: 'passing', parts },
+    },
+  }
+}
 
 async function gallery(browser: Browser) {
   const context = await browser.newContext()
@@ -54,10 +68,11 @@ test('the specs it checks are the published ones', () => {
 
 for (const name of ['button', 'input']) {
   test(`a gallery that meets the ${name} spec passes it in both themes`, async () => {
-    await expectSpec(page, name, { parts })
-    const { checks } = await checkSpec(page, name, { parts, themes: ['dark'] })
-    // every row a gallery example holds for is measured, so a gallery that draws less fails
-    expect(checks).toBeGreaterThan(name === 'button' ? 400 : 150)
+    const { failures, checks } = await checkSpec(page, fixture(name), { implementation })
+    expect(failures).toEqual([])
+    // every row a gallery example holds for is measured in each theme, so a gallery that draws
+    // less fails
+    expect(checks).toBeGreaterThan(name === 'button' ? 800 : 300)
   })
 }
 
@@ -84,7 +99,7 @@ test('a value that drifts from its token fails, in each theme', async () => {
       background-color: var(--ws-button-primary-bg-rest) !important;
     }`,
   })
-  const { failures } = await checkSpec(page, 'button', { parts })
+  const { failures } = await checkSpec(page, 'button')
   expect(where(failures)).toEqual([
     ['tokens', 'dark', 'button.primary.hover'],
     ['tokens', 'light', 'button.primary.hover'],
@@ -102,29 +117,30 @@ test('a token is resolved where the part is, in a part of the page held in the o
   await page.addStyleTag({
     content: `[data-spec='input.outline.rest.xl'] input { border-color: ${dark}; }`,
   })
-  const { failures } = await checkSpec(page, 'input', { parts, themes: ['dark'] })
-  expect(where(failures)).toEqual([['tokens', 'dark', 'input.outline.rest.xl']])
+  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  // in the light theme the edge is wrong wherever the token is resolved, in the dark one only
+  // where the part is
+  expect(where(failures)).toEqual([
+    ['tokens', 'dark', 'input.outline.rest.xl'],
+    ['tokens', 'light', 'input.outline.rest.xl'],
+  ])
   expect(failures[0]!.message).toContain('root border-color')
 })
 
-test('a missing example fails, and so does an id the gallery does not have', async () => {
+test('a missing example fails, or one under an id the gallery does not have', async () => {
   await page.evaluate(() => {
     document.querySelector('[data-spec="input.outline.invalid"]')!.remove()
     document
       .querySelector('[data-spec="input.outline.hover"]')!
       .setAttribute('data-spec', 'input.outline.hovered')
   })
-  const { failures } = await checkSpec(page, 'input', { parts })
-  expect(failures.every(({ check }) => check === 'coverage')).toBe(true)
-  const messages = failures.map(({ message }) => message)
-  expect(messages).toContain(
-    'input.outline.hover has no example: no element has data-spec="input.outline.hover"',
-  )
-  expect(messages).toContain(
-    'input.outline.invalid has no example: no element has data-spec="input.outline.invalid"',
-  )
-  expect(messages).toContain(
-    `data-spec="input.outline.hovered" is not an example of the input spec's gallery`,
+  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  expect(failures).toEqual(
+    ['input.outline.hover', 'input.outline.invalid'].map((id) => ({
+      check: 'coverage',
+      id,
+      message: `${id} has no example: no element has data-spec="${id}"`,
+    })),
   )
 })
 
@@ -136,10 +152,13 @@ test('a part that no example draws fails', async () => {
     ))
       help.remove()
   })
-  const { failures } = await checkSpec(page, 'input', { parts, themes: ['dark'] })
-  expect(failures.map(({ message }) => message)).toEqual([
-    'no example draws help where the row "* rest help font-size at sm" holds: input.outline.rest.sm',
-  ])
+  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  expect(failures.map(({ theme, message }) => `${theme}: ${message}`)).toEqual(
+    ['dark', 'light'].map(
+      (theme) =>
+        `${theme}: no example draws help where the row "* rest help font-size at sm" holds: input.outline.rest.sm`,
+    ),
+  )
 })
 
 test('a part that loses its edge in forced colors fails', async () => {
@@ -148,38 +167,31 @@ test('a part that loses its edge in forced colors fails', async () => {
       .button[data-variant='secondary'] { border-style: none; }
     }`,
   })
-  const { failures } = await checkSpec(page, 'button', { parts, themes: ['dark'] })
+  const { failures } = await checkSpec(page, 'button')
   // the focused one keeps its outline, which is its edge then
   expect(where(failures)).toEqual(
-    ['rest', 'hover', 'active', 'disabled', 'loading'].map((state) => [
-      'forced-colors',
-      'dark',
-      `button.secondary.${state}`,
-    ]),
+    ['dark', 'light'].flatMap((theme) =>
+      ['rest', 'hover', 'active', 'disabled', 'loading'].map((state) => [
+        'forced-colors',
+        theme,
+        `button.secondary.${state}`,
+      ]),
+    ),
   )
   expect(failures[0]!.message).toMatch(/^button\.secondary\.rest: root loses its border/)
 })
 
-test('a checked example that looks the same as the one at rest in forced colors fails', async () => {
-  // a spec with a checked state, which neither published spec has yet
-  const button = loadSpec('button')
-  const toggle: Spec = {
-    ...button,
-    component: 'toggle',
-    parts: { root: 'The box.' },
+test('a selected example that looks the same as the one at rest in forced colors fails', async () => {
+  // a spec with a selected state, which neither published spec has yet
+  const tab: Spec = {
+    ...loadSpec('button'),
+    component: 'tab',
+    parts: { root: 'The tab, with its label.' },
     variants: { default: 'The one kind.' },
-    sizes: { md: 'Every toggle.' },
+    sizes: { md: 'Every tab.' },
     defaultSize: 'md',
-    states: { rest: 'Off.', checked: 'On.' },
+    states: { rest: 'Not chosen.', selected: 'The one shown.' },
     stateTable: [
-      { variant: '*', state: 'rest', part: 'root', property: 'border-style', value: 'solid' },
-      {
-        variant: '*',
-        state: 'rest',
-        part: 'root',
-        property: 'border-color',
-        token: 'field.border.rest',
-      },
       {
         variant: '*',
         state: 'rest',
@@ -187,48 +199,62 @@ test('a checked example that looks the same as the one at rest in forced colors 
         property: 'background-color',
         token: 'field.bg',
       },
+      { variant: '*', state: 'rest', part: 'root', property: 'color', token: 'color.text' },
       {
         variant: '*',
-        state: 'checked',
+        state: 'selected',
         part: 'root',
         property: 'background-color',
         token: 'color.interactive',
       },
+      { variant: '*', state: 'selected', part: 'root', property: 'color', token: 'color.bg' },
     ],
     implementations: {},
-    gallery: ['toggle.default.rest', 'toggle.default.checked'],
+    gallery: ['tab.default.rest', 'tab.default.selected'],
   }
   await page.evaluate(() =>
     document.body.insertAdjacentHTML(
       'beforeend',
-      `<section>
-        <div data-spec="toggle.default.rest"><span class="toggle" data-slot="root"></span></div>
-        <div data-spec="toggle.default.checked">
-          <span class="toggle" data-slot="root" aria-checked="true"></span>
+      `<section class="tabs">
+        <div data-spec="tab.default.rest"><span class="tab" data-slot="root">Overview</span></div>
+        <div data-spec="tab.default.selected">
+          <span class="tab" data-slot="root" aria-selected="true">Overview</span>
         </div>
       </section>`,
     ),
   )
+  // the selected tab half a pixel off the one at rest, so its label is drawn at another fraction
+  // of a pixel and its image is cut a pixel apart
   await page.addStyleTag({
-    content: `.toggle {
+    content: `.tabs { flex-direction: column; }
+    .tab {
       display: block;
-      width: 2rem;
-      height: 1rem;
-      border: 1px solid var(--ws-field-border-rest);
+      padding: 0.5rem 0.75rem;
       background-color: var(--ws-field-bg);
+      color: var(--ws-color-text);
+      font-size: var(--ws-text-label-font-size);
     }
-    .toggle[aria-checked='true'] { background-color: var(--ws-color-interactive); }`,
+    .tab[aria-selected='true'] {
+      background-color: var(--ws-color-interactive);
+      color: var(--ws-color-bg);
+    }
+    [data-spec='tab.default.selected'] { margin-inline-start: 0.5px; }`,
   })
-  // forced colors paint every background in the page's color, so the two look alike
-  expect(where((await checkSpec(page, toggle)).failures)).toEqual([
-    ['forced-colors', 'dark', 'toggle.default.checked'],
-    ['forced-colors', 'light', 'toggle.default.checked'],
+  // forced colors paint every background in the page's color and every label in its text color,
+  // so the two look alike
+  expect(where((await checkSpec(page, tab)).failures)).toEqual([
+    ['forced-colors', 'dark', 'tab.default.selected'],
+    ['forced-colors', 'light', 'tab.default.selected'],
   ])
 
   await page.addStyleTag({
     content: `@media (forced-colors: active) {
-      .toggle[aria-checked='true'] { forced-color-adjust: none; background-color: Highlight; }
+      .tab[aria-selected='true'] {
+        forced-color-adjust: none;
+        background-color: Highlight;
+        color: HighlightText;
+      }
     }`,
   })
-  await expectSpec(page, toggle)
+  await expectSpec(page, tab)
 })

@@ -1,27 +1,22 @@
 // The component specs: specs/<component>.spec.json, validated by specs/spec.schema.json. The tests
 // check them against the tokens and the style guide renders its component pages from them, both
 // through this module, so the two read a spec alike.
-import { readFileSync, readdirSync } from 'node:fs'
-import { join, resolve } from 'node:path'
-import type { Spec, SpecRow } from '../../src/testing/spec.ts'
+import { resolve } from 'node:path'
+import { type Spec, type SpecRow, loadSpec, specNames } from '../../src/testing/spec.ts'
 import { type TokenId, tokens } from './tokens.ts'
 
-// the types and the reading of a row are the parity helper's, which implementations run
+// the types, and the reading of a spec and of its rows, are the parity helper's, which
+// implementations run
 export type { Implementation, Size, Spec, SpecRow } from '../../src/testing/spec.ts'
 export { cssVariable, rowVariants } from '../../src/testing/spec.ts'
 
 export const specDirectory = resolve(import.meta.dirname, '../../specs')
 
 /** The spec files, by name, in order. */
-export const specFiles = readdirSync(specDirectory)
-  .filter((file) => file.endsWith('.spec.json'))
-  .sort()
-
-export const readSpec = (file: string): Spec =>
-  JSON.parse(readFileSync(join(specDirectory, file), 'utf8'))
+export const specFiles = specNames().map((name) => `${name}.spec.json`)
 
 /** Every spec, by its component's name. */
-export const specs = (): Spec[] => specFiles.map(readSpec)
+export const specs = (): Spec[] => specNames().map(loadSpec)
 
 /** The token types each property can take. A text style gives its part of a font property. */
 const propertyTypes: Record<string, string[]> = {
