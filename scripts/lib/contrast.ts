@@ -119,19 +119,21 @@ const tierColorIds = (): TokenId[] =>
  * The pairs the names of the component tier imply, so the tier needs no entries of its own in
  * tokens/contrast.json:
  *
- * - `<prefix>.text.<state>` on `<prefix>.bg.<state>`, else the fill at rest, else the page: 4.5.
- * - `<prefix>.border.<state>` and `<prefix>.icon.<state>` on the page, and on the fill of their
- *   prefix where there is one: 3.
- * - Text, an edge or an icon at rest is also read on every other fill of its prefix, which it
- *   keeps on hover.
+ * - `<prefix>.text.<state>` and `<prefix>.icon.<state>` on `<prefix>.bg.<state>`, else the fill
+ *   at rest, else the page: 4.5 for text, 3 for an icon.
+ * - `<prefix>.border.<state>` on that fill where there is one, and on the page, as an edge lies
+ *   between the two: 3.
+ * - A color at rest is also read on the fill of every other state that names no color of its own
+ *   for it, as it keeps it there: text at rest on the hover fill, unless there is a text.hover.
  * - Disabled is exempt, as WCAG exempts an inactive control.
  *
  * A pair that tokens/contrast.json lists too is measured as it says there, with its exceptions.
  */
 export function tierPairs(ids: TokenId[] = tierColorIds()): ContrastPair[] {
   const colors = ids.map(tierColor)
-  const fill = (prefix: string, state: string) =>
-    colors.find((one) => one.prefix === prefix && one.property === 'bg' && one.state === state)?.id
+  const named = (prefix: string, property: string, state: string) =>
+    colors.find((one) => one.prefix === prefix && one.property === property && one.state === state)
+      ?.id
   const fills = (prefix: string) =>
     colors.filter((one) => one.prefix === prefix && one.property === 'bg')
   const listed = new Set(readPairs().map((pair) => `${pair.foreground} on ${pair.background}`))
@@ -144,11 +146,13 @@ export function tierPairs(ids: TokenId[] = tierColorIds()): ContrastPair[] {
   for (const { id, prefix, property, state } of colors) {
     const min = drawnMin.get(property)
     if (state === 'disabled' || min === undefined) continue
-    const under = fill(prefix, state) ?? fill(prefix, 'rest')
-    if (property !== 'text' || !under) add(id, 'color.bg', min)
+    const under = named(prefix, 'bg', state) ?? named(prefix, 'bg', 'rest')
+    if (property === 'border' || !under) add(id, 'color.bg', min)
     if (under) add(id, under, min)
     if (state === 'rest')
-      for (const other of fills(prefix)) if (other.state !== 'disabled') add(id, other.id, min)
+      for (const other of fills(prefix))
+        if (other.state !== 'disabled' && !named(prefix, property, other.state))
+          add(id, other.id, min)
   }
   return pairs
 }

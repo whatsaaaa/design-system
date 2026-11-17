@@ -141,11 +141,42 @@ describe('the component tier', () => {
     ] as unknown as TokenId[]).map(
       (pair) => `${pair.foreground} on ${pair.background} at ${pair.min}`,
     )
-    for (const fill of ['button.danger.bg.rest', 'button.danger.bg.hover']) {
-      expect(pairs).toContain(`button.danger.text.rest on ${fill} at 4.5`)
-      expect(pairs).toContain(`button.danger.border.rest on ${fill} at 3`)
-      expect(pairs).toContain(`button.danger.icon on ${fill} at 3`)
-    }
-    expect(pairs.filter((pair) => pair.includes('.disabled'))).toEqual([])
+    expect(pairs.sort()).toEqual([
+      'button.danger.border.rest on button.danger.bg.hover at 3',
+      'button.danger.border.rest on button.danger.bg.rest at 3',
+      'button.danger.border.rest on color.bg at 3',
+      'button.danger.icon on button.danger.bg.hover at 3',
+      'button.danger.icon on button.danger.bg.rest at 3',
+      'button.danger.text.rest on button.danger.bg.hover at 4.5',
+      'button.danger.text.rest on button.danger.bg.rest at 4.5',
+    ])
+  })
+
+  it('measures no pair that is never drawn', () => {
+    const pairs = tierPairs([
+      // a selected tab draws its own text, and a checked box its own edge
+      'tab.bg.rest',
+      'tab.bg.selected',
+      'tab.text.rest',
+      'tab.text.selected',
+      'checkbox.bg.rest',
+      'checkbox.bg.checked',
+      'checkbox.border.rest',
+      'checkbox.border.checked',
+      // the icon of a filled button is on its fill, never on the page
+      'button.primary.bg.rest',
+      'button.primary.icon',
+    ] as unknown as TokenId[]).map(
+      (pair) => `${pair.foreground} on ${pair.background} at ${pair.min}`,
+    )
+    expect(pairs.sort()).toEqual([
+      'button.primary.icon on button.primary.bg.rest at 3',
+      'checkbox.border.checked on checkbox.bg.checked at 3',
+      'checkbox.border.checked on color.bg at 3',
+      'checkbox.border.rest on checkbox.bg.rest at 3',
+      'checkbox.border.rest on color.bg at 3',
+      'tab.text.rest on tab.bg.rest at 4.5',
+      'tab.text.selected on tab.bg.selected at 4.5',
+    ])
   })
 })
