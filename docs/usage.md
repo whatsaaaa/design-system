@@ -47,7 +47,7 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in
 
 Install `tailwindcss` 4.3.5 or a later 4.x next to the package. Only this entry needs it.
 
-An app on Nuxt UI uses `@whatsaaaa/ui-vue`, which brings Nuxt UI's colors on the roles.
+An app on Nuxt UI imports `@whatsaaaa/ui-vue/index.css` alone, in place of the three lines above: it brings them, and Nuxt UI's colors on the roles.
 
 The entry brings Tailwind and everything `index.css` brings, in cascade layers, so a utility wins over a class of the system and the app's rules outside any layer win over both:
 
