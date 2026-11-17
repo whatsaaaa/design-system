@@ -99,6 +99,8 @@ function tierColor(id: TokenId): TierColor {
   const stated = (tierStates as readonly string[]).includes(last)
   const property = stated ? segments.at(-2)! : last
   const prefix = segments.slice(0, stated ? -2 : -1).join('.')
+  if (!(tierColors as readonly string[]).includes(property))
+    throw new Error(`${id} is a color, so it ends in ${tierColors.join(', ')} or a state of one`)
   return { id, prefix, property, state: stated ? last : 'rest' }
 }
 

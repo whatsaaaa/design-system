@@ -71,9 +71,12 @@ describe('the component tier', () => {
       const scaled = (tierStates as readonly string[]).includes(last) || sizes.includes(last)
       const property = scaled ? segments.at(-2)! : last
       expect(properties, id).toContain(property)
-      // a color is a fill or what is drawn on it, so its contrast follows from its name
-      if (type === 'color') expect(tierColors as readonly string[], id).toContain(property)
-      else expect(tierColors as readonly string[], id).not.toContain(property)
+      // a color is a fill or what is drawn on it, so its contrast follows from its name, and it
+      // takes a state or none: a size is for a measure
+      if (type === 'color') {
+        expect(tierColors as readonly string[], id).toContain(property)
+        expect(sizes, id).not.toContain(last)
+      } else expect(tierColors as readonly string[], id).not.toContain(property)
     }
   })
 
@@ -150,6 +153,12 @@ describe('the component tier', () => {
       'button.danger.text.rest on button.danger.bg.hover at 4.5',
       'button.danger.text.rest on button.danger.bg.rest at 4.5',
     ])
+  })
+
+  it('fails on a color it cannot read, rather than leave it unmeasured', () => {
+    expect(() =>
+      tierPairs(['button.primary.bg.md', 'button.primary.text.md'] as unknown as TokenId[]),
+    ).toThrow(/button\.primary\.bg\.md/)
   })
 
   it('measures no pair that is never drawn', () => {
