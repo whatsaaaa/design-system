@@ -1,4 +1,8 @@
 /*
+ * Deprecated: removed in 0.9.0. An app on Nuxt UI gets it from ui-vue, which
+ * `@whatsaaaa/ui-vue/index.css` brings. An app that imports this file directly copies it from
+ * 0.8.3 into its own stylesheets.
+ *
  * Nuxt UI's theme variables, pointed at the design system's roles. Both themes follow by
  * themselves: the roles switch, and these read them.
  *
