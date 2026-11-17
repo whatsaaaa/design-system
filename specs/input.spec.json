@@ -1,0 +1,800 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "input",
+  "title": "Input",
+  "status": "draft",
+  "changed": "0.9.0",
+  "summary": "One line of text, in a field with its label above it and its help or its error under it: the value in Inter, an edge in the field border, the control height.",
+  "use": [
+    "One line of text: a name, an email address, a number, a date typed out.",
+    "Always inside its form field: an input is never shown without its label."
+  ],
+  "notFor": [
+    "Text of more than one line: that is a text area.",
+    "One choice from a list: that is a select, or radio buttons for a few options.",
+    "A value that cannot be changed, such as on a review step: that is a list of terms and values, `ws-pairs`."
+  ],
+  "parts": {
+    "root": "The box, and the value typed in it: the native input element.",
+    "placeholder": "Text in an empty box. The system uses none: a hint goes under the field.",
+    "leading-icon": "An icon before the value, such as a mail icon, and the turning loading icon of a loading field.",
+    "trailing-icon": "An icon after the value.",
+    "label": "The field's name, above the box.",
+    "required": "The asterisk after the label of a field that must be filled in.",
+    "help": "The help under the box: what to enter, or why.",
+    "error": "The error under the box, in place of the help: what is wrong and how to fix it.",
+    "error-icon": "The danger icon before the error."
+  },
+  "variants": {
+    "outline": "The one look of a field: an edge in the field border, on the page color."
+  },
+  "sizes": {
+    "xs": "A dense row, such as a filter in a table's head.",
+    "sm": "A bar or a toolbar.",
+    "md": "Every other field: a form, a dialog.",
+    "lg": "A form of one or two fields that a page leads to, such as a sign-up.",
+    "xl": "A landing page's one field, such as a search."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Nothing is on it.",
+    "hover": "The pointer is on it.",
+    "focus": "It has the focus, as `:focus-visible` says, which a text field has from a click too.",
+    "invalid": "Its value is wrong: `aria-invalid` is true, and the error is under it.",
+    "disabled": "It cannot be changed now.",
+    "loading": "Its value is being checked: the leading icon turns, and the field can still be typed in."
+  },
+  "icons": {
+    "loading": "loader-circle",
+    "error": "octagon-alert"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "field.bg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.hover"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "placeholder",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "color",
+      "token": "field.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "color",
+      "token": "field.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "color",
+      "token": "field.label.text"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-family",
+      "token": "font.family.mono"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "required",
+      "property": "color",
+      "token": "field.required.text"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "color",
+      "token": "field.help.text"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "color",
+      "token": "field.error.text"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-weight",
+      "token": "field.error.font-weight"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "color",
+      "token": "field.error.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "width",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "height",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xs",
+      "token": "control.height.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "sm",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "md",
+      "token": "control.height.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "lg",
+      "token": "control.height.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "space.14"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xl",
+      "token": "control.height.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "space.16"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus into the field and on to the next or the previous control. A disabled field is skipped."
+    },
+    {
+      "keys": ["Enter"],
+      "effect": "Sends the form the field is in, where the form has a submit button, as the browser does."
+    }
+  ],
+  "aria": {
+    "pattern": "https://html.spec.whatwg.org/multipage/input.html",
+    "rules": [
+      "It is a native input element with the type of its value, such as email or tel, and an autocomplete where the browser can fill it in.",
+      "The label is a label element for the input: its accessible name.",
+      "The help and the error are its description, by `aria-describedby`. While the error shows it takes the help's place.",
+      "A field in error has `aria-invalid` true. Its error says how to fix it, and is never a color alone: it has its word and its icon.",
+      "A required field has the required attribute, which assistive technology reads; the asterisk shows it.",
+      "A disabled field is the native disabled attribute."
+    ]
+  },
+  "forcedColors": [
+    "The edge is a real border, which forced colors keep in the system's colors, and in `GrayText` when the field is disabled.",
+    "The focus ring is an outline, which forced colors keep.",
+    "The error icon takes the system's text color, as the error's word does, so both still say it is an error."
+  ],
+  "motion": [
+    "The edge changes color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` it changes at once.",
+    "The loading icon turns only with `prefers-reduced-motion: no-preference`."
+  ],
+  "content": [
+    "The label names the value, in sentence case and with no colon: Full name, Email address.",
+    "No placeholders. What to enter goes in the help under the field: As on your ID.",
+    "An error says how to fix it, not only what is wrong: Enter an email address with a domain, such as maya@example.com."
+  ],
+  "notes": [
+    "Read-only is not specced: a value that cannot be changed, as on a review step, is shown as a term and its value, with `ws-pairs`.",
+    "Nuxt UI's hint, beside the label, is not part of the spec: hints go under the field, as its help.",
+    "The value starts past an icon by the field's padding, the icon and the control's gap."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["UInput", "UFormField"],
+      "today": "The outline variant, inside a form field, in Nuxt UI's five sizes. Its heights, paddings, value sizes, edge colors, focus ring, label, help and error already match the spec, and its icons are 16 px up to md and 20 px above. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
+      "parts": {
+        "root": "base",
+        "placeholder": "base::placeholder",
+        "leading-icon": "leadingIcon",
+        "trailing-icon": "trailingIcon",
+        "label": "label",
+        "required": "label::after",
+        "help": "help",
+        "error": "error",
+        "error-icon": "error::before"
+      },
+      "variants": {
+        "outline": {
+          "variant": "outline"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for `border-color`, `border-style` and `border-width` do not hold."
+        },
+        {
+          "summary": "The required mark is `color.brand`, 3.84:1 on the light page, under the 4.5:1 of small text. The spec takes `field.required.text`, the darker red of the light theme, 4.73:1."
+        },
+        {
+          "summary": "A placeholder is `color.text-faint`, 3.42:1 in the dark theme and 4.02:1 in the light. The spec uses no placeholders, and gives one that an app passes anyway `color.text-secondary`."
+        },
+        {
+          "summary": "The error icon is the system's own danger glyph, drawn as a mask that fills its background with `field.error.icon` while its color is the error's. The spec names Lucide's `octagon-alert` in `currentcolor`."
+        },
+        {
+          "summary": "It reads the roles by their Tailwind utilities, such as `ring-field-border`, not the component tokens, such as `ring-(--ws-field-border-rest)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery shows the states and the sizes of the contract, but marks none of them with `data-spec`, so no test can find them by id yet."
+        }
+      ],
+      "beyond": [
+        "The variants soft, subtle and ghost, and none, the bare field inside another control such as a select menu's search.",
+        "The highlight prop, which outlines a field in a color."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "input.outline.rest",
+    "input.outline.hover",
+    "input.outline.focus",
+    "input.outline.invalid",
+    "input.outline.disabled",
+    "input.outline.loading",
+    "input.outline.rest.xs",
+    "input.outline.rest.sm",
+    "input.outline.rest.lg",
+    "input.outline.rest.xl"
+  ]
+}

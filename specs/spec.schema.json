@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/whatsaaaa/design-system/blob/main/specs/spec.schema.json",
+  "title": "Component spec",
+  "description": "What every implementation of a component has to draw alike, whatever its framework: its parts, kinds, sizes and states, the token each part takes in each state, its keyboard and accessibility rules, how each implementation maps onto it and the examples its gallery shows. The design system draws no component: it specifies them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "component",
+    "title",
+    "status",
+    "changed",
+    "summary",
+    "use",
+    "notFor",
+    "parts",
+    "variants",
+    "sizes",
+    "defaultSize",
+    "states",
+    "stateTable",
+    "keyboard",
+    "aria",
+    "forcedColors",
+    "motion",
+    "content",
+    "implementations",
+    "gallery"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./spec.schema.json"
+    },
+    "component": {
+      "description": "The name of the component, the file's name before `.spec.json` and the first segment of every gallery id.",
+      "$ref": "#/$defs/name"
+    },
+    "title": {
+      "description": "The component's name as a page's heading says it.",
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "description": "A draft can still change in any release; a stable spec changes as the versioning policy says.",
+      "enum": ["draft", "stable"]
+    },
+    "changed": {
+      "description": "The version of the package in which the spec last changed.",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "summary": {
+      "description": "What the component is, in one sentence.",
+      "$ref": "#/$defs/sentence"
+    },
+    "use": {
+      "description": "What the component is for.",
+      "$ref": "#/$defs/sentences"
+    },
+    "notFor": {
+      "description": "What it is not for, and what to use instead.",
+      "$ref": "#/$defs/sentences"
+    },
+    "parts": {
+      "description": "The anatomy: each part by name, what it is. A name is the part's `data-slot` in every implementation, or what an implementation maps it to.",
+      "$ref": "#/$defs/described"
+    },
+    "variants": {
+      "description": "The kinds of the component the spec covers, each with what it is for. An implementation may have others: the spec does not cover them.",
+      "$ref": "#/$defs/described"
+    },
+    "sizes": {
+      "description": "The sizes, each with where it is used.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/size" },
+      "additionalProperties": { "$ref": "#/$defs/sentence" }
+    },
+    "defaultSize": {
+      "description": "The size of an example whose gallery id names none.",
+      "$ref": "#/$defs/size"
+    },
+    "states": {
+      "description": "The states the spec covers, from the closed list every spec and the component tier share, each with when the component is in it.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/state" },
+      "additionalProperties": { "$ref": "#/$defs/sentence" }
+    },
+    "icons": {
+      "description": "The icons the component draws itself, by what they are for, as Lucide names: `loader-circle`.",
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": { "$ref": "#/$defs/name" }
+    },
+    "stateTable": {
+      "description": "The complete mapping: for each kind, state and part, the token each CSS property takes. A state lists what it changes from rest. Every implementation's parity test reads it.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/row" }
+    },
+    "keyboard": {
+      "description": "Each key or set of keys and what it does.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["keys", "effect"],
+        "properties": {
+          "keys": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "effect": { "$ref": "#/$defs/sentence" }
+        }
+      }
+    },
+    "aria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pattern", "rules"],
+      "properties": {
+        "pattern": {
+          "description": "The page of the pattern the component follows, in the ARIA Authoring Practices Guide or the HTML standard.",
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "rules": {
+          "description": "Its names, descriptions, roles and states.",
+          "$ref": "#/$defs/sentences"
+        }
+      }
+    },
+    "forcedColors": {
+      "description": "What keeps each edge and each state when the system's colors replace the page's.",
+      "$ref": "#/$defs/sentences"
+    },
+    "motion": {
+      "description": "What moves, how fast, and what a reader who asks for less motion still gets.",
+      "$ref": "#/$defs/sentences"
+    },
+    "content": {
+      "description": "How to write what the component says, with examples.",
+      "$ref": "#/$defs/sentences"
+    },
+    "notes": {
+      "description": "What the spec leaves out or decides against on purpose, and why.",
+      "$ref": "#/$defs/sentences"
+    },
+    "implementations": {
+      "description": "Each implementation, by its package's name.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": { "$ref": "#/$defs/implementation" }
+    },
+    "gallery": {
+      "description": "The examples every implementation's gallery shows, each marked with its id in `data-spec`: `<component>.<variant>.<state>`, and `.<size>` at the end for a size other than the default.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*\\.[a-z][a-z0-9-]*\\.[a-z]+(\\.(xs|sm|md|lg|xl))?$"
+      }
+    }
+  },
+  "$defs": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "sentence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sentences": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sentence" }
+    },
+    "described": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": { "$ref": "#/$defs/sentence" }
+    },
+    "size": {
+      "description": "Nuxt UI's five sizes, which every control of the system has.",
+      "enum": ["xs", "sm", "md", "lg", "xl"]
+    },
+    "state": {
+      "description": "The closed list of states, the same list the names of the component tier end in.",
+      "enum": [
+        "rest",
+        "hover",
+        "active",
+        "focus",
+        "disabled",
+        "checked",
+        "indeterminate",
+        "invalid",
+        "open",
+        "selected",
+        "current",
+        "loading"
+      ]
+    },
+    "property": {
+      "description": "The CSS properties a row can set, as `getComputedStyle` reads them. A shorthand is read as one value, which it has when its sides agree.",
+      "enum": [
+        "background-color",
+        "color",
+        "border-color",
+        "border-style",
+        "border-width",
+        "border-radius",
+        "outline-color",
+        "outline-style",
+        "outline-width",
+        "outline-offset",
+        "height",
+        "width",
+        "padding-inline",
+        "column-gap",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "line-height",
+        "text-decoration-line",
+        "text-decoration-thickness",
+        "text-underline-offset"
+      ]
+    },
+    "row": {
+      "description": "One line of the state table: in this state, this part of these kinds takes this token, or this value, for this property. Without a size it holds at every size.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variant", "state", "part", "property"],
+      "oneOf": [{ "required": ["token"] }, { "required": ["value"] }],
+      "properties": {
+        "variant": {
+          "description": "A kind, a list of kinds, or `*` for every kind the spec covers.",
+          "oneOf": [
+            { "const": "*" },
+            { "$ref": "#/$defs/name" },
+            {
+              "type": "array",
+              "minItems": 2,
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/name" }
+            }
+          ]
+        },
+        "state": { "$ref": "#/$defs/state" },
+        "part": { "$ref": "#/$defs/name" },
+        "property": { "$ref": "#/$defs/property" },
+        "size": { "$ref": "#/$defs/size" },
+        "token": {
+          "description": "The id of a token, as in the token data: `button.primary.bg.rest` is `--ws-button-primary-bg-rest`. A text style on a font property gives that part of it: `text.label` on `font-size` is `--ws-text-label-font-size`.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*(\\.[a-z0-9][a-z0-9-]*)+$"
+        },
+        "value": {
+          "description": "A value the system writes without a token: `transparent`, the focus ring's offset of `3px`.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["library", "status", "parity"],
+      "properties": {
+        "library": {
+          "description": "The library the implementation is built on, and its version.",
+          "$ref": "#/$defs/sentence"
+        },
+        "status": {
+          "description": "Whether it ships the component yet.",
+          "enum": ["planned", "shipped"]
+        },
+        "parity": {
+          "description": "Whether its parity test reads this spec yet, and its result.",
+          "enum": ["none", "passing", "failing"]
+        },
+        "components": {
+          "description": "The library's components that make it up.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sentence" }
+        },
+        "today": {
+          "description": "What it draws today, in short.",
+          "$ref": "#/$defs/sentence"
+        },
+        "parts": {
+          "description": "Each part, as the library's slot that draws it, with a pseudo-element where the slot draws the part as one: `label::after`.",
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/name" },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]*(::[a-z-]+)?$"
+          }
+        },
+        "variants": {
+          "description": "Each kind, as the props that draw it.",
+          "$ref": "#/$defs/props"
+        },
+        "sizes": {
+          "description": "Each size, as the props that draw it.",
+          "$ref": "#/$defs/props"
+        },
+        "deviations": {
+          "description": "Where it does not meet the spec yet, each with the issue that tracks it where there is one.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["summary"],
+            "properties": {
+              "summary": { "$ref": "#/$defs/sentence" },
+              "issue": { "type": "string", "pattern": "^https://" }
+            }
+          }
+        },
+        "beyond": {
+          "description": "What it draws that the spec does not cover, kept working but not checked.",
+          "$ref": "#/$defs/sentences"
+        }
+      },
+      "if": { "properties": { "status": { "const": "shipped" } } },
+      "then": { "required": ["components", "today", "parts", "variants", "sizes", "deviations"] }
+    },
+    "props": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": { "type": ["string", "boolean"] }
+      }
+    }
+  }
+}

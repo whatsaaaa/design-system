@@ -2,9 +2,12 @@
 // sources and the built tokens, so the guide cannot drift from the system.
 import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { type Measured, measureAll, readPairs } from '../../../scripts/lib/contrast.ts'
+import { readPairs } from '../../../scripts/lib/contrast.ts'
 import { type Theme, type TokenId, tokens } from '../../../scripts/lib/tokens.ts'
 import { colorHex } from '../../../src/color.ts'
+import { type ContrastRow, contrastRows } from './contrast.ts'
+
+export type { ContrastRow }
 
 const root = resolve(import.meta.dirname, '../../..')
 const source = (file: string) => JSON.parse(readFileSync(join(root, 'tokens', file), 'utf8'))
@@ -28,17 +31,6 @@ export interface ColorRole {
   description: string
   dark: ColorValue
   light: ColorValue
-}
-
-export interface ContrastRow {
-  foreground: string
-  background: string
-  use: string
-  min: number
-  /** The opaque color a translucent background sits on, when that is not the page background. */
-  over?: string
-  dark: { ratio: number; passes: boolean; note?: string }
-  light: { ratio: number; passes: boolean; note?: string }
 }
 
 export interface TextStyle {
@@ -131,28 +123,7 @@ export default {
       )
 
     // the pairs of the roles; the component tier's come with the pages of its components
-    const measured = measureAll(readPairs())
-    const contrast: ContrastRow[] = []
-    for (const pair of measured.filter((entry) => entry.theme === 'dark')) {
-      const of = (theme: Theme) => {
-        const entry = measured.find(
-          (candidate: Measured) =>
-            candidate.theme === theme &&
-            candidate.foreground === pair.foreground &&
-            candidate.background === pair.background,
-        )!
-        return { ratio: entry.ratio, passes: entry.passes, note: entry.below?.[theme] }
-      }
-      contrast.push({
-        foreground: pair.foreground,
-        background: pair.background,
-        use: pair.use,
-        min: pair.min,
-        over: pair.over,
-        dark: of('dark'),
-        light: of('light'),
-      })
-    }
+    const contrast = contrastRows(readPairs())
 
     return {
       palette: {

@@ -1,0 +1,75 @@
+{
+  "button": {
+    "$description": "The colors of each kind of button, the decisions every implementation of the button's spec makes alike. Its height, gap, radius and icon size are the control's.",
+    "primary": {
+      "$type": "color",
+      "$description": "The one action a view leads to: a fill of the interactive color, a step further from the page on hover and while pressed.",
+      "bg": {
+        "rest": { "$value": "{color.interactive}" },
+        "hover": { "$value": "{color.interactive-hover}" },
+        "active": { "$value": "{color.interactive-active}" }
+      },
+      "text": {
+        "rest": { "$value": "{color.on-interactive}" }
+      }
+    },
+    "secondary": {
+      "$type": "color",
+      "$description": "Every other action: an edge in the field border on the page, raised on hover and while pressed, the edge lighter then.",
+      "bg": {
+        "hover": { "$value": "{color.raised}" },
+        "active": { "$value": "{color.raised}" }
+      },
+      "border": {
+        "rest": { "$value": "{color.field-border}" },
+        "hover": { "$value": "{color.text-secondary}" },
+        "active": { "$value": "{color.text-secondary}" }
+      },
+      "text": {
+        "rest": { "$value": "{color.text}" }
+      }
+    },
+    "ghost": {
+      "$type": "color",
+      "$description": "A minor action next to another: no edge, raised on hover and while pressed.",
+      "bg": {
+        "hover": { "$value": "{color.raised}" },
+        "active": { "$value": "{color.raised}" }
+      },
+      "text": {
+        "rest": { "$value": "{color.text}" }
+      }
+    },
+    "quiet": {
+      "$type": "color",
+      "$description": "An action that reads as a link: the interactive color, underlined.",
+      "text": {
+        "rest": { "$value": "{color.interactive}" }
+      }
+    },
+    "danger": {
+      "$type": "color",
+      "$description": "An action that deletes or cannot be undone: an outline in the danger color in both themes, with its tint on hover and while pressed.",
+      "bg": {
+        "hover": { "$value": "{color.danger-tint}" },
+        "active": { "$value": "{color.danger-tint}" }
+      },
+      "border": {
+        "rest": { "$value": "{color.danger}" }
+      },
+      "text": {
+        "rest": { "$value": "{color.danger-text}" }
+      }
+    },
+    "text": {
+      "$type": "color",
+      "$description": "The label of a disabled button of every kind.",
+      "disabled": { "$value": "{color.text-faint}" }
+    },
+    "border": {
+      "$type": "color",
+      "$description": "The edge of a disabled button of every kind that has one.",
+      "disabled": { "$value": "{color.text-faint}" }
+    }
+  }
+}

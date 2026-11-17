@@ -1,0 +1,903 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "button",
+  "title": "Button",
+  "status": "draft",
+  "changed": "0.9.0",
+  "summary": "An action: a mono label in semibold, in a box of the control height, filled with the interactive color for the one action a view leads to and outlined for the rest.",
+  "use": [
+    "An action on the page: submit a form, save, open a dialog, delete.",
+    "One primary button in a view, for the action it leads to. Every other action is secondary, ghost or quiet."
+  ],
+  "notFor": [
+    "Going to another page: that is a link.",
+    "Choosing one of a few options: that is a segmented control or radio buttons.",
+    "A status: that is a tag."
+  ],
+  "parts": {
+    "root": "The box that takes the pointer and the focus: the native button element.",
+    "label": "The text, which says what the button does.",
+    "leading-icon": "An icon before the label, and the turning loading icon of a loading button.",
+    "trailing-icon": "An icon after the label, such as an arrow to the next step."
+  },
+  "variants": {
+    "primary": "The one action a view leads to, such as Register or Save: a fill of the interactive color. At most one in a view.",
+    "secondary": "Every other action, such as Cancel or Back: an edge in the field border, raised under the pointer.",
+    "ghost": "A minor action next to another, such as Later in a card's footer: no edge until the pointer is on it.",
+    "quiet": "An action that reads as a link, inside text or a dense row, such as Edit: the interactive color, underlined, with no box.",
+    "danger": "An action that deletes something or cannot be undone, such as Delete registration: an outline in the danger color, in both themes."
+  },
+  "sizes": {
+    "xs": "A dense row, such as a table's actions.",
+    "sm": "A bar or a toolbar, such as a modal's close button.",
+    "md": "Every other button: a form, a dialog, a card.",
+    "lg": "A page that leads to one action, such as a sign-up's Register.",
+    "xl": "A landing page's one call to action."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Nothing is on it.",
+    "hover": "The pointer is on it.",
+    "active": "It is pressed, by the pointer or by Enter or Space.",
+    "focus": "It has the keyboard's focus, as `:focus-visible` says.",
+    "disabled": "It cannot be used now.",
+    "loading": "Its action is running: it is disabled, keeps its look, and its leading icon turns."
+  },
+  "icons": {
+    "loading": "loader-circle"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-family",
+      "token": "font.family.mono"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "font-weight",
+      "token": "font.weight.semibold"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.rest"
+    },
+    {
+      "variant": "primary",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.primary.bg.rest"
+    },
+    {
+      "variant": "primary",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.primary.bg.rest"
+    },
+    {
+      "variant": "primary",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "button.primary.text.rest"
+    },
+    {
+      "variant": "primary",
+      "state": "hover",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.primary.bg.hover"
+    },
+    {
+      "variant": "primary",
+      "state": "hover",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.primary.bg.hover"
+    },
+    {
+      "variant": "primary",
+      "state": "active",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.primary.bg.active"
+    },
+    {
+      "variant": "primary",
+      "state": "active",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.primary.bg.active"
+    },
+    {
+      "variant": "primary",
+      "state": "disabled",
+      "part": "root",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "primary",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.border.disabled"
+    },
+    {
+      "variant": "primary",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "button.text.disabled"
+    },
+    {
+      "variant": "secondary",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "secondary",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.secondary.border.rest"
+    },
+    {
+      "variant": "secondary",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "button.secondary.text.rest"
+    },
+    {
+      "variant": "secondary",
+      "state": "hover",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.secondary.bg.hover"
+    },
+    {
+      "variant": "secondary",
+      "state": "hover",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.secondary.border.hover"
+    },
+    {
+      "variant": "secondary",
+      "state": "active",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.secondary.bg.active"
+    },
+    {
+      "variant": "secondary",
+      "state": "active",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.secondary.border.active"
+    },
+    {
+      "variant": "secondary",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.border.disabled"
+    },
+    {
+      "variant": "secondary",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "button.text.disabled"
+    },
+    {
+      "variant": "ghost",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "ghost",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "ghost",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "button.ghost.text.rest"
+    },
+    {
+      "variant": "ghost",
+      "state": "hover",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.ghost.bg.hover"
+    },
+    {
+      "variant": "ghost",
+      "state": "active",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.ghost.bg.active"
+    },
+    {
+      "variant": "ghost",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "button.text.disabled"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "value": "0"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "button.quiet.text.rest"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "value": "0"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "text-decoration-line",
+      "value": "underline"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "text-decoration-thickness",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "quiet",
+      "state": "rest",
+      "part": "root",
+      "property": "text-underline-offset",
+      "value": "0.2em"
+    },
+    {
+      "variant": "quiet",
+      "state": "hover",
+      "part": "root",
+      "property": "text-decoration-thickness",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "quiet",
+      "state": "active",
+      "part": "root",
+      "property": "text-decoration-thickness",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "quiet",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "button.text.disabled"
+    },
+    {
+      "variant": "quiet",
+      "state": "disabled",
+      "part": "root",
+      "property": "text-decoration-line",
+      "value": "none"
+    },
+    {
+      "variant": "danger",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "danger",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.danger.border.rest"
+    },
+    {
+      "variant": "danger",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "button.danger.text.rest"
+    },
+    {
+      "variant": "danger",
+      "state": "hover",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.danger.bg.hover"
+    },
+    {
+      "variant": "danger",
+      "state": "active",
+      "part": "root",
+      "property": "background-color",
+      "token": "button.danger.bg.active"
+    },
+    {
+      "variant": "danger",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "button.border.disabled"
+    },
+    {
+      "variant": "danger",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "button.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xs",
+      "token": "control.height.xs"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "xs",
+      "token": "control.gap.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "sm",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "sm",
+      "token": "control.gap.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "md",
+      "token": "control.height.md"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "space.20"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "md",
+      "token": "control.gap.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "lg",
+      "token": "control.height.lg"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "space.20"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "lg",
+      "token": "control.gap.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xl",
+      "token": "control.height.xl"
+    },
+    {
+      "variant": ["primary", "secondary", "ghost", "danger"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "space.24"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "xl",
+      "token": "control.gap.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xl",
+      "token": "font.size.16"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Enter"],
+      "effect": "Activates the button."
+    },
+    {
+      "keys": ["Space"],
+      "effect": "Activates the button when the key is released, and shows it pressed while it is held."
+    },
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus to the next or the previous control. A disabled button is skipped."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/button/",
+    "rules": [
+      "It is a native button element, so it needs no role and takes Enter and Space as it is. A button inside a form says its type: submit for the one that sends the form, button for every other.",
+      "Its label is its accessible name. A button with only an icon has an `aria-label` that says the action, such as Delete, and its icon is hidden from assistive technology.",
+      "A disabled button is the native disabled attribute. A loading button is disabled too, and keeps its label.",
+      "A quiet button is still a button: it looks like a link, but it does not go anywhere."
+    ]
+  },
+  "forcedColors": [
+    "The edge of every kind but quiet is a real border, which forced colors keep: in `ButtonBorder`, and in `GrayText` when the button is disabled. A ghost button's border is transparent until then, so it is there to take the system's color.",
+    "Fills are replaced by the system's colors, so the primary button keeps its box by its border, and no kind says what it is by its fill alone.",
+    "An icon takes the system's text color, and `GrayText` in a disabled button. An icon drawn as an SVG in `currentcolor` does so by itself; an icon drawn as a mask needs its background set in forced colors, where every background is the page's.",
+    "The focus ring is an outline, which forced colors keep."
+  ],
+  "motion": [
+    "The fill, the edge and the label change color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` they change at once.",
+    "The loading icon turns only with `prefers-reduced-motion: no-preference`. With less motion it stands still, and the disabled state and the label still say that the action is running."
+  ],
+  "content": [
+    "A verb, or a verb and its object: Register, Save changes, Delete registration. Not OK, Yes or Submit.",
+    "Sentence case, no period, no exclamation mark.",
+    "A danger button names what it deletes: Delete registration, not Delete. The dialog that confirms it says what cannot be undone.",
+    "The label of a loading button stays as it is: the turning icon says that it is running."
+  ],
+  "notes": [
+    "A square icon button, as wide as it is tall, is a button of any kind and size with only an icon and an `aria-label`. Its width is not checked yet.",
+    "Danger has no fill in either theme: in the light theme no red of Rosé Pine Dawn carries small light text at 4.5:1, and a fill of the text color would look like a neutral button."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["UButton"],
+      "today": "Nuxt UI's six variants in six colors and five sizes. The five kinds of the spec are the ones its gallery uses in context; their colors, the focus ring, the disabled and loading looks, the heights, the paddings and the gaps already match the spec. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
+      "parts": {
+        "root": "base",
+        "label": "label",
+        "leading-icon": "leadingIcon",
+        "trailing-icon": "trailingIcon"
+      },
+      "variants": {
+        "primary": {
+          "color": "primary",
+          "variant": "solid"
+        },
+        "secondary": {
+          "color": "neutral",
+          "variant": "outline"
+        },
+        "ghost": {
+          "color": "neutral",
+          "variant": "ghost"
+        },
+        "quiet": {
+          "color": "primary",
+          "variant": "link"
+        },
+        "danger": {
+          "color": "error",
+          "variant": "outline"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for `border-color`, `border-style` and `border-width` do not hold, and a primary button has no border at all."
+        },
+        {
+          "summary": "Icons are 14 px at xs and 18 px at lg, off the system's scale. The spec takes `control.icon-size`: 16 px up to md, then 20 px."
+        },
+        {
+          "summary": "The danger button's hover and pressed fill is the danger color at 10%, where the spec has `color.danger-tint`, the same color at 9%."
+        },
+        {
+          "summary": "A secondary button pressed without the pointer on it, as Space presses it, draws its edge in the field border on the raised fill: 2.93:1 in the dark theme, under the 3:1 of an edge. The spec keeps the hover edge, `color.text-secondary`, while it is pressed."
+        },
+        {
+          "summary": "It reads the roles by their Tailwind utilities, such as `bg-interactive`, not the component tokens, such as `bg-(--ws-button-primary-bg-rest)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery shows every example of the contract, but marks none of them with `data-spec`, so no test can find them by id yet."
+        }
+      ],
+      "beyond": [
+        "The variants soft and subtle, and the colors success, info and warning in every variant, as well as error solid, which the gallery's matrix shows.",
+        "The block prop, which makes a button as wide as its container."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "button.primary.rest",
+    "button.primary.hover",
+    "button.primary.active",
+    "button.primary.focus",
+    "button.primary.disabled",
+    "button.primary.loading",
+    "button.secondary.rest",
+    "button.secondary.hover",
+    "button.secondary.active",
+    "button.secondary.focus",
+    "button.secondary.disabled",
+    "button.secondary.loading",
+    "button.ghost.rest",
+    "button.ghost.hover",
+    "button.ghost.active",
+    "button.ghost.focus",
+    "button.ghost.disabled",
+    "button.ghost.loading",
+    "button.quiet.rest",
+    "button.quiet.hover",
+    "button.quiet.active",
+    "button.quiet.focus",
+    "button.quiet.disabled",
+    "button.danger.rest",
+    "button.danger.hover",
+    "button.danger.active",
+    "button.danger.focus",
+    "button.danger.disabled",
+    "button.danger.loading",
+    "button.primary.rest.xs",
+    "button.primary.rest.sm",
+    "button.primary.rest.lg",
+    "button.primary.rest.xl"
+  ]
+}

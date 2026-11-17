@@ -23,6 +23,17 @@ const measure = () => {
   for (const cell of document.querySelectorAll('td, th')) {
     for (const code of cell.querySelectorAll('code'))
       if (code.getClientRects().length > 1) cut.push(code.textContent ?? '')
+    // a value outside code too, such as a token's id under its value: a word on its own
+    const texts = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT)
+    while (texts.nextNode()) {
+      const node = texts.currentNode as Text
+      const word = node.data.trim()
+      if (!word || /\s/.test(word) || node.parentElement!.closest('code')) continue
+      const range = document.createRange()
+      range.setStart(node, node.data.indexOf(word))
+      range.setEnd(node, node.data.indexOf(word) + word.length)
+      if (range.getClientRects().length > 1) cut.push(word)
+    }
     // cells of running text only: a swatch or a sample in a cell is as tall as it likes,
     // and values in code may stand one to a line
     const text = (cell.textContent ?? '').trim()

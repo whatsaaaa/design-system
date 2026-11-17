@@ -1,5 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { data as specs } from '../../data/specs.data.ts'
 import { type ContrastRow, data } from '../../data/system.data.ts'
+
+const props = defineProps<{
+  /** The pairs of a component's spec, in place of the pairs of the roles. */
+  of?: string
+}>()
+
+const rows = computed(() => (props.of ? specs[props.of]!.contrast : data.contrast))
 
 const cssVar = (id: string) => `var(--ws-${id.replaceAll('.', '-')})`
 const short = (id: string) => id.replace(/^color\./, '')
@@ -23,10 +32,10 @@ function verdict(row: ContrastRow, theme: 'dark' | 'light') {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="row in data.contrast" :key="row.foreground + row.background">
+        <tr v-for="row in rows" :key="row.foreground + row.background">
           <td class="pair">
             <code>{{ short(row.foreground) }}</code> on <code>{{ short(row.background) }}</code>
-            <span class="use">{{ row.use }}</span>
+            <span v-if="row.use" class="use">{{ row.use }}</span>
             <span v-if="row.light.note" class="use">{{ row.light.note }}</span>
             <span v-if="row.dark.note" class="use">{{ row.dark.note }}</span>
           </td>
