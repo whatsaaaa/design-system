@@ -102,22 +102,34 @@ function tierColor(id: TokenId): TierColor {
   return { id, prefix, property, state: stated ? last : 'rest' }
 }
 
+/** The contrast each color drawn on a fill has to reach: 4.5 for text, 3 for an edge or an icon. */
+const drawnMin = new Map([
+  ['text', 4.5],
+  ['border', 3],
+  ['icon', 3],
+])
+
+/** The colors of the tier, by id. */
+const tierColorIds = (): TokenId[] =>
+  (Object.keys(tokens('dark')) as TokenId[]).filter(
+    (id) => inTier(id) && tokens('dark')[id].$type === 'color',
+  )
+
 /**
  * The pairs the names of the component tier imply, so the tier needs no entries of its own in
  * tokens/contrast.json:
  *
  * - `<prefix>.text.<state>` on `<prefix>.bg.<state>`, else the fill at rest, else the page: 4.5.
- *   Text at rest is also read on every other fill of its prefix, which it keeps on hover: 4.5.
  * - `<prefix>.border.<state>` and `<prefix>.icon.<state>` on the page, and on the fill of their
  *   prefix where there is one: 3.
+ * - Text, an edge or an icon at rest is also read on every other fill of its prefix, which it
+ *   keeps on hover.
  * - Disabled is exempt, as WCAG exempts an inactive control.
  *
  * A pair that tokens/contrast.json lists too is measured as it says there, with its exceptions.
  */
-export function tierPairs(): ContrastPair[] {
-  const colors = (Object.keys(tokens('dark')) as TokenId[])
-    .filter((id) => inTier(id) && tokens('dark')[id].$type === 'color')
-    .map(tierColor)
+export function tierPairs(ids: TokenId[] = tierColorIds()): ContrastPair[] {
+  const colors = ids.map(tierColor)
   const fill = (prefix: string, state: string) =>
     colors.find((one) => one.prefix === prefix && one.property === 'bg' && one.state === state)?.id
   const fills = (prefix: string) =>
@@ -130,16 +142,13 @@ export function tierPairs(): ContrastPair[] {
       pairs.push({ foreground, background, min, use })
   }
   for (const { id, prefix, property, state } of colors) {
-    if (state === 'disabled') continue
-    if (property === 'text') {
-      add(id, fill(prefix, state) ?? fill(prefix, 'rest') ?? 'color.bg', 4.5)
-      if (state === 'rest')
-        for (const other of fills(prefix)) if (other.state !== 'disabled') add(id, other.id, 4.5)
-    } else if (property === 'border' || property === 'icon') {
-      add(id, 'color.bg', 3)
-      const under = fill(prefix, state) ?? fill(prefix, 'rest')
-      if (under) add(id, under, 3)
-    }
+    const min = drawnMin.get(property)
+    if (state === 'disabled' || min === undefined) continue
+    const under = fill(prefix, state) ?? fill(prefix, 'rest')
+    if (property !== 'text' || !under) add(id, 'color.bg', min)
+    if (under) add(id, under, min)
+    if (state === 'rest')
+      for (const other of fills(prefix)) if (other.state !== 'disabled') add(id, other.id, min)
   }
   return pairs
 }

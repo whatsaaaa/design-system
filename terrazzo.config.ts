@@ -2,7 +2,7 @@ import { defineConfig } from '@terrazzo/cli'
 import css from '@terrazzo/plugin-css'
 import js from '@terrazzo/plugin-js'
 import { tailwindTheme, tailwindVariants } from './scripts/lib/tailwind.ts'
-import { chosen, rootUnchosen, themeRules } from './scripts/lib/theme-selectors.ts'
+import { anyChosen, chosen, rootUnchosen, themeRules } from './scripts/lib/theme-selectors.ts'
 import { tierGroups } from './scripts/lib/tier.ts'
 
 /** Re-indents the declarations Terrazzo hands to `prepare`. */
@@ -63,7 +63,7 @@ export default defineConfig({
           input: { theme: 'dark' },
           include: tier,
           prepare: (declarations) =>
-            `:root,\n[data-theme],\n.dark,\n.light {\n  ${indent(declarations, 2)}\n}`,
+            `:root,\n${anyChosen.replaceAll(', ', ',\n')} {\n  ${indent(declarations, 2)}\n}`,
         },
       ],
     }),

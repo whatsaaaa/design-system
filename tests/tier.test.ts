@@ -101,7 +101,12 @@ describe('the component tier', () => {
       const declaration = `--ws-${id.replaceAll('.', '-')}:`
       const declaring = blocks.filter(({ body }) => body.includes(declaration))
       expect(declaring, id).toHaveLength(1)
-      expect(declaring[0]!.selectors, id).toEqual([':root', '[data-theme]', '.dark', '.light'])
+      expect(declaring[0]!.selectors, id).toEqual([
+        ':root',
+        '[data-theme]',
+        '.dark:where(:not(.light))',
+        '.light:where(:not(.dark))',
+      ])
     }
   })
 
@@ -122,5 +127,25 @@ describe('the component tier', () => {
     expect(tierPairs().filter((pair) => pair.foreground.endsWith('.disabled'))).toEqual([])
     for (const pair of tierPairs())
       expect(pair.min, pair.use).toBe(/\.text\b/.test(pair.foreground) ? 4.5 : 3)
+  })
+
+  it('measures text, an edge and an icon at rest on every fill they keep, but not on disabled', () => {
+    // an outlined button: its label, edge and icon stay as they are when its fill changes on hover
+    const pairs = tierPairs([
+      'button.danger.bg.rest',
+      'button.danger.bg.hover',
+      'button.danger.bg.disabled',
+      'button.danger.text.rest',
+      'button.danger.border.rest',
+      'button.danger.icon',
+    ] as unknown as TokenId[]).map(
+      (pair) => `${pair.foreground} on ${pair.background} at ${pair.min}`,
+    )
+    for (const fill of ['button.danger.bg.rest', 'button.danger.bg.hover']) {
+      expect(pairs).toContain(`button.danger.text.rest on ${fill} at 4.5`)
+      expect(pairs).toContain(`button.danger.border.rest on ${fill} at 3`)
+      expect(pairs).toContain(`button.danger.icon on ${fill} at 3`)
+    }
+    expect(pairs.filter((pair) => pair.includes('.disabled'))).toEqual([])
   })
 })

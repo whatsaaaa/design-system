@@ -1,4 +1,5 @@
-// Prints the contrast of every pair in tokens/contrast.json. The same numbers are tested in tests/contrast.test.ts.
+// Prints the contrast of every pair in tokens/contrast.json, and of the pairs the names of the
+// component tier imply. The same numbers are tested in tests/contrast.test.ts.
 import { measureAll } from './lib/contrast.ts'
 
 for (const { theme, foreground, background, ratio, min, passes, below } of measureAll()) {

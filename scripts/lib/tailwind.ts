@@ -30,7 +30,7 @@ const leftOut: Record<string, string> = {
   ...Object.fromEntries(
     tierGroups.map((group) => [
       group,
-      `the component tier: what draws a ${group} reads --ws-${group}-* by name, as bg-(--ws-...)`,
+      `the component tier: what draws a ${group} reads --ws-${group}-* by name`,
     ]),
   ),
 }
