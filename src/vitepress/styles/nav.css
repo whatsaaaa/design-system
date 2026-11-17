@@ -145,6 +145,33 @@
   color: var(--ws-color-brand);
 }
 
+/*
+ * In forced colors the browser drops the current tab's bar, a shadow, and paints the edges
+ * every tab keeps for it: the other tabs' edges take the page's color, and the current tab
+ * keeps its colors, as in the tab bar of the terminal frame.
+ */
+@media (forced-colors: active) {
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup .button {
+    border-inline-color: Canvas;
+  }
+
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink.active,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup.active .button {
+    border-color: CanvasText;
+    background: Canvas;
+    box-shadow: inset 0 var(--ws-border-width-medium) 0 Highlight;
+    color: CanvasText;
+    outline-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .VPNav .VPNavBarMenu .VPNavBarMenuLink.active::before,
+  .VPNav .VPNavBarMenu .VPNavBarMenuGroup.active .button::before {
+    color: Highlight;
+  }
+}
+
 /* flyout menus of a tab group, of the language picker and of the overflow menu */
 .VPNav .VPFlyout .menu .VPMenu {
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
@@ -473,13 +500,13 @@
   }
 
   /* the row runs from edge to edge, so the current tab has no border at an end of it */
-  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink,
-  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup .button {
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuLink.active,
+  .VPNav .VPNavBarMenu > .visually-hidden + .VPNavBarMenuGroup.active .button {
     border-left-color: transparent;
   }
 
-  .VPNav .VPNavBarMenu > .VPNavBarMenuLink:last-child,
-  .VPNav .VPNavBarMenu > .VPNavBarMenuGroup:last-child .button {
+  .VPNav .VPNavBarMenu > .VPNavBarMenuLink.active:last-child,
+  .VPNav .VPNavBarMenu > .VPNavBarMenuGroup.active:last-child .button {
     border-right-color: transparent;
   }
 

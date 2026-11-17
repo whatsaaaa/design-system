@@ -32,7 +32,7 @@ Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 | `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                                                                               |
 | `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                                                                               |
 | `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and the icons of a form: `--ws-icon-check`, the tick, and `--ws-icon-calendar`. Needed with `callout.css` and `terminal.css`, and for those |
-| `@whatsaaaa/design-system/css/nuxt-ui.css`   | Nuxt UI's colors on the roles. Only in an app on Nuxt UI, after it: see With Tailwind CSS below                                                                                      |
+| `@whatsaaaa/design-system/css/nuxt-ui.css`   | Deprecated, removed in 0.9.0. Nuxt UI's colors on the roles. Only in an app on Nuxt UI, after it: see With Tailwind CSS below                                                        |
 
 Everything is prefixed: classes with `ws-`, variables with `--ws-`. Only `nuxt-ui.css` sets variables of another prefix, Nuxt UI's `--ui-*`.
 
@@ -48,7 +48,11 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in
 
 Install `tailwindcss` 4.3.5 or a later 4.x next to the package. Only this entry needs it.
 
-The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not its colors. Nuxt UI takes its colors from its own `--ui-*` variables, which fall back to its green and slate, and without `--ui-bg` it paints the body in its own background. `css/nuxt-ui.css` points them at the roles. It is not in the entry, as it has to come after Nuxt UI, so an app on Nuxt UI imports it last:
+The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not its colors. Nuxt UI takes its colors from its own `--ui-*` variables, which fall back to its green and slate, and without `--ui-bg` it paints the body in its own background. `css/nuxt-ui.css` points them at the roles.
+
+`css/nuxt-ui.css` is deprecated and is removed in 0.9.0. An app on Nuxt UI gets it from ui-vue, which `@whatsaaaa/ui-vue/index.css` brings, and imports none of the lines below. An app that imports it directly copies the file from 0.8.3 into its own stylesheets and imports that copy in its place.
+
+It is not in the entry, as it has to come after Nuxt UI, so an app on Nuxt UI without ui-vue imports it last, until 0.9.0:
 
 ```css
 @import '@whatsaaaa/design-system/tailwind.css';

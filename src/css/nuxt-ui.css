@@ -1,4 +1,8 @@
 /*
+ * Deprecated: removed in 0.9.0. An app on Nuxt UI gets it from ui-vue, which
+ * `@whatsaaaa/ui-vue/index.css` brings. An app that imports this file directly copies it from
+ * 0.8.3 into its own stylesheets.
+ *
  * Nuxt UI's theme variables, pointed at the design system's roles. Both themes follow by
  * themselves: the roles switch, and these read them.
  *
@@ -12,7 +16,7 @@
  * color (500) to the text (950), so a low shade is a faint tint in both themes.
  *
  * It reads the tokens and comes after Nuxt UI's own stylesheet, so it is not in index.css or
- * tailwind.css. An app's stylesheet ends its imports with it:
+ * tailwind.css. An app on Nuxt UI without ui-vue ends its imports with it, until 0.9.0:
  *
  *   @import '@whatsaaaa/design-system/tailwind.css';
  *   @import '@nuxt/ui';
