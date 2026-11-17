@@ -2,4 +2,4 @@
 
 Work that is decided but waits on something else.
 
-None at the moment.
+- Remove `css/nuxt-ui.css` in 0.9.0, once ui-vue ships its own copy.
