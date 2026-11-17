@@ -37,7 +37,7 @@ Everything is prefixed: classes with `ws-`, variables with `--ws-`.
 
 ### With Tailwind CSS
 
-An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in place of both `tailwindcss` and `index.css`. It goes first in the app's stylesheet, before the app's other imports and its own rules:
+An app on Tailwind CSS v4 imports the Tailwind entry in place of both `tailwindcss` and `index.css`. It goes first in the app's stylesheet, before the app's other imports and its own rules:
 
 ```css
 @import '@whatsaaaa/design-system/tailwind.css';
