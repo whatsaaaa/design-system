@@ -138,6 +138,31 @@
   color: var(--ws-color-brand);
 }
 
+/*
+ * In forced colors the browser drops the current tab's bar, a shadow, and paints the edges
+ * every tab keeps for it, so all tabs would look alike. The other tabs' edges take the page's
+ * color, and the current tab keeps its colors as they are: its edges in the text color, its
+ * bar and number in the system's color of a selection.
+ */
+@media (forced-colors: active) {
+  .ws-tabs a {
+    border-inline-color: Canvas;
+  }
+
+  .ws-tabs a[aria-current]:not([aria-current='false']) {
+    border-color: CanvasText;
+    background: Canvas;
+    box-shadow: inset 0 var(--ws-border-width-medium) 0 Highlight;
+    color: CanvasText;
+    outline-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .ws-tabs a[aria-current]:not([aria-current='false'])::before {
+    color: Highlight;
+  }
+}
+
 .ws-tab-bar__end {
   display: flex;
   align-items: center;

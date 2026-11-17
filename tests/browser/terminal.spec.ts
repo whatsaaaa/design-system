@@ -1,5 +1,5 @@
 import { type Locator, type Page, expect, test } from '@playwright/test'
-import { DESKTOP, NARROWEST, open } from './pages.ts'
+import { DESKTOP, NARROWEST, PHONE, open } from './pages.ts'
 
 /**
  * Small pieces of the terminal frame: a state lines up with the text beside it, a prompt that
@@ -160,4 +160,75 @@ test.describe('the numbers of the tabs', () => {
       expect(after.label).toBe(before.label)
     })
   }
+})
+
+test.describe('the current tab in forced colors', () => {
+  /** The color in the middle of an element's top edge, as the page draws it. */
+  const top = async (page: Page, tab: Locator) => {
+    const png = await tab.screenshot()
+    return page.evaluate(async (data) => {
+      const image = new Image()
+      image.src = `data:image/png;base64,${data}`
+      await image.decode()
+      const canvas = document.createElement('canvas')
+      canvas.width = image.width
+      canvas.height = image.height
+      const context = canvas.getContext('2d')!
+      context.drawImage(image, 0, 0)
+      const [r, g, b] = context.getImageData(Math.floor(image.width / 2), 0, 1, 1).data
+      return `rgb(${r}, ${g}, ${b})`
+    }, png.toString('base64'))
+  }
+
+  /** A system color as the page draws it on its background, which the color may let through. */
+  const system = (page: Page, color: string) =>
+    page.evaluate((color) => {
+      const context = document.createElement('canvas').getContext('2d')!
+      for (const fill of ['Canvas', color]) {
+        // as the page computes it: a canvas does not take the colors of forced colors
+        const probe = document.createElement('span')
+        probe.style.color = fill
+        document.body.append(probe)
+        context.fillStyle = getComputedStyle(probe).color
+        probe.remove()
+        context.fillRect(0, 0, 1, 1)
+      }
+      const [r, g, b] = context.getImageData(0, 0, 1, 1).data
+      return `rgb(${r}, ${g}, ${b})`
+    }, color)
+
+  for (const [name, path, current, other] of [
+    ['the tab bar', TERMINAL, '.ws-tabs a[aria-current="page"]', '.ws-tabs a:not([aria-current])'],
+    [
+      'the docs theme',
+      '/styles/prose',
+      '.VPNavBarMenuLink.active',
+      '.VPNavBarMenuLink:not(.active)',
+    ],
+  ] as const)
+    for (const [size, viewport] of [
+      ['desktop', DESKTOP],
+      ['phone', PHONE],
+    ] as const)
+      test(`keeps its bar in the selection color, in ${name} on a ${size}`, async ({ page }) => {
+        await page.setViewportSize(viewport)
+        await page.emulateMedia({ forcedColors: 'active' })
+        await open(page, path)
+        const [highlight, canvas] = [await system(page, 'Highlight'), await system(page, 'Canvas')]
+        expect(highlight).not.toBe(canvas)
+        // the bar over the current tab, where the browser would drop its shadow
+        expect(await top(page, page.locator(current).first())).toBe(highlight)
+        // and no other tab has one, or an edge of its own. The edges are read from the style: a
+        // tab starts between two pixels, so a picture of it can take in its neighbor's edge
+        const tabs = page.locator(other)
+        expect(await tabs.count()).toBeGreaterThan(0)
+        for (const tab of await tabs.all()) {
+          expect(await top(page, tab)).toBe(canvas)
+          const sides = await tab.evaluate((element) => {
+            const style = getComputedStyle(element)
+            return [style.borderLeftColor, style.borderRightColor]
+          })
+          expect(sides).toEqual([canvas, canvas])
+        }
+      })
 })
