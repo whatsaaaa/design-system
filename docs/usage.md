@@ -266,7 +266,7 @@ The markup of each piece is in the comment above its rules, in its stylesheet in
 
 ### Forms
 
-The system draws no fields and no buttons: draw them from the roles and the component tokens of section 12, with these.
+The system draws no fields and no buttons: draw them as the specs of section 12 say, from the roles and the component tokens, with these.
 
 - **One height.** A one-line field, a button and a segmented control are `--ws-size-control` tall. A checkbox or a radio button is `--ws-size-check`, a step number's circle `--ws-size-step`.
 - **Rows of fields.** Fields that belong together, such as a date and a time, may share a row from 40rem up. Below it, `@media (width < 40rem)`, each takes a line of its own.
@@ -459,12 +459,31 @@ dark['color.bg'].$value.hex // '#191724'
 
 The sources are in `tokens/`, in the Design Tokens Community Group format.
 
-## 12. Component tokens
+## 12. Components: specs and the tier
 
-The component tier names what every implementation of a control has to draw alike, such as ui-vue on Nuxt UI or an app that draws its own fields. Each token is an alias of a role or a measure, and follows the theme as the roles do, in a part held in the other theme too. Two groups so far:
+The system draws no components: it specifies them, and an implementation draws them, such as ui-vue on Nuxt UI, ui-react on shadcn/ui with Radix, or an app that draws its own fields. Two things hold them alike.
+
+**Specs.** Each component has a spec, `specs/<component>.spec.json`, in the package as `@whatsaaaa/design-system/specs/button.spec.json`, checked against `specs/spec.schema.json`. Its state table is the whole mapping: for each kind, state and part, the token each CSS property takes, or a value the system writes without a token. A state lists what it changes from rest:
+
+```json
+{
+  "variant": "primary",
+  "state": "hover",
+  "part": "root",
+  "property": "background-color",
+  "token": "button.primary.bg.hover"
+}
+```
+
+A token id reads as its variable, `--ws-button-primary-bg-hover`, and a text style on a font property as that part of it: `text.label` on `font-size` is `--ws-text-label-font-size`. The states are one closed list, the one the component tokens end in: `rest`, `hover`, `active`, `focus`, `disabled`, `checked`, `indeterminate`, `invalid`, `open`, `selected`, `current`, `loading`. A spec also names its parts, which are the `data-slot` of each part or what an implementation maps them to, its kinds and sizes, its keys and accessibility rules, the Lucide names of the icons it draws, and its gallery contract: the examples a gallery shows, each marked with its id in `data-spec`, `button.primary.hover`, and `.<size>` at the end for a size other than the default. The specs so far, both drafts: `button` (primary, secondary, ghost, quiet and danger, in the five sizes) and `input` (the field with its label, help and error). Each has a page in the style guide, drawn from its file.
+
+Draw a component the system specifies as its spec says, and read the spec in a test where you can, rather than copying values from it.
+
+**The component tier.** Where every implementation has to make the same decision, a spec's row names a component token. Each is an alias of a role or a measure, and follows the theme as the roles do, in a part held in the other theme too. Three groups so far:
 
 - `--ws-control-*`, every one-line control: a button, a field, a select's trigger. For each of the five sizes, `xs`, `sm`, `md` (the default), `lg` and `xl`: `--ws-control-height-<size>`, `--ws-control-gap-<size>` between the icon and the label or value, and `--ws-control-icon-size-<size>`. At every size `--ws-control-radius`, and the edge `--ws-control-border-width-rest`, `-invalid` with an error.
 - `--ws-field-*`, a text field, a select and a select menu: `--ws-field-bg`, the value `--ws-field-text-rest` and `-disabled`, the edge `--ws-field-border-rest`, `-hover`, `-invalid` and `-disabled`, an icon in it `--ws-field-icon`, and around it `--ws-field-label-text`, `--ws-field-help-text`, `--ws-field-error-text` with `--ws-field-error-icon` and `--ws-field-error-font-weight`, and `--ws-field-required-text` for the asterisk.
+- `--ws-button-*`, the colors of each kind of button: `--ws-button-<kind>-<bg|border|text>-<state>`, such as `--ws-button-primary-bg-hover` or `--ws-button-danger-border-rest`, for the kinds `primary`, `secondary`, `ghost`, `quiet` and `danger`, and `--ws-button-text-disabled` and `--ws-button-border-disabled` for a disabled button of every kind. Danger is an outline in both themes. A button's height, gap, radius and icon size are the control's.
 
 Read them by name, where the control is drawn, and they keep in step with the system:
 
@@ -483,7 +502,7 @@ Read them by name, where the control is drawn, and they keep in step with the sy
 }
 ```
 
-They are not in Tailwind's theme, so no other element takes a field's color by accident. With Tailwind, read them with the variable shorthand: `h-(--ws-control-height-md) rounded-(--ws-control-radius) border-(--ws-field-border-rest)`. The tokens are in `tokens/components/`, one file per group, and in the data of section 11.
+They are not in Tailwind's theme, so no other element takes a field's color by accident. With Tailwind, read them with the variable shorthand: `h-(--ws-control-height-md) rounded-(--ws-control-radius) border-(--ws-field-border-rest) hover:bg-(--ws-button-secondary-bg-hover)`. The tokens are in `tokens/components/`, one file per group, and in the data of section 11. Every one of them is read by a spec.
 
 ## Before you finish
 

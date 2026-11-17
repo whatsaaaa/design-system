@@ -48,7 +48,7 @@ const properties = [
 
 describe('the component tier', () => {
   it('has its groups, and every token of them is built', () => {
-    expect(tierGroups).toEqual(['control', 'field'])
+    expect(tierGroups).toEqual(['button', 'control', 'field'])
     for (const [id] of all) expect(ids, id).toContain(id)
     expect(ids.filter(inTier)).toHaveLength(all.length)
   })

@@ -16,6 +16,9 @@
     "components": {
       "sources": [
         {
+          "$ref": "components/button.tokens.json"
+        },
+        {
           "$ref": "components/control.tokens.json"
         },
         {

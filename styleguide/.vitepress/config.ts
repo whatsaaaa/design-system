@@ -1,6 +1,26 @@
 import { defineConfigWithTheme } from 'vitepress'
 import { type ThemeConfig, whatsaaaaConfig } from '../../src/vitepress-config/index.ts'
 
+/** The styles and the specs of the components drawn with them, one sidebar for both. */
+const styles = [
+  {
+    text: 'Styles',
+    items: [
+      { text: 'Prose', link: '/styles/prose' },
+      { text: 'Terminal frame', link: '/styles/terminal' },
+      { text: 'Forms', link: '/styles/forms' },
+    ],
+  },
+  {
+    text: 'Components',
+    items: [
+      { text: 'Specs', link: '/components/' },
+      { text: 'Button', link: '/components/button' },
+      { text: 'Input', link: '/components/input' },
+    ],
+  },
+]
+
 export default defineConfigWithTheme<ThemeConfig>({
   extends: whatsaaaaConfig(),
   title: 'design-system',
@@ -17,7 +37,8 @@ export default defineConfigWithTheme<ThemeConfig>({
     nav: [
       { text: 'identity', link: '/identity/', activeMatch: '^/identity/' },
       { text: 'tokens', link: '/tokens/color', activeMatch: '^/tokens/' },
-      { text: 'styles', link: '/styles/prose', activeMatch: '^/styles/' },
+      // the component specs are under styles: a fifth tab does not fit a tablet's bar
+      { text: 'styles', link: '/styles/prose', activeMatch: '^/(styles|components)/' },
       { text: 'docs', link: '/docs/', activeMatch: '^/docs/' },
     ],
     sidebar: {
@@ -41,16 +62,8 @@ export default defineConfigWithTheme<ThemeConfig>({
           ],
         },
       ],
-      '/styles/': [
-        {
-          text: 'Styles',
-          items: [
-            { text: 'Prose', link: '/styles/prose' },
-            { text: 'Terminal frame', link: '/styles/terminal' },
-            { text: 'Forms', link: '/styles/forms' },
-          ],
-        },
-      ],
+      '/styles/': styles,
+      '/components/': styles,
       '/docs/': [
         {
           text: 'Docs theme',
