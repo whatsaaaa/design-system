@@ -289,13 +289,6 @@
       "variant": "quiet",
       "state": "rest",
       "part": "root",
-      "property": "height",
-      "value": "auto"
-    },
-    {
-      "variant": "quiet",
-      "state": "rest",
-      "part": "root",
       "property": "padding-inline",
       "value": "0"
     },

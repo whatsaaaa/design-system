@@ -33,7 +33,10 @@ function kinds(variants: string[]) {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="row in spec.sizeRows" :key="JSON.stringify(row.targets)">
+        <tr
+          v-for="row in spec.sizeRows"
+          :key="JSON.stringify([row.state, row.variants, row.targets])"
+        >
           <td class="ws-table__text">
             <span
               v-for="target in row.targets"
@@ -44,6 +47,7 @@ function kinds(variants: string[]) {
             </span>
             <span v-if="row.pattern" class="use pattern">{{ row.pattern }}</span>
             <span v-if="row.variants" class="use">{{ kinds(row.variants) }}</span>
+            <span v-if="row.state !== 'rest'" class="use">{{ row.state }}</span>
           </td>
           <td v-for="size in sizes" :key="size">
             <template v-if="row.cells[size]">

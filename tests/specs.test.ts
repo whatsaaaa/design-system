@@ -15,6 +15,7 @@ import {
 } from '../scripts/lib/specs.ts'
 import { inTier } from '../scripts/lib/tier.ts'
 import { type TokenId, tokens } from '../scripts/lib/tokens.ts'
+import specPages from '../styleguide/.vitepress/data/specs.data.ts'
 
 const schema = JSON.parse(readFileSync(join(specDirectory, 'spec.schema.json'), 'utf8'))
 const validate = new Ajv2020({ allErrors: true }).compile(schema)
@@ -130,6 +131,30 @@ describe.each(all.map((spec) => [spec.component, spec] as const))('the %s spec',
     for (const row of spec.stateTable.filter((row) => row.token))
       expect(css, JSON.stringify(row)).toContain(`${cssVariable(row)}:`)
   })
+})
+
+describe('the component pages', () => {
+  const pages = specPages.load()
+
+  it.each(all.map((spec) => [spec.component, spec] as const))(
+    'show each row of the %s spec that differs by size once, in its state and for its kinds',
+    (name, spec) => {
+      for (const row of spec.stateTable.filter((row) => row.size)) {
+        const kinds = row.variant === '*' ? undefined : rowVariants(spec, row)
+        const shown = pages[name]!.sizeRows.filter(
+          (entry) =>
+            entry.state === row.state &&
+            String(entry.variants) === String(kinds) &&
+            entry.targets.some(
+              (target) => target.part === row.part && target.property === row.property,
+            ),
+        )
+        expect(shown, JSON.stringify(row)).toHaveLength(1)
+        const cell = shown[0]!.cells[row.size!]
+        expect(cell?.token ?? cell?.value, JSON.stringify(row)).toBe(row.token ?? row.value)
+      }
+    },
+  )
 })
 
 describe('the specs and the component tier', () => {

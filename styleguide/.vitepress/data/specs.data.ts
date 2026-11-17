@@ -52,6 +52,7 @@ export interface StateRow {
 export interface SizeRow {
   /** The parts and properties that take the same token at every size. */
   targets: { part: string; property: string }[]
+  state: string
   variants?: string[]
   /** The token at every size, where it is one name with the size last: `control.height.<size>`. */
   pattern?: string
@@ -166,28 +167,37 @@ function page(spec: Spec): SpecPage {
     })),
   ].filter((group) => group.rows.length > 0)
 
-  // a row of the matrix for each part and property, then one for those that take the same
-  // tokens, such as the width and the height of both icons
+  // a row of the matrix for each part and property in a state, then one for those that take
+  // the same tokens in it, such as the width and the height of both icons
   const bySize: SizeRow[] = []
   for (const row of stateTable.filter((row) => row.size)) {
     const variants = variantsOf(row)
     let target = bySize.find(
-      ({ targets: [first], variants: theirs }) =>
+      ({ targets: [first], state, variants: theirs }) =>
         first!.part === row.part &&
         first!.property === row.property &&
+        state === row.state &&
         String(theirs) === String(variants),
     )
     if (!target) {
-      target = { targets: [{ part: row.part, property: row.property }], variants, cells: {} }
+      target = {
+        targets: [{ part: row.part, property: row.property }],
+        state: row.state,
+        variants,
+        cells: {},
+      }
       bySize.push(target)
     }
     const value = cell(row)
     // a measure is the same in both themes, which the matrix shows once
     if (value.dark.text !== value.light.text)
       throw new Error(`${spec.component}: ${row.token} differs by theme, and a size row shows one`)
+    if (target.cells[row.size!])
+      throw new Error(`${spec.component}: ${JSON.stringify(row)} is a second row for its size`)
     target.cells[row.size!] = value
   }
   const sameTokens = (a: SizeRow, b: SizeRow) =>
+    a.state === b.state &&
     String(a.variants) === String(b.variants) &&
     JSON.stringify(
       Object.entries(a.cells).map(([size, value]) => [size, value.token ?? value.value]),
