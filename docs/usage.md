@@ -32,13 +32,12 @@ Or take pieces. `tokens.css` and `fonts.css` first, then what you use:
 | `@whatsaaaa/design-system/css/theme.css`     | `ws-theme-dark` and `ws-theme-light`, for an element of one theme only                                                                                                               |
 | `@whatsaaaa/design-system/css/ghost.css`     | Styles of `<ws-ghost>`                                                                                                                                                               |
 | `@whatsaaaa/design-system/css/icons.css`     | The icons the callouts and prompts draw, and the icons of a form: `--ws-icon-check`, the tick, and `--ws-icon-calendar`. Needed with `callout.css` and `terminal.css`, and for those |
-| `@whatsaaaa/design-system/css/nuxt-ui.css`   | Deprecated, removed in 0.9.0. Nuxt UI's colors on the roles. Only in an app on Nuxt UI, after it: see With Tailwind CSS below                                                        |
 
-Everything is prefixed: classes with `ws-`, variables with `--ws-`. Only `nuxt-ui.css` sets variables of another prefix, Nuxt UI's `--ui-*`.
+Everything is prefixed: classes with `ws-`, variables with `--ws-`.
 
 ### With Tailwind CSS
 
-An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in place of both `tailwindcss` and `index.css`. It goes first in the app's stylesheet, before the app's other imports and its own rules:
+An app on Tailwind CSS v4 imports the Tailwind entry in place of both `tailwindcss` and `index.css`. It goes first in the app's stylesheet, before the app's other imports and its own rules:
 
 ```css
 @import '@whatsaaaa/design-system/tailwind.css';
@@ -48,22 +47,7 @@ An app on Tailwind CSS v4, such as one on Nuxt UI, imports the Tailwind entry in
 
 Install `tailwindcss` 4.3.5 or a later 4.x next to the package. Only this entry needs it.
 
-The entry gives Nuxt UI the system's fonts, weights, radii and spacing, but not its colors. Nuxt UI takes its colors from its own `--ui-*` variables, which fall back to its green and slate, and without `--ui-bg` it paints the body in its own background. `css/nuxt-ui.css` points them at the roles.
-
-`css/nuxt-ui.css` is deprecated and is removed in 0.9.0. An app on Nuxt UI gets it from ui-vue, which `@whatsaaaa/ui-vue/index.css` brings, and imports none of the lines below. An app that imports it directly copies the file from 0.8.3 into its own stylesheets and imports that copy in its place.
-
-It is not in the entry, as it has to come after Nuxt UI, so an app on Nuxt UI without ui-vue imports it last, until 0.9.0:
-
-```css
-@import '@whatsaaaa/design-system/tailwind.css';
-@import '@nuxt/ui';
-@import '@whatsaaaa/design-system/tailwind/variants.css';
-@import '@whatsaaaa/design-system/css/nuxt-ui.css';
-```
-
-It sets them outside any layer, so they win over Nuxt UI's own, which it keeps in its theme layer and in a style it adds at runtime. A variable takes the role's value where it is set, so it sets them on `:root`, which follows the system, and again on every element that chooses a theme, with `data-theme` or the `dark` or `light` class, where Nuxt UI sets its own. The primary color is `--ws-color-interactive`, success, info, warning and error are tip, note, warning and danger, and `secondary` has no role, so it is left out. A step the system has no role for, such as `--ui-bg-accented` or a shade of a color other than 500, is mixed from the roles around it in oklab: a color's shades run from the page at 50 through the color at 500 to the text at 950, so a low shade is a faint tint in both themes. It also sets `--ui-radius` to `--ws-radius-sm`, and `--ui-header-height` to the height of the tab bar, 3rem where Nuxt UI's own is 4rem. Nuxt UI makes its headers that tall: the app's `UHeader`, a dashboard's navbar and the header of its sidebar, and at least the header of a modal, a slideover or a sidebar. It also leaves room for the app's header by it: `UMain` and `UError` are at least the height of the window less it, and `UPageAside`, `UContentToc` and a heading scrolled to stop below it.
-
-To change one of them, set it after the import, outside any layer, on the same selectors: `:root, :host, [data-theme], .dark, .light`. On `:root` alone it holds only where no element around chooses a theme, as the stylesheet sets its own value again on each one that does.
+An app on Nuxt UI imports `@whatsaaaa/ui-vue/index.css` alone, in place of the three lines above: it brings them, and Nuxt UI's colors on the roles.
 
 The entry brings Tailwind and everything `index.css` brings, in cascade layers, so a utility wins over a class of the system and the app's rules outside any layer win over both:
 

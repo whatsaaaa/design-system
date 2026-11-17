@@ -6,8 +6,8 @@ import { buildTailwindApp } from '../fixtures/tailwind-app/build.ts'
 
 /**
  * An app on Tailwind CSS v4 that imports tailwind.css as the usage guide says, built and served
- * as it would be: its utilities on the tokens, the dark: and light: variants, and Nuxt UI's
- * colors. Each worker builds it once.
+ * as it would be: its utilities on the tokens and the dark: and light: variants. Each worker
+ * builds it once.
  */
 const ORIGIN = 'http://tailwind-app.test'
 let out = ''
@@ -261,48 +261,4 @@ test.describe('the dark: and light: variants', () => {
     expect((await style(page, 'body')).backgroundColor).toBe(THEMES.light.bg)
     await context.close()
   })
-})
-
-test.describe("Nuxt UI's colors", () => {
-  /** A part that paints itself with Nuxt UI's page and primary colors. */
-  const part = (id: string) =>
-    `<p id="${id}" style="background-color: var(--ui-bg); color: var(--ui-primary)">kafana</p>`
-
-  for (const way of ['data-theme', 'class'] as const)
-    for (const [colorScheme, other] of [
-      ['dark', 'light'],
-      ['light', 'dark'],
-    ] as const)
-      test(`take the roles of the theme chosen around them with ${way}, on a ${colorScheme} system`, async ({
-        browser,
-      }) => {
-        const { context, page } = await app(browser, colorScheme)
-        const fixture = `
-          <div id="fixture">
-            ${part('page')}
-            <div ${held(way, other)}>
-              ${part('other')}
-              <div ${held(way, colorScheme)}>${part('back')}</div>
-            </div>
-          </div>`
-        const painted = await page.evaluate((markup) => {
-          document.body.insertAdjacentHTML('beforeend', markup)
-          return Object.fromEntries(
-            [...document.querySelectorAll<HTMLElement>('#fixture p')].map((element) => {
-              const { backgroundColor, color } = getComputedStyle(element)
-              return [element.id, { bg: backgroundColor, interactive: color }]
-            }),
-          )
-        }, fixture)
-        const roles = (theme: 'dark' | 'light') => ({
-          bg: THEMES[theme].bg,
-          interactive: THEMES[theme].interactive,
-        })
-        expect(painted).toEqual({
-          page: roles(colorScheme),
-          other: roles(other),
-          back: roles(colorScheme),
-        })
-        await context.close()
-      })
 })
