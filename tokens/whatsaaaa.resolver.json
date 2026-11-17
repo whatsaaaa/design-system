@@ -1,7 +1,7 @@
 {
   "name": "whatsaaaa",
   "version": "2025.10",
-  "description": "Rosé Pine primitives and everything that never changes, then the color roles of one theme.",
+  "description": "Rosé Pine primitives and everything that never changes, then the color roles of one theme, then the component tier, which aliases them.",
   "sets": {
     "core": {
       "sources": [
@@ -10,6 +10,16 @@
         },
         {
           "$ref": "core.tokens.json"
+        }
+      ]
+    },
+    "components": {
+      "sources": [
+        {
+          "$ref": "components/control.tokens.json"
+        },
+        {
+          "$ref": "components/field.tokens.json"
         }
       ]
     }
@@ -38,6 +48,9 @@
     },
     {
       "$ref": "#/modifiers/theme"
+    },
+    {
+      "$ref": "#/sets/components"
     }
   ]
 }

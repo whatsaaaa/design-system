@@ -11,7 +11,7 @@ The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whats
 | Part                    | What it is                                                                                                                                        | Source                                    |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
 | Identity                | The ghost in every cut, the wordmark, six poses, a sprite per project, favicons, README headers, social cards and a profile banner. All generated | `src/identity/ghost.ts`, `identity/`      |
-| Tokens                  | Rosé Pine main for dark and Dawn for light, mapped to roles, with type, space, radii and motion                                                   | `tokens/`                                 |
+| Tokens                  | Rosé Pine main for dark and Dawn for light, mapped to roles, with type, space, radii and motion, and the component tokens that controls share     | `tokens/`                                 |
 | Styles                  | Prose, code blocks, tables, lists, callouts, a segmented control, terms and values, and the terminal frame: tab bar, prompts, status line         | `src/css/`                                |
 | The ghost as an element | `<ws-ghost>`, with the easter egg                                                                                                                 | `src/ghost/`                              |
 | Docs theme              | A VitePress theme on top of VitePress's default theme                                                                                             | `src/vitepress/`, `src/vitepress-config/` |
@@ -49,6 +49,7 @@ Every script builds what it needs first, so each one works on a fresh checkout.
 ## Changing things
 
 - **A color, a size, a text style.** Edit the files in `tokens/`. They are in the Design Tokens Community Group format and [Terrazzo](https://terrazzo.app) builds them. A color pair that has to stay readable goes in `tokens/contrast.json`, and a test holds it to its bar.
+- **A component token.** Add it to its group's file in `tokens/components/`, as an alias of a role or a measure. A new group is a new file there and a line in the `components` set of `tokens/whatsaaaa.resolver.json`. `docs/decisions.md` says when a token earns its place, and `tests/tier.test.ts` checks its name and alias.
 - **The ghost.** Edit `src/identity/ghost.ts`, then run `pnpm assets`. The kit, the element and the style guide all draw from that file.
 - **A new project.** Add `identity/projects/<name>.json` with its name, a line about it and its sprite, then run `pnpm assets`.
 - **A style.** The stylesheets in `src/css/` take every color from a token. Stylelint rejects a hex value.
@@ -94,7 +95,7 @@ npm sets up a trusted publisher only for a package that exists, so the package w
 ## Layout
 
 ```
-tokens/          the design tokens, and the contrast pairs
+tokens/          the design tokens, the component tier in components/, and the contrast pairs
 identity/        the handle and one file per project: name, tagline, sprite
 src/identity/    the ghost, pixel by pixel, and how a sprite becomes a mark
 src/css/         the stylesheets

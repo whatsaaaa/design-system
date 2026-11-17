@@ -74,6 +74,18 @@
       "use": "Brand marks on a panel"
     },
     {
+      "foreground": "color.brand-text",
+      "background": "color.bg",
+      "min": 4.5,
+      "use": "Small text in the brand red, such as the required mark of a field"
+    },
+    {
+      "foreground": "color.brand-text",
+      "background": "color.surface",
+      "min": 4.5,
+      "use": "The required mark of a field on a panel"
+    },
+    {
       "foreground": "color.on-brand",
       "background": "color.brand-fill",
       "min": 4.5,

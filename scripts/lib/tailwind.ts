@@ -5,6 +5,7 @@
 // way the tokens do. The CSS build writes the entry from the imports of index.css, so a
 // stylesheet added there comes through too.
 import { type Theme, inEffect, systemIs, unchosen } from './theme-selectors.ts'
+import { tierGroups } from './tier.ts'
 
 /** A token as the CSS plugin writes it: its id, its variable, and its value or its parts. */
 export interface CssToken {
@@ -24,6 +25,14 @@ const leftOut: Record<string, string> = {
   mark: 'the colors of the ghost are its own',
   'font.size': 'text takes a text style, not a size',
   'motion.duration': "Tailwind's duration-* takes milliseconds, and transitions take the fast one",
+  // every group of the component tier, for the same reason: a utility of the theme would let any
+  // element take a control's measure or a field's color, which the tier is there to keep apart
+  ...Object.fromEntries(
+    tierGroups.map((group) => [
+      group,
+      `the component tier: what draws a ${group} reads --ws-${group}-* by name, as bg-(--ws-...)`,
+    ]),
+  ),
 }
 
 /** The Tailwind name of a font weight, where it differs from the token's. */

@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { measureAll, readPairs } from '../scripts/lib/contrast.ts'
+import { allPairs, measureAll, readPairs } from '../scripts/lib/contrast.ts'
 
 describe('contrast of the role pairs', () => {
   const measured = measureAll()
 
   it('checks a meaningful number of pairs in both themes', () => {
     expect(readPairs().length).toBeGreaterThan(40)
-    expect(measured).toHaveLength(readPairs().length * 2)
+    // the pairs of tokens/contrast.json and the ones the component tier's names imply
+    expect(measured).toHaveLength(allPairs().length * 2)
+    expect(allPairs().length).toBeGreaterThan(readPairs().length)
   })
 
   it.each(measured.filter((pair) => !pair.below?.[pair.theme]))(
@@ -40,5 +42,8 @@ describe('contrast of the role pairs', () => {
     expect(ratio('light', 'color.tag-text', 'color.tag-bg')).toBe(4.87)
     expect(ratio('dark', 'mark.body', 'mark.tile')).toBe(11.5)
     expect(ratio('light', 'color.warning', 'color.bg')).toBe(2.05)
+    // the required mark is red in both themes, and darker in light so it reads as small text
+    expect(ratio('dark', 'color.brand-text', 'color.bg')).toBe(6.07)
+    expect(ratio('light', 'color.brand-text', 'color.bg')).toBe(4.73)
   })
 })

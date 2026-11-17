@@ -82,6 +82,18 @@ describe('the color roles', () => {
     },
   )
 
+  // The brand red as small text: love where it reads at 4.5:1, and in light, where it does not,
+  // love a step of the hover fill's further from the page.
+  it('color.brand-text is love on dark, and on light love 0.05 further from the page', () => {
+    expect(hex('color.brand-text', 'dark')).toBe(hex('palette.main.love'))
+    const love = oklab(hex('palette.dawn.love'))!
+    const page = oklab(hex('color.bg', 'light'))!
+    const away = Math.sign(love.l - page.l)
+    expect(hex('color.brand-text', 'light')).toBe(
+      formatHex(clampChroma({ ...love, l: love.l + away * 0.05 }, 'oklab')),
+    )
+  })
+
   it('keeps code blocks and the mark on the dark palette in both themes', () => {
     for (const id of [
       'code.bg',
