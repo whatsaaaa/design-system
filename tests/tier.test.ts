@@ -51,7 +51,7 @@ const properties = [
 
 describe('the component tier', () => {
   it('has its groups, and every token of them is built', () => {
-    expect(tierGroups).toEqual(['button', 'choice', 'control', 'field', 'overlay', 'tag'])
+    expect(tierGroups).toEqual(['button', 'choice', 'control', 'field', 'overlay', 'table', 'tag'])
     for (const [id] of all) expect(ids, id).toContain(id)
     expect(ids.filter(inTier)).toHaveLength(all.length)
   })
@@ -134,6 +134,10 @@ describe('the component tier', () => {
       'choice.indicator.icon.indeterminate on choice.indicator.bg.indeterminate',
       'choice.label.text.rest on color.bg',
       'choice.description.text.rest on color.bg',
+      'table.head.text on table.head.bg',
+      'table.row.text on color.bg',
+      'table.row.text on table.row.bg.hover',
+      'table.row.text on table.row.bg.selected',
       'tag.primary.text on tag.primary.bg',
       'tag.success.text on tag.success.bg',
       'tag.info.text on tag.info.bg',

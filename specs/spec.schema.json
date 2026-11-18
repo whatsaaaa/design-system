@@ -237,6 +237,8 @@
         "font-size",
         "font-weight",
         "line-height",
+        "font-variant-numeric",
+        "text-align",
         "text-transform",
         "text-decoration-line",
         "text-decoration-thickness",

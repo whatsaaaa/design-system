@@ -9,14 +9,16 @@
   </head>
   <body>
     <!--
-      A gallery that meets the badge, button, card, checkbox, input, modal, radio group, select and
-      select menu specs, marked as the gallery contract says: each example with its id in
-      data-spec, each part with its name in data-slot. Each field with an error, and each field at
-      rest in a size other than the default, shows twice: with its icons and without them. A
-      disabled checkbox shows twice: unchecked, and checked with its fill. A badge in the success
+      A gallery that meets the badge, button, card, checkbox, input, modal, radio group, select,
+      select menu, table and tabs specs, marked as the gallery contract says: each example with its
+      id in data-spec, each part with its name in data-slot. Each field with an error, and each
+      field at rest in a size other than the default, shows twice: with its icons and without them.
+      A disabled checkbox shows twice: unchecked, and checked with its fill. A badge in the success
       and the outline kinds shows twice, with an icon and without one, and a card twice, whole and
       with only its body. An open list and an open modal are drawn in place, inside their
-      examples. The last fields and a badge are in a part of the page held in the light theme.
+      examples. A table's selected example chooses its first row, and a row of tabs' current
+      example makes its first tab the current one. The last fields and a badge are in a part of
+      the page held in the light theme.
     -->
     <section>
       <h2>primary</h2>
@@ -2808,6 +2810,468 @@
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>table</h2>
+      <div class="table" data-spec="table.plain.rest" data-slot="root">
+        <table aria-label="Registrations">
+          <thead data-slot="thead">
+            <tr>
+              <th scope="col" data-slot="th">Full name</th>
+              <th scope="col" data-slot="th">Ticket</th>
+              <th scope="col" class="table__amount" data-slot="th">Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-slot="tr">
+              <td data-slot="td">Maya Collins</td>
+              <td data-slot="td">All three days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
+            </tr>
+            <tr data-slot="tr">
+              <td data-slot="td">Daniel Brooks</td>
+              <td data-slot="td">Two days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
+            </tr>
+            <tr data-slot="tr">
+              <td data-slot="td">Priya Shah</td>
+              <td data-slot="td">One day</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table" data-spec="table.plain.focus" data-slot="root">
+        <table aria-label="Registrations">
+          <thead data-slot="thead">
+            <tr>
+              <th scope="col" data-slot="th">Full name</th>
+              <th scope="col" data-slot="th">Ticket</th>
+              <th scope="col" class="table__amount" data-slot="th">Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-slot="tr">
+              <td data-slot="td">Maya Collins</td>
+              <td data-slot="td">All three days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
+            </tr>
+            <tr data-slot="tr">
+              <td data-slot="td">Daniel Brooks</td>
+              <td data-slot="td">Two days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
+            </tr>
+            <tr data-slot="tr">
+              <td data-slot="td">Priya Shah</td>
+              <td data-slot="td">One day</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table" data-spec="table.plain.loading" data-slot="root">
+        <table aria-label="Registrations" aria-busy="true">
+          <thead data-slot="thead">
+            <tr>
+              <th scope="col" data-slot="th">Full name</th>
+              <th scope="col" data-slot="th">Ticket</th>
+              <th scope="col" class="table__amount" data-slot="th">Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-slot="tr">
+              <td data-slot="td">Maya Collins</td>
+              <td data-slot="td">All three days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
+            </tr>
+            <tr data-slot="tr">
+              <td data-slot="td">Daniel Brooks</td>
+              <td data-slot="td">Two days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table" data-spec="table.selectable.rest" data-slot="root">
+        <table aria-label="Registrations" role="grid">
+          <thead data-slot="thead">
+            <tr>
+              <th scope="col" data-slot="th">Full name</th>
+              <th scope="col" data-slot="th">Ticket</th>
+              <th scope="col" class="table__amount" data-slot="th">Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Maya Collins</td>
+              <td data-slot="td">All three days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Daniel Brooks</td>
+              <td data-slot="td">Two days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Priya Shah</td>
+              <td data-slot="td">One day</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table" data-spec="table.selectable.hover" data-slot="root">
+        <table aria-label="Registrations" role="grid">
+          <thead data-slot="thead">
+            <tr>
+              <th scope="col" data-slot="th">Full name</th>
+              <th scope="col" data-slot="th">Ticket</th>
+              <th scope="col" class="table__amount" data-slot="th">Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Maya Collins</td>
+              <td data-slot="td">All three days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Daniel Brooks</td>
+              <td data-slot="td">Two days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Priya Shah</td>
+              <td data-slot="td">One day</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table" data-spec="table.selectable.focus" data-slot="root">
+        <table aria-label="Registrations" role="grid">
+          <thead data-slot="thead">
+            <tr>
+              <th scope="col" data-slot="th">Full name</th>
+              <th scope="col" data-slot="th">Ticket</th>
+              <th scope="col" class="table__amount" data-slot="th">Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Maya Collins</td>
+              <td data-slot="td">All three days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Daniel Brooks</td>
+              <td data-slot="td">Two days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Priya Shah</td>
+              <td data-slot="td">One day</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table" data-spec="table.selectable.selected" data-slot="root">
+        <table aria-label="Registrations" role="grid">
+          <thead data-slot="thead">
+            <tr>
+              <th scope="col" data-slot="th">Full name</th>
+              <th scope="col" data-slot="th">Ticket</th>
+              <th scope="col" class="table__amount" data-slot="th">Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-slot="tr" tabindex="0" aria-selected="true">
+              <td data-slot="td">Maya Collins</td>
+              <td data-slot="td">All three days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Daniel Brooks</td>
+              <td data-slot="td">Two days</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
+            </tr>
+            <tr data-slot="tr" tabindex="0" aria-selected="false">
+              <td data-slot="td">Priya Shah</td>
+              <td data-slot="td">One day</td>
+              <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section>
+      <h2>tabs</h2>
+      <div class="tabs" data-spec="tabs.link.rest" data-slot="root">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-1-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-1-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Settings</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs" data-spec="tabs.link.hover" data-slot="root">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-2-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-2-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Settings</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs" data-spec="tabs.link.focus" data-slot="root">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-3-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-3-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Settings</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs" data-spec="tabs.link.current" data-slot="root">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-4-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-4-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <span data-slot="label">Settings</span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs" data-spec="tabs.link.disabled" data-slot="root">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-5-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+            disabled
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Archive</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-5-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Overview</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>tabs sizes</h2>
+      <div class="tabs" data-spec="tabs.link.rest.xs" data-slot="root" data-size="xs">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-6-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-6-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Settings</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs" data-spec="tabs.link.rest.sm" data-slot="root" data-size="sm">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-7-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-7-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Settings</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs" data-spec="tabs.link.rest.lg" data-slot="root" data-size="lg">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-8-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-8-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Settings</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tabs" data-spec="tabs.link.rest.xl" data-slot="root" data-size="xl">
+        <div class="tabs__list" role="tablist" aria-label="Event" data-slot="list">
+          <button
+            type="button"
+            role="tab"
+            id="tabs-9-0"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h.01M3 18h.01M3 6h.01M8 12h13M8 18h13M8 6h13" /></svg
+            ><span data-slot="label">Overview</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tabs-9-1"
+            class="tabs__trigger"
+            data-slot="trigger"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <span data-slot="label">Settings</span
+            ><span data-slot="indicator" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
     </section>

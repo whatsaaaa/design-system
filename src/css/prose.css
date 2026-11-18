@@ -250,17 +250,21 @@
     font: var(--ws-text-body-sm);
   }
 
+  /*
+   * The head's colors and the room in each cell are the table's tokens, which every
+   * implementation of the table's spec reads too.
+   */
   & th,
   & td {
-    padding: var(--ws-space-10) var(--ws-space-16);
+    padding: var(--ws-table-cell-padding-block) var(--ws-table-cell-padding-inline);
     border: 0;
     text-align: left;
     vertical-align: top;
   }
 
   & th {
-    background: var(--ws-color-surface);
-    color: var(--ws-color-text-secondary);
+    background: var(--ws-table-head-bg);
+    color: var(--ws-table-head-text);
     font: var(--ws-text-overline);
     letter-spacing: var(--ws-text-overline-letter-spacing);
     text-transform: uppercase;

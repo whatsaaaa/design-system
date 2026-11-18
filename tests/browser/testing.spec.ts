@@ -35,6 +35,7 @@ const pseudoParts: Record<string, Record<string, string>> = {
   'radio-group': { required: 'legend::after' },
   select: { 'item-highlight': 'item::before' },
   'select-menu': { 'item-highlight': 'item::before' },
+  table: { 'loading-bar': 'thead::after' },
 }
 function fixture(name: string): Spec {
   const spec = loadSpec(name)
@@ -80,6 +81,8 @@ test('the specs it checks are the published ones', () => {
     'radio-group',
     'select',
     'select-menu',
+    'table',
+    'tabs',
   ])
   expect(loadSpec('button').component).toBe('button')
   expect(() => loadSpec('../package')).toThrow(/no spec named/)
@@ -96,6 +99,8 @@ const leastChecks: Record<string, number> = {
   'radio-group': 300,
   select: 1100,
   'select-menu': 1100,
+  table: 350,
+  tabs: 200,
 }
 
 for (const name of specNames()) {
@@ -465,80 +470,51 @@ test('a checked box that loses its fill and its mark in forced colors fails', as
   )
 })
 
-test('a selected example that looks the same as the one at rest in forced colors fails', async () => {
-  // a spec with a selected state, which no published spec has yet
-  const tab: Spec = {
-    ...loadSpec('button'),
-    component: 'tab',
-    parts: { root: 'The tab, with its label.' },
-    variants: { default: 'The one kind.' },
-    sizes: { md: 'Every tab.' },
-    defaultSize: 'md',
-    states: { rest: 'Not chosen.', selected: 'The one shown.' },
-    stateTable: [
-      {
-        variant: '*',
-        state: 'rest',
-        part: 'root',
-        property: 'background-color',
-        token: 'field.bg',
-      },
-      { variant: '*', state: 'rest', part: 'root', property: 'color', token: 'color.text' },
-      {
-        variant: '*',
-        state: 'selected',
-        part: 'root',
-        property: 'background-color',
-        token: 'color.interactive',
-      },
-      { variant: '*', state: 'selected', part: 'root', property: 'color', token: 'color.bg' },
-    ],
-    implementations: {},
-    gallery: ['tab.default.rest', 'tab.default.selected'],
-  }
-  await page.evaluate(() =>
-    document.body.insertAdjacentHTML(
-      'beforeend',
-      `<section class="tabs">
-        <div data-spec="tab.default.rest"><span class="tab" data-slot="root">Overview</span></div>
-        <div data-spec="tab.default.selected">
-          <span class="tab" data-slot="root" aria-selected="true">Overview</span>
-        </div>
-      </section>`,
-    ),
-  )
-  // the selected tab half a pixel off the one at rest, so its label is drawn at another fraction
-  // of a pixel and its image is cut a pixel apart
+test('a selected row that looks the same as the one at rest in forced colors fails', async () => {
+  // the selected table half a pixel off the one at rest, so its text is drawn at another fraction
+  // of a pixel and its image is cut a pixel apart: it still passes
   await page.addStyleTag({
-    content: `.tabs { flex-direction: column; }
-    .tab {
-      display: block;
-      padding: 0.5rem 0.75rem;
-      background-color: var(--ws-field-bg);
-      color: var(--ws-color-text);
-      font-size: var(--ws-text-label-font-size);
-    }
-    .tab[aria-selected='true'] {
-      background-color: var(--ws-color-interactive);
-      color: var(--ws-color-bg);
-    }
-    [data-spec='tab.default.selected'] { margin-inline-start: 0.5px; }`,
+    content: `[data-spec='table.selectable.selected'] { margin-inline-start: 0.5px; }`,
   })
-  // forced colors paint every background in the page's color and every label in its text color,
-  // so the two look alike
-  expect(where((await checkSpec(page, tab)).failures)).toEqual([
-    ['forced-colors', 'dark', 'tab.default.selected'],
-    ['forced-colors', 'light', 'tab.default.selected'],
-  ])
+  await expectSpec(page, fixture('table'), { implementation })
 
+  // the chosen row drawn as ui-vue draws it: its fill only, which forced colors paint in the
+  // page's color, as they paint every row
   await page.addStyleTag({
     content: `@media (forced-colors: active) {
-      .tab[aria-selected='true'] {
-        forced-color-adjust: none;
-        background-color: Highlight;
-        color: HighlightText;
+      .table tr[aria-selected='true'] {
+        forced-color-adjust: auto !important;
+        background-color: var(--ws-table-row-bg-selected) !important;
+      }
+      .table tr[aria-selected='true'] td { color: var(--ws-table-row-text) !important; }
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('table'), { implementation })
+  expect(where(failures)).toEqual([
+    ['forced-colors', 'dark', 'table.selectable.selected'],
+    ['forced-colors', 'light', 'table.selectable.selected'],
+  ])
+  expect(failures[0]!.message).toBe(
+    'table.selectable.selected looks the same as table.selectable.rest in forced colors: tr',
+  )
+})
+
+test('a current tab whose bar forced colors hide fails', async () => {
+  // the bar a fill of the brand color, which forced colors paint in the page's color
+  await page.addStyleTag({
+    content: `@media (forced-colors: active) {
+      .tabs [data-slot='indicator'] {
+        forced-color-adjust: auto !important;
+        background-color: var(--ws-color-brand) !important;
       }
     }`,
   })
-  await expectSpec(page, tab)
+  const { failures } = await checkSpec(page, 'tabs')
+  expect(where(failures)).toEqual([
+    ['forced-colors', 'dark', 'tabs.link.current'],
+    ['forced-colors', 'light', 'tabs.link.current'],
+  ])
+  expect(failures[0]!.message).toBe(
+    'tabs.link.current looks the same as tabs.link.rest in forced colors: trigger, indicator',
+  )
 })

@@ -300,6 +300,8 @@ describe('the specs and the component tier', () => {
       'radio-group',
       'select',
       'select-menu',
+      'table',
+      'tabs',
     ])
   })
 

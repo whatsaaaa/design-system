@@ -31,6 +31,9 @@
           "$ref": "components/overlay.tokens.json"
         },
         {
+          "$ref": "components/table.tokens.json"
+        },
+        {
           "$ref": "components/tag.tokens.json"
         }
       ]
