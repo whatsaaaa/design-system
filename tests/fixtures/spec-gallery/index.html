@@ -10,8 +10,8 @@
   <body>
     <!--
       A gallery that meets the button and input specs, marked as the gallery contract says: each
-      example with its id in data-spec, each part with its name in data-slot. The last field is in
-      a part of the page held in the light theme.
+      example with its id in data-spec, each part with its name in data-slot. The last two fields
+      are in a part of the page held in the light theme.
     -->
     <section>
       <h2>primary</h2>
@@ -400,6 +400,69 @@
         </div>
         <p id="field-9-help" data-slot="help">We send the confirmation here.</p>
       </div>
+      <div class="field" data-spec="input.outline.invalid.xs" data-size="xs">
+        <label data-slot="label" for="field-11">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-11"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-11-error"
+          />
+        </div>
+        <p id="field-11-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
+      <div class="field" data-spec="input.outline.invalid.sm" data-size="sm">
+        <label data-slot="label" for="field-12">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-12"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-12-error"
+          />
+        </div>
+        <p id="field-12-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
+      <div class="field" data-spec="input.outline.invalid.lg" data-size="lg">
+        <label data-slot="label" for="field-13">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-13"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-13-error"
+          />
+        </div>
+        <p id="field-13-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
     </section>
     <section data-theme="light">
       <h2>held in the light theme</h2>
@@ -420,6 +483,27 @@
           </svg>
         </div>
         <p id="field-10-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.invalid.xl" data-size="xl">
+        <label data-slot="label" for="field-14">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-14"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-14-error"
+          />
+        </div>
+        <p id="field-14-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
       </div>
     </section>
   </body>

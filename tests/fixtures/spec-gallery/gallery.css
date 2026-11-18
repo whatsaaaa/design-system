@@ -218,6 +218,10 @@ svg {
 /* the input, in its field */
 
 .field {
+  --field-padding: var(--ws-space-12);
+  --field-icon-size: var(--ws-control-icon-size-md);
+  --field-gap: var(--ws-control-gap-md);
+
   display: grid;
   gap: var(--ws-space-4);
   width: 16rem;
@@ -243,24 +247,24 @@ svg {
 
 .field__control svg {
   position: absolute;
-  width: var(--ws-control-icon-size-md);
-  height: var(--ws-control-icon-size-md);
+  width: var(--field-icon-size);
+  height: var(--field-icon-size);
   color: var(--ws-field-icon);
 }
 
 .field__control svg[data-slot='leading-icon'] {
-  inset-inline-start: var(--ws-space-12);
+  inset-inline-start: var(--field-padding);
 }
 
 .field__control svg[data-slot='trailing-icon'] {
-  inset-inline-end: var(--ws-space-12);
+  inset-inline-end: var(--field-padding);
 }
 
 .field input {
   box-sizing: border-box;
   width: 100%;
   height: var(--ws-control-height-md);
-  padding-inline: var(--ws-space-12);
+  padding-inline: var(--field-padding);
   border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
   border-radius: var(--ws-control-radius);
   background-color: var(--ws-field-bg);
@@ -268,6 +272,15 @@ svg {
   font-family: var(--ws-font-family-sans);
   font-size: var(--ws-text-body-font-size);
   transition: border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
+}
+
+/* the value starts past an icon by the padding, the icon and the gap */
+.field__control:has(> [data-slot='leading-icon']) input {
+  padding-inline-start: calc(var(--field-padding) + var(--field-icon-size) + var(--field-gap));
+}
+
+.field__control:has(> [data-slot='trailing-icon']) input {
+  padding-inline-end: calc(var(--field-padding) + var(--field-icon-size) + var(--field-gap));
 }
 
 .field input::placeholder {
@@ -325,63 +338,55 @@ svg {
 }
 
 .field[data-size='xs'] {
+  --field-padding: var(--ws-space-8);
+  --field-icon-size: var(--ws-control-icon-size-xs);
+  --field-gap: var(--ws-control-gap-xs);
+
   & label {
     font-size: var(--ws-text-label-sm-font-size);
   }
 
   & input {
     height: var(--ws-control-height-xs);
-    padding-inline: var(--ws-space-8);
     font-size: var(--ws-text-body-sm-font-size);
-  }
-
-  & .field__control svg {
-    width: var(--ws-control-icon-size-xs);
-    height: var(--ws-control-icon-size-xs);
   }
 }
 
 .field[data-size='sm'] {
+  --field-padding: var(--ws-space-10);
+  --field-icon-size: var(--ws-control-icon-size-sm);
+  --field-gap: var(--ws-control-gap-sm);
+
   & label {
     font-size: var(--ws-text-label-sm-font-size);
   }
 
   & input {
     height: var(--ws-control-height-sm);
-    padding-inline: var(--ws-space-10);
     font-size: var(--ws-text-body-sm-font-size);
-  }
-
-  & .field__control svg {
-    width: var(--ws-control-icon-size-sm);
-    height: var(--ws-control-icon-size-sm);
   }
 }
 
 .field[data-size='lg'] {
+  --field-padding: var(--ws-space-14);
+  --field-icon-size: var(--ws-control-icon-size-lg);
+  --field-gap: var(--ws-control-gap-lg);
+
   & input {
     height: var(--ws-control-height-lg);
-    padding-inline: var(--ws-space-14);
-  }
-
-  & .field__control svg {
-    width: var(--ws-control-icon-size-lg);
-    height: var(--ws-control-icon-size-lg);
   }
 }
 
 .field[data-size='xl'] {
+  --field-padding: var(--ws-space-16);
+  --field-icon-size: var(--ws-control-icon-size-xl);
+  --field-gap: var(--ws-control-gap-xl);
+
   & input {
     height: var(--ws-control-height-xl);
-    padding-inline: var(--ws-space-16);
   }
 
-  & .field__control svg {
-    width: var(--ws-control-icon-size-xl);
-    height: var(--ws-control-icon-size-xl);
-  }
-
-  & [data-slot='help'] {
+  & :is([data-slot='help'], [data-slot='error']) {
     font-size: var(--ws-text-body-font-size);
   }
 }

@@ -40,19 +40,28 @@ function kinds(variants: string[]) {
           <td class="ws-table__text">
             <span
               v-for="target in row.targets"
-              :key="`${target.part} ${target.property}`"
+              :key="`${target.part} ${target.property} ${target.condition}`"
               class="target"
             >
               <code>{{ target.part }}</code> <code>{{ target.property }}</code>
+              <span v-if="target.condition" class="condition">{{ target.condition }}</span>
             </span>
             <span v-if="row.pattern" class="use pattern">{{ row.pattern }}</span>
+            <!-- a sum: the tokens of each cell, then these -->
+            <span v-if="row.sum" class="use">
+              plus
+              <template v-for="(term, index) in row.sum.plus" :key="term">
+                {{ index ? ' and ' : '' }}<span class="pattern">{{ term }}</span>
+              </template>
+            </span>
             <span v-if="row.variants" class="use">{{ kinds(row.variants) }}</span>
             <span v-if="row.state !== 'rest'" class="use">{{ row.state }}</span>
           </td>
           <td v-for="size in sizes" :key="size">
             <template v-if="row.cells[size]">
               <span class="value">{{ row.cells[size].dark.text }}</span>
-              <SpecToken v-if="!row.pattern" :cell="row.cells[size]" short />
+              <span v-if="row.sum" class="use">{{ row.sum.own[size]!.join(' + ') }}</span>
+              <SpecToken v-else-if="!row.pattern" :cell="row.cells[size]" short />
             </template>
           </td>
         </tr>
@@ -71,13 +80,20 @@ function kinds(variants: string[]) {
   padding-inline-start: var(--ws-space-10);
 }
 
+/* a part and a property break between the two only where the table has no room */
 .target {
   display: block;
-  white-space: nowrap;
 }
 
 .target + .target {
   margin-top: var(--ws-space-4);
+}
+
+.condition {
+  display: block;
+  margin-top: var(--ws-space-2);
+  color: var(--ws-color-text-secondary);
+  font: var(--ws-text-caption);
 }
 
 .value {

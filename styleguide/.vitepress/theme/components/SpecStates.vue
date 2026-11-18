@@ -33,6 +33,7 @@ const spec = computed(() => data[props.of]!)
               <code>{{ row.state }}</code> <code>{{ row.part }}</code>
               <code>{{ row.property }}</code>
             </span>
+            <span v-if="row.condition" class="use">{{ row.condition }}</span>
             <span v-if="group.variant && row.variants && row.variants.length > 1" class="use">
               also for {{ row.variants.filter((variant) => variant !== group.variant).join(', ') }}
             </span>
