@@ -1,39 +1,54 @@
+import { execFileSync } from 'node:child_process'
+import { mkdtempSync, rmSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import stylelint from 'stylelint'
-import { describe, expect, it } from 'vitest'
+import { pathToFileURL } from 'node:url'
+import { afterAll, describe, expect, it } from 'vitest'
 import { importWithout, pkg, root } from './peers.ts'
 
 const fixtures = join(root, 'tests/fixtures/stylelint')
+const stylelint = pathToFileURL(createRequire(join(root, 'package.json')).resolve('stylelint')).href
+const elsewhere = mkdtempSync(join(tmpdir(), 'ws-stylelint-'))
+afterAll(() => rmSync(elsewhere, { recursive: true, force: true }))
 
 /**
- * Lints a fixture as a project does, with a config that only extends the entry, from a directory
- * that is not this repository, so the tokens are found wherever the linter runs.
+ * Lints a fixture as a project does, with a config that only extends the entry, in a Node process
+ * whose working directory is not this repository, so the tokens are found wherever the linter
+ * runs.
  */
-const lint = async (fixture: string) => {
-  const { results } = await stylelint.lint({
-    files: join(fixtures, fixture),
-    config: { extends: ['@whatsaaaa/design-system/stylelint'] },
-    configBasedir: root,
-    cwd: tmpdir(),
-  })
-  const [result] = results
-  return result!.warnings.map(({ line, rule }) => `${line} ${rule}`).sort()
+const lint = (fixture: string): string[] => {
+  const script = `
+    const { default: stylelint } = await import(${JSON.stringify(stylelint)})
+    const { results: [result] } = await stylelint.lint({
+      files: ${JSON.stringify(join(fixtures, fixture))},
+      config: { extends: ['@whatsaaaa/design-system/stylelint'] },
+      configBasedir: ${JSON.stringify(root)},
+    })
+    console.log(JSON.stringify(result.warnings.map(({ line, rule }) => line + ' ' + rule).sort()))
+  `
+  return JSON.parse(
+    execFileSync(process.execPath, ['--input-type=module', '--eval', script], {
+      cwd: elsewhere,
+      encoding: 'utf8',
+      stdio: 'pipe',
+    }),
+  )
 }
 
 describe('the stylelint entry', () => {
-  it('rejects a hex value, a named color, a color function and a variable nothing defines', async () => {
-    expect(await lint('invalid.css')).toEqual([
+  it('rejects a hex value, a named color, a color function and a variable nothing defines', () => {
+    expect(lint('invalid.css')).toEqual([
       '3 color-no-hex',
       '4 color-named',
       '5 function-disallowed-list',
       '6 csstools/value-no-unknown-custom-properties',
     ])
-  })
+  }, 30_000)
 
-  it('lets the tokens through, the component tier among them, and a variable of the stylesheet', async () => {
-    expect(await lint('valid.css')).toEqual([])
-  })
+  it('lets the tokens through, the component tier among them, and a variable of the stylesheet', () => {
+    expect(lint('valid.css')).toEqual([])
+  }, 30_000)
 
   it('needs none of its optional peers to import, nor does any other entry', async () => {
     const peers = [
