@@ -10,6 +10,9 @@ const props = defineProps<{
 
 const spec = computed(() => data[props.of]!)
 const sizes = computed(() => Object.keys(spec.value.sizes) as (keyof typeof spec.value.sizes)[])
+/** A token as two halves a line can break between: `control.border-width.` and `invalid`. */
+const head = (word: string) => word.slice(0, word.lastIndexOf('.') + 1)
+const tail = (word: string) => word.slice(word.lastIndexOf('.') + 1)
 /** The kinds a row holds for, the shorter way: `primary, secondary` or `not quiet`. */
 function kinds(variants: string[]) {
   const others = Object.keys(spec.value.variants).filter((kind) => !variants.includes(kind))
@@ -48,10 +51,23 @@ function kinds(variants: string[]) {
             </span>
             <span v-if="row.pattern" class="use pattern">{{ row.pattern }}</span>
             <!-- a sum: the tokens of each cell, then these -->
-            <span v-if="row.sum" class="use">
+            <span v-if="row.sum?.plus.length" class="use">
               plus
               <template v-for="(term, index) in row.sum.plus" :key="term">
                 {{ index ? ' and ' : '' }}<span class="pattern">{{ term }}</span>
+              </template>
+            </span>
+            <!-- a term of several tokens breaks between them, or a token before its last name -->
+            <span v-if="row.sum?.less.length" class="use">
+              less
+              <template v-for="(term, index) in row.sum.less" :key="term">
+                {{ index ? ' and ' : '' }}
+                <template v-for="(word, at) in term.split(' ')" :key="at"
+                  >{{ at ? ' ' : '' }}<span class="pattern">{{ head(word) }}</span><wbr /><span
+                    class="pattern"
+                    >{{ tail(word) }}</span
+                  ></template
+                >
               </template>
             </span>
             <span v-if="row.variants" class="use">{{ kinds(row.variants) }}</span>

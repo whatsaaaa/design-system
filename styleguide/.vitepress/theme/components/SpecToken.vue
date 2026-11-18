@@ -12,7 +12,7 @@ defineProps<{
 <template>
   <!-- a token by its id, which reads as its variable: button.primary.bg.rest is --ws-button-primary-bg-rest -->
   <span v-if="short" class="use" :title="cell.cssVar ?? cell.value">{{
-    cell.token ?? cell.valueTokens?.join(' + ') ?? 'no token'
+    cell.token ?? cell.formula ?? 'no token'
   }}</span>
   <template v-else-if="cell.token">
     <code :title="cell.cssVar">{{ cell.token }}</code>
@@ -20,7 +20,7 @@ defineProps<{
   </template>
   <template v-else>
     <code>{{ cell.value }}</code>
-    <span class="use">{{ cell.valueTokens ? cell.valueTokens.join(' + ') : 'no token' }}</span>
+    <span class="use">{{ cell.formula ?? 'no token' }}</span>
   </template>
 </template>
 

@@ -10,8 +10,9 @@
   <body>
     <!--
       A gallery that meets the button and input specs, marked as the gallery contract says: each
-      example with its id in data-spec, each part with its name in data-slot. The last two fields
-      are in a part of the page held in the light theme.
+      example with its id in data-spec, each part with its name in data-slot. Each field with an
+      error, and each field at rest in a size other than the default, shows twice: with its icons
+      and without them. The last fields are in a part of the page held in the light theme.
     -->
     <section>
       <h2>primary</h2>
@@ -323,6 +324,33 @@
           >Enter an email address with a domain, such as maya@example.com.
         </p>
       </div>
+      <div class="field" data-spec="input.outline.invalid">
+        <label data-slot="label" for="field-15">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input
+            id="field-15"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-15-error"
+          /><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-15-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
       <div class="field" data-spec="input.outline.disabled">
         <label data-slot="label" for="field-5">Email address</label>
         <div class="field__control">
@@ -366,6 +394,13 @@
         </div>
         <p id="field-7-help" data-slot="help">We send the confirmation here.</p>
       </div>
+      <div class="field" data-spec="input.outline.rest.xs" data-size="xs">
+        <label data-slot="label" for="field-20">Email address</label>
+        <div class="field__control">
+          <input id="field-20" type="email" data-slot="root" aria-describedby="field-20-help" />
+        </div>
+        <p id="field-20-help" data-slot="help">We send the confirmation here.</p>
+      </div>
       <div class="field" data-spec="input.outline.rest.sm" data-size="sm">
         <label data-slot="label" for="field-8">Email address</label>
         <div class="field__control">
@@ -382,6 +417,13 @@
           </svg>
         </div>
         <p id="field-8-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.rest.sm" data-size="sm">
+        <label data-slot="label" for="field-21">Email address</label>
+        <div class="field__control">
+          <input id="field-21" type="email" data-slot="root" aria-describedby="field-21-help" />
+        </div>
+        <p id="field-21-help" data-slot="help">We send the confirmation here.</p>
       </div>
       <div class="field" data-spec="input.outline.rest.lg" data-size="lg">
         <label data-slot="label" for="field-9">Email address</label>
@@ -400,6 +442,13 @@
         </div>
         <p id="field-9-help" data-slot="help">We send the confirmation here.</p>
       </div>
+      <div class="field" data-spec="input.outline.rest.lg" data-size="lg">
+        <label data-slot="label" for="field-22">Email address</label>
+        <div class="field__control">
+          <input id="field-22" type="email" data-slot="root" aria-describedby="field-22-help" />
+        </div>
+        <p id="field-22-help" data-slot="help">We send the confirmation here.</p>
+      </div>
       <div class="field" data-spec="input.outline.invalid.xs" data-size="xs">
         <label data-slot="label" for="field-11">Email address</label>
         <div class="field__control">
@@ -413,6 +462,33 @@
           />
         </div>
         <p id="field-11-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
+      <div class="field" data-spec="input.outline.invalid.xs" data-size="xs">
+        <label data-slot="label" for="field-16">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input
+            id="field-16"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-16-error"
+          /><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-16-error" data-slot="error">
           <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 16h.01M12 8v4" />
             <path
@@ -442,6 +518,33 @@
           >Enter an email address with a domain, such as maya@example.com.
         </p>
       </div>
+      <div class="field" data-spec="input.outline.invalid.sm" data-size="sm">
+        <label data-slot="label" for="field-17">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input
+            id="field-17"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-17-error"
+          /><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-17-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
       <div class="field" data-spec="input.outline.invalid.lg" data-size="lg">
         <label data-slot="label" for="field-13">Email address</label>
         <div class="field__control">
@@ -455,6 +558,33 @@
           />
         </div>
         <p id="field-13-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
+      <div class="field" data-spec="input.outline.invalid.lg" data-size="lg">
+        <label data-slot="label" for="field-18">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input
+            id="field-18"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-18-error"
+          /><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-18-error" data-slot="error">
           <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 16h.01M12 8v4" />
             <path
@@ -484,6 +614,13 @@
         </div>
         <p id="field-10-help" data-slot="help">We send the confirmation here.</p>
       </div>
+      <div class="field" data-spec="input.outline.rest.xl" data-size="xl">
+        <label data-slot="label" for="field-23">Email address</label>
+        <div class="field__control">
+          <input id="field-23" type="email" data-slot="root" aria-describedby="field-23-help" />
+        </div>
+        <p id="field-23-help" data-slot="help">We send the confirmation here.</p>
+      </div>
       <div class="field" data-spec="input.outline.invalid.xl" data-size="xl">
         <label data-slot="label" for="field-14">Email address</label>
         <div class="field__control">
@@ -497,6 +634,33 @@
           />
         </div>
         <p id="field-14-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
+      <div class="field" data-spec="input.outline.invalid.xl" data-size="xl">
+        <label data-slot="label" for="field-19">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input
+            id="field-19"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-19-error"
+          /><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-19-error" data-slot="error">
           <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 16h.01M12 8v4" />
             <path
