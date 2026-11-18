@@ -1,0 +1,329 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "modal",
+  "title": "Modal",
+  "status": "draft",
+  "changed": "0.13.0",
+  "summary": "A window over the page, which waits for a task or a confirmation: a window of the terminal frame on the overlay's surface, with a header bar, a body and a footer of actions, over the page dimmed in its own color.",
+  "use": [
+    "A short task that the page waits for, such as editing one registration.",
+    "A confirmation of an action that cannot be undone: Delete registration."
+  ],
+  "notFor": [
+    "A message that does not need an answer: that is an alert, or a status line in the page.",
+    "A long task or a form of many fields: that is a page of its own.",
+    "A choice from a list: that is a select, whose list is a panel of the overlay too."
+  ],
+  "parts": {
+    "overlay": "The page behind, dimmed in its own color.",
+    "content": "The window: a panel of the overlay.",
+    "header": "The window's bar: the title, its description and the close button, on the page color.",
+    "title": "The name of the task, as a minor heading.",
+    "description": "A sentence under the title that says what the task is, or what it cannot undo.",
+    "close": "The close button, at the end of the header: a square ghost button with an icon.",
+    "body": "What the task needs: text, or the fields of a short form.",
+    "footer": "The actions, at the end of the window."
+  },
+  "variants": {
+    "window": "The one look: a window of the terminal frame, centered over the page."
+  },
+  "sizes": {
+    "md": "Every modal: at most 32rem wide, and 2rem narrower than the screen."
+  },
+  "defaultSize": "md",
+  "states": {
+    "open": "It is shown: the window over the dimmed page, with the focus in it."
+  },
+  "icons": {
+    "close": "x"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "overlay",
+      "property": "background-color",
+      "value": "color-mix(in srgb, var(--ws-color-bg) 80%, transparent)"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "background-color",
+      "token": "overlay.bg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-width",
+      "token": "overlay.border-width"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-color",
+      "token": "overlay.border"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-radius",
+      "token": "overlay.window.radius"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "box-shadow",
+      "value": "none"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "max-width",
+      "value": "32rem"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "header",
+      "property": "background-color",
+      "token": "color.bg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "header",
+      "property": "min-height",
+      "token": "size.tab-bar"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "header",
+      "property": "padding-inline",
+      "token": "overlay.window.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "header",
+      "property": "border-block-end-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "header",
+      "property": "border-block-end-width",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "header",
+      "property": "border-block-end-color",
+      "token": "color.border"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "title",
+      "property": "color",
+      "token": "color.text"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "title",
+      "property": "font-family",
+      "token": "text.h4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "title",
+      "property": "font-size",
+      "token": "text.h4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "title",
+      "property": "font-weight",
+      "token": "text.h4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "description",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "description",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "description",
+      "property": "font-size",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "close",
+      "property": "width",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "close",
+      "property": "height",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "body",
+      "property": "padding-inline",
+      "token": "overlay.window.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "body",
+      "property": "padding-block",
+      "token": "overlay.window.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "footer",
+      "property": "padding-inline",
+      "token": "overlay.window.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "footer",
+      "property": "padding-block",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "footer",
+      "property": "column-gap",
+      "token": "space.12"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus to the next or the previous control in the window, and from the last back to the first: the focus stays in the window while it is open."
+    },
+    {
+      "keys": ["Escape"],
+      "effect": "Closes the window, as its close button does."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/",
+    "rules": [
+      "The window is a dialog with `aria-modal` true. Its title is its accessible name, by `aria-labelledby`, and its description its description, by `aria-describedby`.",
+      "When it opens, the focus moves into it: to its first field, or to the action that is safe to take, never to the one that cannot be undone. When it closes, the focus goes back to the control that opened it.",
+      "The page behind is inert while it is open: neither the pointer nor assistive technology reaches it.",
+      "The close button has an accessible name, Close, and its icon is hidden from assistive technology."
+    ]
+  },
+  "forcedColors": [
+    "The window's edge is a real border, which forced colors keep, so the window stands apart from the page behind, which forced colors paint in the same color as the window.",
+    "The header's line under it is a border too. The close button keeps its focus ring, an outline, and its icon takes the system's text color."
+  ],
+  "motion": [
+    "The dimmed page and the window fade in `motion.duration.base`, with `motion.easing.out`, and fade out with `motion.easing.in`.",
+    "The window also grows a little into place, and shrinks as it goes, only with `prefers-reduced-motion: no-preference`. With less motion it only fades."
+  ],
+  "content": [
+    "The title names the task, a verb and its object in sentence case: Delete registration, Edit registration.",
+    "The description says what the task does, and what cannot be undone: Maya Collins's registration will be deleted for good.",
+    "The actions say what they do, the same verb as the title: Delete, not OK or Yes. The action that cannot be undone is a danger button, and Cancel stands before it."
+  ],
+  "notes": [
+    "The width is a value, `32rem`, until the system has a measure for windows: the window is that wide at most, and 2rem narrower than the screen below it.",
+    "The window's padding is `overlay.window.padding` from 64rem up. Below it, the system's compact width, it is `space.16`, as the frame's paddings narrow there too; a gallery's test runs at a desktop width, so the state table holds the wide window.",
+    "The header is at least as tall as the tab bar, `size.tab-bar`, and grows with a description. Its close button sits in its flow, not over it, so its focus ring stays inside the window.",
+    "Lines of `color.border` divide the header, the body and the footer, as the header's line under it says. Only the header's is checked: the body's line is there only when a footer follows it.",
+    "A gallery draws the modal open in place, its dimmed page as a box around the window inside the example, not over the whole page, so that a test finds it by the example's id."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["UModal"],
+      "today": "A window on the surface with the window's radius, a header bar as tall as the tab bar on the page color, the title as a minor heading and a 32 px close button in the header's flow, actions at the end of the footer, and the page behind dimmed to 80% of its color. Its window's edge, once lost in forced colors, is drawn there as a border.",
+      "parts": {
+        "overlay": "overlay",
+        "content": "content",
+        "header": "header",
+        "title": "title",
+        "description": "description",
+        "close": "close",
+        "body": "body",
+        "footer": "footer"
+      },
+      "variants": {
+        "window": {
+          "fullscreen": false
+        }
+      },
+      "sizes": {
+        "md": {
+          "fullscreen": false
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The window's edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for the content's `border-color`, `border-style` and `border-width` do not hold, nor its `box-shadow` of none."
+        },
+        {
+          "summary": "The window's edge is `color.border`, 1.57:1 on the window in the dark theme and 1.33:1 in the light one, where the spec takes `overlay.border`, the field border, which reads at 3:1."
+        },
+        {
+          "summary": "It reads the roles and measures by their Tailwind utilities, such as `bg-surface`, `rounded-xl`, `max-w-lg` and `size-8`, not the component tokens, such as `bg-(--ws-overlay-bg)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery marks no example with `data-spec`, and opens each modal from a button over the whole page, not in place."
+        }
+      ],
+      "beyond": [
+        "The fullscreen window, and a window that scrolls with the page rather than in its body."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": ["modal.window.open"]
+}

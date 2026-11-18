@@ -26,6 +26,9 @@
         },
         {
           "$ref": "components/field.tokens.json"
+        },
+        {
+          "$ref": "components/overlay.tokens.json"
         }
       ]
     }

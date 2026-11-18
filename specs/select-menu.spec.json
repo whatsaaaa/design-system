@@ -1,0 +1,1338 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "select-menu",
+  "title": "Select menu",
+  "status": "draft",
+  "changed": "0.13.0",
+  "summary": "One choice, or several, from a long list: a select whose list has a search field at its top, which narrows the options as the reader types.",
+  "use": [
+    "One choice from a list long enough that a reader would rather type than scroll, about fifteen options or more: a country, a time zone.",
+    "Several choices from such a list, each shown in the trigger.",
+    "Always inside its form field, with its label above it and its help or its error under it, as the input spec draws them."
+  ],
+  "notFor": [
+    "A list short enough to scroll at a glance: that is a select.",
+    "A few options, about five or fewer: that is a radio group, or checkboxes for several.",
+    "Free text with suggestions, where the reader may type a value that is not in the list: that is an input with a list of suggestions."
+  ],
+  "parts": {
+    "root": "The trigger: the box, and the choice shown in it.",
+    "placeholder": "Text in the trigger before anything is chosen. The system uses none: the help says what to choose.",
+    "leading-icon": "An icon before the choice, and the turning loading icon of a loading select.",
+    "trailing-icon": "The chevron at the end of the trigger, which says a list opens.",
+    "content": "The list: a panel of the overlay under the trigger, as wide as it is.",
+    "group": "A group of options, and the room around them.",
+    "group-label": "A group's name, above its options: an overline.",
+    "item": "An option, its label in the value's type.",
+    "item-highlight": "What marks the option the pointer or the arrow keys are on: a fill under it, inside its box.",
+    "item-indicator": "The tick after the chosen option.",
+    "separator": "The line between two groups.",
+    "search": "The search field at the top of the list, on its edge, with a line under it."
+  },
+  "variants": {
+    "outline": "The one look of a field: an edge in the field border, on the page color."
+  },
+  "sizes": {
+    "xs": "A dense row, such as a filter in a table's head.",
+    "sm": "A bar or a toolbar.",
+    "md": "Every other field: a form, a dialog.",
+    "lg": "A form of one or two fields that a page leads to, such as a sign-up.",
+    "xl": "A landing page's one field."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Nothing is on it, and its list is closed.",
+    "hover": "The pointer is on the trigger.",
+    "focus": "The trigger has the keyboard's focus, as `:focus-visible` says.",
+    "invalid": "Its choice is wrong or missing: `aria-invalid` is true, and the error is under it.",
+    "disabled": "It cannot be changed now.",
+    "loading": "Its options are being loaded: the leading icon turns.",
+    "open": "Its list is open under the trigger, with the focus in the search, on the option chosen, which is highlighted: the first, in a gallery."
+  },
+  "icons": {
+    "open": "chevron-down",
+    "chosen": "check",
+    "search": "search",
+    "loading": "loader-circle"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "field.bg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.hover"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "placeholder",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "color",
+      "token": "field.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "color",
+      "token": "field.icon"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "background-color",
+      "token": "overlay.bg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-width",
+      "token": "overlay.border-width"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-color",
+      "token": "overlay.border"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-radius",
+      "token": "overlay.list.radius"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "box-shadow",
+      "value": "none"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group",
+      "property": "padding-inline",
+      "token": "overlay.list.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group",
+      "property": "padding-block",
+      "token": "overlay.list.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "font-family",
+      "token": "text.overline"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "font-size",
+      "token": "text.overline"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "font-weight",
+      "token": "text.overline"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "text-transform",
+      "value": "uppercase"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "color",
+      "token": "color.text"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-highlight",
+      "property": "background-color",
+      "token": "color.raised"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-highlight",
+      "property": "border-radius",
+      "token": "radius.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "separator",
+      "property": "background-color",
+      "token": "color.border"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "separator",
+      "property": "height",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search",
+      "property": "border-block-end-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search",
+      "property": "border-block-end-width",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search",
+      "property": "border-block-end-color",
+      "token": "color.border"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xs",
+      "token": "control.height.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "without": "leading-icon",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-8) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "xs",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "xs",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "xs",
+      "token": "control.gap.xs"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "sm",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "without": "leading-icon",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-10) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "sm",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "sm",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "sm",
+      "token": "control.gap.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "md",
+      "token": "control.height.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "without": "leading-icon",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "md",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "md",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "md",
+      "token": "control.gap.md"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "lg",
+      "token": "control.height.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "without": "leading-icon",
+      "token": "space.14"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-14) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "lg",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "lg",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "lg",
+      "token": "control.gap.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xl",
+      "token": "control.height.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "without": "leading-icon",
+      "token": "space.16"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-16) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "xl",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "xl",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "xl",
+      "token": "control.gap.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus to the trigger and on to the next or the previous control. A disabled select menu is skipped."
+    },
+    {
+      "keys": ["Enter", "Space", "ArrowDown", "ArrowUp"],
+      "effect": "Opens the list with the focus in its search."
+    },
+    {
+      "keys": ["A letter"],
+      "effect": "In the search, narrows the options to those that match what is typed."
+    },
+    {
+      "keys": ["ArrowDown", "ArrowUp"],
+      "effect": "Moves to the next or the previous option, past the disabled ones, with the focus kept in the search."
+    },
+    {
+      "keys": ["Home", "End"],
+      "effect": "Moves to the first or the last option."
+    },
+    {
+      "keys": ["Enter"],
+      "effect": "Chooses the option. With one choice it closes the list and puts the focus back on the trigger; with several it adds or takes away the option and keeps the list open."
+    },
+    {
+      "keys": ["Escape"],
+      "effect": "Closes the list, and puts the focus back on the trigger."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/",
+    "rules": [
+      "The trigger is a combobox: `aria-expanded` says whether the list is open, and `aria-controls` names the list.",
+      "The label is a label element for the trigger: its accessible name. The help and the error are its description, by `aria-describedby`, and a select menu in error has `aria-invalid` true.",
+      "The search is a text field with an accessible name, such as Search cities, and `aria-activedescendant` names the option the arrow keys are on, so the focus stays in it.",
+      "The list is a listbox, its options are options, and each chosen one has `aria-selected` true. With several choices the listbox has `aria-multiselectable` true.",
+      "When the search matches nothing, the list says so in words, which assistive technology reads.",
+      "The chevron, the tick, the search icon and the loading icon are hidden from assistive technology."
+    ]
+  },
+  "forcedColors": [
+    "The edge of the trigger is a real border, which forced colors keep in the system's colors, and in `GrayText` when the select is disabled.",
+    "The list's edge is a real border too, so the list stands apart from the page under it, which forced colors paint in the same color as the list.",
+    "The option the pointer or the arrow keys are on is outlined in `Highlight`, as its fill is gone.",
+    "The focus ring is an outline, which forced colors keep. The icons take the system's text color."
+  ],
+  "motion": [
+    "The edge changes color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` it changes at once.",
+    "The list fades in and grows a little from the trigger in `motion.duration.fast`, with `motion.easing.out`, and goes as it came, with `motion.easing.in`. With less motion it only fades.",
+    "The loading icon turns only with `prefers-reduced-motion: no-preference`."
+  ],
+  "content": [
+    "The label names what is chosen, in sentence case and with no colon: City, Day.",
+    "No placeholder. What to choose, or why, goes in the help under the field: Where the conference takes place.",
+    "An option is a value, as the reader would say it: Day one, May 10. A group's name says what its options share: Workshops.",
+    "The search's placeholder says what it searches, as the field above it names it: Search cities. It is the one placeholder the system draws, as the search has no label of its own.",
+    "With no match, the list says so plainly: No city found.",
+    "An error says how to fix it: Choose the day you are registering for."
+  ],
+  "notes": [
+    "The form field around a select, its label, required mark, help and error, is the input spec's, at the same sizes: this spec holds the trigger and its list.",
+    "The trigger's chevron is always drawn, so the choice ends past it: the padding at the end is the field's padding, the icon and the control's gap. An icon sits inside the edge, where the choice starts.",
+    "An option's leading icon and its description, under its label in the secondary text, are drawn as an implementation draws them and not checked yet. A disabled option is `color.text-faint`, exempt from contrast as WCAG exempts an inactive control.",
+    "The search is a field without an edge of its own, at the control's height of the select menu's size, on the panel's edge, with a line of `color.border` under it.",
+    "With several choices, the trigger shows them as the implementation lays them out. This spec holds the one look of a choice.",
+    "A gallery draws the open list in place, under its trigger and inside the example, not in a layer at the end of the page, so that a test finds it by the example's id. Its first option is the chosen one, which the list opens on and highlights."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["USelectMenu", "UFormField"],
+      "today": "The outline variant in Nuxt UI's five sizes, inside a form field, as ui-vue's select draws it, with a search field at the top of the list on a line of `color.border`, the bare input of ui-vue, at the control's height.",
+      "parts": {
+        "root": "base",
+        "placeholder": "placeholder",
+        "leading-icon": "leadingIcon",
+        "trailing-icon": "trailingIcon",
+        "content": "content",
+        "group": "group",
+        "group-label": "label",
+        "item": "item",
+        "item-highlight": "item::before",
+        "item-indicator": "itemTrailingIcon",
+        "separator": "separator",
+        "search": "input"
+      },
+      "variants": {
+        "outline": {
+          "variant": "outline"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The list's edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for the content's `border-color`, `border-style` and `border-width` do not hold, nor its `box-shadow` of none."
+        },
+        {
+          "summary": "The list's edge is `color.border`, 1.57:1 on the list in the dark theme and 1.33:1 in the light one, where the spec takes `overlay.border`, the field border, which reads at 3:1."
+        },
+        {
+          "summary": "The list reads the roles by their Tailwind utilities, such as `bg-surface`, and a size's paddings and icons by Tailwind's spacing, such as `size-5`, not the component tokens, such as `bg-(--ws-overlay-bg)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery marks no example with `data-spec`, and draws no list open: a list opens in a layer at the end of the page, outside its example."
+        }
+      ],
+      "beyond": [
+        "The variants soft, subtle, ghost and none.",
+        "An option's avatar and chip, creating an option from the search, and the trigger's own search field, with the `searchInput` in the trigger."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "select-menu.outline.rest",
+    "select-menu.outline.hover",
+    "select-menu.outline.focus",
+    "select-menu.outline.invalid",
+    "select-menu.outline.disabled",
+    "select-menu.outline.loading",
+    "select-menu.outline.open",
+    "select-menu.outline.rest.xs",
+    "select-menu.outline.rest.sm",
+    "select-menu.outline.rest.lg",
+    "select-menu.outline.rest.xl",
+    "select-menu.outline.invalid.xs",
+    "select-menu.outline.invalid.sm",
+    "select-menu.outline.invalid.lg",
+    "select-menu.outline.invalid.xl",
+    "select-menu.outline.open.xs",
+    "select-menu.outline.open.sm",
+    "select-menu.outline.open.lg",
+    "select-menu.outline.open.xl"
+  ]
+}

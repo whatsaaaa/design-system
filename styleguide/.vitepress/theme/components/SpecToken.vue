@@ -18,9 +18,14 @@ defineProps<{
     <code :title="cell.cssVar">{{ cell.token }}</code>
     <span v-if="cell.aliasOf" class="use">{{ cell.aliasOf }}</span>
   </template>
+  <!-- a value that reads tokens, by their ids, with the CSS it is written as on hover -->
+  <template v-else-if="cell.formula">
+    <code :title="cell.value">{{ cell.formula }}</code>
+    <span class="use">no token of its own</span>
+  </template>
   <template v-else>
     <code>{{ cell.value }}</code>
-    <span class="use">{{ cell.formula ?? 'no token' }}</span>
+    <span class="use">no token</span>
   </template>
 </template>
 

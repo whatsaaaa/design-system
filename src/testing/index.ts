@@ -434,7 +434,13 @@ function measureInPage(examples: { id: string; measures: Measure[] }[]): Measure
   for (const animation of document.getAnimations())
     if ('transitionProperty' in animation) animation.finish()
 
-  const colorProperties = ['background-color', 'color', 'border-color', 'outline-color']
+  const colorProperties = [
+    'background-color',
+    'color',
+    'border-color',
+    'border-block-end-color',
+    'outline-color',
+  ]
   const probe = document.createElement('ws-spec-probe')
   const base =
     'position:absolute;display:block;visibility:hidden;pointer-events:none;' +

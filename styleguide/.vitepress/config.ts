@@ -19,6 +19,9 @@ const styles = [
       { text: 'Checkbox', link: '/components/checkbox' },
       { text: 'Input', link: '/components/input' },
       { text: 'Radio group', link: '/components/radio-group' },
+      { text: 'Select', link: '/components/select' },
+      { text: 'Select menu', link: '/components/select-menu' },
+      { text: 'Modal', link: '/components/modal' },
     ],
   },
 ]

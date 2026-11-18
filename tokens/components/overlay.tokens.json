@@ -1,0 +1,24 @@
+{
+  "overlay": {
+    "$description": "What a select's list and a modal's window share: a panel on the surface color in an edge, with no shadow, as the system draws edges and no shadows. The list sits close to its field, the window holds a task, so each has its own radius and padding.",
+    "bg": { "$type": "color", "$value": "{color.surface}" },
+    "border": {
+      "$type": "color",
+      "$description": "The edge, which reads at 3:1 on the panel and on the page, as the field's does.",
+      "$value": "{color.field-border}"
+    },
+    "border-width": { "$type": "dimension", "$value": "{border-width.thin}" },
+    "list": {
+      "$type": "dimension",
+      "$description": "The list of a select and a select menu: a control's corners, and a little room around its options.",
+      "radius": { "$value": "{radius.md}" },
+      "padding": { "$value": "{space.4}" }
+    },
+    "window": {
+      "$type": "dimension",
+      "$description": "The window of a modal: the frame's window's corners, and room around its header, body and footer.",
+      "radius": { "$value": "{radius.xl}" },
+      "padding": { "$value": "{space.20}" }
+    }
+  }
+}
