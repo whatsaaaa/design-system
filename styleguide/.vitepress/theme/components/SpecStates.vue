@@ -27,7 +27,10 @@ const spec = computed(() => data[props.of]!)
         <tr class="group">
           <th colspan="3" scope="rowgroup">{{ group.variant ?? 'every kind' }}</th>
         </tr>
-        <tr v-for="row in group.rows" :key="`${row.state} ${row.part} ${row.property}`">
+        <tr
+          v-for="row in group.rows"
+          :key="`${row.state} ${row.part} ${row.property} ${row.condition}`"
+        >
           <td class="ws-table__text">
             <span class="where">
               <code>{{ row.state }}</code> <code>{{ row.part }}</code>
