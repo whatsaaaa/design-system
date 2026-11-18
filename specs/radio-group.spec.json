@@ -642,7 +642,7 @@
           "summary": "It reads the roles by their Tailwind utilities, such as `ring-field-border`, not the component tokens, such as `ring-(--ws-choice-control-border-rest)`, so a change of the tier does not reach it."
         },
         {
-          "summary": "Its gallery shows the states and the sizes of the contract but marks none of them with `data-spec`, so no test can find them by id yet. Each of its groups has a checked option, so none is at rest, and its disabled group has no descriptions."
+          "summary": "Its gallery shows the states and the sizes of the contract but marks none of them with `data-spec`, so no test can find them by id yet. Every group in no other state has a checked option, so none is at rest, and its disabled group has no descriptions."
         }
       ],
       "beyond": [
