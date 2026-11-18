@@ -36,8 +36,8 @@ export interface SpecOptions {
   /**
    * The implementation in the spec whose part map names the `data-slot` that draws each part, a
    * slot and a pseudo-element of it, or a slot inside another: in `ui-vue`, `root` is `base`,
-   * `required` is `label::after`, and a select's `leading-icon` is `base leadingIcon`, the icon
-   * of the trigger and not of a field in its list. Without one, a part's slot is its name.
+   * `required` is `label::after`, and a select menu's `leading-icon` is `base leadingIcon`, the
+   * icon of the trigger and not of the search in its list. Without one, a part's slot is its name.
    */
   implementation?: string
 }

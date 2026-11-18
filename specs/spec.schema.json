@@ -316,7 +316,7 @@
           "$ref": "#/$defs/sentence"
         },
         "parts": {
-          "description": "Each part, as the library's slot that draws it, with a pseudo-element where the slot draws the part as one: `label::after`, and after the slots it is inside where the same slot draws another part too: `base leadingIcon`, the icon of a select's trigger and not of the search in its list.",
+          "description": "Each part, as the library's slot that draws it, with a pseudo-element where the slot draws the part as one: `label::after`, and after the slots it is inside where the same slot draws another part too: `base leadingIcon`, the icon of a select menu's trigger and not of the search in its list.",
           "type": "object",
           "propertyNames": { "$ref": "#/$defs/name" },
           "additionalProperties": {
