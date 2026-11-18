@@ -55,6 +55,7 @@ describe('the browser tests', () => {
       readFileSync(join(root, 'node_modules/@playwright/test/package.json'), 'utf8'),
     )
     const workflow = parse(readFileSync(join(root, '.github/workflows/ci.yml'), 'utf8'))
-    expect(workflow.jobs.browser.container).toBe(`mcr.microsoft.com/playwright:v${version}-noble`)
+    // the shared node-ci workflow runs the browser job in mcr.microsoft.com/playwright:v<this>-noble
+    expect(workflow.jobs.ci.with['playwright-version']).toBe(version)
   })
 })
