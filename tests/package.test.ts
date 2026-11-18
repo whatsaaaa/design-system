@@ -2,7 +2,6 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { parse } from 'yaml'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
@@ -46,16 +45,5 @@ describe('the package', () => {
     expect(pkg.publishConfig.access).toBe('public')
     // npm's trusted publishing rejects a publish whose repository.url names another repository
     expect(pkg.repository.url).toBe('git+https://github.com/whatsaaaa/design-system.git')
-  })
-})
-
-describe('the browser tests', () => {
-  it('run in CI in the container of the Playwright version that is installed', () => {
-    const { version } = JSON.parse(
-      readFileSync(join(root, 'node_modules/@playwright/test/package.json'), 'utf8'),
-    )
-    const workflow = parse(readFileSync(join(root, '.github/workflows/ci.yml'), 'utf8'))
-    // the shared node-ci workflow runs the browser job in mcr.microsoft.com/playwright:v<this>-noble
-    expect(workflow.jobs.ci.with['playwright-version']).toBe(version)
   })
 })

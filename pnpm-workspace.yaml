@@ -5,3 +5,7 @@ minimumReleaseAgeExclude:
 
 # A dependency's install script runs only when allowBuilds lists it: true to run it, false to
 # skip it, each with a comment that says why.
+allowBuilds:
+  # esbuild's postinstall (used by VitePress's Vite) only checks the native binary that pnpm
+  # already installs through its optional platform package
+  esbuild: false

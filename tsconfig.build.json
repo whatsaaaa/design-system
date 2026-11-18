@@ -1,4 +1,4 @@
-// The build: the package's source, compiled to dist/ with its type declarations
+// Compiles the modules to dist/. Run after the tokens are built: some modules read dist/tokens.js.
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -8,5 +8,6 @@
     "rootDir": "src",
     "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/vitepress"]
 }

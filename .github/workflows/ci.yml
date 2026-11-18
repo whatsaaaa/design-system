@@ -18,6 +18,12 @@ jobs:
   ci:
     uses: whatsaaaa/template/.github/workflows/node-ci.yml@v1
     with:
+      # Each script builds what it reads from dist/ first. The unit tests in `test` include the
+      # contrast of every role pair and that assets/ is up to date.
+      scripts: format:check lint type-check test styleguide:build
       # The version of @playwright/test in package.json, which is the tag of the Playwright image
-      # the browser job runs in. tests/playwright-version.test.ts holds the two together.
-      playwright-version: 1.65.1
+      # the browser job runs in. The screenshots in tests/browser/__screenshots__ are taken in this
+      # image, so they are compared in it, and a unit test holds the two together. The browser
+      # job's test:browser builds the package and the style guide, then tests the built guide and
+      # an app on tailwind.css.
+      playwright-version: 1.65.0

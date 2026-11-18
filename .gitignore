@@ -18,6 +18,14 @@ coverage
 *.tgz
 .eslintcache
 
+# VitePress
+**/.vitepress/cache
+**/.vitepress/dist
+
+# Copied into the style guide from dist/ and assets/ when it builds
+/styleguide/public/ds
+/styleguide/public/kit
+
 # Packed by lint:package for attw to check
 .attw
 
