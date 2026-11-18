@@ -1340,7 +1340,7 @@
       "status": "shipped",
       "parity": "none",
       "components": ["USelectMenu", "UFormField"],
-      "today": "The outline variant in Nuxt UI's five sizes, inside a form field, as ui-vue's select draws it, with a search field at the top of the list on a line of `color.border`, the bare input of ui-vue, at the control's height.",
+      "today": "The outline variant in Nuxt UI's five sizes, inside a form field, as ui-vue's select draws it, with a search field at the top of the list on a line of `color.border`, the bare input of ui-vue, at the control's height. The search draws no icon unless an app passes one, as `searchInput: { icon }`.",
       "parts": {
         "root": "base",
         "placeholder": "base placeholder",
@@ -1387,6 +1387,9 @@
         },
         {
           "summary": "The list reads the roles by their Tailwind utilities, such as `bg-surface`, and a size's paddings and icons by Tailwind's spacing, such as `size-5`, not the component tokens, such as `bg-(--ws-overlay-bg)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "The search draws its icon only where an app passes `searchInput: { icon }`, and none by default, so the rows of the `search-icon` do not hold for a select menu drawn with ui-vue's defaults."
         },
         {
           "summary": "Its gallery marks no example with `data-spec`, and draws no list open: a list opens in a layer at the end of the page, outside its example."
