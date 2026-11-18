@@ -1,0 +1,7 @@
+/* One of each thing the token lint rules reject, a line each. */
+.card {
+  color: #191724;
+  background: rebeccapurple;
+  border-color: rgb(25 23 36);
+  outline-color: var(--ws-color-txet);
+}

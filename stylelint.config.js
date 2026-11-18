@@ -1,11 +1,9 @@
 /**
- * The stylesheets take every color from a token. A hex value, a named color or a color
- * function in src/ is an error, so the tokens stay the one place a color is defined.
- * A variable that nothing defines is an error too, so a token cannot be misspelled.
+ * The stylesheets follow the token lint rules the package publishes, from the build in dist/.
+ * src/stylelint/index.ts says what they reject.
  */
 export default {
-  extends: ['stylelint-config-standard'],
-  plugins: ['stylelint-value-no-unknown-custom-properties'],
+  extends: ['@whatsaaaa/design-system/stylelint'],
   ignoreFiles: [
     'dist/**',
     'styleguide/public/ds/**',
@@ -13,7 +11,6 @@ export default {
     'styleguide/.vitepress/cache/**',
   ],
   rules: {
-    'color-no-hex': true,
     'csstools/value-no-unknown-custom-properties': [
       true,
       {
@@ -26,18 +23,6 @@ export default {
         ],
       },
     ],
-    'color-named': 'never',
-    'function-disallowed-list': [
-      'rgb',
-      'rgba',
-      'hsl',
-      'hsla',
-      'oklch',
-      'oklab',
-      'lab',
-      'lch',
-      'hwb',
-    ],
     // BEM names (.ws-tab-bar__brand, .ws-tag--outline) and the default theme's own class names
     'selector-class-pattern': null,
     'custom-property-pattern': null,
@@ -49,7 +34,6 @@ export default {
     ],
     'no-descending-specificity': null,
     'custom-media-pattern': null,
-    'import-notation': 'string',
   },
   overrides: [
     {

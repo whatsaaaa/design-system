@@ -1,0 +1,16 @@
+/* What the token lint rules let through: roles, measures and the component tier, read by name. */
+@import 'other.css';
+
+.card {
+  --card-gap: var(--ws-space-12);
+
+  gap: var(--card-gap);
+  border-color: transparent;
+  background: var(--ws-button-primary-bg-rest);
+  color: var(--ws-color-text);
+  block-size: var(--ws-control-height-md);
+}
+
+.card:hover {
+  background: color-mix(in oklab, var(--ws-color-text) 10%, currentcolor);
+}

@@ -121,6 +121,38 @@ Rules:
 
 The pairs that are checked for contrast are in `tokens/contrast.json`, and those of the component tokens of section 12 follow from their names. If you need a new pair, add it there.
 
+### Lint
+
+`@whatsaaaa/design-system/stylelint` is a stylelint config that holds a project's stylesheets to these rules: a hex value, a named color or a color written with one of the functions `rgb`, `rgba`, `hsl`, `hsla`, `oklch`, `oklab`, `lab`, `lch` and `hwb` is an error, and so is a variable that nothing defines, so a token cannot be misspelled. It knows every token of the version installed, the component tier's too, wherever the project and the linter run. It extends `stylelint-config-standard`. Install `stylelint` 18, `stylelint-config-standard` 41 and `stylelint-value-no-unknown-custom-properties` 6.1.1 or later in their major next to the package. Only this entry needs them.
+
+```js
+// stylelint.config.js
+export default {
+  extends: ['@whatsaaaa/design-system/stylelint'],
+}
+```
+
+Add the project's own lines after it: `ignoreFiles`, `customSyntax: 'postcss-html'` for `.vue` files in an override, or a rule it turns off. Options of a rule replace the config's, so a project whose stylesheets also read variables from elsewhere lists the tokens again with them:
+
+```js
+import { fileURLToPath } from 'node:url'
+
+export default {
+  extends: ['@whatsaaaa/design-system/stylelint'],
+  rules: {
+    'csstools/value-no-unknown-custom-properties': [
+      true,
+      {
+        importFrom: [
+          fileURLToPath(import.meta.resolve('@whatsaaaa/design-system/tokens.css')),
+          'src/styles/app-vars.css',
+        ],
+      },
+    ],
+  },
+}
+```
+
 ## 3. Theme
 
 Dark is the default. Light applies when the system asks for it. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides the system, and so does a `dark` or `light` class, as Nuxt UI and VueUse's `useColorMode` set it. A library that marks light only by leaving `dark` off, such as the toggle script in Tailwind's docs or VueUse's `useDark`, needs a `light` class kept in step with it: on when light is chosen, off for dark or the system. For Tailwind's script that is `classList.toggle('light', localStorage.theme === 'light')` next to its toggle of `dark`. With no class the system decides. Do not write your own `prefers-color-scheme` rules: the tokens already switch, and an element that has to differ by theme takes a class.
@@ -533,7 +565,7 @@ They are not in Tailwind's theme, so no other element takes a field's color by a
 
 ## Before you finish
 
-- No hex values, no `--ws-palette-*` in interface code, no fonts from elsewhere.
+- No hex values, no `--ws-palette-*` in interface code, no fonts from elsewhere. Stylelint with the config of section 2 passes.
 - It reads in both themes. Check with `data-theme="light"` on `<html>`.
 - Nothing overflows sideways at 390 px, and nothing is cut off. The window hides what overflows it, so a page can fit while the window clips its content: measure the window too, and its bars, not only the page. Each `scrollWidth` of `document.documentElement`, `.ws-term`, `.ws-tab-bar` and `.ws-status-line` is at most its `clientWidth`.
 - Every key hint works, every status has a word, every control can be reached and seen with the keyboard.

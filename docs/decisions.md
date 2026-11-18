@@ -4,9 +4,9 @@ Why the design system is built the way it is, and what was looked at before deci
 
 ## One package
 
-Everything ships as one package, `@whatsaaaa/design-system`, with one entry per part: the stylesheets, the Tailwind entry, the tokens, the ghost, the theme switch, the shortcuts, the code theme, the docs theme and the asset kit.
+Everything ships as one package, `@whatsaaaa/design-system`, with one entry per part, as the `exports` of `package.json` list them.
 
-Several packages, one per part, is how large systems do it (Primer has primitives, CSS and components apart). It pays when parts have their own users and their own release rhythm. Here every part reads the same tokens, changes together and has one maintainer, so one version and one install is simpler and cannot drift. `@vue/theme`, Open Props and VoidZero's shared docs theme are single packages for the same reason. The VitePress, Vue and Tailwind peers are optional, so a project that only wants the styles installs nothing extra.
+Several packages, one per part, is how large systems do it (Primer has primitives, CSS and components apart). It pays when parts have their own users and their own release rhythm. Here every part reads the same tokens, changes together and has one maintainer, so one version and one install is simpler and cannot drift. `@vue/theme`, Open Props and VoidZero's shared docs theme are single packages for the same reason. Every peer is optional, so a project that only wants the styles installs nothing extra.
 
 ## Tokens: the DTCG format, built by Terrazzo
 
@@ -141,6 +141,6 @@ Depending on the Fontsource packages at runtime was the alternative. It would ma
 ## Checks
 
 - Contrast is a unit test, not a manual table: `tokens/contrast.json` lists the pairs and their bars, and the component tier's pairs follow from its names.
-- Stylelint rejects a color that is not a token in the stylesheets.
+- Stylelint rejects a hex value, a named color and a color written with one of the functions `rgb`, `rgba`, `hsl`, `hsla`, `oklch`, `oklab`, `lab`, `lch` and `hwb` in the stylesheets. The rules are the package's `stylelint` entry, which this repository extends as every project does, so the projects lint with the rules of the version they install and need no copy of their own. They live here and not in a shared config package because they are the design system's policy and read its `tokens.css`.
 - The screenshots are taken and compared in the Playwright container, on Linux, because text is drawn differently on every system. They are committed, so a visual change shows in a pull request.
 - Lint and format follow form-builder: oxlint, ESLint for Vue and TypeScript, and oxfmt.
