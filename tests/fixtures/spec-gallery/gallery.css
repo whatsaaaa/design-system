@@ -1,5 +1,6 @@
 /*
- * A gallery of plain HTML that meets the button and input specs, as an implementation's would:
+ * A gallery of plain HTML that meets the button, input, checkbox and radio group specs, as an
+ * implementation's would:
  * every value from a component token or a role, by name. A hover, a pressed state or the focus is
  * drawn by the pointer or the keyboard, or by data-demo on the example, as the gallery contract
  * says.
@@ -319,7 +320,7 @@ svg {
 }
 
 .field [data-slot='help'],
-.field [data-slot='error'] {
+:is(.field, .choice) [data-slot='error'] {
   display: flex;
   gap: var(--ws-space-4);
   align-items: center;
@@ -332,16 +333,13 @@ svg {
   color: var(--ws-field-help-text);
 }
 
-.field [data-slot='error'] {
+:is(.field, .choice) [data-slot='error'] {
+  align-items: start;
   color: var(--ws-field-error-text);
   font-weight: var(--ws-field-error-font-weight);
 }
 
-.field [data-slot='error'] {
-  align-items: start;
-}
-
-.field [data-slot='error-icon'] {
+:is(.field, .choice) [data-slot='error-icon'] {
   margin-block-start: 0.125rem;
   width: var(--ws-size-icon);
   height: var(--ws-size-icon);
@@ -399,6 +397,233 @@ svg {
 
   & :is([data-slot='help'], [data-slot='error']) {
     font-size: var(--ws-text-body-font-size);
+  }
+}
+
+/* the checkbox and the radio group: a control beside each label */
+
+.choice {
+  --choice-size: var(--ws-choice-control-size-md);
+  --choice-mark: var(--ws-size-icon);
+  --choice-dot: var(--ws-space-8);
+  --choice-text: var(--ws-text-body-font-size);
+  --choice-line: var(--ws-text-body-line-height);
+  --choice-legend: var(--ws-text-label-font-size);
+
+  display: grid;
+  gap: var(--ws-space-10);
+  width: 16rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+
+.choice[data-size='xs'] {
+  --choice-size: var(--ws-choice-control-size-xs);
+  --choice-mark: var(--ws-size-tick-sm);
+  --choice-dot: var(--ws-space-6);
+  --choice-text: var(--ws-text-body-sm-font-size);
+  --choice-line: var(--ws-text-body-sm-line-height);
+  --choice-legend: var(--ws-text-label-sm-font-size);
+}
+
+.choice[data-size='sm'] {
+  --choice-size: var(--ws-choice-control-size-sm);
+  --choice-mark: var(--ws-size-tick-sm);
+  --choice-dot: var(--ws-space-6);
+  --choice-text: var(--ws-text-body-sm-font-size);
+  --choice-line: var(--ws-text-body-sm-line-height);
+  --choice-legend: var(--ws-text-label-sm-font-size);
+}
+
+.choice[data-size='lg'] {
+  --choice-size: var(--ws-choice-control-size-lg);
+  --choice-mark: var(--ws-size-tick-lg);
+  --choice-text: var(--ws-text-lead-font-size);
+  --choice-line: var(--ws-text-lead-line-height);
+}
+
+.choice[data-size='xl'] {
+  --choice-size: var(--ws-choice-control-size-xl);
+  --choice-mark: var(--ws-size-icon-lg);
+  --choice-dot: var(--ws-space-10);
+  --choice-text: var(--ws-text-lead-font-size);
+  --choice-line: var(--ws-text-lead-line-height);
+}
+
+.choice [data-slot='legend'] {
+  margin-block-end: var(--ws-space-10);
+  padding: 0;
+  color: var(--ws-field-label-text);
+  font-family: var(--ws-font-family-mono);
+  font-size: var(--choice-legend);
+  font-weight: var(--ws-font-weight-regular);
+}
+
+.choice__option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--ws-space-10);
+  align-items: start;
+  font-size: var(--choice-text);
+  line-height: var(--choice-line);
+  cursor: pointer;
+}
+
+/* as tall as the label's first line, so the control sits centered on it */
+.choice__box {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 1lh;
+}
+
+.choice input {
+  box-sizing: border-box;
+  width: var(--choice-size);
+  height: var(--choice-size);
+  margin: 0;
+  border: var(--ws-border-width-thin) solid var(--ws-choice-control-border-rest);
+  border-radius: var(--ws-radius-xs);
+  background-color: var(--ws-choice-control-bg);
+  appearance: none;
+  cursor: inherit;
+  transition: border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
+}
+
+.choice input[type='radio'] {
+  border-radius: var(--ws-radius-full);
+}
+
+.choice input:enabled:is(:hover, .choice__option:hover *, [data-demo~='hover'] *) {
+  border-color: var(--ws-choice-control-border-hover);
+}
+
+.choice input:is(:focus-visible, [data-demo~='focus'] *) {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 3px;
+}
+
+.choice input[aria-invalid='true'],
+.choice[aria-invalid='true'] input {
+  border-color: var(--ws-choice-control-border-invalid);
+}
+
+.choice input:disabled {
+  border-color: var(--ws-choice-control-border-disabled);
+  cursor: not-allowed;
+}
+
+/* the fill covers the control, its edge too, with the mark on it */
+.choice [data-slot='indicator'] {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  width: var(--choice-size);
+  height: var(--choice-size);
+  margin: auto;
+  border-radius: var(--ws-radius-xs);
+  pointer-events: none;
+}
+
+.choice input[type='radio'] + [data-slot='indicator'] {
+  border-radius: var(--ws-radius-full);
+}
+
+.choice input:checked + [data-slot='indicator'] {
+  display: grid;
+  background-color: var(--ws-choice-indicator-bg-checked);
+  color: var(--ws-choice-indicator-icon-checked);
+}
+
+.choice input:where([type='checkbox']):indeterminate + [data-slot='indicator'] {
+  display: grid;
+  background-color: var(--ws-choice-indicator-bg-indeterminate);
+  color: var(--ws-choice-indicator-icon-indeterminate);
+}
+
+.choice input:disabled + [data-slot='indicator'] {
+  background-color: var(--ws-choice-indicator-bg-disabled);
+  color: var(--ws-choice-indicator-icon-disabled);
+}
+
+.choice [data-slot='icon'] {
+  width: var(--choice-mark);
+  height: var(--choice-mark);
+  stroke-width: 3;
+}
+
+/* the tick of a checked box, the dash of an indeterminate one */
+.choice input:indeterminate + [data-slot='indicator'] .tick,
+.choice input:not(:indeterminate) + [data-slot='indicator'] .dash {
+  display: none;
+}
+
+.choice [data-slot='dot'] {
+  width: var(--choice-dot);
+  height: var(--choice-dot);
+  border-radius: var(--ws-radius-full);
+  background-color: currentcolor;
+}
+
+.choice__text {
+  display: grid;
+}
+
+.choice [data-slot='label'] {
+  color: var(--ws-choice-label-text-rest);
+  font-family: var(--ws-font-family-sans);
+  font-weight: var(--ws-font-weight-regular);
+}
+
+.choice [data-slot='description'] {
+  color: var(--ws-choice-description-text-rest);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-text-body-sm-font-size);
+}
+
+.choice .required::after {
+  content: ' *';
+  color: var(--ws-field-required-text);
+}
+
+.choice__option:has(input:disabled) {
+  cursor: not-allowed;
+
+  & [data-slot='label'] {
+    color: var(--ws-choice-label-text-disabled);
+  }
+
+  & [data-slot='description'] {
+    color: var(--ws-choice-description-text-disabled);
+  }
+}
+
+.choice [data-slot='error'] {
+  margin-block-start: var(--ws-space-4);
+}
+
+/* a checked control keeps its fill and its mark when the system's colors replace the page's, and
+   a disabled one its edge in GrayText, which the browser gives only a control it draws itself */
+@media (forced-colors: active) {
+  .choice input:disabled {
+    border-color: GrayText;
+  }
+
+  .choice [data-slot='indicator'] {
+    forced-color-adjust: none;
+  }
+
+  .choice input:is(:checked, :where([type='checkbox']):indeterminate) + [data-slot='indicator'] {
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .choice input:disabled + [data-slot='indicator'] {
+    background-color: GrayText;
+    color: Canvas;
   }
 }
 

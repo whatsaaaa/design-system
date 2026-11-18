@@ -19,6 +19,9 @@
           "$ref": "components/button.tokens.json"
         },
         {
+          "$ref": "components/choice.tokens.json"
+        },
+        {
           "$ref": "components/control.tokens.json"
         },
         {

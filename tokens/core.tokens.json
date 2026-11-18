@@ -674,12 +674,54 @@
       },
       "$description": "Height of a one-line control of the extra large size, xl."
     },
+    "check-xs": {
+      "$value": {
+        "value": 0.875,
+        "unit": "rem"
+      },
+      "$description": "A checkbox or a radio button of the extra small size, xs."
+    },
+    "check-sm": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$description": "A checkbox or a radio button of the small size, sm."
+    },
     "check": {
       "$value": {
         "value": 1.25,
         "unit": "rem"
       },
-      "$description": "A checkbox or a radio button."
+      "$description": "A checkbox or a radio button. The medium size, md, and the default."
+    },
+    "check-lg": {
+      "$value": {
+        "value": 1.375,
+        "unit": "rem"
+      },
+      "$description": "A checkbox or a radio button of the large size, lg."
+    },
+    "check-xl": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$description": "A checkbox or a radio button of the extra large size, xl."
+    },
+    "tick-sm": {
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      },
+      "$description": "The tick or the dash in a checkbox of the two small sizes, xs and sm. At md and xl it is an icon's size."
+    },
+    "tick-lg": {
+      "$value": {
+        "value": 1.125,
+        "unit": "rem"
+      },
+      "$description": "The tick or the dash in a checkbox of the large size, lg."
     },
     "step": {
       "$value": {

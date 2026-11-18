@@ -12,7 +12,7 @@ import {
 
 /**
  * The parity helper, as an implementation runs it: the built entry, against a gallery of plain
- * HTML that meets the button and input specs, and against the same gallery with one thing wrong.
+ * HTML that meets the published specs, and against the same gallery with one thing wrong.
  */
 const ORIGIN = 'http://spec-gallery.test'
 const root = fileURLToPath(new URL('../..', import.meta.url))
@@ -29,7 +29,10 @@ const files: Record<string, string> = {
 const implementation = 'fixture'
 function fixture(name: string): Spec {
   const spec = loadSpec(name)
-  const parts = { placeholder: 'root::placeholder', required: 'label::after' }
+  const parts = {
+    placeholder: 'root::placeholder',
+    required: name === 'radio-group' ? 'legend::after' : 'label::after',
+  }
   return {
     ...spec,
     implementations: {
@@ -61,18 +64,21 @@ test.beforeEach(async ({ browser }) => {
 test.afterEach(() => page.context().close())
 
 test('the specs it checks are the published ones', () => {
-  expect(specNames()).toEqual(['button', 'input'])
+  expect(specNames()).toEqual(['button', 'checkbox', 'input', 'radio-group'])
   expect(loadSpec('button').component).toBe('button')
   expect(() => loadSpec('../package')).toThrow(/no spec named/)
 })
 
-for (const name of ['button', 'input']) {
+/** How many values a gallery that draws every row of each spec compares, at least. */
+const least: Record<string, number> = { button: 800, checkbox: 300, input: 300, 'radio-group': 300 }
+
+for (const name of specNames()) {
   test(`a gallery that meets the ${name} spec passes it in both themes`, async () => {
     const { failures, checks } = await checkSpec(page, fixture(name), { implementation })
     expect(failures).toEqual([])
     // every row a gallery example holds for is measured in each theme, so a gallery that draws
     // less fails
-    expect(checks).toBeGreaterThan(name === 'button' ? 800 : 300)
+    expect(checks).toBeGreaterThan(least[name]!)
   })
 }
 
@@ -246,8 +252,52 @@ test('a part that loses its edge in forced colors fails', async () => {
   expect(failures[0]!.message).toMatch(/^button\.secondary\.rest: root loses its border/)
 })
 
+test('a part is measured where the example draws it, in the option that is checked', async () => {
+  // the checked option of a disabled group, its second, in the fill of an enabled one
+  await page.addStyleTag({
+    content: `[data-spec='radio-group.list.disabled'] input:checked + [data-slot='indicator'] {
+      background-color: var(--ws-choice-indicator-bg-checked) !important;
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('radio-group'), { implementation })
+  expect(where(failures)).toEqual([
+    ['tokens', 'dark', 'radio-group.list.disabled'],
+    ['tokens', 'light', 'radio-group.list.disabled'],
+  ])
+  expect(failures[0]!.message).toMatch(
+    /^radio-group\.list\.disabled: indicator background-color is rgb\(.+\), and choice\.indicator\.bg\.disabled/,
+  )
+})
+
+test('a checked box that loses its fill and its mark in forced colors fails', async () => {
+  // the fill and the tick still drawn, but nothing of them shows, as when forced colors paint
+  // the fill as the page and a tick drawn as a mask over a background goes with it
+  await page.addStyleTag({
+    content: `@media (forced-colors: active) {
+      .choice [data-slot='indicator'] { opacity: 0; }
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('checkbox'), { implementation })
+  // the fill and the mark are drawn only once it is checked, so the examples are compared whole
+  const marked = [
+    'checked',
+    'indeterminate',
+    ...['xs', 'sm', 'lg', 'xl'].map((size) => `checked.${size}`),
+  ]
+  expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
+    new Set(
+      ['dark', 'light'].flatMap((theme) =>
+        marked.map((state) => `forced-colors ${theme} checkbox.list.${state}`),
+      ),
+    ),
+  )
+  expect(failures[0]!.message).toBe(
+    'checkbox.list.checked looks the same as checkbox.list.rest in forced colors: indicator, icon',
+  )
+})
+
 test('a selected example that looks the same as the one at rest in forced colors fails', async () => {
-  // a spec with a selected state, which neither published spec has yet
+  // a spec with a selected state, which no published spec has yet
   const tab: Spec = {
     ...loadSpec('button'),
     component: 'tab',

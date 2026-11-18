@@ -247,7 +247,12 @@ describe('the component pages', () => {
 
 describe('the specs and the component tier', () => {
   it('has a spec for each component it ships', () => {
-    expect(all.map((spec) => spec.component)).toEqual(['button', 'input'])
+    expect(all.map((spec) => spec.component)).toEqual([
+      'button',
+      'checkbox',
+      'input',
+      'radio-group',
+    ])
   })
 
   it('reads every token of the tier in some spec', () => {
