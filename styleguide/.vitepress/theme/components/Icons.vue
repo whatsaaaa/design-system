@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { data } from '../../data/system.data.ts'
+import InlineCode from './InlineCode.vue'
 </script>
 
 <template>
   <div class="icons">
     <div v-for="icon in data.icons" :key="icon" class="icon">
       <span class="drawn" :style="{ maskImage: `var(${icon})` }" />
-      <code class="name">{{ icon }}</code>
+      <InlineCode class="name" :text="icon" />
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type GhostPose, ghostSvg } from '../../../../dist/ghost/index.js'
+import InlineCode from './InlineCode.vue'
 
 const poses: { pose: GhostPose; use: string }[] = [
   { pose: 'idle', use: 'The mark itself' },
@@ -17,7 +18,7 @@ const poses: { pose: GhostPose; use: string }[] = [
       <!-- eslint-disable-next-line vue/no-v-html -- markup built by the ghost module -->
       <div class="sprite" v-html="ghostSvg({ px: 6, pose })" />
       <figcaption>
-        <code>{{ pose }}</code>
+        <InlineCode :text="pose" />
         <span>{{ use }}</span>
       </figcaption>
     </figure>

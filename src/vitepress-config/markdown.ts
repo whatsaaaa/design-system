@@ -31,7 +31,7 @@ export type CodePart = { kind: 'text' | 'joined'; text: string } | { kind: 'brea
 export function codeParts(code: string): CodePart[] {
   const parts: CodePart[] = []
   let rest = 0
-  for (const match of code.matchAll(/[^\s-]?(?:-+[^\s-])*-+[^\s-]?|(?<=[^\s/])\/+(?=[^\s/])/g)) {
+  for (const match of code.matchAll(/[^\s-]?(?:-+[^\s-])*-+[^\s-]?|(?<=[^\s/])\/+(?=[^\s/])/gu)) {
     if (match.index > rest) parts.push({ kind: 'text', text: code.slice(rest, match.index) })
     if (match[0].includes('-')) parts.push({ kind: 'joined', text: match[0] })
     else parts.push({ kind: 'text', text: match[0] }, { kind: 'break' })
@@ -43,8 +43,11 @@ export function codeParts(code: string): CodePart[] {
 
 /** Inline code with its hyphens held: <code>dat<span class="ws-code-joined">a-s</span>pec</code> */
 function codeInline(md: MarkdownRenderer) {
-  md.renderer.rules.code_inline = (tokens, index, _options, _env, self) => {
+  const defaultCodeInline = md.renderer.rules.code_inline!
+  md.renderer.rules.code_inline = (tokens, index, options, env, self) => {
     const token = tokens[index]!
+    // a Vue interpolation is an expression on the page, which markup in it would break
+    if (token.content.includes('{{')) return defaultCodeInline(tokens, index, options, env, self)
     const html = codeParts(token.content).map((part) => {
       if (part.kind === 'break') return '<wbr>'
       const text = md.utils.escapeHtml(part.text)

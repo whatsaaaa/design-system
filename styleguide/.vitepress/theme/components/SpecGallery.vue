@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { data } from '../../data/specs.data.ts'
+import InlineCode from './InlineCode.vue'
 
 const props = defineProps<{
   /** The component whose spec it shows. */
@@ -13,7 +14,7 @@ const ids = computed(() => data[props.of]!.gallery)
 <template>
   <ul class="ids">
     <li v-for="id in ids" :key="id">
-      <code>{{ id }}</code>
+      <InlineCode :text="id" />
     </li>
   </ul>
 </template>

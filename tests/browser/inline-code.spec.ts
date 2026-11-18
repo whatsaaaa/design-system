@@ -43,6 +43,9 @@ const atHyphens = (chips: string[][]) =>
 for (const [viewportName, viewport] of [
   ['narrowest phone', NARROWEST],
   ['phone', PHONE],
+  // a phone held sideways, where the ids of a spec's gallery fill their columns
+  ['landscape phone', { width: 520, height: 390 }],
+  ['wide landscape phone', { width: 568, height: 320 }],
   ['tablet', TABLET],
   ['desktop', DESKTOP],
 ] as const) {
@@ -50,8 +53,7 @@ for (const [viewportName, viewport] of [
   test.describe(viewportName, () => {
     test.use({ viewport })
 
-    // the examples are plain pages, whose inline code no docs theme marks
-    for (const { name, path } of PAGES.filter(({ path }) => !path.startsWith('/examples/')))
+    for (const { name, path } of PAGES)
       test(`${name} breaks no inline code at a hyphen`, async ({ page }) => {
         await open(page, path)
         expect(atHyphens(await page.evaluate(measure))).toEqual([])
@@ -70,16 +72,19 @@ for (const [viewportName, viewport] of [
   })
 }
 
-test('inline code copies as the code itself', async ({ page }) => {
+test('inline code copies as the code itself, where it wraps', async ({ page }) => {
   await page.setViewportSize(NARROWEST)
   await open(page, '/components/select')
-  const copied = await page.evaluate(() =>
-    [...document.querySelectorAll('.vp-doc p > code')].map((code) => {
+  const copy = (text: string) =>
+    page.evaluate((text) => {
+      const code = [...document.querySelectorAll('.vp-doc p > code')].find(
+        (code) => code.textContent === text,
+      )!
       const selection = getSelection()!
       selection.selectAllChildren(code)
-      return [selection.toString(), code.textContent]
-    }),
-  )
-  expect(copied.length).toBeGreaterThan(0)
-  for (const [text, code] of copied) expect(text).toBe(code)
+      return selection.toString()
+    }, text)
+  // the names as the spec and the package give them
+  for (const text of ['--ws-field-*', '@whatsaaaa/design-system/specs/select.spec.json'])
+    expect(await copy(text)).toBe(text)
 })

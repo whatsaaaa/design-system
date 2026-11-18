@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { data } from '../../data/system.data.ts'
+import InlineCode from './InlineCode.vue'
 
 /** What each style is shown with: the kind of text it is made for. */
 const samples: Record<string, string> = {
@@ -39,7 +40,7 @@ const samples: Record<string, string> = {
         {{ samples[style.id] ?? style.description }}
       </p>
       <p class="meta">
-        <code>{{ style.cssVar }}</code>
+        <InlineCode :text="style.cssVar" />
         <span
           >{{ style.family }} {{ style.weight }}, {{ style.size }} / {{ style.lineHeight
           }}<template v-if="parseFloat(style.tracking) !== 0"

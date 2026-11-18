@@ -49,6 +49,21 @@ describe('markdown in the docs theme', () => {
     expect(html).toContain('<code>a <span class="ws-code-joined">--</span> b</code>')
   })
 
+  it('leaves a Vue interpolation in inline code as it is, so the page still compiles', async () => {
+    const html = (await renderer()).render(
+      "`{{ count-1 }}` and `{{ $frontmatter['package-name'] }}`",
+    )
+    expect(html).toContain('<code>{{ count-1 }}</code>')
+    expect(html).toContain("<code>{{ $frontmatter['package-name'] }}</code>")
+  })
+
+  it('keeps a character outside the basic plane whole next to a hyphen', () => {
+    for (const code of ['🎉-party', 'x-𝑥', '--𝑥'])
+      for (const part of codeParts(code))
+        // in u mode a pair is one character, so the class matches only half of one
+        if (part.kind !== 'break') expect(part.text, code).not.toMatch(/[\uD800-\uDFFF]/u)
+  })
+
   it('splits inline code with nothing lost', () => {
     const text = (code: string) =>
       codeParts(code)
