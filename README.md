@@ -77,7 +77,7 @@ The screenshots are in `tests/browser/__screenshots__/` and are taken on Linux, 
 pnpm test:browser:update
 ```
 
-That needs Docker. Review the changed images like any other change. The Playwright version in `package.json` and the container in `.github/workflows/ci.yml` go together: a unit test fails when they differ.
+That needs Docker. Review the changed images like any other change. The Playwright version in `package.json` and the `playwright-version` in `.github/workflows/ci.yml`, the tag of the container CI runs the browser tests in, go together: a unit test fails when they differ.
 
 ## Releasing
 
