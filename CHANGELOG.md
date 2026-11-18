@@ -1,5 +1,21 @@
 # @whatsaaaa/design-system
 
+## 0.13.0
+
+### Minor Changes
+
+- [#62](https://github.com/whatsaaaa/design-system/pull/62) [`0e4878d`](https://github.com/whatsaaaa/design-system/commit/0e4878d231ede033b72f9c853e2ba8484efd5afb) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - Two more component specs, both drafts: `checkbox` and `radio-group`, in their list look and Nuxt UI's five sizes. In forced colors each keeps the edge of its box or circle, and a checked one its fill and its mark. The checkbox is checked, indeterminate or neither, with its label, description, required mark and error; the radio group is a legend over its options. Each has a page in the style guide, drawn from its file, and records what ui-vue draws today and where it does not meet the spec yet, such as a disabled checked box in the interactive fill.
+
+  The component tier gains the `choice` group, what the two share: `--ws-choice-control-size-<size>`, the side of the box or the circle at each size, 14 to 24 px; its color `--ws-choice-control-bg` and edge `--ws-choice-control-border-<rest|hover|invalid|disabled>`; the fill and the mark of a checked or an indeterminate one, `--ws-choice-indicator-<bg|icon>-<checked|indeterminate|disabled>`; and an option's label and description, `--ws-choice-label-text-<rest|disabled>` and `--ws-choice-description-text-<rest|disabled>`. New semantic sizes for it: `--ws-size-check-xs`, `-sm`, `-lg` and `-xl`, 14, 16, 22 and 24 px, and `--ws-size-tick-sm` and `-lg`, the tick of 12 and 18 px. The space page of the style guide lists them.
+
+  The `testing` helper compares an indeterminate example with its example at rest in forced colors too, and compares the two examples whole where the state draws a part the example at rest does not, such as a checked box's fill. Where an example has several elements of one slot, such as a group's options, it measures the first that draws the part. No existing token, style or spec changes.
+
+- [#67](https://github.com/whatsaaaa/design-system/pull/67) [`b684f51`](https://github.com/whatsaaaa/design-system/commit/b684f51b4dc74fd556631e21774b3a8bbc19a2a7) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - Three more component specs, all drafts: `select`, `select-menu` and `modal`, each with its page in the style guide. A select and a select menu are a field, as the input's, in Nuxt UI's five sizes, whose list opens on a panel; a select menu's list has a search at its top. A modal is a window over the page dimmed in its own color, with a header bar as tall as the tab bar, a body and a footer of actions. Their implementations record what ui-vue draws today and where it does not meet them yet.
+
+  The component tier gains the `overlay` group, for what a select's list and a modal's window share: `--ws-overlay-bg`, the edge `--ws-overlay-border` and `--ws-overlay-border-width`, and for each the radius and the padding, `--ws-overlay-list-radius`, `--ws-overlay-list-padding`, `--ws-overlay-window-radius` and `--ws-overlay-window-padding`. The edge is the field border, which reads at 3:1 on the panel and on the page. An overlay has no shadow, as nothing in the system does, and its specs say `box-shadow: none`.
+
+  A spec row can set `padding-block`, `min-height`, `max-width`, `box-shadow`, `text-transform` and the line under a part, `border-block-end-style`, `-width` and `-color`, and the `testing` helper compares `border-block-end-color` as a color. An implementation's part map can name a slot inside another where one slot draws two parts, `base leadingIcon`, the icon of a select menu's trigger and not of the search in its list. The `open` state's examples draw their list or window in place, inside the example, and a select's example wraps the select itself, never its form field.
+
 ## 0.12.0
 
 ### Minor Changes
