@@ -141,6 +141,6 @@ Depending on the Fontsource packages at runtime was the alternative. It would ma
 ## Checks
 
 - Contrast is a unit test, not a manual table: `tokens/contrast.json` lists the pairs and their bars, and the component tier's pairs follow from its names.
-- Stylelint rejects a color that is not a token in the stylesheets. The rules are the package's `stylelint` entry, which this repository extends as every project does, so the projects lint with the rules of the version they install and need no copy of their own. They live here and not in a shared config package because they are the design system's policy and read its `tokens.css`.
+- Stylelint rejects a hex value, a named color and a color written with one of the functions `rgb`, `rgba`, `hsl`, `hsla`, `oklch`, `oklab`, `lab`, `lch` and `hwb` in the stylesheets. The rules are the package's `stylelint` entry, which this repository extends as every project does, so the projects lint with the rules of the version they install and need no copy of their own. They live here and not in a shared config package because they are the design system's policy and read its `tokens.css`.
 - The screenshots are taken and compared in the Playwright container, on Linux, because text is drawn differently on every system. They are committed, so a visual change shows in a pull request.
 - Lint and format follow form-builder: oxlint, ESLint for Vue and TypeScript, and oxfmt.

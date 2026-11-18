@@ -1,6 +1,6 @@
 /**
- * The stylesheets follow the token lint rules the package publishes, from the build in dist/:
- * every color from a token, and no variable that nothing defines.
+ * The stylesheets follow the token lint rules the package publishes, from the build in dist/.
+ * src/stylelint/index.ts says what they reject.
  */
 export default {
   extends: ['@whatsaaaa/design-system/stylelint'],

@@ -1,7 +1,7 @@
 /**
- * The token lint rules, for stylelint: a stylesheet takes every color from a token. A hex
- * value, a named color or a color function is an error, so the tokens stay the one place a
- * color is defined, and so is a variable that nothing defines, so a token cannot be misspelled.
+ * The token lint rules, for stylelint: a hex value, a named color or a color written with one of
+ * the functions rgb, rgba, hsl, hsla, oklch, oklab, lab, lch and hwb is an error, and so is a
+ * variable that nothing defines, so a token cannot be misspelled.
  *
  * The variables it knows are those of the tokens.css of this same version, the component tier's
  * among them, wherever the package is installed. stylelint, stylelint-config-standard and

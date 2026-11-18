@@ -1,7 +1,3 @@
-import { execFileSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import {
   type Spec,
@@ -12,6 +8,7 @@ import {
   expectations,
   loadSpec,
 } from '../src/testing/spec.ts'
+import { importWithout, pkg } from './peers.ts'
 
 const button = loadSpec('button')
 const input = loadSpec('input')
@@ -118,38 +115,8 @@ describe('the parity helper reads a spec', () => {
 })
 
 describe('the testing entry', () => {
-  const root = fileURLToPath(new URL('..', import.meta.url))
-  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
-
   it('is the only entry that needs Playwright, an optional peer', () => {
-    // every module the exports map names, imported in a Node process that cannot find
-    // @playwright/test, as one where it is not installed. An entry made for the browser fails
-    // there for want of a document, so what counts is why an entry fails.
-    const entries = Object.entries<string | Record<string, string>>(pkg.exports)
-      .filter(([, target]) =>
-        /\.[jt]s$/.test(typeof target === 'string' ? target : target.default!),
-      )
-      .map(([subpath]) => `${pkg.name}${subpath.slice(1)}`)
-    const script = `
-      import { registerHooks } from 'node:module'
-      const missing = "Cannot find package '@playwright/test'"
-      registerHooks({
-        resolve(specifier, context, next) {
-          if (specifier === '@playwright/test') throw new Error(missing)
-          return next(specifier, context)
-        },
-      })
-      const needing = []
-      for (const entry of ${JSON.stringify(entries)})
-        await import(entry).catch((error) => error.message === missing && needing.push(entry))
-      console.log(JSON.stringify(needing))
-    `
-    const needing = execFileSync(process.execPath, ['--input-type=module', '--eval', script], {
-      cwd: root,
-      encoding: 'utf8',
-      stdio: 'pipe',
-    })
-    expect(JSON.parse(needing)).toEqual([`${pkg.name}/testing`])
+    expect(importWithout(['@playwright/test']).needing).toEqual([`${pkg.name}/testing`])
     expect(pkg.peerDependenciesMeta['@playwright/test']).toEqual({ optional: true })
     expect(pkg.dependencies).not.toHaveProperty('@playwright/test')
   })

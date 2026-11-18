@@ -123,7 +123,7 @@ The pairs that are checked for contrast are in `tokens/contrast.json`, and those
 
 ### Lint
 
-`@whatsaaaa/design-system/stylelint` is a stylelint config that holds a project's stylesheets to these rules: a hex value, a named color or a color function (`rgb`, `hsl`, `oklch` and the rest) is an error, and so is a variable that nothing defines, so a token cannot be misspelled. It knows every token of the version installed, the component tier's too, wherever the project and the linter run. It extends `stylelint-config-standard`. Install `stylelint` 18, `stylelint-config-standard` 41 and `stylelint-value-no-unknown-custom-properties` 6.1.1 or later in their major next to the package. Only this entry needs them.
+`@whatsaaaa/design-system/stylelint` is a stylelint config that holds a project's stylesheets to these rules: a hex value, a named color or a color written with one of the functions `rgb`, `rgba`, `hsl`, `hsla`, `oklch`, `oklab`, `lab`, `lch` and `hwb` is an error, and so is a variable that nothing defines, so a token cannot be misspelled. It knows every token of the version installed, the component tier's too, wherever the project and the linter run. It extends `stylelint-config-standard`. Install `stylelint` 18, `stylelint-config-standard` 41 and `stylelint-value-no-unknown-custom-properties` 6.1.1 or later in their major next to the package. Only this entry needs them.
 
 ```js
 // stylelint.config.js
