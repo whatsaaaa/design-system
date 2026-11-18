@@ -144,6 +144,18 @@ const withTokens = (value: string, read: (token: TokenId) => string) =>
     return token ? read(token) : variable
   })
 
+/** A color with some of its alpha: `color-mix(in srgb, X 80%, transparent)` is X at 80%. */
+const tintOf = (value: string): { color: string; percent: number } | undefined => {
+  const match = /^color-mix\(in srgb, (\S+) (\d+(?:\.\d+)?)%, transparent\)$/.exec(value)
+  return match ? { color: match[1]!, percent: Number(match[2]) } : undefined
+}
+
+/** A value with its tokens by their ids: `space.12 + control.gap.md`, `color.bg at 80%`. */
+function formulaOf(value: string): string {
+  const tint = tintOf(value)
+  return tint ? `${tint.color} at ${tint.percent}%` : value.replace(/^calc\((.+)\)$/, '$1')
+}
+
 /** What a sum of lengths comes to, as `12px - (2px - 1px)` comes to 11, or nothing for another value. */
 function total(expression: string): number | undefined {
   const parts = expression.match(/\d+(?:\.\d+)?px|[-+()]|\S+/g) ?? []
@@ -173,6 +185,18 @@ function total(expression: string): number | undefined {
  */
 function valueText(row: SpecRow, theme: Theme): CellValue {
   const text = withTokens(row.value!, (token) => tokenValue({ ...row, token }, theme).text)
+  // a tint of a color, as a tint token shows: #191724 at 80%
+  const tint = tintOf(text)
+  if (tint) {
+    const alpha = Math.round((tint.percent / 100) * 255)
+    return {
+      text: `${tint.color} at ${tint.percent}%`,
+      color: `${tint.color}${alpha.toString(16).padStart(2, '0')}`,
+    }
+  }
+  // a length in rem as the page's pixels, as a token's is
+  const rem = /^(\d+(?:\.\d+)?)rem$/.exec(text)?.[1]
+  if (rem !== undefined) return { text: dimension({ value: Number(rem), unit: 'rem' }) }
   const body = /^calc\((.+)\)$/.exec(text)?.[1]
   const length = body === undefined ? undefined : total(body)
   return { text: length === undefined ? text : `${length}px` }
@@ -207,7 +231,7 @@ function cell(row: SpecRow): Cell {
       value: row.value,
       ...(valueTokens.length > 0 && {
         valueTokens,
-        formula: withTokens(row.value!, (token) => token).replace(/^calc\((.+)\)$/, '$1'),
+        formula: formulaOf(withTokens(row.value!, (token) => token)),
       }),
       dark: valueText(row, 'dark'),
       light: valueText(row, 'light'),

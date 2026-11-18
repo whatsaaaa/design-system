@@ -27,12 +27,16 @@ const files: Record<string, string> = {
  * pseudo-element draws, as an implementation's does.
  */
 const implementation = 'fixture'
+const pseudoParts: Record<string, Record<string, string>> = {
+  checkbox: { required: 'label::after' },
+  input: { placeholder: 'root::placeholder', required: 'label::after' },
+  'radio-group': { required: 'legend::after' },
+  select: { 'item-highlight': 'item::before' },
+  'select-menu': { 'item-highlight': 'item::before' },
+}
 function fixture(name: string): Spec {
   const spec = loadSpec(name)
-  const parts = {
-    placeholder: 'root::placeholder',
-    required: name === 'radio-group' ? 'legend::after' : 'label::after',
-  }
+  const parts = pseudoParts[name] ?? {}
   return {
     ...spec,
     implementations: {
@@ -64,13 +68,29 @@ test.beforeEach(async ({ browser }) => {
 test.afterEach(() => page.context().close())
 
 test('the specs it checks are the published ones', () => {
-  expect(specNames()).toEqual(['button', 'checkbox', 'input', 'radio-group'])
+  expect(specNames()).toEqual([
+    'button',
+    'checkbox',
+    'input',
+    'modal',
+    'radio-group',
+    'select',
+    'select-menu',
+  ])
   expect(loadSpec('button').component).toBe('button')
   expect(() => loadSpec('../package')).toThrow(/no spec named/)
 })
 
-/** How many values a gallery that draws every row of each spec compares, at least. */
-const least: Record<string, number> = { button: 800, checkbox: 300, input: 300, 'radio-group': 300 }
+/** How many values each spec's gallery has compared at least, in both themes. */
+const leastChecks: Record<string, number> = {
+  button: 800,
+  checkbox: 300,
+  input: 300,
+  modal: 50,
+  'radio-group': 300,
+  select: 1100,
+  'select-menu': 1100,
+}
 
 for (const name of specNames()) {
   test(`a gallery that meets the ${name} spec passes it in both themes`, async () => {
@@ -78,7 +98,7 @@ for (const name of specNames()) {
     expect(failures).toEqual([])
     // every row a gallery example holds for is measured in each theme, so a gallery that draws
     // less fails
-    expect(checks).toBeGreaterThan(least[name]!)
+    expect(checks).toBeGreaterThan(leastChecks[name]!)
   })
 }
 
@@ -96,6 +116,75 @@ test('it reads the parts an implementation maps in the spec', async () => {
   await expectSpec(page, 'button', { implementation: 'ui-vue' })
   const { failures } = await checkSpec(page, 'button')
   expect(failures.every(({ check }) => check === 'coverage')).toBe(true)
+})
+
+/**
+ * The select menu's gallery drawn in ui-vue's slots: a select's trigger is `base` and its icons
+ * `leadingIcon` and `trailingIcon`, as are the icon of the search in its list, and a group's name
+ * is `label`, as is the form field's label around it.
+ */
+async function selectMenuInUiVueSlots(page: Page) {
+  await page.evaluate(() => {
+    const slots: Record<string, string> = {
+      root: 'base',
+      'leading-icon': 'leadingIcon',
+      'trailing-icon': 'trailingIcon',
+      'group-label': 'label',
+      'item-indicator': 'itemTrailingIcon',
+      search: 'input',
+      'search-icon': 'leadingIcon',
+    }
+    for (const element of document.querySelectorAll<HTMLElement>(
+      '[data-spec^="select-menu."] [data-slot]',
+    ))
+      element.dataset.slot = slots[element.dataset.slot!] ?? element.dataset.slot
+  })
+}
+
+test('it reads a part in a slot inside another, where one slot draws two parts', async () => {
+  await selectMenuInUiVueSlots(page)
+  // `base leadingIcon` is the trigger's icon, never the search's in the open list
+  await expectSpec(page, 'select-menu', { implementation: 'ui-vue' })
+})
+
+test('a slot that two parts share fails where the example wraps both', async () => {
+  await selectMenuInUiVueSlots(page)
+  // the example's id around the form field too, and a part map of bare slots: the field's label
+  // is the first `label`, and the search's icon the first `leadingIcon` of a trigger without one
+  await page.evaluate(() => {
+    for (const control of document.querySelectorAll<HTMLElement>(
+      '[data-spec^="select-menu.outline.open"]',
+    )) {
+      control.parentElement!.dataset.spec = control.dataset.spec
+      delete control.dataset.spec
+    }
+  })
+  const spec = loadSpec('select-menu')
+  const parts = Object.fromEntries(
+    Object.entries(spec.implementations['ui-vue']!.parts!).map(([part, slot]) => [
+      part,
+      slot.split(' ').at(-1)!,
+    ]),
+  )
+  const flat: Spec = {
+    ...spec,
+    implementations: {
+      flat: { library: 'ui-vue, unscoped', status: 'shipped', parity: 'failing', parts },
+    },
+  }
+  const { failures } = await checkSpec(page, flat, { implementation: 'flat' })
+  const messages = failures.map(({ message }) => message)
+  expect(messages).toContainEqual(
+    expect.stringMatching(
+      /^select-menu\.outline\.open: group-label font-size is \d+px, and text\.overline/,
+    ),
+  )
+  expect(messages).toContainEqual(
+    expect.stringMatching(
+      /^select-menu\.outline\.open: root padding-inline-start is 12px, and the spec says calc/,
+    ),
+  )
+  expect(new Set(failures.map(({ check }) => check))).toEqual(new Set(['tokens']))
 })
 
 test('a value that drifts from its token fails, in each theme', async () => {
@@ -229,6 +318,39 @@ test('a row with a condition that no example meets fails', async () => {
         `"* invalid root padding-inline-start at lg without leading-icon" holds: ` +
         `input.outline.invalid.lg`,
     ),
+  )
+})
+
+test('a list whose edge is a ring, not a border, fails, and loses it in forced colors', async () => {
+  // the list drawn as Nuxt UI draws it: an inset ring, a box shadow, in place of its border
+  await page.addStyleTag({
+    content: `[data-spec^='select.'] .select__content {
+      border: 0;
+      box-shadow: inset 0 0 0 var(--ws-overlay-border-width) var(--ws-overlay-border);
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('select'), { implementation })
+  const open = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `select.outline.open${size}`)
+  expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
+    new Set(
+      ['dark', 'light'].flatMap((theme) =>
+        open.flatMap((id) => ['tokens', 'forced-colors'].map((check) => `${check} ${theme} ${id}`)),
+      ),
+    ),
+  )
+  const messages = failures.map(({ message }) => message)
+  expect(messages).toContain(
+    'select.outline.open: content box-shadow is ' +
+      (await page.evaluate(
+        () => getComputedStyle(document.querySelector('.select__content')!).boxShadow,
+      )) +
+      ', and the spec says none (none)',
+  )
+  expect(
+    messages.some((message) => message.startsWith('select.outline.open: content border-color')),
+  ).toBe(true)
+  expect(messages).toContainEqual(
+    expect.stringMatching(/^select\.outline\.open: content loses its border/),
   )
 })
 

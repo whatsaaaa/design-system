@@ -1,9 +1,8 @@
 /*
- * A gallery of plain HTML that meets the button, input, checkbox and radio group specs, as an
- * implementation's would:
- * every value from a component token or a role, by name. A hover, a pressed state or the focus is
- * drawn by the pointer or the keyboard, or by data-demo on the example, as the gallery contract
- * says.
+ * A gallery of plain HTML that meets the button, input, checkbox, radio group, select, select menu
+ * and modal specs, as an implementation's would: every value from a component token or a role, by
+ * name. A hover, a pressed state or the focus is drawn by the pointer or the keyboard, or by
+ * data-demo on the example, as the gallery contract says. An open list or modal is drawn in place.
  */
 body {
   margin: 0;
@@ -638,4 +637,387 @@ svg {
   to {
     rotate: 1turn;
   }
+}
+
+/* the select and the select menu: the trigger is a field, and the list opens in place under it */
+
+.select {
+  --field-height: var(--ws-control-height-md);
+  --field-padding: var(--ws-space-12);
+  --field-icon-size: var(--ws-control-icon-size-md);
+  --field-gap: var(--ws-control-gap-md);
+  --item-padding-inline: var(--ws-space-8);
+  --item-padding-block: var(--ws-space-6);
+  --label-padding-block: var(--ws-space-6);
+
+  display: grid;
+  gap: var(--ws-space-4);
+  width: 16rem;
+}
+
+/* the select itself, which the example's id marks: its trigger and, open, its list */
+.select__control {
+  display: grid;
+  gap: var(--ws-space-4);
+}
+
+.select__label {
+  color: var(--ws-field-label-text);
+  font-family: var(--ws-font-family-mono);
+  font-size: var(--ws-text-label-font-size);
+}
+
+.select__trigger {
+  /* what an edge wider than at rest takes from the padding, so the choice keeps its place */
+  --field-edge-extra: 0px;
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--field-height);
+  padding-inline: calc(var(--field-padding) - var(--field-edge-extra));
+  /* the chevron is always there: the choice ends past it */
+  padding-inline-end: calc(
+    var(--field-padding) + var(--field-icon-size) + var(--field-gap) - var(--field-edge-extra)
+  );
+  border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
+  border-radius: var(--ws-control-radius);
+  background-color: var(--ws-field-bg);
+  color: var(--ws-field-text-rest);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-text-body-font-size);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
+}
+
+.select__trigger:has(> .select__leading) {
+  padding-inline-start: calc(
+    var(--field-padding) + var(--field-icon-size) + var(--field-gap) - var(--field-edge-extra)
+  );
+}
+
+/* an icon sits inside the edge, where the choice starts */
+.select__trigger svg {
+  position: absolute;
+  width: var(--field-icon-size);
+  height: var(--field-icon-size);
+  color: var(--ws-field-icon);
+}
+
+.select__leading {
+  inset-inline-start: calc(var(--field-padding) - var(--field-edge-extra));
+}
+
+.select__trailing {
+  inset-inline-end: calc(var(--field-padding) - var(--field-edge-extra));
+}
+
+.select__placeholder {
+  color: var(--ws-color-text-secondary);
+}
+
+.select__trigger:enabled:is(:hover, [data-demo~='hover'] *) {
+  border-color: var(--ws-field-border-hover);
+}
+
+.select__trigger:is(:focus-visible, [data-demo~='focus'] *) {
+  border-color: var(--ws-field-border-rest);
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 3px;
+}
+
+.select__trigger[aria-invalid='true'] {
+  --field-edge-extra: calc(
+    var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)
+  );
+
+  border-width: var(--ws-control-border-width-invalid);
+  border-color: var(--ws-field-border-invalid);
+}
+
+.select__trigger:disabled {
+  border-color: var(--ws-field-border-disabled);
+  color: var(--ws-field-text-disabled);
+  cursor: not-allowed;
+}
+
+.select [data-slot='help'],
+.select [data-slot='error'] {
+  margin: 0;
+  font-size: var(--ws-text-body-sm-font-size);
+}
+
+.select [data-slot='help'] {
+  color: var(--ws-field-help-text);
+}
+
+.select [data-slot='error'] {
+  color: var(--ws-field-error-text);
+  font-weight: var(--ws-field-error-font-weight);
+}
+
+.select__content {
+  overflow: hidden;
+  border: var(--ws-overlay-border-width) solid var(--ws-overlay-border);
+  border-radius: var(--ws-overlay-list-radius);
+  background-color: var(--ws-overlay-bg);
+}
+
+.select__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+
+  & .select__search-icon {
+    position: absolute;
+    inset-inline-start: var(--field-padding);
+    width: var(--field-icon-size);
+    height: var(--field-icon-size);
+    color: var(--ws-field-icon);
+  }
+
+  & input {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--field-height);
+    padding-inline: var(--field-padding);
+    padding-inline-start: calc(var(--field-padding) + var(--field-icon-size) + var(--field-gap));
+    border: 0;
+    background: transparent;
+    color: var(--ws-field-text-rest);
+    font-family: var(--ws-font-family-sans);
+    font-size: inherit;
+  }
+
+  & input::placeholder {
+    color: var(--ws-color-text-secondary);
+  }
+
+  & input:focus-visible {
+    outline: none;
+  }
+}
+
+.select__group {
+  isolation: isolate;
+  padding: var(--ws-overlay-list-padding);
+}
+
+.select__group-label {
+  padding: var(--label-padding-block) var(--item-padding-inline);
+  color: var(--ws-color-text-secondary);
+  font-family: var(--ws-text-overline-font-family);
+  font-size: var(--ws-text-overline-font-size);
+  font-weight: var(--ws-text-overline-font-weight);
+  line-height: var(--ws-text-overline-line-height);
+  letter-spacing: var(--ws-text-overline-letter-spacing);
+  text-transform: uppercase;
+}
+
+.select__item {
+  position: relative;
+  display: flex;
+  align-items: start;
+  column-gap: var(--field-gap);
+  padding: var(--item-padding-block) var(--item-padding-inline);
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-text-body-font-size);
+  cursor: pointer;
+
+  & > span {
+    flex: 1;
+  }
+
+  &[aria-disabled='true'] {
+    color: var(--ws-color-text-faint);
+    cursor: not-allowed;
+  }
+}
+
+/* the option the pointer or the arrow keys are on, marked by a fill inside its box */
+.select__item[data-highlighted]::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: var(--ws-border-width-thin);
+  border-radius: var(--ws-radius-sm);
+  background-color: var(--ws-color-raised);
+}
+
+/* the chosen option's tick, on the option's first line */
+.select__tick {
+  width: var(--field-icon-size);
+  height: var(--field-icon-size);
+  margin-block: calc((1lh - var(--field-icon-size)) / 2);
+  color: var(--ws-color-interactive);
+}
+
+.select__separator {
+  height: var(--ws-border-width-thin);
+  margin: var(--ws-overlay-list-padding) calc(-1 * var(--ws-overlay-list-padding));
+  background-color: var(--ws-color-border);
+}
+
+@media (forced-colors: active) {
+  .select__item[data-highlighted]::before {
+    border: var(--ws-border-width-thin) solid Highlight;
+  }
+}
+
+.select[data-size='xs'] {
+  --field-height: var(--ws-control-height-xs);
+  --field-padding: var(--ws-space-8);
+  --field-icon-size: var(--ws-control-icon-size-xs);
+  --field-gap: var(--ws-control-gap-xs);
+  --item-padding-inline: var(--ws-space-6);
+  --item-padding-block: var(--ws-space-4);
+  --label-padding-block: var(--ws-space-4);
+
+  & .select__trigger {
+    font-size: var(--ws-text-body-sm-font-size);
+  }
+
+  & :is(.select__item, .select__search input) {
+    font-size: var(--ws-text-body-sm-font-size);
+  }
+}
+
+.select[data-size='sm'] {
+  --field-height: var(--ws-control-height-sm);
+  --field-padding: var(--ws-space-10);
+  --field-icon-size: var(--ws-control-icon-size-sm);
+  --field-gap: var(--ws-control-gap-sm);
+  --item-padding-block: var(--ws-space-4);
+  --label-padding-block: var(--ws-space-4);
+
+  & .select__trigger {
+    font-size: var(--ws-text-body-sm-font-size);
+  }
+
+  & :is(.select__item, .select__search input) {
+    font-size: var(--ws-text-body-sm-font-size);
+  }
+}
+
+.select[data-size='lg'] {
+  --field-height: var(--ws-control-height-lg);
+  --field-padding: var(--ws-space-14);
+  --field-icon-size: var(--ws-control-icon-size-lg);
+  --field-gap: var(--ws-control-gap-lg);
+  --item-padding-inline: var(--ws-space-10);
+  --item-padding-block: var(--ws-space-8);
+}
+
+.select[data-size='xl'] {
+  --field-height: var(--ws-control-height-xl);
+  --field-padding: var(--ws-space-16);
+  --field-icon-size: var(--ws-control-icon-size-xl);
+  --field-gap: var(--ws-control-gap-xl);
+  --item-padding-inline: var(--ws-space-12);
+  --item-padding-block: var(--ws-space-8);
+  --label-padding-block: var(--ws-space-8);
+}
+
+/* the modal, open in place: its dimmed page is a box around the window */
+
+.modal-demo {
+  flex-basis: 100%;
+}
+
+.modal__overlay {
+  display: grid;
+  place-items: center;
+  padding: var(--ws-space-32) var(--ws-space-16);
+  background-color: color-mix(in srgb, var(--ws-color-bg) 80%, transparent);
+}
+
+.modal {
+  --modal-padding: var(--ws-overlay-window-padding);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: calc(100vw - 2rem);
+  max-width: 32rem;
+  overflow: hidden;
+  border: var(--ws-overlay-border-width) solid var(--ws-overlay-border);
+  border-radius: var(--ws-overlay-window-radius);
+  background-color: var(--ws-overlay-bg);
+}
+
+/* the system's compact width */
+@media (width < 64rem) {
+  .modal {
+    --modal-padding: var(--ws-space-16);
+  }
+}
+
+.modal__header {
+  display: flex;
+  align-items: start;
+  gap: var(--ws-space-12);
+  min-height: var(--ws-size-tab-bar);
+  padding-inline: var(--modal-padding);
+  border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+  background-color: var(--ws-color-bg);
+}
+
+.modal__heading {
+  flex: 1;
+  min-width: 0;
+  padding-block: var(--ws-space-12);
+}
+
+.modal [data-slot='title'] {
+  margin: 0;
+  color: var(--ws-color-text);
+  font-family: var(--ws-text-h4-font-family);
+  font-size: var(--ws-text-h4-font-size);
+  font-weight: var(--ws-text-h4-font-weight);
+  line-height: var(--ws-text-h4-line-height);
+}
+
+.modal [data-slot='description'] {
+  margin: var(--ws-space-4) 0 0;
+  color: var(--ws-color-text-secondary);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-text-body-sm-font-size);
+}
+
+/* in the header's flow, so its focus ring stays inside the window */
+.button.modal__close {
+  flex: none;
+  justify-content: center;
+  width: var(--ws-control-height-sm);
+  height: var(--ws-control-height-sm);
+  margin-block-start: var(--ws-space-8);
+  margin-inline-end: calc(-1 * var(--ws-space-8));
+  padding-inline: 0;
+}
+
+.modal__body {
+  padding: var(--modal-padding);
+  font-size: var(--ws-text-body-sm-font-size);
+
+  &:not(:last-child) {
+    border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+  }
+
+  & p {
+    margin: 0;
+  }
+}
+
+.modal__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  column-gap: var(--ws-space-12);
+  row-gap: var(--ws-space-12);
+  padding: var(--ws-space-12) var(--modal-padding);
 }

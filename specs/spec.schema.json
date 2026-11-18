@@ -216,20 +216,28 @@
         "border-style",
         "border-width",
         "border-radius",
+        "border-block-end-color",
+        "border-block-end-style",
+        "border-block-end-width",
+        "box-shadow",
         "outline-color",
         "outline-style",
         "outline-width",
         "outline-offset",
         "height",
+        "min-height",
         "width",
+        "max-width",
         "padding-inline",
         "padding-inline-start",
         "padding-inline-end",
+        "padding-block",
         "column-gap",
         "font-family",
         "font-size",
         "font-weight",
         "line-height",
+        "text-transform",
         "text-decoration-line",
         "text-decoration-thickness",
         "text-underline-offset"
@@ -308,12 +316,12 @@
           "$ref": "#/$defs/sentence"
         },
         "parts": {
-          "description": "Each part, as the library's slot that draws it, with a pseudo-element where the slot draws the part as one: `label::after`.",
+          "description": "Each part, as the library's slot that draws it, with a pseudo-element where the slot draws the part as one: `label::after`, and after the slots it is inside where the same slot draws another part too: `base leadingIcon`, the icon of a select menu's trigger and not of the search in its list.",
           "type": "object",
           "propertyNames": { "$ref": "#/$defs/name" },
           "additionalProperties": {
             "type": "string",
-            "pattern": "^[a-zA-Z][a-zA-Z0-9]*(::[a-z-]+)?$"
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]*( [a-zA-Z][a-zA-Z0-9]*)*(::[a-z-]+)?$"
           }
         },
         "variants": {

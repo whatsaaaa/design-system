@@ -38,6 +38,7 @@ const properties = [
   'height',
   // the side of a square part, such as a checkbox's box
   'size',
+  'padding',
   'padding-inline',
   'padding-block',
   'gap',
@@ -50,7 +51,7 @@ const properties = [
 
 describe('the component tier', () => {
   it('has its groups, and every token of them is built', () => {
-    expect(tierGroups).toEqual(['button', 'choice', 'control', 'field'])
+    expect(tierGroups).toEqual(['button', 'choice', 'control', 'field', 'overlay'])
     for (const [id] of all) expect(ids, id).toContain(id)
     expect(ids.filter(inTier)).toHaveLength(all.length)
   })

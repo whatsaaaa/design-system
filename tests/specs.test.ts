@@ -196,6 +196,21 @@ describe('the component pages', () => {
     },
   )
 
+  it('shows a tint written as a value by its color and how much of it', () => {
+    const rows = pages.modal!.stateGroups.flatMap((group) => group.rows)
+    const { cell } = rows.find((row) => row.part === 'overlay')!
+    expect(cell.formula).toBe('color.bg at 80%')
+    expect(cell.dark).toEqual({ text: '#191724 at 80%', color: '#191724cc' })
+    expect(cell.light).toEqual({ text: '#faf4ed at 80%', color: '#faf4edcc' })
+  })
+
+  it('shows a length in rem written as a value in pixels, as a token of rem is', () => {
+    const rows = pages.modal!.stateGroups.flatMap((group) => group.rows)
+    const { cell } = rows.find((row) => row.property === 'max-width')!
+    expect(cell.value).toBe('32rem')
+    expect([cell.dark.text, cell.light.text]).toEqual(['512px', '512px'])
+  })
+
   it('shows a sum of lengths by its total, and the tokens it reads', () => {
     const row = pages.input!.sizeRows.find((entry) =>
       entry.targets.some(
@@ -251,7 +266,10 @@ describe('the specs and the component tier', () => {
       'button',
       'checkbox',
       'input',
+      'modal',
       'radio-group',
+      'select',
+      'select-menu',
     ])
   })
 

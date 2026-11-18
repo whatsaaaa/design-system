@@ -34,9 +34,10 @@ type Theme = 'dark' | 'light'
 
 export interface SpecOptions {
   /**
-   * The implementation in the spec whose part map names the `data-slot` that draws each part, or
-   * a slot and a pseudo-element of it: in `ui-vue`, `root` is `base` and `required` is
-   * `label::after`. Without one, a part's slot is its name.
+   * The implementation in the spec whose part map names the `data-slot` that draws each part, a
+   * slot and a pseudo-element of it, or a slot inside another: in `ui-vue`, `root` is `base`,
+   * `required` is `label::after`, and a select menu's `leading-icon` is `base leadingIcon`, the
+   * icon of the trigger and not of the search in its list. Without one, a part's slot is its name.
    */
   implementation?: string
 }
@@ -65,9 +66,12 @@ const demoStates = ['hover', 'active', 'focus']
 /** The states that the forced-colors check compares with rest. */
 const markedStates = ['checked', 'indeterminate', 'current', 'selected']
 
-/** Where a part is drawn: the element with its `data-slot`, or a pseudo-element of it. */
+/**
+ * Where a part is drawn: the element with its `data-slot`, or the one inside an element of
+ * another, `[data-slot="base"] [data-slot="leadingIcon"]`, or a pseudo-element of it.
+ */
 interface Target {
-  slot: string
+  selector: string
   pseudo?: string
 }
 
@@ -222,8 +226,12 @@ function partTargets(spec: Spec, { implementation }: SpecOptions) {
   if (!mapped) throw new Error(`the ${spec.component} spec has no parts for ${implementation}`)
   return Object.fromEntries(
     Object.keys(spec.parts).map((part) => {
-      const [slot = part, pseudo] = (mapped[part] ?? part).split(/(?=::)/)
-      return [part, pseudo ? { slot, pseudo } : { slot }]
+      const [path = part, pseudo] = (mapped[part] ?? part).split(/(?=::)/)
+      const selector = path
+        .split(' ')
+        .map((slot) => `[data-slot="${slot}"]`)
+        .join(' ')
+      return [part, pseudo ? { selector, pseudo } : { selector }]
     }),
   ) as Record<string, Target>
 }
@@ -298,7 +306,7 @@ async function marksDiffer(
   const failures: Omit<Failure, 'check'>[] = []
   // the part, where the example draws it
   const part = (id: string, name: string) => {
-    const [example, slot] = [`[data-spec="${id}"]`, `[data-slot="${targets[name]!.slot}"]`]
+    const [example, slot] = [`[data-spec="${id}"]`, targets[name]!.selector]
     return page.locator(`${example}${slot}:visible, ${example} ${slot}:visible`).first()
   }
   const whole = (id: string) => page.locator(`[data-spec="${id}"]:visible`).first()
@@ -434,7 +442,13 @@ function measureInPage(examples: { id: string; measures: Measure[] }[]): Measure
   for (const animation of document.getAnimations())
     if ('transitionProperty' in animation) animation.finish()
 
-  const colorProperties = ['background-color', 'color', 'border-color', 'outline-color']
+  const colorProperties = [
+    'background-color',
+    'color',
+    'border-color',
+    'border-block-end-color',
+    'outline-color',
+  ]
   const probe = document.createElement('ws-spec-probe')
   const base =
     'position:absolute;display:block;visibility:hidden;pointer-events:none;' +
@@ -456,8 +470,7 @@ function measureInPage(examples: { id: string; measures: Measure[] }[]): Measure
       )
     return true
   }
-  const find = (root: Element, { slot, pseudo }: Target) => {
-    const selector = `[data-slot="${CSS.escape(slot)}"]`
+  const find = (root: Element, { selector, pseudo }: Target) => {
     const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
     return elements.find((element) => draws(element, pseudo))
   }
@@ -569,7 +582,7 @@ function edgesInPage(
   const failures: { id: string; message: string }[] = []
   for (const { id, part, target, edge } of edges)
     for (const root of document.querySelectorAll(`[data-spec="${CSS.escape(id)}"]`)) {
-      const selector = `[data-slot="${CSS.escape(target.slot)}"]`
+      const { selector } = target
       const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
       const element = elements.find((each) => each.checkVisibility())
       if (!element) continue

@@ -1,0 +1,1309 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "select",
+  "title": "Select",
+  "status": "draft",
+  "changed": "0.13.0",
+  "summary": "One choice from a list: a field that shows the choice, with a chevron at its end, and the list of options that opens under it on a panel of the overlay.",
+  "use": [
+    "One choice from a list too long for radio buttons, more than about five options: a city, a day, a country.",
+    "Always inside its form field, with its label above it and its help or its error under it, as the input spec draws them."
+  ],
+  "notFor": [
+    "A few options, about five or fewer, that read better side by side: that is a radio group.",
+    "A list long enough that a reader would rather type than scroll, or several choices at once: that is a select menu, with a search.",
+    "An action: that is a button, or a menu of them."
+  ],
+  "parts": {
+    "root": "The trigger: the box, and the choice shown in it.",
+    "placeholder": "Text in the trigger before anything is chosen. The system uses none: the help says what to choose.",
+    "leading-icon": "An icon before the choice, and the turning loading icon of a loading select.",
+    "trailing-icon": "The chevron at the end of the trigger, which says a list opens.",
+    "content": "The list: a panel of the overlay under the trigger, as wide as it is.",
+    "group": "A group of options, and the room around them.",
+    "group-label": "A group's name, above its options: an overline.",
+    "item": "An option, its label in the value's type.",
+    "item-highlight": "What marks the option the pointer or the arrow keys are on: a fill under it, inside its box.",
+    "item-indicator": "The tick after the chosen option.",
+    "separator": "The line between two groups."
+  },
+  "variants": {
+    "outline": "The one look of a field: an edge in the field border, on the page color."
+  },
+  "sizes": {
+    "xs": "A dense row, such as a filter in a table's head.",
+    "sm": "A bar or a toolbar.",
+    "md": "Every other field: a form, a dialog.",
+    "lg": "A form of one or two fields that a page leads to, such as a sign-up.",
+    "xl": "A landing page's one field."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Nothing is on it, and its list is closed.",
+    "hover": "The pointer is on the trigger.",
+    "focus": "The trigger has the keyboard's focus, as `:focus-visible` says.",
+    "invalid": "Its choice is wrong or missing: `aria-invalid` is true, and the error is under it.",
+    "disabled": "It cannot be changed now.",
+    "loading": "Its options are being loaded: the leading icon turns.",
+    "open": "Its list is open under the trigger, on the option chosen, which is highlighted: the first, in a gallery."
+  },
+  "icons": {
+    "open": "chevron-down",
+    "chosen": "check",
+    "loading": "loader-circle"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "field.bg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.hover"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "placeholder",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "color",
+      "token": "field.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "color",
+      "token": "field.icon"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "background-color",
+      "token": "overlay.bg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-width",
+      "token": "overlay.border-width"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-color",
+      "token": "overlay.border"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "border-radius",
+      "token": "overlay.list.radius"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "content",
+      "property": "box-shadow",
+      "value": "none"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group",
+      "property": "padding-inline",
+      "token": "overlay.list.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group",
+      "property": "padding-block",
+      "token": "overlay.list.padding"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "font-family",
+      "token": "text.overline"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "font-size",
+      "token": "text.overline"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "font-weight",
+      "token": "text.overline"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "text-transform",
+      "value": "uppercase"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "color",
+      "token": "color.text"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-highlight",
+      "property": "background-color",
+      "token": "color.raised"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-highlight",
+      "property": "border-radius",
+      "token": "radius.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "separator",
+      "property": "background-color",
+      "token": "color.border"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "separator",
+      "property": "height",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xs",
+      "token": "control.height.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "without": "leading-icon",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-8) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "xs",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "xs",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "xs",
+      "token": "control.gap.xs"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "sm",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "without": "leading-icon",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-10) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "sm",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "sm",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "sm",
+      "token": "control.gap.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "md",
+      "token": "control.height.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "without": "leading-icon",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "md",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "md",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "md",
+      "token": "control.gap.md"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "lg",
+      "token": "control.height.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "without": "leading-icon",
+      "token": "space.14"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-14) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "lg",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "lg",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "lg",
+      "token": "control.gap.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xl",
+      "token": "control.height.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "without": "leading-icon",
+      "token": "space.16"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-16) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "group-label",
+      "property": "padding-block",
+      "size": "xl",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "padding-block",
+      "size": "xl",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item",
+      "property": "column-gap",
+      "size": "xl",
+      "token": "control.gap.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "item-indicator",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus to the trigger and on to the next or the previous control. A disabled select is skipped."
+    },
+    {
+      "keys": ["Enter", "Space", "ArrowDown", "ArrowUp"],
+      "effect": "Opens the list on the chosen option, or on the first when none is chosen."
+    },
+    {
+      "keys": ["ArrowDown", "ArrowUp"],
+      "effect": "In the open list, moves to the next or the previous option, past the disabled ones."
+    },
+    {
+      "keys": ["Home", "End"],
+      "effect": "In the open list, moves to the first or the last option."
+    },
+    {
+      "keys": ["A letter"],
+      "effect": "Moves to the next option that starts with it, open or not."
+    },
+    {
+      "keys": ["Enter", "Space"],
+      "effect": "In the open list, chooses the option, closes the list and puts the focus back on the trigger."
+    },
+    {
+      "keys": ["Escape"],
+      "effect": "Closes the list without a change, and puts the focus back on the trigger."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/",
+    "rules": [
+      "The trigger is a combobox: `aria-expanded` says whether the list is open, and `aria-controls` names the list.",
+      "The label is a label element for the trigger: its accessible name. The help and the error are its description, by `aria-describedby`, and a select in error has `aria-invalid` true.",
+      "The list is a listbox, its options are options, and the chosen one has `aria-selected` true. A group of options is a group, named by its label.",
+      "A disabled option has `aria-disabled` true, and is skipped by the arrow keys.",
+      "The chevron, the tick and the loading icon are hidden from assistive technology."
+    ]
+  },
+  "forcedColors": [
+    "The edge of the trigger is a real border, which forced colors keep in the system's colors, and in `GrayText` when the select is disabled.",
+    "The list's edge is a real border too, so the list stands apart from the page under it, which forced colors paint in the same color as the list.",
+    "The option the pointer or the arrow keys are on is outlined in `Highlight`, as its fill is gone.",
+    "The line between two groups is a fill, which forced colors paint in the list's color, so it goes, and the group labels keep the groups apart.",
+    "The focus ring is an outline, which forced colors keep. The icons take the system's text color."
+  ],
+  "motion": [
+    "The edge changes color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` it changes at once.",
+    "The list fades in and grows a little from the trigger in `motion.duration.fast`, with `motion.easing.out`, and goes as it came, with `motion.easing.in`. With less motion it only fades.",
+    "The loading icon turns only with `prefers-reduced-motion: no-preference`."
+  ],
+  "content": [
+    "The label names what is chosen, in sentence case and with no colon: City, Day.",
+    "No placeholder. What to choose, or why, goes in the help under the field: Where the conference takes place.",
+    "An option is a value, as the reader would say it: Day one, May 10. A group's name says what its options share: Workshops.",
+    "An error says how to fix it: Choose the day you are registering for."
+  ],
+  "notes": [
+    "The form field around a select, its label, required mark, help and error, is the input spec's, at the same sizes: this spec holds the trigger and its list.",
+    "The trigger's chevron is always drawn, so the choice ends past it: the padding at the end is the field's padding, the icon and the control's gap. An icon sits inside the edge, where the choice starts.",
+    "An option's leading icon and its description, under its label in the secondary text, are drawn as an implementation draws them and not checked yet. A disabled option is `color.text-faint`, exempt from contrast as WCAG exempts an inactive control.",
+    "A gallery draws the open list in place, under its trigger and inside the example, not in a layer at the end of the page, so that a test finds it by the example's id. Its first option is the chosen one, which the list opens on and highlights. The element with the example's id wraps the select itself, its trigger and its list, and never its form field: the form field's label is a slot of its own, which an implementation's list may use for a group's name."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["USelect", "UFormField"],
+      "today": "The outline variant in Nuxt UI's five sizes, inside a form field. The trigger is the input's field: it reads `--ws-field-*` and `--ws-control-*`, its edge is a border, and its placeholder, once `color.text-faint` at 3.42:1, is the secondary text. The list is the surface in an edge of `color.border`, the highlighted option raised, the chosen one ticked in the interactive color, with the measures of this spec.",
+      "parts": {
+        "root": "base",
+        "placeholder": "base placeholder",
+        "leading-icon": "base leadingIcon",
+        "trailing-icon": "base trailingIcon",
+        "content": "content",
+        "group": "group",
+        "group-label": "content label",
+        "item": "item",
+        "item-highlight": "item::before",
+        "item-indicator": "itemTrailingIcon",
+        "separator": "separator"
+      },
+      "variants": {
+        "outline": {
+          "variant": "outline"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The list's edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for the content's `border-color`, `border-style` and `border-width` do not hold, nor its `box-shadow` of none."
+        },
+        {
+          "summary": "The list's edge is `color.border`, 1.57:1 on the list in the dark theme and 1.33:1 in the light one, where the spec takes `overlay.border`, the field border, which reads at 3:1."
+        },
+        {
+          "summary": "The list reads the roles by their Tailwind utilities, such as `bg-surface`, and a size's paddings and icons by Tailwind's spacing, such as `size-5`, not the component tokens, such as `bg-(--ws-overlay-bg)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery marks no example with `data-spec`, and draws no list open: a list opens in a layer at the end of the page, outside its example."
+        }
+      ],
+      "beyond": [
+        "The variants soft, subtle, ghost and none.",
+        "The item-aligned position, which lays the list over the trigger, and an option's avatar and chip."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "select.outline.rest",
+    "select.outline.hover",
+    "select.outline.focus",
+    "select.outline.invalid",
+    "select.outline.disabled",
+    "select.outline.loading",
+    "select.outline.open",
+    "select.outline.rest.xs",
+    "select.outline.rest.sm",
+    "select.outline.rest.lg",
+    "select.outline.rest.xl",
+    "select.outline.invalid.xs",
+    "select.outline.invalid.sm",
+    "select.outline.invalid.lg",
+    "select.outline.invalid.xl",
+    "select.outline.open.xs",
+    "select.outline.open.sm",
+    "select.outline.open.lg",
+    "select.outline.open.xl"
+  ]
+}
