@@ -1,5 +1,11 @@
 # @whatsaaaa/design-system
 
+## 0.10.0
+
+### Minor Changes
+
+- [#48](https://github.com/whatsaaaa/design-system/pull/48) [`03dd6f5`](https://github.com/whatsaaaa/design-system/commit/03dd6f5c90a70d12a59c7e54bd57aeeed38dc0fc) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - `@whatsaaaa/design-system/testing`, a Playwright helper that holds an implementation's gallery to the published component specs, whatever its framework. `expectSpec(page, 'button', { implementation: 'ui-vue' })` checks, in both themes, that every example of the spec's gallery is on the page by its `data-spec` id and every row of the state table is drawn by an example; that each property of each part is its token's value, resolved inside the part so a part held in the other theme is measured in it; and that in forced colors each part with an edge keeps a border or an outline and a checked, current or selected example still looks unlike its example at rest. A hover, a pressed state and the focus are forced with `data-demo`, never with the pointer. `checkSpec` returns the failures in place of failing, and `specNames` and `loadSpec` read the specs. `@playwright/test` is an optional peer that only this entry needs. `docs/usage.md` describes it in section 12. Nothing that exists changes.
+
 ## 0.9.0
 
 ### Minor Changes
