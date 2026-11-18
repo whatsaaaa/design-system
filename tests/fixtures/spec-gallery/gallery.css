@@ -261,10 +261,13 @@ svg {
 }
 
 .field input {
+  /* what an edge wider than at rest takes from the padding, so the value keeps its place */
+  --field-edge-extra: 0px;
+
   box-sizing: border-box;
   width: 100%;
   height: var(--ws-control-height-md);
-  padding-inline: var(--field-padding);
+  padding-inline: calc(var(--field-padding) - var(--field-edge-extra));
   border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
   border-radius: var(--ws-control-radius);
   background-color: var(--ws-field-bg);
@@ -276,11 +279,15 @@ svg {
 
 /* the value starts past an icon by the padding, the icon and the gap */
 .field__control:has(> [data-slot='leading-icon']) input {
-  padding-inline-start: calc(var(--field-padding) + var(--field-icon-size) + var(--field-gap));
+  padding-inline-start: calc(
+    var(--field-padding) + var(--field-icon-size) + var(--field-gap) - var(--field-edge-extra)
+  );
 }
 
 .field__control:has(> [data-slot='trailing-icon']) input {
-  padding-inline-end: calc(var(--field-padding) + var(--field-icon-size) + var(--field-gap));
+  padding-inline-end: calc(
+    var(--field-padding) + var(--field-icon-size) + var(--field-gap) - var(--field-edge-extra)
+  );
 }
 
 .field input::placeholder {
@@ -298,6 +305,10 @@ svg {
 }
 
 .field input[aria-invalid='true'] {
+  --field-edge-extra: calc(
+    var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)
+  );
+
   border-width: var(--ws-control-border-width-invalid);
   border-color: var(--ws-field-border-invalid);
 }

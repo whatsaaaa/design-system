@@ -215,6 +215,7 @@ describe('the component pages', () => {
     // what follows the size is named once, and each size's padding in its cell
     expect(row.sum).toEqual({
       plus: ['control.icon-size.<size>', 'control.gap.<size>'],
+      less: [],
       own: {
         xs: ['space.8'],
         sm: ['space.10'],
@@ -223,6 +224,24 @@ describe('the component pages', () => {
         xl: ['space.16'],
       },
     })
+  })
+
+  it('shows a padding less the wider edge of an error by its total, and what it takes away', () => {
+    const rows = pages.input!.sizeRows.filter(
+      (entry) =>
+        entry.state === 'invalid' &&
+        entry.targets.some((target) => target.property === 'padding-inline-start'),
+    )
+    const totals = rows.map((row) => Object.values(row.cells).map((cell) => cell.dark.text))
+    // the measures of ui-vue's fields in an error, whose value keeps its place
+    expect(totals).toEqual([
+      ['7px', '9px', '11px', '13px', '15px'],
+      ['29px', '31px', '35px', '41px', '45px'],
+    ])
+    const extra = '(control.border-width.invalid - control.border-width.rest)'
+    expect(rows.map((row) => row.sum?.less)).toEqual([[extra], [extra]])
+    expect(rows[1]!.sum!.plus).toEqual(['control.icon-size.<size>', 'control.gap.<size>'])
+    expect(rows[0]!.cells.md!.formula).toBe(`space.12 - ${extra}`)
   })
 })
 

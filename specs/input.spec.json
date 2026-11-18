@@ -3,7 +3,7 @@
   "component": "input",
   "title": "Input",
   "status": "draft",
-  "changed": "0.11.0",
+  "changed": "0.11.1",
   "summary": "One line of text, in a field with its label above it and its help or its error under it: the value in Inter, an edge in the field border, the control height.",
   "use": [
     "One line of text: a name, an email address, a number, a date typed out.",
@@ -319,6 +319,42 @@
     },
     {
       "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-8) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "without": "trailing-icon",
+      "value": "calc(var(--ws-space-8) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "with": "trailing-icon",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "font-size",
@@ -424,6 +460,42 @@
       "size": "sm",
       "with": "trailing-icon",
       "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-10) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "without": "trailing-icon",
+      "value": "calc(var(--ws-space-10) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "with": "trailing-icon",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
     },
     {
       "variant": "*",
@@ -535,6 +607,42 @@
     },
     {
       "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "without": "trailing-icon",
+      "value": "calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "with": "trailing-icon",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "font-size",
@@ -640,6 +748,42 @@
       "size": "lg",
       "with": "trailing-icon",
       "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-14) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "without": "trailing-icon",
+      "value": "calc(var(--ws-space-14) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "with": "trailing-icon",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
     },
     {
       "variant": "*",
@@ -751,6 +895,42 @@
     },
     {
       "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "without": "leading-icon",
+      "value": "calc(var(--ws-space-16) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "with": "leading-icon",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "without": "trailing-icon",
+      "value": "calc(var(--ws-space-16) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "with": "trailing-icon",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "font-size",
@@ -852,7 +1032,8 @@
   "notes": [
     "Read-only is not specced: a value that cannot be changed, as on a review step, is shown as a term and its value, with `ws-pairs`.",
     "Nuxt UI's hint, beside the label, is not part of the spec: hints go under the field, as its help.",
-    "The value starts past an icon by the field's padding, the icon and the control's gap, so the padding on the side of an icon is the three together, as the rows with that icon say."
+    "The value starts past an icon by the field's padding, the icon and the control's gap, so the padding on the side of an icon is the three together, as the rows with that icon say.",
+    "The value and the icons keep their place when the edge widens: an invalid field's padding is its padding at rest less the extra edge, `control.border-width.invalid` less `control.border-width.rest`, so its edge grows inward over the padding and nothing in the box moves."
   ],
   "implementations": {
     "ui-vue": {

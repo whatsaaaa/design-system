@@ -110,12 +110,14 @@ test('a value that drifts from its token fails, in each theme', async () => {
 })
 
 test('a token is resolved where the part is, in a part of the page held in the other theme', async () => {
-  // the field held in the light theme, drawn with the dark theme's edge: the page's own value
+  // a field held in the light theme, drawn with the dark theme's edge: the page's own value
   const dark = await page.evaluate(() =>
     getComputedStyle(document.documentElement).getPropertyValue('--ws-field-border-rest'),
   )
   await page.addStyleTag({
-    content: `[data-spec='input.outline.rest.xl'] input { border-color: ${dark}; }`,
+    content: `[data-spec='input.outline.rest.xl']:has([data-slot='leading-icon']) input {
+      border-color: ${dark};
+    }`,
   })
   const { failures } = await checkSpec(page, fixture('input'), { implementation })
   // in the light theme the edge is wrong wherever the token is resolved, in the dark one only
@@ -129,7 +131,8 @@ test('a token is resolved where the part is, in a part of the page held in the o
 
 test('a missing example fails, or one under an id the gallery does not have', async () => {
   await page.evaluate(() => {
-    document.querySelector('[data-spec="input.outline.invalid"]')!.remove()
+    for (const field of document.querySelectorAll('[data-spec="input.outline.invalid"]'))
+      field.remove()
     document
       .querySelector('[data-spec="input.outline.hover"]')!
       .setAttribute('data-spec', 'input.outline.hovered')
@@ -180,8 +183,28 @@ test('a row with a condition is held only where the example meets it', async () 
   )
 })
 
+test('a field whose value moves when its edge widens fails', async () => {
+  // the padding at rest kept in an error, so the value moves inward by the wider edge
+  await page.addStyleTag({
+    content: `[data-spec^='input.outline.invalid'] input { --field-edge-extra: 0px !important; }`,
+  })
+  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  const invalid = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `input.outline.invalid${size}`)
+  expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
+    new Set(['dark', 'light'].flatMap((theme) => invalid.map((id) => `tokens ${theme} ${id}`))),
+  )
+  // each side of each field with an error, with its icon and without it
+  expect(failures).toHaveLength(2 * invalid.length * 4)
+  expect(failures.map(({ message }) => message)).toContain(
+    'input.outline.invalid: root padding-inline-start is 12px, and the spec says ' +
+      'calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - ' +
+      'var(--ws-control-border-width-rest))) (11px)',
+  )
+})
+
 test('a row with a condition that no example meets fails', async () => {
-  // a leading icon in the large field with an error too, so no large field is without one
+  // a leading icon in the large field with an error that had none, so no large field with an
+  // error is without one
   await page.evaluate(() => {
     const control = document.querySelector(
       '[data-spec="input.outline.invalid.lg"] .field__control',
@@ -197,8 +220,8 @@ test('a row with a condition that no example meets fails', async () => {
     ['dark', 'light'].map(
       (theme) =>
         `${theme}: no example draws root without leading-icon where the row ` +
-        `"* rest root padding-inline-start at lg without leading-icon" holds: ` +
-        `input.outline.rest.lg, input.outline.invalid.lg`,
+        `"* invalid root padding-inline-start at lg without leading-icon" holds: ` +
+        `input.outline.invalid.lg`,
     ),
   )
 })

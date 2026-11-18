@@ -74,9 +74,24 @@ describe('the parity helper reads a spec', () => {
     )
     expect(md['root padding-inline-end without trailing-icon']).toBe('space.12')
     expect(md).not.toHaveProperty('root padding-inline')
-    expect(
-      held(input, 'input.outline.invalid.xs')['root padding-inline-end with trailing-icon'],
-    ).toBe('calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))')
+    expect(held(input, 'input.outline.rest.xs')['root padding-inline-end with trailing-icon']).toBe(
+      'calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))',
+    )
+  })
+
+  it('holds a field with an error to its padding at rest less the wider edge, with an icon or not', () => {
+    const extra = '(var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest))'
+    const xs = held(input, 'input.outline.invalid.xs')
+    expect(xs['root padding-inline-start without leading-icon']).toBe(
+      `calc(var(--ws-space-8) - ${extra})`,
+    )
+    expect(xs['root padding-inline-end with trailing-icon']).toBe(
+      `calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - ${extra})`,
+    )
+    // the rows of the error take the place of those at rest, at every size and on both sides
+    for (const id of ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `input.outline.invalid${size}`))
+      for (const row of expectations(input, example(input, id)))
+        if (row.property.startsWith('padding-inline')) expect(row.row.state, id).toBe('invalid')
   })
 
   it('takes a row of a state in place of those at rest with its condition, or of all of them', () => {

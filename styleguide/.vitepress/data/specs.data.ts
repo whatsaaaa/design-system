@@ -41,6 +41,8 @@ export interface Cell {
   value?: string
   /** The tokens the value reads by their variables, as in `calc(var(--ws-space-12) + …)`. */
   valueTokens?: string[]
+  /** The value with each token by its id: `space.12 + control.gap.md`. */
+  formula?: string
   dark: CellValue
   light: CellValue
 }
@@ -64,10 +66,11 @@ export interface SizeRow {
   /** The token at every size, where it is one name with the size last: `control.height.<size>`. */
   pattern?: string
   /**
-   * For a sum of tokens, those that follow that pattern at every size, `control.gap.<size>`, which
-   * the row names once, and each size's own others, which its cell names.
+   * For a sum of tokens, the terms the same at every size or that follow that pattern,
+   * `control.gap.<size>`, which the row names once, added or taken away, and each size's own
+   * others, which its cell names.
    */
-  sum?: { plus: string[]; own: Partial<Record<Size, string[]>> }
+  sum?: { plus: string[]; less: string[]; own: Partial<Record<Size, string[]>> }
   cells: Partial<Record<Size, Cell>>
 }
 
@@ -134,19 +137,67 @@ function tokenValue(row: SpecRow, theme: Theme): CellValue {
   }
 }
 
+/** A value with each variable of a token in its place: `var(--ws-space-12)` as `space.12` or 12px. */
+const withTokens = (value: string, read: (token: TokenId) => string) =>
+  value.replace(/var\((--[a-z0-9-]+)\)/g, (variable, name: string) => {
+    const token = tokenOfVariable(name)
+    return token ? read(token) : variable
+  })
+
+/** What a sum of lengths comes to, as `12px - (2px - 1px)` comes to 11, or nothing for another value. */
+function total(expression: string): number | undefined {
+  const parts = expression.match(/\d+(?:\.\d+)?px|[-+()]|\S+/g) ?? []
+  let at = 0
+  const term = (): number | undefined => {
+    const part = parts[at++]
+    if (part !== '(') return part && part.endsWith('px') ? parseFloat(part) : undefined
+    const inner = sum()
+    return parts[at++] === ')' ? inner : undefined
+  }
+  const sum = (): number | undefined => {
+    let result = term()
+    while (result !== undefined && (parts[at] === '+' || parts[at] === '-')) {
+      const sign = parts[at++] === '+' ? 1 : -1
+      const next = term()
+      result = next === undefined ? undefined : result + sign * next
+    }
+    return result
+  }
+  const result = sum()
+  return at === parts.length ? result : undefined
+}
+
 /**
  * What a value gives a property, in one theme: each token it reads in place of its variable, and
  * a sum of lengths as its total, so `calc(var(--ws-space-12) + var(--ws-control-gap-md))` is 20px.
  */
 function valueText(row: SpecRow, theme: Theme): CellValue {
-  const text = row.value!.replace(/var\((--[a-z0-9-]+)\)/g, (variable, name: string) => {
-    const token = tokenOfVariable(name)
-    return token ? tokenValue({ ...row, token }, theme).text : variable
-  })
-  const terms = /^calc\((.+)\)$/.exec(text)?.[1]?.split(' + ')
-  if (terms?.every((term) => /^\d+(\.\d+)?px$/.test(term)))
-    return { text: `${terms.reduce((sum, term) => sum + parseFloat(term), 0)}px` }
-  return { text }
+  const text = withTokens(row.value!, (token) => tokenValue({ ...row, token }, theme).text)
+  const body = /^calc\((.+)\)$/.exec(text)?.[1]
+  const length = body === undefined ? undefined : total(body)
+  return { text: length === undefined ? text : `${length}px` }
+}
+
+/**
+ * The terms of a calc, each with its sign and with its tokens by their ids:
+ * `calc(var(--ws-space-12) - (var(--ws-a) - var(--ws-b)))` is `space.12` and less `(a - b)`.
+ */
+function calcTerms(value: string): { sign: 1 | -1; term: string }[] | undefined {
+  const body = /^calc\((.+)\)$/.exec(withTokens(value, (token) => token))?.[1]
+  if (body === undefined) return undefined
+  const terms: { sign: 1 | -1; term: string }[] = []
+  let [depth, start, sign] = [0, 0, 1 as 1 | -1]
+  for (let at = 0; at < body.length; at++) {
+    if (body[at] === '(') depth++
+    else if (body[at] === ')') depth--
+    else if (depth === 0 && /^ [-+] $/.test(body.slice(at, at + 3))) {
+      terms.push({ sign, term: body.slice(start, at) })
+      sign = body[at + 1] === '+' ? 1 : -1
+      start = at + 3
+      at += 2
+    }
+  }
+  return [...terms, { sign, term: body.slice(start) }]
 }
 
 function cell(row: SpecRow): Cell {
@@ -154,7 +205,10 @@ function cell(row: SpecRow): Cell {
     const valueTokens = rowTokens(row)
     return {
       value: row.value,
-      ...(valueTokens.length > 0 && { valueTokens }),
+      ...(valueTokens.length > 0 && {
+        valueTokens,
+        formula: withTokens(row.value!, (token) => token).replace(/^calc\((.+)\)$/, '$1'),
+      }),
       dark: valueText(row, 'dark'),
       light: valueText(row, 'light'),
     }
@@ -259,15 +313,26 @@ function page(spec: Spec): SpecPage {
   for (const row of sizeRows) {
     const cells = Object.entries(row.cells)
     row.pattern = patternOf(cells.map(([size, value]) => [size, value.token]))
-    const terms = cells.map(([, value]) => value.valueTokens ?? [])
-    if (!terms[0]!.length || terms.some((each) => each.length !== terms[0]!.length)) continue
-    const patterns = terms[0]!.map((_, at) =>
-      patternOf(cells.map(([size], which) => [size, terms[which]![at]])),
-    )
+    const terms = cells.map(([, value]) => (value.value ? calcTerms(value.value) : undefined))
+    const first = terms[0]
+    if (!first || terms.some((each) => each?.length !== first.length)) continue
+    // a term the same at every size, or that follows the size, with its sign at every size
+    const shared = first.map(({ sign, term }, at) => {
+      const each = terms.map((all) => all![at]!)
+      if (each.some((one) => one.sign !== sign)) return undefined
+      if (each.every((one) => one.term === term)) return term
+      return patternOf(cells.map(([size], which) => [size, each[which]!.term]))
+    })
+    const own = terms.map((all) => all!.filter((_, at) => shared[at] === undefined))
+    // each size's own terms are added, which its cell names
+    if (!shared.some(Boolean) || own.some((all) => all.some(({ sign }) => sign < 0))) continue
+    const signed = (sign: number) =>
+      shared.filter((term, at) => term !== undefined && first[at]!.sign === sign) as string[]
     row.sum = {
-      plus: patterns.filter((pattern) => pattern !== undefined),
+      plus: signed(1),
+      less: signed(-1),
       own: Object.fromEntries(
-        cells.map(([size], which) => [size, terms[which]!.filter((_, at) => !patterns[at])]),
+        cells.map(([size], which) => [size, own[which]!.map(({ term }) => term)]),
       ),
     }
   }
