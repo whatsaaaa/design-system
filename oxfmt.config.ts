@@ -3,13 +3,5 @@ import whatsaaaa from '@whatsaaaa/format-config/oxfmt'
 
 export default defineConfig({
   ...whatsaaaa,
-  ignorePatterns: [
-    'assets',
-    'dist',
-    'licenses',
-    'pnpm-lock.yaml',
-    'styleguide/public/ds',
-    'styleguide/public/kit',
-    'tests/browser/__screenshots__',
-  ],
+  ignorePatterns: ['pnpm-lock.yaml', '.github/assets'],
 })

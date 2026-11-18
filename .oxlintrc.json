@@ -1,11 +1,5 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "extends": ["./node_modules/@whatsaaaa/oxlint-config/vue.json"],
-  "ignorePatterns": [
-    "dist",
-    "assets",
-    "styleguide/public",
-    "styleguide/.vitepress/cache",
-    "styleguide/.vitepress/dist"
-  ]
+  "ignorePatterns": ["**/dist"]
 }
