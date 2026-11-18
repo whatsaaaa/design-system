@@ -60,6 +60,10 @@
       "types": "./dist/shiki/index.d.ts",
       "default": "./dist/shiki/index.js"
     },
+    "./stylelint": {
+      "types": "./dist/stylelint/index.d.ts",
+      "default": "./dist/stylelint/index.js"
+    },
     "./testing": {
       "types": "./dist/testing/index.d.ts",
       "default": "./dist/testing/index.js"
@@ -167,6 +171,9 @@
   },
   "peerDependencies": {
     "@playwright/test": "^1.50.0",
+    "stylelint": "^18.0.0",
+    "stylelint-config-standard": "^41.0.0",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1",
     "tailwindcss": "^4.3.5",
     "vitepress": "^1.6.4",
     "vue": "^3.5.0"
@@ -182,6 +189,15 @@
       "optional": true
     },
     "vue": {
+      "optional": true
+    },
+    "stylelint": {
+      "optional": true
+    },
+    "stylelint-config-standard": {
+      "optional": true
+    },
+    "stylelint-value-no-unknown-custom-properties": {
       "optional": true
     }
   },
