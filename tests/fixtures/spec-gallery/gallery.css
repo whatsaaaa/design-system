@@ -334,12 +334,9 @@ svg {
 }
 
 :is(.field, .choice) [data-slot='error'] {
+  align-items: start;
   color: var(--ws-field-error-text);
   font-weight: var(--ws-field-error-font-weight);
-}
-
-:is(.field, .choice) [data-slot='error'] {
-  align-items: start;
 }
 
 :is(.field, .choice) [data-slot='error-icon'] {

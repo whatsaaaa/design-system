@@ -297,7 +297,7 @@ test('a checked box that loses its fill and its mark in forced colors fails', as
 })
 
 test('a selected example that looks the same as the one at rest in forced colors fails', async () => {
-  // a spec with a selected state, which neither published spec has yet
+  // a spec with a selected state, which no published spec has yet
   const tab: Spec = {
     ...loadSpec('button'),
     component: 'tab',
