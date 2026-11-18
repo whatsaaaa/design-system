@@ -1,13 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["eslint", "typescript", "unicorn", "oxc", "vue"],
-  "env": {
-    "browser": true,
-    "node": true
-  },
-  "categories": {
-    "correctness": "error"
-  },
+  "extends": ["./node_modules/@whatsaaaa/oxlint-config/vue.json"],
   "ignorePatterns": [
     "dist",
     "assets",

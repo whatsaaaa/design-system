@@ -1,17 +1,11 @@
 // The VitePress theme, the style guide, the browser tests and the docs site the unit tests
 // build: code that a bundler compiles.
 {
-  "extends": "@tsconfig/node24/tsconfig.json",
+  "extends": "@whatsaaaa/tsconfig/bundler.json",
   "compilerOptions": {
-    "target": "es2022",
-    "lib": ["es2022", "dom", "dom.iterable"],
-    "module": "preserve",
-    "moduleResolution": "bundler",
     "types": ["node"],
-    "noUncheckedIndexedAccess": true,
-    "verbatimModuleSyntax": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+    // The shared config turns it on; the Vue code has never been held to it
+    "erasableSyntaxOnly": false
   },
   // A directory whose name starts with a dot is skipped unless a pattern names its files.
   "include": [
