@@ -19,6 +19,44 @@ function codeTitle(md: MarkdownRenderer) {
   }
 }
 
+/** A piece of inline code: plain text, hyphens held to their neighbors, or a place to break. */
+export type CodePart = { kind: 'text' | 'joined'; text: string } | { kind: 'break' }
+
+/**
+ * Splits inline code where its line breaks are decided. A browser breaks code after any
+ * hyphen, where --ws-field-* would read as - and -ws-field-*, and never after the slashes of
+ * a path. So each run of hyphens is joined to the characters on both sides of it, which the
+ * prose styles keep on one line, and a slash between two parts of a path is followed by a break.
+ */
+export function codeParts(code: string): CodePart[] {
+  const parts: CodePart[] = []
+  let rest = 0
+  for (const match of code.matchAll(/[^\s-]?(?:-+[^\s-])*-+[^\s-]?|(?<=[^\s/])\/+(?=[^\s/])/gu)) {
+    if (match.index > rest) parts.push({ kind: 'text', text: code.slice(rest, match.index) })
+    if (match[0].includes('-')) parts.push({ kind: 'joined', text: match[0] })
+    else parts.push({ kind: 'text', text: match[0] }, { kind: 'break' })
+    rest = match.index + match[0].length
+  }
+  if (rest < code.length) parts.push({ kind: 'text', text: code.slice(rest) })
+  return parts
+}
+
+/** Inline code with its hyphens held: <code>dat<span class="ws-code-joined">a-s</span>pec</code> */
+function codeInline(md: MarkdownRenderer) {
+  const defaultCodeInline = md.renderer.rules.code_inline!
+  md.renderer.rules.code_inline = (tokens, index, options, env, self) => {
+    const token = tokens[index]!
+    // a Vue interpolation is an expression on the page, which markup in it would break
+    if (token.content.includes('{{')) return defaultCodeInline(tokens, index, options, env, self)
+    const html = codeParts(token.content).map((part) => {
+      if (part.kind === 'break') return '<wbr>'
+      const text = md.utils.escapeHtml(part.text)
+      return part.kind === 'joined' ? `<span class="ws-code-joined">${text}</span>` : text
+    })
+    return `<code${self.renderAttrs(token)}>${html.join('')}</code>`
+  }
+}
+
 /**
  * A cell with more characters than this is running text. It is about what one line holds
  * at the width the styles keep for such a cell, so the mark never widens a cell of short values.
@@ -55,5 +93,6 @@ function tableFrame(md: MarkdownRenderer) {
  */
 export function whatsaaaaMarkdown(md: MarkdownRenderer): void {
   codeTitle(md)
+  codeInline(md)
   tableFrame(md)
 }

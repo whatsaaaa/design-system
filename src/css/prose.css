@@ -112,6 +112,19 @@
     box-decoration-break: clone;
   }
 
+  /*
+   * A browser breaks inline code after any hyphen, and --ws-field-* would read as - and
+   * -ws-field-*. The docs theme holds each run of hyphens to the characters on both sides of
+   * it, so a line does not break there, and puts a <wbr> after the slashes of a path:
+   *
+   *   <code>dat<span class="ws-code-joined">a-s</span>pec</code>
+   *
+   * Code too long for a line still breaks, anywhere else in it.
+   */
+  & :not(pre) > code > .ws-code-joined {
+    white-space: nowrap;
+  }
+
   & a > code {
     color: inherit;
   }
@@ -271,9 +284,16 @@
     white-space: nowrap;
   }
 
-  /* A value in a cell stays in one piece. A table too wide for its frame scrolls. */
+  /*
+   * A value in a cell stays in one piece. A table too wide for its frame scrolls. A <wbr>
+   * would still break it, so it has no box.
+   */
   & :is(th, td) code {
     white-space: nowrap;
+  }
+
+  & :is(th, td) code wbr {
+    display: none;
   }
 
   /*

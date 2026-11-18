@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { data } from '../../data/system.data.ts'
+import InlineCode from './InlineCode.vue'
 
 defineProps<{ variant: 'main' | 'dawn' }>()
 </script>
@@ -9,7 +10,7 @@ defineProps<{ variant: 'main' | 'dawn' }>()
     <div v-for="swatch in data.palette[variant]" :key="swatch.name" class="swatch">
       <span class="chip" :style="{ background: swatch.hex }" />
       <span class="name">{{ swatch.name }}</span>
-      <code class="hex">{{ swatch.hex }}</code>
+      <InlineCode class="hex" :text="swatch.hex" />
     </div>
   </div>
 </template>

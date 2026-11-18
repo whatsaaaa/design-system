@@ -31,7 +31,7 @@ export default defineConfigWithTheme<ThemeConfig>({
 })
 ```
 
-The base config sets the code theme, lets the site's build compile the theme, shows file names on code blocks, frames tables, and applies what the browser remembers before the first paint: the theme, and keys that are switched off.
+The base config sets the code theme, lets the site's build compile the theme, shows file names on code blocks, frames tables, keeps inline code from breaking at its hyphens, and applies what the browser remembers before the first paint: the theme, and keys that are switched off.
 
 ::: warning A site with its own markdown.config
 VitePress keeps only one `markdown.config`. If the site has its own, call the theme's setup inside it:

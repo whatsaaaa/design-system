@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { data } from '../../data/specs.data.ts'
+import InlineCode from './InlineCode.vue'
 import SpecToken from './SpecToken.vue'
 
 const props = defineProps<{
@@ -22,8 +23,8 @@ function kinds(variants: string[]) {
 
 <template>
   <p>
-    What differs by size. The default is <code>{{ spec.defaultSize }}</code>, the size of an example
-    whose id names none.
+    What differs by size. The default is <InlineCode :text="spec.defaultSize" />, the size of an
+    example whose id names none.
   </p>
   <div class="ws-table">
     <table>
