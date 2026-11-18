@@ -599,677 +599,1040 @@
     </section>
     <section>
       <h2>select</h2>
-      <div class="select" data-spec="select.outline.rest">
-        <span class="select__label" id="select-1-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-1-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Lisbon</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-1-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-1-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Lisbon</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest">
-        <span class="select__label" id="select-2-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-2-label"
-          aria-expanded="false"
-        >
-          <span data-slot="placeholder">Choose a city</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-2-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-2-label"
+            aria-expanded="false"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a city</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.hover">
-        <span class="select__label" id="select-3-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-3-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Lisbon</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-3-label">City</span>
+        <div class="select__control" data-spec="select.outline.hover">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-3-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Lisbon</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.focus">
-        <span class="select__label" id="select-4-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-4-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Lisbon</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-4-label">City</span>
+        <div class="select__control" data-spec="select.outline.focus">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-4-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Lisbon</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid">
-        <span class="select__label" id="select-5-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-5-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-5-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-5-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid">
-        <span class="select__label" id="select-6-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-6-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-6-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-6-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.disabled">
-        <span class="select__label" id="select-7-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-7-label"
-          aria-expanded="false"
-          disabled
-        >
-          <span data-slot="value">Oslo</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-7-label">City</span>
+        <div class="select__control" data-spec="select.outline.disabled">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-7-label"
+            aria-expanded="false"
+            disabled
+          >
+            <span data-slot="value">Oslo</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Set by the organizer.</p>
       </div>
-      <div class="select" data-spec="select.outline.loading">
-        <span class="select__label" id="select-8-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-8-label"
-          aria-expanded="false"
-          aria-busy="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
-          ><span data-slot="value">Berlin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-8-label">City</span>
+        <div class="select__control" data-spec="select.outline.loading">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-8-label"
+            aria-expanded="false"
+            aria-busy="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
+            ><span data-slot="value">Berlin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Loading the cities.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.xs" data-size="xs">
-        <span class="select__label" id="select-9-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-9-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-9-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-9-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.xs" data-size="xs">
-        <span class="select__label" id="select-10-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-10-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-10-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-10-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.xs" data-size="xs">
-        <span class="select__label" id="select-11-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-11-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-11-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-11-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.xs" data-size="xs">
-        <span class="select__label" id="select-12-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-12-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-12-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-12-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.sm" data-size="sm">
-        <span class="select__label" id="select-13-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-13-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-13-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-13-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.sm" data-size="sm">
-        <span class="select__label" id="select-14-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-14-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-14-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-14-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.sm" data-size="sm">
-        <span class="select__label" id="select-15-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-15-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-15-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-15-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.sm" data-size="sm">
-        <span class="select__label" id="select-16-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-16-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-16-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-16-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.lg" data-size="lg">
-        <span class="select__label" id="select-17-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-17-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-17-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-17-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.lg" data-size="lg">
-        <span class="select__label" id="select-18-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-18-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-18-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-18-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.lg" data-size="lg">
-        <span class="select__label" id="select-19-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-19-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-19-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-19-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.lg" data-size="lg">
-        <span class="select__label" id="select-20-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-20-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-20-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-20-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.xl" data-size="xl">
-        <span class="select__label" id="select-21-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-21-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-21-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-21-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.rest.xl" data-size="xl">
-        <span class="select__label" id="select-22-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-22-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-22-label">City</span>
+        <div class="select__control" data-spec="select.outline.rest.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-22-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.xl" data-size="xl">
-        <span class="select__label" id="select-23-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-23-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-23-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-23-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.invalid.xl" data-size="xl">
-        <span class="select__label" id="select-24-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-24-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-24-label">Day</span>
+        <div class="select__control" data-spec="select.outline.invalid.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-24-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.open">
-        <span class="select__label" id="select-25-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-25-label"
-          aria-expanded="true"
-          aria-controls="select-25-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div id="select-25-list" role="listbox" aria-labelledby="select-25-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-25-label">Day</span>
+        <div class="select__control" data-spec="select.outline.open">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-25-label"
+            aria-expanded="true"
+            aria-controls="select-25-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div id="select-25-list" role="listbox" aria-labelledby="select-25-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <p data-slot="help">The day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.open.xs" data-size="xs">
-        <span class="select__label" id="select-26-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-26-label"
-          aria-expanded="true"
-          aria-controls="select-26-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div id="select-26-list" role="listbox" aria-labelledby="select-26-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p data-slot="help">The day you are registering for.</p>
-      </div>
-      <div class="select" data-spec="select.outline.open.sm" data-size="sm">
-        <span class="select__label" id="select-27-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-27-label"
-          aria-expanded="true"
-          aria-controls="select-27-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div id="select-27-list" role="listbox" aria-labelledby="select-27-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-26-label">Day</span>
+        <div class="select__control" data-spec="select.outline.open.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-26-label"
+            aria-expanded="true"
+            aria-controls="select-26-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div id="select-26-list" role="listbox" aria-labelledby="select-26-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <p data-slot="help">The day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.open.lg" data-size="lg">
-        <span class="select__label" id="select-28-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-28-label"
-          aria-expanded="true"
-          aria-controls="select-28-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div id="select-28-list" role="listbox" aria-labelledby="select-28-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-27-label">Day</span>
+        <div class="select__control" data-spec="select.outline.open.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-27-label"
+            aria-expanded="true"
+            aria-controls="select-27-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div id="select-27-list" role="listbox" aria-labelledby="select-27-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <p data-slot="help">The day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select.outline.open.xl" data-size="xl">
-        <span class="select__label" id="select-29-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-29-label"
-          aria-expanded="true"
-          aria-controls="select-29-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div id="select-29-list" role="listbox" aria-labelledby="select-29-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-28-label">Day</span>
+        <div class="select__control" data-spec="select.outline.open.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-28-label"
+            aria-expanded="true"
+            aria-controls="select-28-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div id="select-28-list" role="listbox" aria-labelledby="select-28-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+            </div>
+          </div>
+        </div>
+        <p data-slot="help">The day you are registering for.</p>
+      </div>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-29-label">Day</span>
+        <div class="select__control" data-spec="select.outline.open.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-29-label"
+            aria-expanded="true"
+            aria-controls="select-29-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div id="select-29-list" role="listbox" aria-labelledby="select-29-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1279,717 +1642,1120 @@
     </section>
     <section>
       <h2>select menu</h2>
-      <div class="select" data-spec="select-menu.outline.rest">
-        <span class="select__label" id="select-menu-30-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-30-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Lisbon</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-30-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-30-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Lisbon</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest">
-        <span class="select__label" id="select-menu-31-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-31-label"
-          aria-expanded="false"
-        >
-          <span data-slot="placeholder">Choose a city</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-31-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-31-label"
+            aria-expanded="false"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a city</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.hover">
-        <span class="select__label" id="select-menu-32-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-32-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Lisbon</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-32-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.hover">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-32-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Lisbon</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.focus">
-        <span class="select__label" id="select-menu-33-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-33-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Lisbon</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-33-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.focus">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-33-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Lisbon</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid">
-        <span class="select__label" id="select-menu-34-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-34-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-34-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-34-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid">
-        <span class="select__label" id="select-menu-35-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-35-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-35-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-35-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.disabled">
-        <span class="select__label" id="select-menu-36-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-36-label"
-          aria-expanded="false"
-          disabled
-        >
-          <span data-slot="value">Oslo</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-36-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.disabled">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-36-label"
+            aria-expanded="false"
+            disabled
+          >
+            <span data-slot="value">Oslo</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Set by the organizer.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.loading">
-        <span class="select__label" id="select-menu-37-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-37-label"
-          aria-expanded="false"
-          aria-busy="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
-          ><span data-slot="value">Berlin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-37-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.loading">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-37-label"
+            aria-expanded="false"
+            aria-busy="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
+            ><span data-slot="value">Berlin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Loading the cities.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.xs" data-size="xs">
-        <span class="select__label" id="select-menu-38-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-38-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-menu-38-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-38-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.xs" data-size="xs">
-        <span class="select__label" id="select-menu-39-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-39-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-menu-39-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-39-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.xs" data-size="xs">
-        <span class="select__label" id="select-menu-40-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-40-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-menu-40-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-40-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.xs" data-size="xs">
-        <span class="select__label" id="select-menu-41-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-41-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-menu-41-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-41-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.sm" data-size="sm">
-        <span class="select__label" id="select-menu-42-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-42-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-menu-42-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-42-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.sm" data-size="sm">
-        <span class="select__label" id="select-menu-43-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-43-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-menu-43-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-43-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.sm" data-size="sm">
-        <span class="select__label" id="select-menu-44-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-44-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-menu-44-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-44-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.sm" data-size="sm">
-        <span class="select__label" id="select-menu-45-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-45-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-menu-45-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-45-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.lg" data-size="lg">
-        <span class="select__label" id="select-menu-46-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-46-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-menu-46-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-46-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.lg" data-size="lg">
-        <span class="select__label" id="select-menu-47-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-47-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-menu-47-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-47-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.lg" data-size="lg">
-        <span class="select__label" id="select-menu-48-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-48-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-menu-48-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-48-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.lg" data-size="lg">
-        <span class="select__label" id="select-menu-49-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-49-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-menu-49-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-49-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.xl" data-size="xl">
-        <span class="select__label" id="select-menu-50-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-50-label"
-          aria-expanded="false"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
-            />
-            <circle cx="12" cy="10" r="3" /></svg
-          ><span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-menu-50-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-50-label"
+            aria-expanded="false"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 10c0 4.99-5.53 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.53 20.19 4 14.99 4 10a8 8 0 0 1 16 0"
+              />
+              <circle cx="12" cy="10" r="3" /></svg
+            ><span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.rest.xl" data-size="xl">
-        <span class="select__label" id="select-menu-51-label">City</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-51-label"
-          aria-expanded="false"
-        >
-          <span data-slot="value">Dublin</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-menu-51-label">City</span>
+        <div class="select__control" data-spec="select-menu.outline.rest.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-51-label"
+            aria-expanded="false"
+          >
+            <span data-slot="value">Dublin</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="help">Where the conference takes place.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.xl" data-size="xl">
-        <span class="select__label" id="select-menu-52-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-52-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 2v4M16 2v4" />
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <path d="M3 10h18" /></svg
-          ><span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-menu-52-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-52-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <svg
+              class="select__leading"
+              data-slot="leading-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 2v4M16 2v4" />
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M3 10h18" /></svg
+            ><span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.invalid.xl" data-size="xl">
-        <span class="select__label" id="select-menu-53-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-53-label"
-          aria-expanded="false"
-          aria-invalid="true"
-        >
-          <span data-slot="placeholder">Choose a day</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-menu-53-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.invalid.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-53-label"
+            aria-expanded="false"
+            aria-invalid="true"
+          >
+            <span class="select__placeholder" data-slot="placeholder">Choose a day</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
         <p data-slot="error">Choose the day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.open">
-        <span class="select__label" id="select-menu-54-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-54-label"
-          aria-expanded="true"
-          aria-controls="select-menu-54-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div class="select__search" data-slot="search">
-            <input
-              type="text"
-              placeholder="Search days"
-              aria-label="Search days"
-              aria-controls="select-menu-54-list"
-            />
-          </div>
-          <div id="select-menu-54-list" role="listbox" aria-labelledby="select-menu-54-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select">
+        <span class="select__label" data-slot="label" id="select-menu-54-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.open">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-54-label"
+            aria-expanded="true"
+            aria-controls="select-menu-54-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div class="select__search" data-slot="search">
+              <svg
+                class="select__search-icon"
+                data-slot="search-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" /></svg
+              ><input
+                type="text"
+                placeholder="Search days"
+                aria-label="Search days"
+                aria-controls="select-menu-54-list"
+              />
+            </div>
+            <div id="select-menu-54-list" role="listbox" aria-labelledby="select-menu-54-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <p data-slot="help">The day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.open.xs" data-size="xs">
-        <span class="select__label" id="select-menu-55-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-55-label"
-          aria-expanded="true"
-          aria-controls="select-menu-55-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div class="select__search" data-slot="search">
-            <input
-              type="text"
-              placeholder="Search days"
-              aria-label="Search days"
-              aria-controls="select-menu-55-list"
-            />
-          </div>
-          <div id="select-menu-55-list" role="listbox" aria-labelledby="select-menu-55-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select" data-size="xs">
+        <span class="select__label" data-slot="label" id="select-menu-55-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.open.xs">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-55-label"
+            aria-expanded="true"
+            aria-controls="select-menu-55-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div class="select__search" data-slot="search">
+              <svg
+                class="select__search-icon"
+                data-slot="search-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" /></svg
+              ><input
+                type="text"
+                placeholder="Search days"
+                aria-label="Search days"
+                aria-controls="select-menu-55-list"
+              />
+            </div>
+            <div id="select-menu-55-list" role="listbox" aria-labelledby="select-menu-55-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <p data-slot="help">The day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.open.sm" data-size="sm">
-        <span class="select__label" id="select-menu-56-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-56-label"
-          aria-expanded="true"
-          aria-controls="select-menu-56-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div class="select__search" data-slot="search">
-            <input
-              type="text"
-              placeholder="Search days"
-              aria-label="Search days"
-              aria-controls="select-menu-56-list"
-            />
-          </div>
-          <div id="select-menu-56-list" role="listbox" aria-labelledby="select-menu-56-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select" data-size="sm">
+        <span class="select__label" data-slot="label" id="select-menu-56-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.open.sm">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-56-label"
+            aria-expanded="true"
+            aria-controls="select-menu-56-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div class="select__search" data-slot="search">
+              <svg
+                class="select__search-icon"
+                data-slot="search-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" /></svg
+              ><input
+                type="text"
+                placeholder="Search days"
+                aria-label="Search days"
+                aria-controls="select-menu-56-list"
+              />
+            </div>
+            <div id="select-menu-56-list" role="listbox" aria-labelledby="select-menu-56-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <p data-slot="help">The day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.open.lg" data-size="lg">
-        <span class="select__label" id="select-menu-57-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-57-label"
-          aria-expanded="true"
-          aria-controls="select-menu-57-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div class="select__search" data-slot="search">
-            <input
-              type="text"
-              placeholder="Search days"
-              aria-label="Search days"
-              aria-controls="select-menu-57-list"
-            />
-          </div>
-          <div id="select-menu-57-list" role="listbox" aria-labelledby="select-menu-57-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select" data-size="lg">
+        <span class="select__label" data-slot="label" id="select-menu-57-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.open.lg">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-57-label"
+            aria-expanded="true"
+            aria-controls="select-menu-57-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div class="select__search" data-slot="search">
+              <svg
+                class="select__search-icon"
+                data-slot="search-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" /></svg
+              ><input
+                type="text"
+                placeholder="Search days"
+                aria-label="Search days"
+                aria-controls="select-menu-57-list"
+              />
+            </div>
+            <div id="select-menu-57-list" role="listbox" aria-labelledby="select-menu-57-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <p data-slot="help">The day you are registering for.</p>
       </div>
-      <div class="select" data-spec="select-menu.outline.open.xl" data-size="xl">
-        <span class="select__label" id="select-menu-58-label">Day</span
-        ><button
-          type="button"
-          class="select__trigger"
-          data-slot="root"
-          role="combobox"
-          aria-labelledby="select-menu-58-label"
-          aria-expanded="true"
-          aria-controls="select-menu-58-list"
-        >
-          <span data-slot="value">Day one, May 10</span
-          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div class="select__content" data-slot="content">
-          <div class="select__search" data-slot="search">
-            <input
-              type="text"
-              placeholder="Search days"
-              aria-label="Search days"
-              aria-controls="select-menu-58-list"
-            />
-          </div>
-          <div id="select-menu-58-list" role="listbox" aria-labelledby="select-menu-58-label">
-            <div data-slot="group" role="presentation">
-              <div data-slot="group-label" role="presentation">Conference</div>
-              <div data-slot="item" role="option" aria-selected="true" data-highlighted>
-                <span>Day one, May 10</span
-                ><svg data-slot="item-indicator" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day two, May 11</span>
-              </div>
-              <div data-slot="separator" role="separator"></div>
-              <div data-slot="group-label" role="presentation">Workshops</div>
-              <div data-slot="item" role="option" aria-selected="false">
-                <span>Day three, May 12</span>
-              </div>
-              <div data-slot="item" role="option" aria-selected="false" aria-disabled="true">
-                <span>Speakers&rsquo; dinner</span>
+      <div class="select" data-size="xl">
+        <span class="select__label" data-slot="label" id="select-menu-58-label">Day</span>
+        <div class="select__control" data-spec="select-menu.outline.open.xl">
+          <button
+            type="button"
+            class="select__trigger"
+            data-slot="root"
+            role="combobox"
+            aria-labelledby="select-menu-58-label"
+            aria-expanded="true"
+            aria-controls="select-menu-58-list"
+          >
+            <span data-slot="value">Day one, May 10</span
+            ><svg
+              class="select__trailing"
+              data-slot="trailing-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="select__content" data-slot="content">
+            <div class="select__search" data-slot="search">
+              <svg
+                class="select__search-icon"
+                data-slot="search-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" /></svg
+              ><input
+                type="text"
+                placeholder="Search days"
+                aria-label="Search days"
+                aria-controls="select-menu-58-list"
+              />
+            </div>
+            <div id="select-menu-58-list" role="listbox" aria-labelledby="select-menu-58-label">
+              <div class="select__group" data-slot="group" role="presentation">
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Conference
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="true"
+                  data-highlighted
+                >
+                  <span>Day one, May 10</span
+                  ><svg
+                    class="select__tick"
+                    data-slot="item-indicator"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day two, May 11</span>
+                </div>
+                <div class="select__separator" data-slot="separator" role="separator"></div>
+                <div class="select__group-label" data-slot="group-label" role="presentation">
+                  Workshops
+                </div>
+                <div class="select__item" data-slot="item" role="option" aria-selected="false">
+                  <span>Day three, May 12</span>
+                </div>
+                <div
+                  class="select__item"
+                  data-slot="item"
+                  role="option"
+                  aria-selected="false"
+                  aria-disabled="true"
+                >
+                  <span>Speakers&rsquo; dinner</span>
+                </div>
               </div>
             </div>
           </div>

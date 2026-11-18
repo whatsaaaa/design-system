@@ -27,7 +27,8 @@
     "item-highlight": "What marks the option the pointer or the arrow keys are on: a fill under it, inside its box.",
     "item-indicator": "The tick after the chosen option.",
     "separator": "The line between two groups.",
-    "search": "The search field at the top of the list, on its edge, with a line under it."
+    "search": "The search field at the top of the list, on its edge, with a line under it.",
+    "search-icon": "The search's icon, before what is typed: a part of its own, never the trigger's leading icon."
   },
   "variants": {
     "outline": "The one look of a field: an edge in the field border, on the page color."
@@ -339,6 +340,13 @@
     {
       "variant": "*",
       "state": "open",
+      "part": "search-icon",
+      "property": "color",
+      "token": "field.icon"
+    },
+    {
+      "variant": "*",
+      "state": "open",
       "part": "search",
       "property": "border-block-end-style",
       "value": "solid"
@@ -523,6 +531,22 @@
     },
     {
       "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "height",
@@ -681,6 +705,22 @@
       "variant": "*",
       "state": "open",
       "part": "item-indicator",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
       "property": "height",
       "size": "sm",
       "token": "control.icon-size.sm"
@@ -851,6 +891,22 @@
     },
     {
       "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
       "state": "rest",
       "part": "root",
       "property": "height",
@@ -1009,6 +1065,22 @@
       "variant": "*",
       "state": "open",
       "part": "item-indicator",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
       "property": "height",
       "size": "lg",
       "token": "control.icon-size.lg"
@@ -1176,6 +1248,22 @@
       "property": "height",
       "size": "xl",
       "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "search-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
     }
   ],
   "keyboard": [
@@ -1242,9 +1330,9 @@
     "The form field around a select, its label, required mark, help and error, is the input spec's, at the same sizes: this spec holds the trigger and its list.",
     "The trigger's chevron is always drawn, so the choice ends past it: the padding at the end is the field's padding, the icon and the control's gap. An icon sits inside the edge, where the choice starts.",
     "An option's leading icon and its description, under its label in the secondary text, are drawn as an implementation draws them and not checked yet. A disabled option is `color.text-faint`, exempt from contrast as WCAG exempts an inactive control.",
-    "The search is a field without an edge of its own, at the control's height of the select menu's size, on the panel's edge, with a line of `color.border` under it.",
+    "The search is a field without an edge of its own, at the control's height of the select menu's size, its icon at the control's icon size, on the panel's edge, with a line of `color.border` under it.",
     "With several choices, the trigger shows them as the implementation lays them out. This spec holds the one look of a choice.",
-    "A gallery draws the open list in place, under its trigger and inside the example, not in a layer at the end of the page, so that a test finds it by the example's id. Its first option is the chosen one, which the list opens on and highlights."
+    "A gallery draws the open list in place, under its trigger and inside the example, not in a layer at the end of the page, so that a test finds it by the example's id. Its first option is the chosen one, which the list opens on and highlights. The element with the example's id wraps the select itself, its trigger and its list, and never its form field or a field nested in it: the form field's label is a slot of its own, which an implementation's list may use for a group's name."
   ],
   "implementations": {
     "ui-vue": {
@@ -1255,17 +1343,18 @@
       "today": "The outline variant in Nuxt UI's five sizes, inside a form field, as ui-vue's select draws it, with a search field at the top of the list on a line of `color.border`, the bare input of ui-vue, at the control's height.",
       "parts": {
         "root": "base",
-        "placeholder": "placeholder",
-        "leading-icon": "leadingIcon",
-        "trailing-icon": "trailingIcon",
+        "placeholder": "base placeholder",
+        "leading-icon": "base leadingIcon",
+        "trailing-icon": "base trailingIcon",
         "content": "content",
         "group": "group",
-        "group-label": "label",
+        "group-label": "content label",
         "item": "item",
         "item-highlight": "item::before",
         "item-indicator": "itemTrailingIcon",
         "separator": "separator",
-        "search": "input"
+        "search": "input",
+        "search-icon": "input leadingIcon"
       },
       "variants": {
         "outline": {

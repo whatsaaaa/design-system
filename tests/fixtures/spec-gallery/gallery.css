@@ -642,6 +642,7 @@ svg {
 /* the select and the select menu: the trigger is a field, and the list opens in place under it */
 
 .select {
+  --field-height: var(--ws-control-height-md);
   --field-padding: var(--ws-space-12);
   --field-icon-size: var(--ws-control-icon-size-md);
   --field-gap: var(--ws-control-gap-md);
@@ -652,6 +653,12 @@ svg {
   display: grid;
   gap: var(--ws-space-4);
   width: 16rem;
+}
+
+/* the select itself, which the example's id marks: its trigger and, open, its list */
+.select__control {
+  display: grid;
+  gap: var(--ws-space-4);
 }
 
 .select__label {
@@ -669,7 +676,7 @@ svg {
   display: flex;
   align-items: center;
   width: 100%;
-  height: var(--ws-control-height-md);
+  height: var(--field-height);
   padding-inline: calc(var(--field-padding) - var(--field-edge-extra));
   /* the chevron is always there: the choice ends past it */
   padding-inline-end: calc(
@@ -686,7 +693,7 @@ svg {
   transition: border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
 }
 
-.select__trigger:has(> [data-slot='leading-icon']) {
+.select__trigger:has(> .select__leading) {
   padding-inline-start: calc(
     var(--field-padding) + var(--field-icon-size) + var(--field-gap) - var(--field-edge-extra)
   );
@@ -700,15 +707,15 @@ svg {
   color: var(--ws-field-icon);
 }
 
-.select__trigger [data-slot='leading-icon'] {
+.select__leading {
   inset-inline-start: calc(var(--field-padding) - var(--field-edge-extra));
 }
 
-.select__trigger [data-slot='trailing-icon'] {
+.select__trailing {
   inset-inline-end: calc(var(--field-padding) - var(--field-edge-extra));
 }
 
-.select__trigger [data-slot='placeholder'] {
+.select__placeholder {
   color: var(--ws-color-text-secondary);
 }
 
@@ -760,13 +767,25 @@ svg {
 }
 
 .select__search {
+  position: relative;
+  display: flex;
+  align-items: center;
   border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+
+  & .select__search-icon {
+    position: absolute;
+    inset-inline-start: var(--field-padding);
+    width: var(--field-icon-size);
+    height: var(--field-icon-size);
+    color: var(--ws-field-icon);
+  }
 
   & input {
     box-sizing: border-box;
     width: 100%;
-    height: var(--ws-control-height-md);
+    height: var(--field-height);
     padding-inline: var(--field-padding);
+    padding-inline-start: calc(var(--field-padding) + var(--field-icon-size) + var(--field-gap));
     border: 0;
     background: transparent;
     color: var(--ws-field-text-rest);
@@ -783,12 +802,12 @@ svg {
   }
 }
 
-.select [data-slot='group'] {
+.select__group {
   isolation: isolate;
   padding: var(--ws-overlay-list-padding);
 }
 
-.select [data-slot='group-label'] {
+.select__group-label {
   padding: var(--label-padding-block) var(--item-padding-inline);
   color: var(--ws-color-text-secondary);
   font-family: var(--ws-text-overline-font-family);
@@ -799,7 +818,7 @@ svg {
   text-transform: uppercase;
 }
 
-.select [data-slot='item'] {
+.select__item {
   position: relative;
   display: flex;
   align-items: start;
@@ -821,7 +840,7 @@ svg {
 }
 
 /* the option the pointer or the arrow keys are on, marked by a fill inside its box */
-.select [data-slot='item'][data-highlighted]::before {
+.select__item[data-highlighted]::before {
   content: '';
   position: absolute;
   z-index: -1;
@@ -831,26 +850,27 @@ svg {
 }
 
 /* the chosen option's tick, on the option's first line */
-.select [data-slot='item-indicator'] {
+.select__tick {
   width: var(--field-icon-size);
   height: var(--field-icon-size);
   margin-block: calc((1lh - var(--field-icon-size)) / 2);
   color: var(--ws-color-interactive);
 }
 
-.select [data-slot='separator'] {
+.select__separator {
   height: var(--ws-border-width-thin);
   margin: var(--ws-overlay-list-padding) calc(-1 * var(--ws-overlay-list-padding));
   background-color: var(--ws-color-border);
 }
 
 @media (forced-colors: active) {
-  .select [data-slot='item'][data-highlighted]::before {
+  .select__item[data-highlighted]::before {
     border: var(--ws-border-width-thin) solid Highlight;
   }
 }
 
 .select[data-size='xs'] {
+  --field-height: var(--ws-control-height-xs);
   --field-padding: var(--ws-space-8);
   --field-icon-size: var(--ws-control-icon-size-xs);
   --field-gap: var(--ws-control-gap-xs);
@@ -859,16 +879,16 @@ svg {
   --label-padding-block: var(--ws-space-4);
 
   & .select__trigger {
-    height: var(--ws-control-height-xs);
     font-size: var(--ws-text-body-sm-font-size);
   }
 
-  & [data-slot='item'] {
+  & :is(.select__item, .select__search input) {
     font-size: var(--ws-text-body-sm-font-size);
   }
 }
 
 .select[data-size='sm'] {
+  --field-height: var(--ws-control-height-sm);
   --field-padding: var(--ws-space-10);
   --field-icon-size: var(--ws-control-icon-size-sm);
   --field-gap: var(--ws-control-gap-sm);
@@ -876,38 +896,31 @@ svg {
   --label-padding-block: var(--ws-space-4);
 
   & .select__trigger {
-    height: var(--ws-control-height-sm);
     font-size: var(--ws-text-body-sm-font-size);
   }
 
-  & [data-slot='item'] {
+  & :is(.select__item, .select__search input) {
     font-size: var(--ws-text-body-sm-font-size);
   }
 }
 
 .select[data-size='lg'] {
+  --field-height: var(--ws-control-height-lg);
   --field-padding: var(--ws-space-14);
   --field-icon-size: var(--ws-control-icon-size-lg);
   --field-gap: var(--ws-control-gap-lg);
   --item-padding-inline: var(--ws-space-10);
   --item-padding-block: var(--ws-space-8);
-
-  & .select__trigger {
-    height: var(--ws-control-height-lg);
-  }
 }
 
 .select[data-size='xl'] {
+  --field-height: var(--ws-control-height-xl);
   --field-padding: var(--ws-space-16);
   --field-icon-size: var(--ws-control-icon-size-xl);
   --field-gap: var(--ws-control-gap-xl);
   --item-padding-inline: var(--ws-space-12);
   --item-padding-block: var(--ws-space-8);
   --label-padding-block: var(--ws-space-8);
-
-  & .select__trigger {
-    height: var(--ws-control-height-xl);
-  }
 }
 
 /* the modal, open in place: its dimmed page is a box around the window */

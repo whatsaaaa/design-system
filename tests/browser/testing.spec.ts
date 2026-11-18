@@ -118,6 +118,75 @@ test('it reads the parts an implementation maps in the spec', async () => {
   expect(failures.every(({ check }) => check === 'coverage')).toBe(true)
 })
 
+/**
+ * The select menu's gallery drawn in ui-vue's slots: a select's trigger is `base` and its icons
+ * `leadingIcon` and `trailingIcon`, as are the icon of the search in its list, and a group's name
+ * is `label`, as is the form field's label around it.
+ */
+async function selectMenuInUiVueSlots(page: Page) {
+  await page.evaluate(() => {
+    const slots: Record<string, string> = {
+      root: 'base',
+      'leading-icon': 'leadingIcon',
+      'trailing-icon': 'trailingIcon',
+      'group-label': 'label',
+      'item-indicator': 'itemTrailingIcon',
+      search: 'input',
+      'search-icon': 'leadingIcon',
+    }
+    for (const element of document.querySelectorAll<HTMLElement>(
+      '[data-spec^="select-menu."] [data-slot]',
+    ))
+      element.dataset.slot = slots[element.dataset.slot!] ?? element.dataset.slot
+  })
+}
+
+test('it reads a part in a slot inside another, where one slot draws two parts', async () => {
+  await selectMenuInUiVueSlots(page)
+  // `base leadingIcon` is the trigger's icon, never the search's in the open list
+  await expectSpec(page, 'select-menu', { implementation: 'ui-vue' })
+})
+
+test('a slot that two parts share fails where the example wraps both', async () => {
+  await selectMenuInUiVueSlots(page)
+  // the example's id around the form field too, and a part map of bare slots: the field's label
+  // is the first `label`, and the search's icon the first `leadingIcon` of a trigger without one
+  await page.evaluate(() => {
+    for (const control of document.querySelectorAll<HTMLElement>(
+      '[data-spec^="select-menu.outline.open"]',
+    )) {
+      control.parentElement!.dataset.spec = control.dataset.spec
+      delete control.dataset.spec
+    }
+  })
+  const spec = loadSpec('select-menu')
+  const parts = Object.fromEntries(
+    Object.entries(spec.implementations['ui-vue']!.parts!).map(([part, slot]) => [
+      part,
+      slot.split(' ').at(-1)!,
+    ]),
+  )
+  const flat: Spec = {
+    ...spec,
+    implementations: {
+      flat: { library: 'ui-vue, unscoped', status: 'shipped', parity: 'failing', parts },
+    },
+  }
+  const { failures } = await checkSpec(page, flat, { implementation: 'flat' })
+  const messages = failures.map(({ message }) => message)
+  expect(messages).toContainEqual(
+    expect.stringMatching(
+      /^select-menu\.outline\.open: group-label font-size is \d+px, and text\.overline/,
+    ),
+  )
+  expect(messages).toContainEqual(
+    expect.stringMatching(
+      /^select-menu\.outline\.open: root padding-inline-start is 12px, and the spec says calc/,
+    ),
+  )
+  expect(new Set(failures.map(({ check }) => check))).toEqual(new Set(['tokens']))
+})
+
 test('a value that drifts from its token fails, in each theme', async () => {
   // the hover of the primary button left at its rest fill
   await page.addStyleTag({

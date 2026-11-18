@@ -1215,7 +1215,7 @@
     "The form field around a select, its label, required mark, help and error, is the input spec's, at the same sizes: this spec holds the trigger and its list.",
     "The trigger's chevron is always drawn, so the choice ends past it: the padding at the end is the field's padding, the icon and the control's gap. An icon sits inside the edge, where the choice starts.",
     "An option's leading icon and its description, under its label in the secondary text, are drawn as an implementation draws them and not checked yet. A disabled option is `color.text-faint`, exempt from contrast as WCAG exempts an inactive control.",
-    "A gallery draws the open list in place, under its trigger and inside the example, not in a layer at the end of the page, so that a test finds it by the example's id. Its first option is the chosen one, which the list opens on and highlights."
+    "A gallery draws the open list in place, under its trigger and inside the example, not in a layer at the end of the page, so that a test finds it by the example's id. Its first option is the chosen one, which the list opens on and highlights. The element with the example's id wraps the select itself, its trigger and its list, and never its form field or a field nested in it: the form field's label is a slot of its own, which an implementation's list may use for a group's name."
   ],
   "implementations": {
     "ui-vue": {
@@ -1223,15 +1223,15 @@
       "status": "shipped",
       "parity": "none",
       "components": ["USelect", "UFormField"],
-      "today": "The outline variant in Nuxt UI's five sizes, inside a form field. The trigger is the input's field: it reads `--ws-field-*` and `--ws-control-*`, its edge is a border, and its placeholder, once `color.text-faint` at 3.42:1, is the secondary text. The list is the surface with the window's color of edge, the highlighted option raised, the chosen one ticked in the interactive color, with the measures of this spec.",
+      "today": "The outline variant in Nuxt UI's five sizes, inside a form field. The trigger is the input's field: it reads `--ws-field-*` and `--ws-control-*`, its edge is a border, and its placeholder, once `color.text-faint` at 3.42:1, is the secondary text. The list is the surface in an edge of `color.border`, the highlighted option raised, the chosen one ticked in the interactive color, with the measures of this spec.",
       "parts": {
         "root": "base",
-        "placeholder": "placeholder",
-        "leading-icon": "leadingIcon",
-        "trailing-icon": "trailingIcon",
+        "placeholder": "base placeholder",
+        "leading-icon": "base leadingIcon",
+        "trailing-icon": "base trailingIcon",
         "content": "content",
         "group": "group",
-        "group-label": "label",
+        "group-label": "content label",
         "item": "item",
         "item-highlight": "item::before",
         "item-indicator": "itemTrailingIcon",

@@ -204,6 +204,13 @@ describe('the component pages', () => {
     expect(cell.light).toEqual({ text: '#faf4ed at 80%', color: '#faf4edcc' })
   })
 
+  it('shows a length in rem written as a value in pixels, as a token of rem is', () => {
+    const rows = pages.modal!.stateGroups.flatMap((group) => group.rows)
+    const { cell } = rows.find((row) => row.property === 'max-width')!
+    expect(cell.value).toBe('32rem')
+    expect([cell.dark.text, cell.light.text]).toEqual(['512px', '512px'])
+  })
+
   it('shows a sum of lengths by its total, and the tokens it reads', () => {
     const row = pages.input!.sizeRows.find((entry) =>
       entry.targets.some(

@@ -194,6 +194,9 @@ function valueText(row: SpecRow, theme: Theme): CellValue {
       color: `${tint.color}${alpha.toString(16).padStart(2, '0')}`,
     }
   }
+  // a length in rem as the page's pixels, as a token's is
+  const rem = /^(\d+(?:\.\d+)?)rem$/.exec(text)?.[1]
+  if (rem !== undefined) return { text: dimension({ value: Number(rem), unit: 'rem' }) }
   const body = /^calc\((.+)\)$/.exec(text)?.[1]
   const length = body === undefined ? undefined : total(body)
   return { text: length === undefined ? text : `${length}px` }

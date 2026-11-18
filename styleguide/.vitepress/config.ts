@@ -1,4 +1,5 @@
 import { defineConfigWithTheme } from 'vitepress'
+import { specs } from '../../scripts/lib/specs.ts'
 import { type ThemeConfig, whatsaaaaConfig } from '../../src/vitepress-config/index.ts'
 
 /** The styles and the specs of the components drawn with them, one sidebar for both. */
@@ -15,13 +16,8 @@ const styles = [
     text: 'Components',
     items: [
       { text: 'Specs', link: '/components/' },
-      { text: 'Button', link: '/components/button' },
-      { text: 'Checkbox', link: '/components/checkbox' },
-      { text: 'Input', link: '/components/input' },
-      { text: 'Radio group', link: '/components/radio-group' },
-      { text: 'Select', link: '/components/select' },
-      { text: 'Select menu', link: '/components/select-menu' },
-      { text: 'Modal', link: '/components/modal' },
+      // a page for each spec, in the order of the spec index on the first
+      ...specs().map(({ component, title }) => ({ text: title, link: `/components/${component}` })),
     ],
   },
 ]
