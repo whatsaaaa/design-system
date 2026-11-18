@@ -1,0 +1,20 @@
+# Written by Copier: never edit this file by hand. `copier update` reads it.
+_commit: v1.3.0
+_src_path: https://github.com/whatsaaaa/template.git
+agents_md: false
+brand_kit: whatsaaaa
+browser_tests: true
+copyright_year: 2026
+description: 'Whatsaaaa''s design system: brand identity, design tokens, typography,
+    docs theme and asset kit'
+design_system: true
+framework: vue
+kind: library
+license: MIT
+name: design-system
+pages: false
+publish: true
+stack: typescript
+starter: false
+visibility: public
+workspace: single

@@ -1,17 +1,22 @@
-node_modules
 .DS_Store
-dist
-coverage
-*.local
+Thumbs.db
 *.log
-*.tsbuildinfo
-*.tgz
-.eslintcache
+*.local
+.env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+node_modules
+dist
+coverage
+*.tsbuildinfo
+*.tgz
+.eslintcache
 
 # VitePress
 **/.vitepress/cache
@@ -20,6 +25,9 @@ coverage
 # Copied into the style guide from dist/ and assets/ when it builds
 /styleguide/public/ds
 /styleguide/public/kit
+
+# Packed by lint:package for attw to check
+.attw
 
 # Playwright
 /test-results
