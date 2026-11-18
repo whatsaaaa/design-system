@@ -1,8 +1,9 @@
 /*
- * A gallery of plain HTML that meets the button, input, checkbox, radio group, select, select menu
- * and modal specs, as an implementation's would: every value from a component token or a role, by
- * name. A hover, a pressed state or the focus is drawn by the pointer or the keyboard, or by
- * data-demo on the example, as the gallery contract says. An open list or modal is drawn in place.
+ * A gallery of plain HTML that meets the badge, button, card, checkbox, input, modal, radio group,
+ * select and select menu specs, as an implementation's would: every value from a component token
+ * or a role, by name. A hover, a pressed state or the focus is drawn by the pointer or the
+ * keyboard, or by data-demo on the example, as the gallery contract says. An open list or modal is
+ * drawn in place.
  */
 body {
   margin: 0;
@@ -1020,4 +1021,179 @@ svg {
   column-gap: var(--ws-space-12);
   row-gap: var(--ws-space-12);
   padding: var(--ws-space-12) var(--modal-padding);
+}
+
+/* the badge: a word on a tint of its color, or in an edge, at md unless its size says otherwise */
+
+.badge {
+  --badge-padding-block: var(--ws-tag-padding-block-md);
+  --badge-padding-inline: var(--ws-tag-padding-inline-md);
+  --badge-outline-padding-block: var(--ws-tag-outline-padding-block-md);
+  --badge-outline-padding-inline: var(--ws-tag-outline-padding-inline-md);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  column-gap: var(--ws-space-6);
+  padding: var(--badge-padding-block) var(--badge-padding-inline);
+  border-radius: var(--ws-tag-radius);
+  font-family: var(--ws-font-family-mono);
+  font-size: var(--ws-text-label-sm-font-size);
+  font-weight: var(--ws-font-weight-regular);
+  line-height: var(--ws-text-label-sm-line-height);
+  white-space: nowrap;
+}
+
+.badge svg {
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
+}
+
+.badge[data-size='xs'] {
+  --badge-padding-block: 0;
+  --badge-padding-inline: var(--ws-tag-padding-inline-xs);
+  --badge-outline-padding-block: var(--ws-tag-outline-padding-block-xs);
+  --badge-outline-padding-inline: var(--ws-tag-outline-padding-inline-xs);
+
+  column-gap: var(--ws-space-4);
+  font-size: var(--ws-text-caption-font-size);
+  line-height: var(--ws-text-caption-line-height);
+}
+
+.badge[data-size='sm'] {
+  --badge-padding-block: var(--ws-tag-padding-block-sm);
+  --badge-padding-inline: var(--ws-tag-padding-inline-sm);
+  --badge-outline-padding-block: var(--ws-tag-outline-padding-block-sm);
+  --badge-outline-padding-inline: var(--ws-tag-outline-padding-inline-sm);
+
+  column-gap: var(--ws-space-4);
+  font-size: var(--ws-text-caption-font-size);
+  line-height: var(--ws-text-caption-line-height);
+}
+
+.badge[data-size='lg'] {
+  --badge-padding-block: var(--ws-tag-padding-block-lg);
+  --badge-padding-inline: var(--ws-tag-padding-inline-lg);
+  --badge-outline-padding-block: var(--ws-tag-outline-padding-block-lg);
+  --badge-outline-padding-inline: var(--ws-tag-outline-padding-inline-lg);
+
+  font-size: var(--ws-text-label-font-size);
+  line-height: var(--ws-text-label-line-height);
+}
+
+.badge[data-size='xl'] {
+  --badge-padding-block: var(--ws-tag-padding-block-xl);
+  --badge-padding-inline: var(--ws-tag-padding-inline-xl);
+  --badge-outline-padding-block: var(--ws-tag-outline-padding-block-xl);
+  --badge-outline-padding-inline: var(--ws-tag-outline-padding-inline-xl);
+
+  column-gap: var(--ws-space-8);
+  font-size: var(--ws-text-label-font-size);
+  line-height: var(--ws-text-label-line-height);
+}
+
+.badge[data-variant='primary'] {
+  background-color: var(--ws-tag-primary-bg);
+  color: var(--ws-tag-primary-text);
+}
+
+.badge[data-variant='success'] {
+  background-color: var(--ws-tag-success-bg);
+  color: var(--ws-tag-success-text);
+}
+
+.badge[data-variant='info'] {
+  background-color: var(--ws-tag-info-bg);
+  color: var(--ws-tag-info-text);
+}
+
+.badge[data-variant='warning'] {
+  background-color: var(--ws-tag-warning-bg);
+  color: var(--ws-tag-warning-text);
+}
+
+.badge[data-variant='danger'] {
+  background-color: var(--ws-tag-danger-bg);
+  color: var(--ws-tag-danger-text);
+}
+
+.badge[data-variant='neutral'] {
+  background-color: var(--ws-tag-neutral-bg);
+  color: var(--ws-tag-neutral-text);
+}
+
+/* the edge is inside the padding of the block, and outside the padding of the line */
+.badge[data-variant='outline'] {
+  padding: calc(var(--badge-outline-padding-block) - var(--ws-border-width-thin))
+    var(--badge-outline-padding-inline);
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  color: var(--ws-tag-outline-text);
+}
+
+/* the card: the surface in its edge, its parts apart by a line */
+
+.card {
+  --card-padding: var(--ws-space-20);
+  --card-padding-bar: var(--ws-space-16);
+
+  box-sizing: border-box;
+  width: 24rem;
+  overflow: hidden;
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-lg);
+  background-color: var(--ws-color-surface);
+  color: var(--ws-color-text);
+}
+
+/* the system's compact width */
+@media (width < 64rem) {
+  .card {
+    --card-padding: var(--ws-space-16);
+    --card-padding-bar: var(--ws-space-12);
+  }
+}
+
+.card__header,
+.card__body {
+  &:not(:last-child) {
+    border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+  }
+}
+
+.card__header {
+  padding: var(--card-padding-bar) var(--card-padding);
+}
+
+.card [data-slot='title'] {
+  margin: 0;
+  color: var(--ws-color-text);
+  font-family: var(--ws-text-h4-font-family);
+  font-size: var(--ws-text-h4-font-size);
+  font-weight: var(--ws-text-h4-font-weight);
+  line-height: var(--ws-text-h4-line-height);
+}
+
+.card [data-slot='description'] {
+  margin: var(--ws-space-4) 0 0;
+  color: var(--ws-color-text-secondary);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-text-body-sm-font-size);
+}
+
+.card__body {
+  padding: var(--card-padding);
+  font-size: var(--ws-text-body-sm-font-size);
+
+  & p {
+    margin: 0;
+  }
+}
+
+.card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  column-gap: var(--ws-space-12);
+  row-gap: var(--ws-space-12);
+  padding: var(--card-padding-bar) var(--card-padding);
 }

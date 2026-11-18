@@ -1,0 +1,624 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "badge",
+  "title": "Badge",
+  "status": "draft",
+  "changed": "0.14.0",
+  "summary": "A short word next to what it describes, the system's tag: a mono label on a tint of its color for a status or a category, or in an edge for a plain list.",
+  "use": [
+    "A status next to what it describes, such as paid, pending or cancelled in a table's cell.",
+    "A category or a name in a list of them, such as the technologies of a project: the tag, or the outlined tag where a list of tints would be loud."
+  ],
+  "notFor": [
+    "An action: that is a button, which a badge never looks like.",
+    "A count or a dot on an icon or an avatar.",
+    "A message about the page: that is a callout, or a status line."
+  ],
+  "parts": {
+    "root": "The box: the tint or the edge, and the room around the word.",
+    "label": "The word.",
+    "leading-icon": "An icon before the word, which repeats what it says, such as a check before paid.",
+    "trailing-icon": "An icon after the word."
+  },
+  "variants": {
+    "primary": "The tag, on a tint of the interactive color: a category or a label, such as new or a technology. `.ws-tag` is this kind at md.",
+    "success": "A status that went well: paid.",
+    "info": "A status that waits: pending.",
+    "warning": "A status that needs attention soon: expiring.",
+    "danger": "A status that failed or ended: cancelled.",
+    "neutral": "A plain fact without a status: draft.",
+    "outline": "The outlined tag, in the text color, for a plain list where tints would be loud, such as a project's stack. `.ws-tag--outline` is this kind at md."
+  },
+  "sizes": {
+    "xs": "A dense row, next to a caption.",
+    "sm": "Next to a small control, or in a bar.",
+    "md": "Every other badge: in text, in a table's cell, in a card's header. The size of `.ws-tag`.",
+    "lg": "Next to a large control or a minor heading.",
+    "xl": "Next to the title of a landing page."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Always: a badge is not interactive, so it has no other state."
+  },
+  "stateTable": [
+    {
+      "variant": "primary",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "tag.primary.bg"
+    },
+    {
+      "variant": "primary",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "tag.primary.text"
+    },
+    {
+      "variant": "success",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "tag.success.bg"
+    },
+    {
+      "variant": "success",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "tag.success.text"
+    },
+    {
+      "variant": "info",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "tag.info.bg"
+    },
+    {
+      "variant": "info",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "tag.info.text"
+    },
+    {
+      "variant": "warning",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "tag.warning.bg"
+    },
+    {
+      "variant": "warning",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "tag.warning.text"
+    },
+    {
+      "variant": "danger",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "tag.danger.bg"
+    },
+    {
+      "variant": "danger",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "tag.danger.text"
+    },
+    {
+      "variant": "neutral",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "tag.neutral.bg"
+    },
+    {
+      "variant": "neutral",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "tag.neutral.text"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "tag.outline.text"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "color.border"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-radius",
+      "token": "tag.radius"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-family",
+      "token": "font.family.mono"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.caption"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.caption"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "xs",
+      "token": "text.caption"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "sm",
+      "token": "text.caption"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "md",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "lg",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "xl",
+      "token": "text.label"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "tag.padding-inline.xs"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "tag.padding-inline.sm"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "tag.padding-inline.md"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "tag.padding-inline.lg"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "tag.padding-inline.xl"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xs",
+      "value": "0px"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "sm",
+      "token": "tag.padding-block.sm"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "md",
+      "token": "tag.padding-block.md"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "lg",
+      "token": "tag.padding-block.lg"
+    },
+    {
+      "variant": ["primary", "success", "info", "warning", "danger", "neutral"],
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xl",
+      "token": "tag.padding-block.xl"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "tag.outline.padding-inline.xs"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "tag.outline.padding-inline.sm"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "tag.outline.padding-inline.md"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "tag.outline.padding-inline.lg"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "tag.outline.padding-inline.xl"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xs",
+      "value": "calc(var(--ws-tag-outline-padding-block-xs) - var(--ws-border-width-thin))"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "sm",
+      "value": "calc(var(--ws-tag-outline-padding-block-sm) - var(--ws-border-width-thin))"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "md",
+      "value": "calc(var(--ws-tag-outline-padding-block-md) - var(--ws-border-width-thin))"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "lg",
+      "value": "calc(var(--ws-tag-outline-padding-block-lg) - var(--ws-border-width-thin))"
+    },
+    {
+      "variant": "outline",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xl",
+      "value": "calc(var(--ws-tag-outline-padding-block-xl) - var(--ws-border-width-thin))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "xs",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "sm",
+      "token": "space.4"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "md",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "lg",
+      "token": "space.6"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "column-gap",
+      "size": "xl",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "width",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trailing-icon",
+      "property": "height",
+      "token": "size.icon"
+    }
+  ],
+  "keyboard": [],
+  "aria": {
+    "pattern": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-span-element",
+    "rules": [
+      "A badge is text, a `span` with no role, and assistive technology reads its word where it stands. A status badge always has its word: its color only repeats it.",
+      "An icon in it repeats the word, so it is hidden from assistive technology.",
+      "It takes no focus. A badge that does something is a button, and a badge that goes somewhere is a link."
+    ]
+  },
+  "forcedColors": [
+    "A tint is a background, which forced colors take away: a badge on a tint keeps its word, in the system's text color, and the word carries it alone, as it does in every theme. An implementation may draw an edge there, in `CanvasText`, as ui-vue does.",
+    "The outlined badge's edge is a real border, which forced colors keep.",
+    "An icon takes the system's text color. An icon drawn as an SVG in `currentcolor` does so by itself; an icon drawn as a mask needs its background set in forced colors, where every background is the page's."
+  ],
+  "motion": ["Nothing moves: a badge has no state to change into."],
+  "content": [
+    "One or two words, without a period: paid, pending, new.",
+    "Lower case as in a terminal, except a name, which keeps its own: TypeScript, Lisbon.",
+    "A status badge says its status in its word, in every color: never a color alone, and never a color that says something else than its word."
+  ],
+  "notes": [
+    "The kinds are those in use: the soft variant in each color, and the outlined neutral one. Nuxt UI's solid and subtle variants, and the outline in another color, are left out.",
+    "The outlined badge's edge is `color.border`, as a card's is, which reads at less than 3:1 on the page. It frames a word that carries the badge alone, as a card's edge frames its content, so the spec names the role and the tier has no edge for a tag: an edge of the tier has to reach 3:1.",
+    "The outlined badge's edge is inside its `padding-block` and outside its `padding-inline`, as `.ws-tag--outline` draws it: at md it is 4 px taller and 6 px wider than a badge on a tint. Its `padding-block` is the token less the edge's width.",
+    "An xs badge has no `padding-block`: its line is its height, 18 px.",
+    "Its icons are `size.icon`, 16 px, at every size, the icon of the system's text: the 12 px and 14 px icons of ui-vue's smaller badges are off its scale, and a badge does not grow its icon as a control does.",
+    "`.ws-tag` and `.ws-tag--outline` read the tag group, and a browser test holds them to the primary and the outline kinds at md, so the system's own tag and every implementation's badge stay alike."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["UBadge"],
+      "today": "The soft variant is its default, in every color a tint under the color's text, and at md the primary one is `.ws-tag`: the small radius, the label in mono at its regular weight, 2 px by 8 px. Its paddings, gaps and text styles match the spec at every size. In forced colors every badge draws an edge in `CanvasText`.",
+      "parts": {
+        "root": "base",
+        "label": "label",
+        "leading-icon": "leadingIcon",
+        "trailing-icon": "trailingIcon"
+      },
+      "variants": {
+        "primary": {
+          "variant": "soft",
+          "color": "primary"
+        },
+        "success": {
+          "variant": "soft",
+          "color": "success"
+        },
+        "info": {
+          "variant": "soft",
+          "color": "info"
+        },
+        "warning": {
+          "variant": "soft",
+          "color": "warning"
+        },
+        "danger": {
+          "variant": "soft",
+          "color": "error"
+        },
+        "neutral": {
+          "variant": "soft",
+          "color": "neutral"
+        },
+        "outline": {
+          "variant": "outline",
+          "color": "neutral"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The outlined badge's edge is an inset ring, a box shadow, and a border only in forced colors, and it keeps the padding of a badge on a tint, so at md it is 4 px shorter and 6 px narrower than `.ws-tag--outline`. So the outline's rows for `border-color`, `border-style`, `border-width`, `padding-inline` and `padding-block` do not hold."
+        },
+        {
+          "summary": "Its icons are 12 px at xs and sm and 14 px at md, where the spec takes `size.icon`, 16 px, at every size."
+        },
+        {
+          "summary": "It reads the roles and measures by their Tailwind utilities, such as `bg-tag-bg` and `px-2`, not the component tokens, such as `bg-(--ws-tag-primary-bg)` and `px-(--ws-tag-padding-inline-md)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery marks no example with `data-spec`, and shows the sizes in the primary color only, so the outlined badge's sizes are missing."
+        }
+      ],
+      "beyond": [
+        "The solid and subtle variants, such as the subtle success badge, in stock, of its example of a part held in the other theme.",
+        "The outlined badge in a color other than neutral, its edge in that color.",
+        "A square badge of an icon alone, and a badge with an avatar."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "badge.primary.rest",
+    "badge.success.rest",
+    "badge.info.rest",
+    "badge.warning.rest",
+    "badge.danger.rest",
+    "badge.neutral.rest",
+    "badge.outline.rest",
+    "badge.primary.rest.xs",
+    "badge.primary.rest.sm",
+    "badge.primary.rest.lg",
+    "badge.primary.rest.xl",
+    "badge.outline.rest.xs",
+    "badge.outline.rest.sm",
+    "badge.outline.rest.lg",
+    "badge.outline.rest.xl"
+  ]
+}

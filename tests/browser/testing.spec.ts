@@ -20,6 +20,8 @@ const files: Record<string, string> = {
   '/': 'tests/fixtures/spec-gallery/index.html',
   '/gallery.css': 'tests/fixtures/spec-gallery/gallery.css',
   '/tokens.css': 'dist/tokens.css',
+  '/tags.html': 'tests/fixtures/spec-gallery/tags.html',
+  '/index.css': 'dist/index.css',
 }
 
 /**
@@ -69,7 +71,9 @@ test.afterEach(() => page.context().close())
 
 test('the specs it checks are the published ones', () => {
   expect(specNames()).toEqual([
+    'badge',
     'button',
+    'card',
     'checkbox',
     'input',
     'modal',
@@ -83,7 +87,9 @@ test('the specs it checks are the published ones', () => {
 
 /** How many values each spec's gallery has compared at least, in both themes. */
 const leastChecks: Record<string, number> = {
+  badge: 400,
   button: 800,
+  card: 60,
   checkbox: 300,
   input: 300,
   modal: 50,
@@ -101,6 +107,17 @@ for (const name of specNames()) {
     expect(checks).toBeGreaterThan(leastChecks[name]!)
   })
 }
+
+test("the system's tag meets the badge spec as its primary and outline kinds at md", async () => {
+  await page.goto(`${ORIGIN}/tags.html`)
+  const { failures, checks } = await checkSpec(page, 'badge')
+  // the page has only the two kinds .ws-tag draws, so the other examples are missing, and with
+  // them the rows only they draw, such as an icon's: that is all that fails
+  expect(failures.filter(({ check }) => check !== 'coverage')).toEqual([])
+  const shown = ['badge.primary.rest', 'badge.outline.rest']
+  expect(failures.filter(({ id }) => id && shown.includes(id))).toEqual([])
+  expect(checks).toBeGreaterThan(90)
+})
 
 test('it reads the parts an implementation maps in the spec', async () => {
   // ui-vue draws the button's parts in Nuxt UI's slots: root is base, an icon leadingIcon
@@ -351,6 +368,36 @@ test('a list whose edge is a ring, not a border, fails, and loses it in forced c
   ).toBe(true)
   expect(messages).toContainEqual(
     expect.stringMatching(/^select\.outline\.open: content loses its border/),
+  )
+})
+
+test('an outlined badge drawn as a ring, in the padding of a tint, fails', async () => {
+  // the outlined badge as ui-vue draws it today: an inset ring, a box shadow, in place of its
+  // border, inside the padding of a badge on a tint
+  await page.addStyleTag({
+    content: `.badge[data-variant='outline'] {
+      padding: var(--badge-padding-block) var(--badge-padding-inline);
+      border: 0;
+      box-shadow: inset 0 0 0 var(--ws-border-width-thin) var(--ws-color-border);
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('badge'), { implementation })
+  const outlined = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `badge.outline.rest${size}`)
+  expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
+    new Set(
+      ['dark', 'light'].flatMap((theme) =>
+        outlined.flatMap((id) =>
+          ['tokens', 'forced-colors'].map((check) => `${check} ${theme} ${id}`),
+        ),
+      ),
+    ),
+  )
+  const messages = failures.map(({ message }) => message)
+  expect(messages).toContainEqual(
+    expect.stringMatching(/^badge\.outline\.rest: root padding-inline is 8px, and tag\.outline/),
+  )
+  expect(messages).toContainEqual(
+    expect.stringMatching(/^badge\.outline\.rest: root loses its border/),
   )
 })
 

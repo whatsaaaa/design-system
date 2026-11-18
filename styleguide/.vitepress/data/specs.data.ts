@@ -63,7 +63,10 @@ export interface SizeRow {
   targets: { part: string; property: string; condition?: string }[]
   state: string
   variants?: string[]
-  /** The token at every size, where it is one name with the size last: `control.height.<size>`. */
+  /**
+   * The token at every size, where it is one name with the size last: `control.height.<size>`.
+   * A size written as a value has no token, and its cell says so.
+   */
   pattern?: string
   /**
    * For a sum of tokens, the terms the same at every size or that follow that pattern,
@@ -336,7 +339,10 @@ function page(spec: Spec): SpecPage {
   }
   for (const row of sizeRows) {
     const cells = Object.entries(row.cells)
-    row.pattern = patternOf(cells.map(([size, value]) => [size, value.token]))
+    // a size written as a value, such as an xs tag's padding of none, leaves the others' pattern
+    const tokened = cells.filter(([, value]) => value.token !== undefined)
+    if (tokened.length > 1)
+      row.pattern = patternOf(tokened.map(([size, value]) => [size, value.token]))
     const terms = cells.map(([, value]) => (value.value ? calcTerms(value.value) : undefined))
     const first = terms[0]
     if (!first || terms.some((each) => each?.length !== first.length)) continue

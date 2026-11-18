@@ -211,6 +211,19 @@ describe('the component pages', () => {
     expect([cell.dark.text, cell.light.text]).toEqual(['512px', '512px'])
   })
 
+  it('names a token of each size once, past a size written as a value', () => {
+    const row = pages.badge!.sizeRows.find(
+      (entry) =>
+        entry.variants?.includes('primary') &&
+        entry.targets.some((target) => target.property === 'padding-block'),
+    )!
+    // an xs tag has no padding, and no token for it
+    expect(row.pattern).toBe('tag.padding-block.<size>')
+    expect(row.cells.xs!.token).toBeUndefined()
+    expect(row.cells.xs!.value).toBe('0px')
+    expect(row.cells.sm!.token).toBe('tag.padding-block.sm')
+  })
+
   it('shows a sum of lengths by its total, and the tokens it reads', () => {
     const row = pages.input!.sizeRows.find((entry) =>
       entry.targets.some(
@@ -263,7 +276,9 @@ describe('the component pages', () => {
 describe('the specs and the component tier', () => {
   it('has a spec for each component it ships', () => {
     expect(all.map((spec) => spec.component)).toEqual([
+      'badge',
       'button',
+      'card',
       'checkbox',
       'input',
       'modal',

@@ -9,13 +9,14 @@
   </head>
   <body>
     <!--
-      A gallery that meets the button, input, checkbox, radio group, select, select menu and modal
-      specs, marked as the gallery contract says: each example with its id in data-spec, each part
-      with its name in data-slot. Each field with an error, and each field at rest in a size other
-      than the default, shows twice: with its icons and without them. A disabled checkbox shows
-      twice: unchecked, and checked with its fill. An open list and an open modal are drawn in
-      place, inside their examples. The last fields are in a part of the page held in the light
-      theme.
+      A gallery that meets the badge, button, card, checkbox, input, modal, radio group, select and
+      select menu specs, marked as the gallery contract says: each example with its id in
+      data-spec, each part with its name in data-slot. Each field with an error, and each field at
+      rest in a size other than the default, shows twice: with its icons and without them. A
+      disabled checkbox shows twice: unchecked, and checked with its fill. A badge in the success
+      and the outline kinds shows twice, with an icon and without one, and a card twice, whole and
+      with only its body. An open list and an open modal are drawn in place, inside their
+      examples. The last fields and a badge are in a part of the page held in the light theme.
     -->
     <section>
       <h2>primary</h2>
@@ -2885,6 +2886,11 @@
           >Enter an email address with a domain, such as maya@example.com.
         </p>
       </div>
+      <div data-spec="badge.danger.rest">
+        <span class="badge" data-slot="root" data-variant="danger"
+          ><span data-slot="label">cancelled</span></span
+        >
+      </div>
     </section>
     <section>
       <h2>checkbox</h2>
@@ -3751,6 +3757,140 @@
           </span>
         </label>
       </fieldset>
+    </section>
+    <section>
+      <h2>badge</h2>
+      <div data-spec="badge.primary.rest">
+        <span class="badge" data-slot="root" data-variant="primary"
+          ><span data-slot="label">new</span></span
+        >
+      </div>
+      <div data-spec="badge.success.rest">
+        <span class="badge" data-slot="root" data-variant="success"
+          ><span data-slot="label">paid</span></span
+        >
+      </div>
+      <div data-spec="badge.info.rest">
+        <span class="badge" data-slot="root" data-variant="info"
+          ><span data-slot="label">pending</span></span
+        >
+      </div>
+      <div data-spec="badge.warning.rest">
+        <span class="badge" data-slot="root" data-variant="warning"
+          ><span data-slot="label">expiring</span></span
+        >
+      </div>
+      <div data-spec="badge.danger.rest">
+        <span class="badge" data-slot="root" data-variant="danger"
+          ><span data-slot="label">cancelled</span></span
+        >
+      </div>
+      <div data-spec="badge.neutral.rest">
+        <span class="badge" data-slot="root" data-variant="neutral"
+          ><span data-slot="label">draft</span></span
+        >
+      </div>
+      <div data-spec="badge.outline.rest">
+        <span class="badge" data-slot="root" data-variant="outline"
+          ><span data-slot="label">TypeScript</span></span
+        >
+      </div>
+      <div data-spec="badge.success.rest">
+        <span class="badge" data-slot="root" data-variant="success"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">paid</span></span
+        >
+      </div>
+      <div data-spec="badge.outline.rest">
+        <span class="badge" data-slot="root" data-variant="outline"
+          ><span data-slot="label">Lisbon</span
+          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" /></svg
+        ></span>
+      </div>
+    </section>
+    <section>
+      <h2>badge sizes</h2>
+      <div data-spec="badge.primary.rest.xs">
+        <span class="badge" data-slot="root" data-variant="primary" data-size="xs"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">new</span></span
+        >
+      </div>
+      <div data-spec="badge.primary.rest.sm">
+        <span class="badge" data-slot="root" data-variant="primary" data-size="sm"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">new</span></span
+        >
+      </div>
+      <div data-spec="badge.primary.rest.lg">
+        <span class="badge" data-slot="root" data-variant="primary" data-size="lg"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">new</span></span
+        >
+      </div>
+      <div data-spec="badge.primary.rest.xl">
+        <span class="badge" data-slot="root" data-variant="primary" data-size="xl"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">new</span></span
+        >
+      </div>
+      <div data-spec="badge.outline.rest.xs">
+        <span class="badge" data-slot="root" data-variant="outline" data-size="xs"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">TypeScript</span></span
+        >
+      </div>
+      <div data-spec="badge.outline.rest.sm">
+        <span class="badge" data-slot="root" data-variant="outline" data-size="sm"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">TypeScript</span></span
+        >
+      </div>
+      <div data-spec="badge.outline.rest.lg">
+        <span class="badge" data-slot="root" data-variant="outline" data-size="lg"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">TypeScript</span></span
+        >
+      </div>
+      <div data-spec="badge.outline.rest.xl">
+        <span class="badge" data-slot="root" data-variant="outline" data-size="xl"
+          ><svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" /></svg
+          ><span data-slot="label">TypeScript</span></span
+        >
+      </div>
+    </section>
+    <section>
+      <h2>card</h2>
+      <div class="card" data-slot="root" data-spec="card.outline.rest">
+        <div class="card__header" data-slot="header">
+          <h3 data-slot="title">Registration</h3>
+          <p data-slot="description">Harbour Conf 2027, Lisbon.</p>
+        </div>
+        <div class="card__body" data-slot="body">
+          <p>Three days of talks and workshops, from May 10 to 12, 2027.</p>
+        </div>
+        <div class="card__footer" data-slot="footer">
+          <button type="button" class="button" data-variant="ghost"><span>Later</span></button>
+          <button type="button" class="button" data-variant="primary">
+            <span>Register</span>
+          </button>
+        </div>
+      </div>
+      <div class="card" data-slot="root" data-spec="card.outline.rest">
+        <div class="card__body" data-slot="body">
+          <p>A card without a header or a footer has only its body.</p>
+        </div>
+      </div>
     </section>
     <script>
       // an indeterminate box is set by script, as HTML has no attribute for it

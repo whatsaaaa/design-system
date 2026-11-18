@@ -277,23 +277,28 @@
   line-height: 1;
 }
 
-/* A tag on a tint of the interactive color, or outlined for a plain list such as a stack. */
+/*
+ * A tag on a tint of the interactive color, or outlined for a plain list such as a stack. It is
+ * the badge spec's primary and outline kinds at md, from the tag group of the component tier.
+ */
 .ws-tag {
   display: inline-flex;
+  column-gap: var(--ws-space-6);
   align-items: center;
-  padding: var(--ws-space-2) var(--ws-space-8);
-  border-radius: var(--ws-radius-sm);
-  background: var(--ws-color-tag-bg);
-  color: var(--ws-color-tag-text);
+  padding: var(--ws-tag-padding-block-md) var(--ws-tag-padding-inline-md);
+  border-radius: var(--ws-tag-radius);
+  background: var(--ws-tag-primary-bg);
+  color: var(--ws-tag-primary-text);
   font: var(--ws-text-label-sm);
   white-space: nowrap;
 }
 
 .ws-tag--outline {
-  padding: calc(var(--ws-space-4) - var(--ws-border-width-thin)) var(--ws-space-10);
+  padding: calc(var(--ws-tag-outline-padding-block-md) - var(--ws-border-width-thin))
+    var(--ws-tag-outline-padding-inline-md);
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
   background: none;
-  color: var(--ws-color-text);
+  color: var(--ws-tag-outline-text);
 }
 
 /*

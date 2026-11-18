@@ -50,12 +50,20 @@ function kinds(variants: string[]) {
               <code>{{ target.part }}</code> <code>{{ target.property }}</code>
               <span v-if="target.condition" class="condition">{{ target.condition }}</span>
             </span>
-            <span v-if="row.pattern" class="use pattern">{{ row.pattern }}</span>
+            <!-- a token breaks before its last name, where the table has no room -->
+            <span v-if="row.pattern" class="use"
+              ><span class="pattern">{{ head(row.pattern) }}</span><wbr /><span class="pattern">{{
+                tail(row.pattern)
+              }}</span></span
+            >
             <!-- a sum: the tokens of each cell, then these -->
             <span v-if="row.sum?.plus.length" class="use">
               plus
               <template v-for="(term, index) in row.sum.plus" :key="term">
-                {{ index ? ' and ' : '' }}<span class="pattern">{{ term }}</span>
+                {{ index ? ' and ' : '' }}<span class="pattern">{{ head(term) }}</span><wbr /><span
+                  class="pattern"
+                  >{{ tail(term) }}</span
+                >
               </template>
             </span>
             <!-- a term of several tokens breaks between them, or a token before its last name -->
@@ -78,7 +86,11 @@ function kinds(variants: string[]) {
             <template v-if="row.cells[size]">
               <span class="value">{{ row.cells[size].dark.text }}</span>
               <span v-if="row.sum" class="use">{{ row.sum.own[size]!.join(' + ') }}</span>
-              <SpecToken v-else-if="!row.pattern" :cell="row.cells[size]" short />
+              <SpecToken
+                v-else-if="!row.pattern || row.cells[size].token === undefined"
+                :cell="row.cells[size]"
+                short
+              />
             </template>
           </td>
         </tr>
