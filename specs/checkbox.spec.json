@@ -540,7 +540,7 @@
       "status": "shipped",
       "parity": "none",
       "components": ["UCheckbox", "UFormField"],
-      "today": "The list variant in Nuxt UI's five sizes, in a form field for its error. Its boxes, ticks at the icon size, fills, labels, descriptions, focus ring and required mark already match the spec at every size, and in forced colors its edge is a border and a checked or an indeterminate box keeps its fill and its mark. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
+      "today": "The list variant in Nuxt UI's five sizes, in a form field for its error. Its boxes, ticks, fills, labels, descriptions, focus ring and required mark already match the spec at every size, and in forced colors its edge is a border and a checked or an indeterminate box keeps its fill and its mark. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
       "parts": {
         "root": "root",
         "control": "base",

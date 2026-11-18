@@ -693,7 +693,7 @@
         "value": 1.25,
         "unit": "rem"
       },
-      "$description": "A checkbox or a radio button."
+      "$description": "A checkbox or a radio button. The medium size, md, and the default."
     },
     "check-lg": {
       "$value": {
@@ -714,7 +714,7 @@
         "value": 0.75,
         "unit": "rem"
       },
-      "$description": "The tick or the dash in a checkbox of the two small sizes, xs and sm. From md up it is an icon's size."
+      "$description": "The tick or the dash in a checkbox of the two small sizes, xs and sm. At md and xl it is an icon's size."
     },
     "tick-lg": {
       "$value": {

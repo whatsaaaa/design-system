@@ -541,7 +541,7 @@ svg {
   color: var(--ws-choice-indicator-icon-checked);
 }
 
-.choice input[type='checkbox']:indeterminate + [data-slot='indicator'] {
+.choice input:where([type='checkbox']):indeterminate + [data-slot='indicator'] {
   display: grid;
   background-color: var(--ws-choice-indicator-bg-indeterminate);
   color: var(--ws-choice-indicator-icon-indeterminate);
@@ -614,7 +614,7 @@ svg {
     forced-color-adjust: none;
   }
 
-  .choice input:is(:checked, [type='checkbox']:indeterminate) + [data-slot='indicator'] {
+  .choice input:is(:checked, :where([type='checkbox']):indeterminate) + [data-slot='indicator'] {
     background-color: Highlight;
     color: HighlightText;
   }
