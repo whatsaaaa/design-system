@@ -4,9 +4,9 @@ Why the design system is built the way it is, and what was looked at before deci
 
 ## One package
 
-Everything ships as one package, `@whatsaaaa/design-system`, with one entry per part: the stylesheets, the Tailwind entry, the tokens, the ghost, the theme switch, the shortcuts, the code theme, the docs theme and the asset kit.
+Everything ships as one package, `@whatsaaaa/design-system`, with one entry per part, as the `exports` of `package.json` list them.
 
-Several packages, one per part, is how large systems do it (Primer has primitives, CSS and components apart). It pays when parts have their own users and their own release rhythm. Here every part reads the same tokens, changes together and has one maintainer, so one version and one install is simpler and cannot drift. `@vue/theme`, Open Props and VoidZero's shared docs theme are single packages for the same reason. The VitePress, Vue and Tailwind peers are optional, so a project that only wants the styles installs nothing extra.
+Several packages, one per part, is how large systems do it (Primer has primitives, CSS and components apart). It pays when parts have their own users and their own release rhythm. Here every part reads the same tokens, changes together and has one maintainer, so one version and one install is simpler and cannot drift. `@vue/theme`, Open Props and VoidZero's shared docs theme are single packages for the same reason. Every peer is optional, so a project that only wants the styles installs nothing extra.
 
 ## Tokens: the DTCG format, built by Terrazzo
 
