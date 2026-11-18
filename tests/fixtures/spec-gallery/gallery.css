@@ -608,8 +608,13 @@ svg {
   margin-block-start: var(--ws-space-4);
 }
 
-/* a checked control keeps its fill and its mark when the system's colors replace the page's */
+/* a checked control keeps its fill and its mark when the system's colors replace the page's, and
+   a disabled one its edge in GrayText, which the browser gives only a control it draws itself */
 @media (forced-colors: active) {
+  .choice input:disabled {
+    border-color: GrayText;
+  }
+
   .choice [data-slot='indicator'] {
     forced-color-adjust: none;
   }
