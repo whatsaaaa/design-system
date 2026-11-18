@@ -5,7 +5,10 @@ import { describe, expect, it } from 'vitest'
 import { tierStates } from '../scripts/lib/contrast.ts'
 import {
   type Spec,
+  type SpecRow,
   cssVariable,
+  describeCondition,
+  rowCondition,
   rowVariants,
   specDirectory,
   specFiles,
@@ -26,6 +29,13 @@ const ids = Object.keys(tokens('dark')) as TokenId[]
 const expanded = (spec: Spec) =>
   spec.stateTable.flatMap((row) => rowVariants(spec, row).map((variant) => ({ ...row, variant })))
 
+/** A row's kind, state, part, property and size, or `*` for every size. */
+const place = (row: SpecRow, size = row.size ?? '*') =>
+  `${row.variant} ${row.state} ${row.part} ${row.property} ${size}`
+
+/** Where a row holds, as the style guide shows it: `with leading-icon`, or nothing. */
+const conditionOf = (row: SpecRow) => describeCondition(row) || undefined
+
 describe('the spec schema', () => {
   it('names the states of the component tier, so a spec and a tier token share one list', () => {
     expect(schema.$defs.state.enum).toEqual([...tierStates])
@@ -41,6 +51,23 @@ describe('the spec schema', () => {
     // a row takes a token or a value, not both
     expect(validate({ ...spec, stateTable: [{ ...row, state: 'rest', value: 'red' }] })).toBe(false)
     expect(validate({ ...spec, extra: true })).toBe(false)
+  })
+
+  it('takes a row that holds with a part drawn, or without it, but not both', () => {
+    const [spec] = all
+    const row = {
+      variant: '*',
+      state: 'rest',
+      part: 'root',
+      property: 'color',
+      token: 'color.text',
+    }
+    expect(validate({ ...spec, stateTable: [{ ...row, with: 'leading-icon' }] })).toBe(true)
+    expect(validate({ ...spec, stateTable: [{ ...row, without: 'leading-icon' }] })).toBe(true)
+    expect(
+      validate({ ...spec, stateTable: [{ ...row, with: 'leading-icon', without: 'label' }] }),
+    ).toBe(false)
+    expect(validate({ ...spec, stateTable: [{ ...row, with: 'Leading icon' }] })).toBe(false)
   })
 })
 
@@ -62,6 +89,8 @@ describe.each(all.map((spec) => [spec.component, spec] as const))('the %s spec',
       expect(spec.states, where).toHaveProperty(row.state)
       expect(spec.parts, where).toHaveProperty(row.part)
       if (row.size) expect(spec.sizes, where).toHaveProperty(row.size)
+      const condition = rowCondition(row)
+      if (condition) expect(spec.parts, where).toHaveProperty(condition.part)
     }
     expect(spec.sizes).toHaveProperty(spec.defaultSize)
   })
@@ -71,20 +100,28 @@ describe.each(all.map((spec) => [spec.component, spec] as const))('the %s spec',
       expect(tokenProblem(row), JSON.stringify(row)).toBeUndefined()
   })
 
-  it('names each property of a part in a state once, for a kind and a size', () => {
-    const keys = expanded(spec).map(
-      (row) => `${row.variant} ${row.state} ${row.part} ${row.property} ${row.size ?? '*'}`,
-    )
+  it('names each property of a part in a state once, for a kind, a size and a condition', () => {
+    const keys = expanded(spec).map((row) => `${place(row)} ${conditionOf(row) ?? '*'}`)
     expect(keys.filter((key, index) => keys.indexOf(key) !== index)).toEqual([])
     // a row for every size, or for none, so no size is left without its value
     const sized = new Map<string, Set<string>>()
     for (const row of expanded(spec).filter((row) => row.size)) {
-      const key = `${row.variant} ${row.state} ${row.part} ${row.property}`
+      const key = `${row.variant} ${row.state} ${row.part} ${row.property} ${conditionOf(row) ?? '*'}`
       sized.set(key, (sized.get(key) ?? new Set()).add(row.size!))
-      expect(keys, key).not.toContain(`${key} *`)
+      expect(keys, key).not.toContain(`${place(row, '*')} ${conditionOf(row) ?? '*'}`)
     }
     for (const [key, sizes] of sized)
       expect([...sizes].sort(), key).toEqual(Object.keys(spec.sizes).sort())
+  })
+
+  it('gives a row with a condition its other half, so every example is held to one of them', () => {
+    const rows = expanded(spec)
+    for (const row of rows.filter((row) => rowCondition(row))) {
+      const { part, drawn } = rowCondition(row)!
+      // the other half, and no row without a condition beside the two
+      const others = rows.filter((other) => other !== row && place(other) === place(row))
+      expect(others.map(rowCondition), JSON.stringify(row)).toEqual([{ part, drawn: !drawn }])
+    }
   })
 
   it('has a gallery example of every kind in every state its table names, and of every size', () => {
@@ -146,7 +183,10 @@ describe('the component pages', () => {
             entry.state === row.state &&
             String(entry.variants) === String(kinds) &&
             entry.targets.some(
-              (target) => target.part === row.part && target.property === row.property,
+              (target) =>
+                target.part === row.part &&
+                target.property === row.property &&
+                target.condition === conditionOf(row),
             ),
         )
         expect(shown, JSON.stringify(row)).toHaveLength(1)
@@ -155,6 +195,35 @@ describe('the component pages', () => {
       }
     },
   )
+
+  it('shows a sum of lengths by its total, and the tokens it reads', () => {
+    const row = pages.input!.sizeRows.find((entry) =>
+      entry.targets.some(
+        (target) =>
+          target.property === 'padding-inline-start' && target.condition === 'with leading-icon',
+      ),
+    )!
+    // the measures of ui-vue's fields: the padding, the icon and the gap
+    expect(
+      Object.fromEntries(Object.entries(row.cells).map(([size, cell]) => [size, cell.dark.text])),
+    ).toEqual({ xs: '30px', sm: '32px', md: '36px', lg: '42px', xl: '46px' })
+    expect(row.cells.md!.valueTokens).toEqual([
+      'space.12',
+      'control.icon-size.md',
+      'control.gap.md',
+    ])
+    // what follows the size is named once, and each size's padding in its cell
+    expect(row.sum).toEqual({
+      plus: ['control.icon-size.<size>', 'control.gap.<size>'],
+      own: {
+        xs: ['space.8'],
+        sm: ['space.10'],
+        md: ['space.12'],
+        lg: ['space.14'],
+        xl: ['space.16'],
+      },
+    })
+  })
 })
 
 describe('the specs and the component tier', () => {
@@ -194,5 +263,21 @@ describe('the specs and the component tier', () => {
       /color\.text is a color/,
     )
     expect(tokenProblem({ ...row, property: 'color', token: 'color.nope' })).toMatch(/not a token/)
+  })
+
+  it('reads the tokens a value names by their variables, each of a type its property can take', () => {
+    const row = { variant: '*', state: 'rest', part: 'root', property: 'padding-inline-start' }
+    const sum =
+      'calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))'
+    expect(tokenProblem({ ...row, value: sum })).toBeUndefined()
+    expect(tokenProblem({ ...row, value: 'calc(var(--ws-space-nope) + 1px)' })).toMatch(
+      /--ws-space-nope, in .+, is not a token's variable/,
+    )
+    expect(tokenProblem({ ...row, value: 'calc(var(--ws-color-text) + 1px)' })).toMatch(
+      /color\.text is a color/,
+    )
+    expect(tokensRead([{ ...all[0]!, stateTable: [{ ...row, value: sum }] }])).toEqual(
+      new Set(['space.12', 'control.icon-size.md', 'control.gap.md']),
+    )
   })
 })

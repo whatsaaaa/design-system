@@ -223,6 +223,8 @@
         "height",
         "width",
         "padding-inline",
+        "padding-inline-start",
+        "padding-inline-end",
         "column-gap",
         "font-family",
         "font-size",
@@ -234,11 +236,12 @@
       ]
     },
     "row": {
-      "description": "One line of the state table: in this state, this part of these kinds takes this token, or this value, for this property. Without a size it holds at every size.",
+      "description": "One line of the state table: in this state, this part of these kinds takes this token, or this value, for this property. Without a size it holds at every size, and without `with` or `without` in every example.",
       "type": "object",
       "additionalProperties": false,
       "required": ["variant", "state", "part", "property"],
       "oneOf": [{ "required": ["token"] }, { "required": ["value"] }],
+      "not": { "required": ["with", "without"] },
       "properties": {
         "variant": {
           "description": "A kind, a list of kinds, or `*` for every kind the spec covers.",
@@ -257,13 +260,21 @@
         "part": { "$ref": "#/$defs/name" },
         "property": { "$ref": "#/$defs/property" },
         "size": { "$ref": "#/$defs/size" },
+        "with": {
+          "description": "A part the example draws: the row holds only where it does, such as the padding past a leading icon. A row with it has a row `without` it, so every example is held to one of the two.",
+          "$ref": "#/$defs/name"
+        },
+        "without": {
+          "description": "A part the example does not draw: the row holds only where it is missing.",
+          "$ref": "#/$defs/name"
+        },
         "token": {
           "description": "The id of a token, as in the token data: `button.primary.bg.rest` is `--ws-button-primary-bg-rest`. A text style on a font property gives that part of it: `text.label` on `font-size` is `--ws-text-label-font-size`.",
           "type": "string",
           "pattern": "^[a-z][a-z0-9-]*(\\.[a-z0-9][a-z0-9-]*)+$"
         },
         "value": {
-          "description": "A value the system writes without a token: `transparent`, the focus ring's offset of `3px`.",
+          "description": "A value the system writes without a token: `transparent`, the focus ring's offset of `3px`. It can read tokens by their variables: `calc(var(--ws-space-12) + var(--ws-control-gap-md))`.",
           "type": "string",
           "minLength": 1
         }

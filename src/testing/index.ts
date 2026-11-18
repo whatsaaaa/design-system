@@ -3,7 +3,8 @@
  * component specs with it, whatever its framework. In each theme it checks
  *
  * - coverage: every example of the spec's gallery is on the page, marked with its id in
- *   `data-spec`, and every row of the state table is drawn by an example it holds for;
+ *   `data-spec`, and every row of the state table is drawn by an example it holds for, one that
+ *   draws the part of its condition, or does not, where it has one;
  * - tokens: each property of each part of each example is the token's value, resolved next to
  *   the part, so a part of the page held in the other theme is measured in it;
  * - forced colors: each part with an edge keeps a border or an outline, and a checked, current or
@@ -18,10 +19,12 @@ import {
   type Expectation,
   type Spec,
   cssVariable,
+  describeCondition,
   describeRow,
   example,
   expectations,
   loadSpec,
+  rowCondition,
 } from './spec.ts'
 
 export { loadSpec, specNames } from './spec.ts'
@@ -68,16 +71,21 @@ interface Target {
   pseudo?: string
 }
 
-/** One property of one part to measure, and the token or value it has to have. */
+/**
+ * One property of one part to measure, and the token or value it has to have, where the example
+ * draws the part of its condition, or does not.
+ */
 interface Measure {
+  part: string
   target: Target
   property: string
+  when?: { target: Target; drawn: boolean }
   variable?: string
   value?: string
 }
 
 interface Measured {
-  /** Whether the example draws the part. */
+  /** Whether the example draws the part, where its row holds. */
   drawn: boolean
   actual?: string
   expected?: string
@@ -151,10 +159,11 @@ export async function checkSpec(
       for (const [index, ids] of held)
         if (!drawn.has(index)) {
           const row = data.stateTable[index]!
+          const part = [row.part, describeCondition(row)].filter(Boolean).join(' ')
           failures.push({
             check: 'coverage',
             theme,
-            message: `no example draws ${row.part} where the row "${describeRow(row)}" holds: ${ids.join(', ')}`,
+            message: `no example draws ${part} where the row "${describeRow(row)}" holds: ${ids.join(', ')}`,
           })
         }
 
@@ -219,11 +228,16 @@ function partTargets(spec: Spec, { implementation }: SpecOptions) {
   ) as Record<string, Target>
 }
 
-const measure = ({ part, property, row }: Expectation, targets: Record<string, Target>) => ({
-  target: targets[part]!,
-  property,
-  ...(row.token === undefined ? { value: row.value } : { variable: cssVariable(row) }),
-})
+function measure({ part, property, row }: Expectation, targets: Record<string, Target>): Measure {
+  const condition = rowCondition(row)
+  return {
+    part,
+    target: targets[part]!,
+    property,
+    ...(condition && { when: { target: targets[condition.part]!, drawn: condition.drawn } }),
+    ...(row.token === undefined ? { value: row.value } : { variable: cssVariable(row) }),
+  }
+}
 
 /** Why a measured value fails its row, or nothing when it holds. */
 function tokenFailure(id: string, { part, property, row }: Expectation, result: Measured) {
@@ -243,10 +257,12 @@ function tokenFailure(id: string, { part, property, row }: Expectation, result: 
 type Edge = 'border' | 'outline'
 
 function edgesOf(expected: Expectation[], results: Measured[]): { part: string; edge: Edge }[] {
-  const value = (part: string, property: string) => {
-    const index = expected.findIndex((one) => one.part === part && one.property === property)
-    return index < 0 ? undefined : results[index]
-  }
+  // of the rows of a property, the one that holds where the example is
+  const value = (part: string, property: string) =>
+    results.find(
+      (result, index) =>
+        result.drawn && expected[index]!.part === part && expected[index]!.property === property,
+    )
   const has = (part: string, line: Edge) => {
     const width = value(part, `${line}-width`)
     const style = value(part, `${line}-style`)
@@ -467,9 +483,23 @@ function measureInPage(examples: { id: string; measures: Measure[] }[]): Measure
 
   return examples.map(({ id, measures }) =>
     [...document.querySelectorAll(`[data-spec="${CSS.escape(id)}"]`)].map((root) => {
+      // the rows that hold: those whose condition the example meets, and of two for the same
+      // property of a part, the later
+      const holds = measures.map(
+        ({ when }) => !when || (find(root, when.target) !== undefined) === when.drawn,
+      )
+      measures.forEach(({ part, property }, index) => {
+        if (
+          measures.some(
+            (later, at) =>
+              at > index && holds[at] && later.part === part && later.property === property,
+          )
+        )
+          holds[index] = false
+      })
       // read every part before a probe is in it
-      const parts = measures.map(({ target, property }) => {
-        const element = find(root, target)
+      const parts = measures.map(({ target, property }, index) => {
+        const element = holds[index] ? find(root, target) : undefined
         return element && { element, actual: read(element, target.pseudo, property) }
       })
       return measures.map(({ target, property, variable, value }, index): Measured => {

@@ -16,6 +16,10 @@ export interface SpecRow {
   property: string
   /** Without a size, the row holds at every size. */
   size?: Size
+  /** A part the example draws: the row holds only where it does. */
+  with?: string
+  /** A part the example does not draw: the row holds only where it is missing. */
+  without?: string
   token?: string
   value?: string
 }
@@ -91,6 +95,21 @@ const typeOf = (id: string): string | undefined =>
     Object.entries(resolver.apply({ theme: 'dark' })).map(([key, token]) => [key, token.$type]),
   )).get(id)
 
+/** The part a row depends on, and whether the example has to draw it, for a row with a condition. */
+export function rowCondition(row: SpecRow): { part: string; drawn: boolean } | undefined {
+  if (row.with !== undefined) return { part: row.with, drawn: true }
+  if (row.without !== undefined) return { part: row.without, drawn: false }
+  return undefined
+}
+
+/** A row's condition as a person reads it: `with leading-icon`, or nothing. */
+export const describeCondition = (row: SpecRow): string =>
+  row.with !== undefined
+    ? `with ${row.with}`
+    : row.without !== undefined
+      ? `without ${row.without}`
+      : ''
+
 /**
  * The CSS variable that holds a row's token: `button.primary.bg.rest` is
  * `--ws-button-primary-bg-rest`, and a text style on a font property is that part of it:
@@ -129,24 +148,40 @@ export interface Expectation {
 
 /**
  * What an example is held to: the rows of its kind and size at rest, and over them the rows of
- * its state, since a state lists what it changes from rest.
+ * its state, since a state lists what it changes from rest. A row with a condition holds only
+ * where the example draws its part, or does not, which only the page tells: where two rows of the
+ * same property of a part hold there, the later one in this list does.
  */
 export function expectations(spec: Spec, { variant, state, size }: Example): Expectation[] {
-  const held = new Map<string, Expectation>()
+  let held: Expectation[] = []
   for (const phase of state === 'rest' ? ['rest'] : ['rest', state])
     spec.stateTable.forEach((row, index) => {
       if (row.state !== phase || (row.size && row.size !== size)) return
       if (!rowVariants(spec, row).includes(variant)) return
-      held.set(`${row.part} ${row.property}`, {
-        part: row.part,
-        property: row.property,
-        row,
-        index,
-      })
+      // a row takes the place of those with its condition, or of all of them without one
+      held = held.filter(
+        (one) =>
+          one.part !== row.part ||
+          one.property !== row.property ||
+          (describeCondition(row) !== '' && describeCondition(one.row) !== describeCondition(row)),
+      )
+      held.push({ part: row.part, property: row.property, row, index })
     })
-  return [...held.values()]
+  return held
 }
 
-/** A row as a person reads it: `primary hover root background-color`, `at xs` for a size. */
+/**
+ * A row as a person reads it: `primary hover root background-color`, `at xs` for a size and
+ * `with leading-icon` for a condition.
+ */
 export const describeRow = (row: SpecRow): string =>
-  `${[row.variant].flat().join(', ')} ${row.state} ${row.part} ${row.property}${row.size ? ` at ${row.size}` : ''}`
+  [
+    [row.variant].flat().join(', '),
+    row.state,
+    row.part,
+    row.property,
+    row.size && `at ${row.size}`,
+    describeCondition(row),
+  ]
+    .filter(Boolean)
+    .join(' ')

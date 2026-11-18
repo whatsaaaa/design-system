@@ -156,7 +156,49 @@ test('a part that no example draws fails', async () => {
   expect(failures.map(({ theme, message }) => `${theme}: ${message}`)).toEqual(
     ['dark', 'light'].map(
       (theme) =>
-        `${theme}: no example draws help where the row "* rest help font-size at sm" holds: input.outline.rest.sm`,
+        `${theme}: no example draws help where the row "* rest help font-size at sm" holds: ` +
+        `input.outline.rest.sm, input.outline.invalid.sm`,
+    ),
+  )
+})
+
+test('a row with a condition is held only where the example meets it', async () => {
+  // the value of the loading field left at the padding, under its leading icon
+  await page.addStyleTag({
+    content: `[data-spec='input.outline.loading'] input {
+      padding-inline-start: var(--ws-space-12) !important;
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  expect(where(failures)).toEqual([
+    ['tokens', 'dark', 'input.outline.loading'],
+    ['tokens', 'light', 'input.outline.loading'],
+  ])
+  expect(failures[0]!.message).toBe(
+    'input.outline.loading: root padding-inline-start is 12px, and the spec says ' +
+      'calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md)) (36px)',
+  )
+})
+
+test('a row with a condition that no example meets fails', async () => {
+  // a leading icon in the large field with an error too, so no large field is without one
+  await page.evaluate(() => {
+    const control = document.querySelector(
+      '[data-spec="input.outline.invalid.lg"] .field__control',
+    )!
+    control.prepend(
+      document
+        .querySelector('[data-spec="input.outline.rest.lg"] [data-slot="leading-icon"]')!
+        .cloneNode(true),
+    )
+  })
+  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  expect(failures.map(({ theme, message }) => `${theme}: ${message}`)).toEqual(
+    ['dark', 'light'].map(
+      (theme) =>
+        `${theme}: no example draws root without leading-icon where the row ` +
+        `"* rest root padding-inline-start at lg without leading-icon" holds: ` +
+        `input.outline.rest.lg, input.outline.invalid.lg`,
     ),
   )
 })

@@ -9,8 +9,11 @@ import {
   type Spec,
   type SpecRow,
   cssVariable,
+  describeCondition,
+  rowTokens,
   rowVariants,
   specs,
+  tokenOfVariable,
 } from '../../../scripts/lib/specs.ts'
 import { inTier, tierDirectory, tierFiles } from '../../../scripts/lib/tier.ts'
 import { type Theme, type TokenId, tokens } from '../../../scripts/lib/tokens.ts'
@@ -36,6 +39,8 @@ export interface Cell {
   aliasOf?: string
   /** The value written without a token. */
   value?: string
+  /** The tokens the value reads by their variables, as in `calc(var(--ws-space-12) + …)`. */
+  valueTokens?: string[]
   dark: CellValue
   light: CellValue
 }
@@ -44,18 +49,25 @@ export interface StateRow {
   state: string
   part: string
   property: string
+  /** Where it holds, when not in every example: `with leading-icon`. */
+  condition?: string
   /** The kinds it holds for, when it is not every kind. */
   variants?: string[]
   cell: Cell
 }
 
 export interface SizeRow {
-  /** The parts and properties that take the same token at every size. */
-  targets: { part: string; property: string }[]
+  /** The parts and properties that take the same token at every size, and where they hold. */
+  targets: { part: string; property: string; condition?: string }[]
   state: string
   variants?: string[]
   /** The token at every size, where it is one name with the size last: `control.height.<size>`. */
   pattern?: string
+  /**
+   * For a sum of tokens, those that follow that pattern at every size, `control.gap.<size>`, which
+   * the row names once, and each size's own others, which its cell names.
+   */
+  sum?: { plus: string[]; own: Partial<Record<Size, string[]>> }
   cells: Partial<Record<Size, Cell>>
 }
 
@@ -122,9 +134,31 @@ function tokenValue(row: SpecRow, theme: Theme): CellValue {
   }
 }
 
+/**
+ * What a value gives a property, in one theme: each token it reads in place of its variable, and
+ * a sum of lengths as its total, so `calc(var(--ws-space-12) + var(--ws-control-gap-md))` is 20px.
+ */
+function valueText(row: SpecRow, theme: Theme): CellValue {
+  const text = row.value!.replace(/var\((--[a-z0-9-]+)\)/g, (variable, name: string) => {
+    const token = tokenOfVariable(name)
+    return token ? tokenValue({ ...row, token }, theme).text : variable
+  })
+  const terms = /^calc\((.+)\)$/.exec(text)?.[1]?.split(' + ')
+  if (terms?.every((term) => /^\d+(\.\d+)?px$/.test(term)))
+    return { text: `${terms.reduce((sum, term) => sum + parseFloat(term), 0)}px` }
+  return { text }
+}
+
 function cell(row: SpecRow): Cell {
-  if (row.token === undefined)
-    return { value: row.value, dark: { text: row.value! }, light: { text: row.value! } }
+  if (row.token === undefined) {
+    const valueTokens = rowTokens(row)
+    return {
+      value: row.value,
+      ...(valueTokens.length > 0 && { valueTokens }),
+      dark: valueText(row, 'dark'),
+      light: valueText(row, 'light'),
+    }
+  }
   return {
     token: row.token,
     cssVar: cssVariable(row),
@@ -139,6 +173,7 @@ function page(spec: Spec): SpecPage {
   const kinds = Object.keys(spec.variants)
   const order = (list: Record<string, string>, key: string) => Object.keys(list).indexOf(key)
   const variantsOf = (row: SpecRow) => (row.variant === '*' ? undefined : rowVariants(spec, row))
+  const conditionOf = (row: SpecRow) => describeCondition(row) || undefined
 
   const unsized = stateTable
     .filter((row) => !row.size)
@@ -154,6 +189,7 @@ function page(spec: Spec): SpecPage {
     state: row.state,
     part: row.part,
     property: row.property,
+    condition: conditionOf(row),
     variants: variantsOf(row),
     cell: cell(row),
   })
@@ -172,16 +208,18 @@ function page(spec: Spec): SpecPage {
   const bySize: SizeRow[] = []
   for (const row of stateTable.filter((row) => row.size)) {
     const variants = variantsOf(row)
+    const condition = conditionOf(row)
     let target = bySize.find(
       ({ targets: [first], state, variants: theirs }) =>
         first!.part === row.part &&
         first!.property === row.property &&
+        first!.condition === condition &&
         state === row.state &&
         String(theirs) === String(variants),
     )
     if (!target) {
       target = {
-        targets: [{ part: row.part, property: row.property }],
+        targets: [{ part: row.part, property: row.property, condition }],
         state: row.state,
         variants,
         cells: {},
@@ -211,15 +249,31 @@ function page(spec: Spec): SpecPage {
     if (same) same.targets.push(...row.targets)
     else sizeRows.push(row)
   }
-  for (const row of sizeRows) {
-    const tokens = Object.entries(row.cells).map(([size, value]) => [size, value.token])
+  // a token named for each size, `control.height.xs` to `.xl`, as `control.height.<size>`
+  const patternOf = (tokens: [string, string | undefined][]) => {
     const prefix = tokens[0]![1]?.replace(/\.[a-z]+$/, '')
-    if (prefix && tokens.every(([size, token]) => token === `${prefix}.${size}`))
-      row.pattern = `${prefix}.<size>`
+    return prefix && tokens.every(([size, token]) => token === `${prefix}.${size}`)
+      ? `${prefix}.<size>`
+      : undefined
+  }
+  for (const row of sizeRows) {
+    const cells = Object.entries(row.cells)
+    row.pattern = patternOf(cells.map(([size, value]) => [size, value.token]))
+    const terms = cells.map(([, value]) => value.valueTokens ?? [])
+    if (!terms[0]!.length || terms.some((each) => each.length !== terms[0]!.length)) continue
+    const patterns = terms[0]!.map((_, at) =>
+      patternOf(cells.map(([size], which) => [size, terms[which]![at]])),
+    )
+    row.sum = {
+      plus: patterns.filter((pattern) => pattern !== undefined),
+      own: Object.fromEntries(
+        cells.map(([size], which) => [size, terms[which]!.filter((_, at) => !patterns[at])]),
+      ),
+    }
   }
 
   // the measured pairs whose colors the table names, on a color it names or on the page
-  const named = new Set(stateTable.flatMap((row) => (row.token ? [row.token] : [])))
+  const named = new Set(stateTable.flatMap(rowTokens))
   const contrast = contrastRows(
     allPairs()
       .filter(

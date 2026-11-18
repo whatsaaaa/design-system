@@ -3,16 +3,27 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { cssVariable, example, expectations, loadSpec } from '../src/testing/spec.ts'
+import {
+  type Spec,
+  cssVariable,
+  describeCondition,
+  describeRow,
+  example,
+  expectations,
+  loadSpec,
+} from '../src/testing/spec.ts'
 
 const button = loadSpec('button')
 const input = loadSpec('input')
 
-/** What an example is held to, as `part property: token or value`. */
+/**
+ * What an example is held to, as `part property: token or value`, with the condition of a row
+ * that has one: `root padding-inline-start with leading-icon`.
+ */
 const held = (spec = button, id: string) =>
   Object.fromEntries(
     expectations(spec, example(spec, id)).map(({ part, property, row }) => [
-      `${part} ${property}`,
+      [part, property, describeCondition(row)].filter(Boolean).join(' '),
       row.token ?? row.value,
     ]),
   )
@@ -53,6 +64,46 @@ describe('the parity helper reads a spec', () => {
 
   it('holds a loading example to the look at rest, as the spec says it keeps it', () => {
     expect(held(button, 'button.danger.loading')).toEqual(held(button, 'button.danger.rest'))
+  })
+
+  it('holds an example to both rows of a condition, which the page chooses between', () => {
+    const md = held(input, 'input.outline.loading')
+    expect(md['root padding-inline-start without leading-icon']).toBe('space.12')
+    expect(md['root padding-inline-start with leading-icon']).toBe(
+      'calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))',
+    )
+    expect(md['root padding-inline-end without trailing-icon']).toBe('space.12')
+    expect(md).not.toHaveProperty('root padding-inline')
+    expect(
+      held(input, 'input.outline.invalid.xs')['root padding-inline-end with trailing-icon'],
+    ).toBe('calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))')
+  })
+
+  it('takes a row of a state in place of those at rest with its condition, or of all of them', () => {
+    const rest = { variant: '*', state: 'rest', part: 'root', property: 'padding-inline-start' }
+    const spec: Spec = {
+      ...input,
+      stateTable: [
+        { ...rest, with: 'leading-icon', token: 'space.20' },
+        { ...rest, without: 'leading-icon', token: 'space.12' },
+        { ...rest, state: 'invalid', with: 'leading-icon', token: 'space.24' },
+        { ...rest, state: 'disabled', token: 'space.8' },
+      ],
+    }
+    expect(held(spec, 'input.outline.invalid')).toEqual({
+      'root padding-inline-start without leading-icon': 'space.12',
+      'root padding-inline-start with leading-icon': 'space.24',
+    })
+    expect(held(spec, 'input.outline.disabled')).toEqual({
+      'root padding-inline-start': 'space.8',
+    })
+  })
+
+  it('says a row with its size and its condition', () => {
+    const row = input.stateTable.find(
+      (row) => row.property === 'padding-inline-start' && row.size === 'xs' && row.with,
+    )!
+    expect(describeRow(row)).toBe('* rest root padding-inline-start at xs with leading-icon')
   })
 
   it('reads a text style on a font property as that part of it', () => {
