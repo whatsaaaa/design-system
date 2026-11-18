@@ -1198,6 +1198,7 @@
     "The edge of the trigger is a real border, which forced colors keep in the system's colors, and in `GrayText` when the select is disabled.",
     "The list's edge is a real border too, so the list stands apart from the page under it, which forced colors paint in the same color as the list.",
     "The option the pointer or the arrow keys are on is outlined in `Highlight`, as its fill is gone.",
+    "The line between two groups is a fill, which forced colors paint in the list's color, so it goes, and the group labels keep the groups apart.",
     "The focus ring is an outline, which forced colors keep. The icons take the system's text color."
   ],
   "motion": [
