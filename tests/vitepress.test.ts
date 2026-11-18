@@ -5,6 +5,7 @@ import { createMarkdownRenderer } from 'vitepress'
 import { describe, expect, it, vi } from 'vitest'
 import { codeTheme } from '../src/shiki/index.ts'
 import { whatsaaaaConfig, whatsaaaaMarkdown } from '../src/vitepress-config/index.ts'
+import { codeParts } from '../src/vitepress-config/markdown.ts'
 import { isActiveLink } from '../src/vitepress/support.ts'
 import { hex } from '../scripts/lib/tokens.ts'
 
@@ -28,6 +29,36 @@ describe('markdown in the docs theme', () => {
   it('escapes a file name', async () => {
     const html = (await renderer()).render('```html [<b>.html]\n<p>\n```')
     expect(html).toContain('<span class="ws-code-title">&lt;b&gt;.html</span>')
+  })
+
+  it('holds the hyphens of inline code, and breaks a path after its slashes', async () => {
+    const html = (await renderer()).render(
+      'The `--ws-field-*` tokens, in `@whatsaaaa/design-system/specs/button.spec.json`.',
+    )
+    expect(html).toContain(
+      '<code><span class="ws-code-joined">--w</span><span class="ws-code-joined">s-f</span>iel<span class="ws-code-joined">d-*</span></code>',
+    )
+    expect(html).toContain(
+      '<code>@whatsaaaa/<wbr>desig<span class="ws-code-joined">n-s</span>ystem/<wbr>specs/<wbr>button.spec.json</code>',
+    )
+  })
+
+  it('escapes inline code around the marks', async () => {
+    const html = (await renderer()).render('`<a href="/x">` and `a -- b`')
+    expect(html).toContain('<code>&lt;a href=&quot;/<wbr>x&quot;&gt;</code>')
+    expect(html).toContain('<code>a <span class="ws-code-joined">--</span> b</code>')
+  })
+
+  it('splits inline code with nothing lost', () => {
+    const text = (code: string) =>
+      codeParts(code)
+        .map((part) => (part.kind === 'break' ? '' : part.text))
+        .join('')
+    for (const code of ['/a//b/', 'https://example.com/a', '--ws-*', 'a-', '-', '', 'a -- b'])
+      expect(text(code)).toBe(code)
+    // a slash breaks only between two parts of a path
+    expect(codeParts('/components/button').filter((part) => part.kind === 'break')).toHaveLength(1)
+    expect(codeParts('a / b').filter((part) => part.kind === 'break')).toHaveLength(0)
   })
 
   it('frames a table so it scrolls by itself', async () => {

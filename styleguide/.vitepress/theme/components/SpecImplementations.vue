@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { data } from '../../data/specs.data.ts'
+import InlineCode from './InlineCode.vue'
 import SpecText from './SpecText.vue'
 
 const props = defineProps<{
@@ -41,8 +42,8 @@ const mappings = (implementation: (typeof spec.value.implementations)[string]) =
       }}<template v-if="implementation.components"
         >, with
         <template v-for="(component, index) in implementation.components" :key="component">
-          <template v-if="index > 0"> and </template><code>{{ component }}</code>
-        </template></template
+          <template v-if="index > 0"> and </template
+          ><InlineCode :text="component" /> </template></template
       >.
       <template v-if="implementation.status === 'planned'">Planned.</template>
       <SpecText v-else :text="implementation.today!" />
