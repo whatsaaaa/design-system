@@ -185,6 +185,22 @@
       "variant": "*",
       "state": "rest",
       "part": "body",
+      "property": "border-block-end-style",
+      "with": "footer",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "body",
+      "property": "border-block-end-style",
+      "without": "footer",
+      "value": "none"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "body",
       "property": "border-block-end-width",
       "with": "footer",
       "token": "border-width.thin"
@@ -196,6 +212,22 @@
       "property": "border-block-end-width",
       "without": "footer",
       "value": "0px"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "body",
+      "property": "border-block-end-color",
+      "with": "footer",
+      "token": "color.border"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "body",
+      "property": "border-block-end-color",
+      "without": "footer",
+      "value": "currentcolor"
     },
     {
       "variant": "*",
