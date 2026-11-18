@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spec gallery</title>
+    <link rel="stylesheet" href="/tokens.css" />
+    <link rel="stylesheet" href="/gallery.css" />
+  </head>
+  <body>
+    <!--
+      A gallery that meets the button and input specs, marked as the gallery contract says: each
+      example with its id in data-spec, each part with its name in data-slot. The last field is in
+      a part of the page held in the light theme.
+    -->
+    <section>
+      <h2>primary</h2>
+      <div data-spec="button.primary.rest">
+        <button type="button" class="button" data-slot="root" data-variant="primary">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M12 5v14" /></svg
+          ><span data-slot="label">Register</span
+          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+      <div data-spec="button.primary.hover">
+        <button type="button" class="button" data-slot="root" data-variant="primary">
+          <span data-slot="label">Register</span>
+        </button>
+      </div>
+      <div data-spec="button.primary.active">
+        <button type="button" class="button" data-slot="root" data-variant="primary">
+          <span data-slot="label">Register</span>
+        </button>
+      </div>
+      <div data-spec="button.primary.focus">
+        <button type="button" class="button" data-slot="root" data-variant="primary">
+          <span data-slot="label">Register</span>
+        </button>
+      </div>
+      <div data-spec="button.primary.disabled">
+        <button type="button" class="button" data-slot="root" data-variant="primary" disabled>
+          <span data-slot="label">Register</span>
+        </button>
+      </div>
+      <div data-spec="button.primary.loading">
+        <button
+          type="button"
+          class="button"
+          data-slot="root"
+          data-variant="primary"
+          disabled
+          aria-busy="true"
+        >
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
+          ><span data-slot="label">Register</span>
+        </button>
+      </div>
+    </section>
+    <section>
+      <h2>secondary</h2>
+      <div data-spec="button.secondary.rest">
+        <button type="button" class="button" data-slot="root" data-variant="secondary">
+          <span data-slot="label">Back</span>
+        </button>
+      </div>
+      <div data-spec="button.secondary.hover">
+        <button type="button" class="button" data-slot="root" data-variant="secondary">
+          <span data-slot="label">Back</span>
+        </button>
+      </div>
+      <div data-spec="button.secondary.active">
+        <button type="button" class="button" data-slot="root" data-variant="secondary">
+          <span data-slot="label">Back</span>
+        </button>
+      </div>
+      <div data-spec="button.secondary.focus">
+        <button type="button" class="button" data-slot="root" data-variant="secondary">
+          <span data-slot="label">Back</span>
+        </button>
+      </div>
+      <div data-spec="button.secondary.disabled">
+        <button type="button" class="button" data-slot="root" data-variant="secondary" disabled>
+          <span data-slot="label">Back</span>
+        </button>
+      </div>
+      <div data-spec="button.secondary.loading">
+        <button
+          type="button"
+          class="button"
+          data-slot="root"
+          data-variant="secondary"
+          disabled
+          aria-busy="true"
+        >
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
+          ><span data-slot="label">Back</span>
+        </button>
+      </div>
+    </section>
+    <section>
+      <h2>ghost</h2>
+      <div data-spec="button.ghost.rest">
+        <button type="button" class="button" data-slot="root" data-variant="ghost">
+          <span data-slot="label">Later</span>
+        </button>
+      </div>
+      <div data-spec="button.ghost.hover">
+        <button type="button" class="button" data-slot="root" data-variant="ghost">
+          <span data-slot="label">Later</span>
+        </button>
+      </div>
+      <div data-spec="button.ghost.active">
+        <button type="button" class="button" data-slot="root" data-variant="ghost">
+          <span data-slot="label">Later</span>
+        </button>
+      </div>
+      <div data-spec="button.ghost.focus">
+        <button type="button" class="button" data-slot="root" data-variant="ghost">
+          <span data-slot="label">Later</span>
+        </button>
+      </div>
+      <div data-spec="button.ghost.disabled">
+        <button type="button" class="button" data-slot="root" data-variant="ghost" disabled>
+          <span data-slot="label">Later</span>
+        </button>
+      </div>
+      <div data-spec="button.ghost.loading">
+        <button
+          type="button"
+          class="button"
+          data-slot="root"
+          data-variant="ghost"
+          disabled
+          aria-busy="true"
+        >
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
+          ><span data-slot="label">Later</span>
+        </button>
+      </div>
+    </section>
+    <section>
+      <h2>quiet</h2>
+      <div data-spec="button.quiet.rest">
+        <button type="button" class="button" data-slot="root" data-variant="quiet">
+          <span data-slot="label">Edit</span>
+        </button>
+      </div>
+      <div data-spec="button.quiet.hover">
+        <button type="button" class="button" data-slot="root" data-variant="quiet">
+          <span data-slot="label">Edit</span>
+        </button>
+      </div>
+      <div data-spec="button.quiet.active">
+        <button type="button" class="button" data-slot="root" data-variant="quiet">
+          <span data-slot="label">Edit</span>
+        </button>
+      </div>
+      <div data-spec="button.quiet.focus">
+        <button type="button" class="button" data-slot="root" data-variant="quiet">
+          <span data-slot="label">Edit</span>
+        </button>
+      </div>
+      <div data-spec="button.quiet.disabled">
+        <button type="button" class="button" data-slot="root" data-variant="quiet" disabled>
+          <span data-slot="label">Edit</span>
+        </button>
+      </div>
+    </section>
+    <section>
+      <h2>danger</h2>
+      <div data-spec="button.danger.rest">
+        <button type="button" class="button" data-slot="root" data-variant="danger">
+          <span data-slot="label">Delete registration</span>
+        </button>
+      </div>
+      <div data-spec="button.danger.hover">
+        <button type="button" class="button" data-slot="root" data-variant="danger">
+          <span data-slot="label">Delete registration</span>
+        </button>
+      </div>
+      <div data-spec="button.danger.active">
+        <button type="button" class="button" data-slot="root" data-variant="danger">
+          <span data-slot="label">Delete registration</span>
+        </button>
+      </div>
+      <div data-spec="button.danger.focus">
+        <button type="button" class="button" data-slot="root" data-variant="danger">
+          <span data-slot="label">Delete registration</span>
+        </button>
+      </div>
+      <div data-spec="button.danger.disabled">
+        <button type="button" class="button" data-slot="root" data-variant="danger" disabled>
+          <span data-slot="label">Delete registration</span>
+        </button>
+      </div>
+      <div data-spec="button.danger.loading">
+        <button
+          type="button"
+          class="button"
+          data-slot="root"
+          data-variant="danger"
+          disabled
+          aria-busy="true"
+        >
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
+          ><span data-slot="label">Delete registration</span>
+        </button>
+      </div>
+    </section>
+    <section>
+      <h2>sizes</h2>
+      <div data-spec="button.primary.rest.xs">
+        <button type="button" class="button" data-slot="root" data-variant="primary" data-size="xs">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M12 5v14" /></svg
+          ><span data-slot="label">Register</span
+          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+      <div data-spec="button.primary.rest.sm">
+        <button type="button" class="button" data-slot="root" data-variant="primary" data-size="sm">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M12 5v14" /></svg
+          ><span data-slot="label">Register</span
+          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+      <div data-spec="button.primary.rest.lg">
+        <button type="button" class="button" data-slot="root" data-variant="primary" data-size="lg">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M12 5v14" /></svg
+          ><span data-slot="label">Register</span
+          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+      <div data-spec="button.primary.rest.xl">
+        <button type="button" class="button" data-slot="root" data-variant="primary" data-size="xl">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M12 5v14" /></svg
+          ><span data-slot="label">Register</span
+          ><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+    </section>
+    <section>
+      <h2>input</h2>
+      <div class="field" data-spec="input.outline.rest">
+        <label data-slot="label" for="field-1" class="required">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-1"
+            type="email"
+            data-slot="root"
+            placeholder="maya@example.com"
+            aria-describedby="field-1-help"
+            required
+          /><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-1-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.hover">
+        <label data-slot="label" for="field-2">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-2"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-describedby="field-2-help"
+          />
+        </div>
+        <p id="field-2-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.focus">
+        <label data-slot="label" for="field-3">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-3"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-describedby="field-3-help"
+          />
+        </div>
+        <p id="field-3-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.invalid">
+        <label data-slot="label" for="field-4">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-4"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            aria-invalid="true"
+            aria-describedby="field-4-error"
+          />
+        </div>
+        <p id="field-4-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
+      <div class="field" data-spec="input.outline.disabled">
+        <label data-slot="label" for="field-5">Email address</label>
+        <div class="field__control">
+          <input
+            id="field-5"
+            type="email"
+            data-slot="root"
+            value="maya@example.com"
+            disabled
+            aria-describedby="field-5-help"
+          />
+        </div>
+        <p id="field-5-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.loading">
+        <label data-slot="label" for="field-6">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-6.22-8.56" /></svg
+          ><input id="field-6" type="email" data-slot="root" aria-describedby="field-6-help" />
+        </div>
+        <p id="field-6-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+    </section>
+    <section>
+      <h2>input sizes</h2>
+      <div class="field" data-spec="input.outline.rest.xs" data-size="xs">
+        <label data-slot="label" for="field-7">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input id="field-7" type="email" data-slot="root" aria-describedby="field-7-help" /><svg
+            data-slot="trailing-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-7-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.rest.sm" data-size="sm">
+        <label data-slot="label" for="field-8">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input id="field-8" type="email" data-slot="root" aria-describedby="field-8-help" /><svg
+            data-slot="trailing-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-8-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+      <div class="field" data-spec="input.outline.rest.lg" data-size="lg">
+        <label data-slot="label" for="field-9">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input id="field-9" type="email" data-slot="root" aria-describedby="field-9-help" /><svg
+            data-slot="trailing-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-9-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+    </section>
+    <section data-theme="light">
+      <h2>held in the light theme</h2>
+      <div class="field" data-spec="input.outline.rest.xl" data-size="xl">
+        <label data-slot="label" for="field-10">Email address</label>
+        <div class="field__control">
+          <svg data-slot="leading-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 5L2 7" /></svg
+          ><input
+            id="field-10"
+            type="email"
+            data-slot="root"
+            aria-describedby="field-10-help"
+          /><svg data-slot="trailing-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </div>
+        <p id="field-10-help" data-slot="help">We send the confirmation here.</p>
+      </div>
+    </section>
+  </body>
+</html>

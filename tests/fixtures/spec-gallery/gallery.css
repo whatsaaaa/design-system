@@ -1,0 +1,400 @@
+/*
+ * A gallery of plain HTML that meets the button and input specs, as an implementation's would:
+ * every value from a component token or a role, by name. A hover, a pressed state or the focus is
+ * drawn by the pointer or the keyboard, or by data-demo on the example, as the gallery contract
+ * says.
+ */
+body {
+  margin: 0;
+  padding: var(--ws-space-24);
+  background: var(--ws-color-bg);
+  color: var(--ws-color-text);
+  font-family: var(--ws-font-family-sans);
+}
+
+section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ws-space-16);
+  align-items: start;
+  margin-block-end: var(--ws-space-24);
+  padding: var(--ws-space-16);
+  background: var(--ws-color-bg);
+}
+
+h2 {
+  flex-basis: 100%;
+  margin: 0;
+  font-family: var(--ws-font-family-mono);
+  font-size: var(--ws-text-label-sm-font-size);
+  font-weight: var(--ws-font-weight-regular);
+  color: var(--ws-color-text-secondary);
+}
+
+svg {
+  flex: none;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+}
+
+/* the button */
+
+.button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--ws-control-height-md);
+  padding-inline: var(--ws-space-20);
+  column-gap: var(--ws-control-gap-md);
+  border: var(--ws-control-border-width-rest) solid transparent;
+  border-radius: var(--ws-control-radius);
+  background-color: transparent;
+  font-family: var(--ws-font-family-mono);
+  font-size: var(--ws-text-label-font-size);
+  font-weight: var(--ws-font-weight-semibold);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard),
+    border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
+}
+
+.button svg {
+  width: var(--ws-control-icon-size-md);
+  height: var(--ws-control-icon-size-md);
+}
+
+.button:focus-visible,
+:is([data-demo~='focus'], [data-demo~='focus'] *).button {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 3px;
+}
+
+.button[data-variant='primary'] {
+  border-color: var(--ws-button-primary-bg-rest);
+  background-color: var(--ws-button-primary-bg-rest);
+  color: var(--ws-button-primary-text-rest);
+}
+
+.button[data-variant='secondary'] {
+  border-color: var(--ws-button-secondary-border-rest);
+  color: var(--ws-button-secondary-text-rest);
+}
+
+.button[data-variant='ghost'] {
+  color: var(--ws-button-ghost-text-rest);
+}
+
+.button[data-variant='danger'] {
+  border-color: var(--ws-button-danger-border-rest);
+  color: var(--ws-button-danger-text-rest);
+}
+
+.button[data-variant='quiet'] {
+  padding-inline: 0;
+  border-width: 0;
+  color: var(--ws-button-quiet-text-rest);
+  font-weight: var(--ws-font-weight-regular);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--ws-border-width-thin);
+  text-underline-offset: 0.2em;
+}
+
+.button:enabled:is(:hover, [data-demo~='hover'], [data-demo~='hover'] *) {
+  &[data-variant='primary'] {
+    border-color: var(--ws-button-primary-bg-hover);
+    background-color: var(--ws-button-primary-bg-hover);
+  }
+
+  &[data-variant='secondary'] {
+    border-color: var(--ws-button-secondary-border-hover);
+    background-color: var(--ws-button-secondary-bg-hover);
+  }
+
+  &[data-variant='ghost'] {
+    background-color: var(--ws-button-ghost-bg-hover);
+  }
+
+  &[data-variant='danger'] {
+    background-color: var(--ws-button-danger-bg-hover);
+  }
+
+  &[data-variant='quiet'] {
+    text-decoration-thickness: var(--ws-border-width-medium);
+  }
+}
+
+.button:enabled:is(:active, [data-demo~='active'], [data-demo~='active'] *) {
+  &[data-variant='primary'] {
+    border-color: var(--ws-button-primary-bg-active);
+    background-color: var(--ws-button-primary-bg-active);
+  }
+
+  &[data-variant='secondary'] {
+    border-color: var(--ws-button-secondary-border-active);
+    background-color: var(--ws-button-secondary-bg-active);
+  }
+
+  &[data-variant='ghost'] {
+    background-color: var(--ws-button-ghost-bg-active);
+  }
+
+  &[data-variant='danger'] {
+    background-color: var(--ws-button-danger-bg-active);
+  }
+
+  &[data-variant='quiet'] {
+    text-decoration-thickness: var(--ws-border-width-medium);
+  }
+}
+
+/* a loading button is disabled, and keeps its look */
+.button:disabled:not([aria-busy='true']) {
+  border-color: var(--ws-button-border-disabled);
+  background-color: transparent;
+  color: var(--ws-button-text-disabled);
+  cursor: not-allowed;
+
+  &:is([data-variant='ghost'], [data-variant='quiet']) {
+    border-color: transparent;
+  }
+
+  &[data-variant='quiet'] {
+    text-decoration-line: none;
+  }
+}
+
+.button[aria-busy='true'] {
+  cursor: progress;
+}
+
+.button[data-size='xs'] {
+  height: var(--ws-control-height-xs);
+  padding-inline: var(--ws-space-10);
+  column-gap: var(--ws-control-gap-xs);
+  font-size: var(--ws-text-label-sm-font-size);
+
+  & svg {
+    width: var(--ws-control-icon-size-xs);
+    height: var(--ws-control-icon-size-xs);
+  }
+}
+
+.button[data-size='sm'] {
+  height: var(--ws-control-height-sm);
+  padding-inline: var(--ws-space-12);
+  column-gap: var(--ws-control-gap-sm);
+  font-size: var(--ws-text-label-sm-font-size);
+
+  & svg {
+    width: var(--ws-control-icon-size-sm);
+    height: var(--ws-control-icon-size-sm);
+  }
+}
+
+.button[data-size='lg'] {
+  height: var(--ws-control-height-lg);
+  column-gap: var(--ws-control-gap-lg);
+
+  & svg {
+    width: var(--ws-control-icon-size-lg);
+    height: var(--ws-control-icon-size-lg);
+  }
+}
+
+.button[data-size='xl'] {
+  height: var(--ws-control-height-xl);
+  padding-inline: var(--ws-space-24);
+  column-gap: var(--ws-control-gap-xl);
+  font-size: var(--ws-font-size-16);
+
+  & svg {
+    width: var(--ws-control-icon-size-xl);
+    height: var(--ws-control-icon-size-xl);
+  }
+}
+
+/* the input, in its field */
+
+.field {
+  display: grid;
+  gap: var(--ws-space-4);
+  width: 16rem;
+}
+
+.field label {
+  color: var(--ws-field-label-text);
+  font-family: var(--ws-font-family-mono);
+  font-size: var(--ws-text-label-font-size);
+  font-weight: var(--ws-font-weight-regular);
+}
+
+.field label.required::after {
+  content: ' *';
+  color: var(--ws-field-required-text);
+}
+
+.field__control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field__control svg {
+  position: absolute;
+  width: var(--ws-control-icon-size-md);
+  height: var(--ws-control-icon-size-md);
+  color: var(--ws-field-icon);
+}
+
+.field__control svg[data-slot='leading-icon'] {
+  inset-inline-start: var(--ws-space-12);
+}
+
+.field__control svg[data-slot='trailing-icon'] {
+  inset-inline-end: var(--ws-space-12);
+}
+
+.field input {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--ws-control-height-md);
+  padding-inline: var(--ws-space-12);
+  border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
+  border-radius: var(--ws-control-radius);
+  background-color: var(--ws-field-bg);
+  color: var(--ws-field-text-rest);
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-text-body-font-size);
+  transition: border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
+}
+
+.field input::placeholder {
+  color: var(--ws-color-text-secondary);
+}
+
+.field input:enabled:is(:hover, [data-demo~='hover'] *) {
+  border-color: var(--ws-field-border-hover);
+}
+
+.field input:is(:focus-visible, [data-demo~='focus'] *) {
+  border-color: var(--ws-field-border-rest);
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 3px;
+}
+
+.field input[aria-invalid='true'] {
+  border-width: var(--ws-control-border-width-invalid);
+  border-color: var(--ws-field-border-invalid);
+}
+
+.field input:disabled {
+  border-color: var(--ws-field-border-disabled);
+  color: var(--ws-field-text-disabled);
+}
+
+.field [data-slot='help'],
+.field [data-slot='error'] {
+  display: flex;
+  gap: var(--ws-space-4);
+  align-items: center;
+  margin: 0;
+  font-family: var(--ws-font-family-sans);
+  font-size: var(--ws-text-body-sm-font-size);
+}
+
+.field [data-slot='help'] {
+  color: var(--ws-field-help-text);
+}
+
+.field [data-slot='error'] {
+  color: var(--ws-field-error-text);
+  font-weight: var(--ws-field-error-font-weight);
+}
+
+.field [data-slot='error'] {
+  align-items: start;
+}
+
+.field [data-slot='error-icon'] {
+  margin-block-start: 0.125rem;
+  width: var(--ws-size-icon);
+  height: var(--ws-size-icon);
+  color: var(--ws-field-error-icon);
+}
+
+.field[data-size='xs'] {
+  & label {
+    font-size: var(--ws-text-label-sm-font-size);
+  }
+
+  & input {
+    height: var(--ws-control-height-xs);
+    padding-inline: var(--ws-space-8);
+    font-size: var(--ws-text-body-sm-font-size);
+  }
+
+  & .field__control svg {
+    width: var(--ws-control-icon-size-xs);
+    height: var(--ws-control-icon-size-xs);
+  }
+}
+
+.field[data-size='sm'] {
+  & label {
+    font-size: var(--ws-text-label-sm-font-size);
+  }
+
+  & input {
+    height: var(--ws-control-height-sm);
+    padding-inline: var(--ws-space-10);
+    font-size: var(--ws-text-body-sm-font-size);
+  }
+
+  & .field__control svg {
+    width: var(--ws-control-icon-size-sm);
+    height: var(--ws-control-icon-size-sm);
+  }
+}
+
+.field[data-size='lg'] {
+  & input {
+    height: var(--ws-control-height-lg);
+    padding-inline: var(--ws-space-14);
+  }
+
+  & .field__control svg {
+    width: var(--ws-control-icon-size-lg);
+    height: var(--ws-control-icon-size-lg);
+  }
+}
+
+.field[data-size='xl'] {
+  & input {
+    height: var(--ws-control-height-xl);
+    padding-inline: var(--ws-space-16);
+  }
+
+  & .field__control svg {
+    width: var(--ws-control-icon-size-xl);
+    height: var(--ws-control-icon-size-xl);
+  }
+
+  & [data-slot='help'] {
+    font-size: var(--ws-text-body-font-size);
+  }
+}
+
+/* the loading icon turns, unless the reader asks for less motion */
+@media (prefers-reduced-motion: no-preference) {
+  [aria-busy='true'] [data-slot='leading-icon'] {
+    animation: turn 1s linear infinite;
+  }
+}
+
+@keyframes turn {
+  to {
+    rotate: 1turn;
+  }
+}
