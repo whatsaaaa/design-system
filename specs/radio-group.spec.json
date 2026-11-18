@@ -1,0 +1,677 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "radio-group",
+  "title": "Radio group",
+  "status": "draft",
+  "changed": "0.13.0",
+  "summary": "One choice from a short list, all of it shown: a legend over circles beside their labels, the interactive fill and a dot on the one that is checked.",
+  "use": [
+    "One choice from a short list whose options all fit on the page: a ticket, a way to pay.",
+    "A choice sent with a form, of two options or more. A segmented control switches a view and sends nothing."
+  ],
+  "notFor": [
+    "A long list, or one whose options take much room: that is a select.",
+    "Several choices: that is a checkbox for each.",
+    "Switching a view in place: that is a segmented control, or tabs."
+  ],
+  "parts": {
+    "root": "The group: a fieldset, or the element with the role radiogroup.",
+    "legend": "The group's name, above its options, as a field's label.",
+    "required": "The asterisk after the legend of a group that must be answered.",
+    "item": "One option: its circle and its label, which take the pointer as one.",
+    "control": "The circle: the native radio button, or the element with its role.",
+    "indicator": "The fill of the checked circle, which covers the circle, its edge too.",
+    "dot": "The dot on the fill.",
+    "label": "The option's name, beside the circle.",
+    "description": "A line about the option, under its label.",
+    "error": "The error under the group: what is wrong and how to fix it.",
+    "error-icon": "The danger icon before the error."
+  },
+  "variants": {
+    "list": "The one look the spec covers: circles beside their labels, the options one under the other or in a row."
+  },
+  "sizes": {
+    "xs": "A dense row, such as a filter in a table's head.",
+    "sm": "A bar or a toolbar, or a dense list of options.",
+    "md": "Every other one: a form, a dialog.",
+    "lg": "A form of one or two fields that a page leads to, such as a sign-up.",
+    "xl": "Beside the fields of a landing page, which are xl too."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "None of its options is checked, and nothing is on them.",
+    "hover": "The pointer is on an option.",
+    "focus": "An option has the focus from the keyboard, as `:focus-visible` says.",
+    "checked": "One of its options is checked.",
+    "invalid": "It must be answered and is not: `aria-invalid` is true, and the error is under it.",
+    "disabled": "It cannot be changed now: every option is disabled, the checked one too."
+  },
+  "icons": {
+    "error": "octagon-alert"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "color",
+      "token": "field.label.text"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "font-family",
+      "token": "font.family.mono"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "required",
+      "property": "color",
+      "token": "field.required.text"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "background-color",
+      "token": "choice.control.bg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-width",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-radius",
+      "token": "radius.full"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "color",
+      "token": "choice.label.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "description",
+      "property": "color",
+      "token": "choice.description.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "description",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "description",
+      "property": "font-size",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.hover"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": "*",
+      "state": "checked",
+      "part": "indicator",
+      "property": "background-color",
+      "token": "choice.indicator.bg.checked"
+    },
+    {
+      "variant": "*",
+      "state": "checked",
+      "part": "dot",
+      "property": "background-color",
+      "token": "choice.indicator.icon.checked"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "color",
+      "token": "field.error.text"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-weight",
+      "token": "field.error.font-weight"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "color",
+      "token": "field.error.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "width",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "height",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "indicator",
+      "property": "background-color",
+      "token": "choice.indicator.bg.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "dot",
+      "property": "background-color",
+      "token": "choice.indicator.icon.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "label",
+      "property": "color",
+      "token": "choice.label.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "description",
+      "property": "color",
+      "token": "choice.description.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.xs",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.xs",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "width",
+      "token": "space.6",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "height",
+      "token": "space.6",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.body-sm",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "font-size",
+      "token": "text.label-sm",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "width",
+      "token": "space.6",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "height",
+      "token": "space.6",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.body-sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "font-size",
+      "token": "text.label-sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.md",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.md",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "width",
+      "token": "space.8",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "height",
+      "token": "space.8",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.body",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "font-size",
+      "token": "text.label",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.lg",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.lg",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "width",
+      "token": "space.8",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "height",
+      "token": "space.8",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.lead",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "font-size",
+      "token": "text.label",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.xl",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.xl",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "width",
+      "token": "space.10",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "dot",
+      "property": "height",
+      "token": "space.10",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.lead",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "legend",
+      "property": "font-size",
+      "token": "text.label",
+      "size": "xl"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus into the group, to its checked option or, with none checked, to its first, and on out of it: the group is one stop."
+    },
+    {
+      "keys": ["ArrowDown", "ArrowRight"],
+      "effect": "Moves the focus to the next option and checks it, from the last to the first."
+    },
+    {
+      "keys": ["ArrowUp", "ArrowLeft"],
+      "effect": "Moves the focus to the previous option and checks it, from the first to the last."
+    },
+    {
+      "keys": ["Space"],
+      "effect": "Checks the option with the focus, where it is not checked."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/radio/",
+    "rules": [
+      "It is a fieldset of native radio buttons that share a name, or an element with the role radiogroup around elements with the role radio and `aria-checked`.",
+      "The legend names the group: the fieldset's legend, or `aria-labelledby` on the radiogroup. Each label names its option, and a description is its option's description, by `aria-describedby`.",
+      "The error describes the group, by `aria-describedby`, while it shows.",
+      "A group that must be answered has the required attribute on its radio buttons, or `aria-required` on the radiogroup; the asterisk shows it.",
+      "A group in error has `aria-invalid` true. Its error says how to fix it, and is never a color alone: it has its word and its icon.",
+      "A disabled group disables every option: the fieldset's disabled attribute, or `aria-disabled`."
+    ]
+  },
+  "forcedColors": [
+    "The edge of each circle is a real border, which forced colors keep in the system's colors, and in `GrayText` when the group is disabled.",
+    "The checked circle keeps its fill and its dot: the fill in `Highlight` and the dot in `HighlightText`, with `forced-color-adjust: none`, and in `GrayText` and `Canvas` when the group is disabled. Without them the fill is painted as the page, and no option looks checked.",
+    "The focus ring is an outline, which forced colors keep."
+  ],
+  "motion": [
+    "The edge and the fill change color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` they change at once.",
+    "The mark does not draw itself in: it shows at once."
+  ],
+  "content": [
+    "The legend names the value asked for, in sentence case and with no colon: Ticket, Payment.",
+    "Each label names its option in a word or a few, in sentence case and with no period: Card, Bank transfer.",
+    "The options are in an order the reader expects, by time, by size or the most common first. None is checked to begin with, unless one is a safe default.",
+    "An error says what to do: Choose a ticket."
+  ],
+  "notes": [
+    "The card and table variants, an option as a bordered panel or as a row of one, are not specced yet: their edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and their hover fill is the raised color at half, which the system has no token for.",
+    "A checked circle is the interactive color, and its dot the color of a checkbox's tick, so a checked circle and a checked box read alike. The colors of Nuxt UI other than primary are not part of the spec.",
+    "Options one under the other are `space.8` apart at xs and sm, `space.10` at md and lg and `space.12` at xl, options in a row `space.24` apart, the legend `space.8` to `space.12` above them, and each label starts `space.10` past its circle. That is the implementation's layout, not a row of the table.",
+    "A disabled group that has an answer keeps it: the checked circle keeps its dot, on the faint fill."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["URadioGroup", "UFormField"],
+      "today": "The list variant in Nuxt UI's five sizes, one under the other or in a row, in a form field for its error. Its circles, fills, dots, legend, labels, descriptions, focus ring and required mark already match the spec at every size, its disabled checked circle is faint, and in forced colors its edge is a border and the checked circle keeps its fill and its dot. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
+      "parts": {
+        "root": "root",
+        "legend": "legend",
+        "required": "legend::after",
+        "item": "item",
+        "control": "base",
+        "indicator": "indicator",
+        "dot": "indicator::after",
+        "label": "label",
+        "description": "description",
+        "error": "error",
+        "error-icon": "error::before"
+      },
+      "variants": {
+        "list": {
+          "variant": "list"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The edge of the circle is an inset ring, a box shadow, and a border only in forced colors. So the rows for its `border-color`, `border-style` and `border-width` do not hold."
+        },
+        {
+          "summary": "The circle is Tailwind's `rounded-full`, a radius of infinity, where the spec takes `radius.full`, 9999px. Both draw a circle, but the row for `border-radius` does not hold."
+        },
+        {
+          "summary": "The error icon is the system's own danger glyph, drawn as a mask that fills its background with `field.error.icon` while its color is the error's. The spec names Lucide's `octagon-alert` in `currentcolor`."
+        },
+        {
+          "summary": "It reads the roles by their Tailwind utilities, such as `ring-field-border`, not the component tokens, such as `ring-(--ws-choice-control-border-rest)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery shows the states and the sizes of the contract but marks none of them with `data-spec`, so no test can find them by id yet. Each of its groups has a checked option, so none is at rest, and its disabled group has no descriptions."
+        }
+      ],
+      "beyond": [
+        "The card variant, each option a bordered panel, and the table variant, each option a row of one panel, checked on the interactive tint.",
+        "The colors success, info, warning, error and neutral for a checked circle.",
+        "The circle at the end of its label, or hidden in a card.",
+        "The highlight prop, which outlines the circles in a color."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "radio-group.list.rest",
+    "radio-group.list.hover",
+    "radio-group.list.focus",
+    "radio-group.list.checked",
+    "radio-group.list.invalid",
+    "radio-group.list.disabled",
+    "radio-group.list.rest.xs",
+    "radio-group.list.rest.sm",
+    "radio-group.list.rest.lg",
+    "radio-group.list.rest.xl",
+    "radio-group.list.checked.xs",
+    "radio-group.list.checked.sm",
+    "radio-group.list.checked.lg",
+    "radio-group.list.checked.xl"
+  ]
+}

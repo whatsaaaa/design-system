@@ -9,10 +9,11 @@
   </head>
   <body>
     <!--
-      A gallery that meets the button and input specs, marked as the gallery contract says: each
-      example with its id in data-spec, each part with its name in data-slot. Each field with an
-      error, and each field at rest in a size other than the default, shows twice: with its icons
-      and without them. The last fields are in a part of the page held in the light theme.
+      A gallery that meets the button, input, checkbox and radio group specs, marked as the gallery
+      contract says: each example with its id in data-spec, each part with its name in data-slot.
+      Each field with an error, and each field at rest in a size other than the default, shows
+      twice: with its icons and without them. The last fields are in a part of the page held in
+      the light theme. A disabled checkbox shows twice: unchecked, and checked with its fill.
     -->
     <section>
       <h2>primary</h2>
@@ -670,5 +671,875 @@
         </p>
       </div>
     </section>
+    <section>
+      <h2>checkbox</h2>
+      <div class="choice" data-spec="checkbox.list.rest">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input
+              id="choice-1"
+              type="checkbox"
+              data-slot="control"
+              aria-describedby="choice-1-description"
+            />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">All workshops</span>
+            <span id="choice-1-description" data-slot="description"
+              >Vue in practice and accessibility, on May 12.</span
+            >
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.hover" data-demo="hover">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-2" type="checkbox" data-slot="control" />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.focus" data-demo="focus">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-3" type="checkbox" data-slot="control" />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.checked">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input
+              id="choice-4"
+              type="checkbox"
+              data-slot="control"
+              checked
+              aria-describedby="choice-4-description"
+            />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">All workshops</span>
+            <span id="choice-4-description" data-slot="description"
+              >Vue in practice and accessibility, on May 12.</span
+            >
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.indeterminate">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input
+              id="choice-5"
+              type="checkbox"
+              data-slot="control"
+              data-indeterminate
+              aria-describedby="choice-5-description"
+            />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">All workshops</span>
+            <span id="choice-5-description" data-slot="description"
+              >Vue in practice and accessibility, on May 12.</span
+            >
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.invalid">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input
+              id="choice-6"
+              type="checkbox"
+              data-slot="control"
+              required
+              aria-invalid="true"
+              aria-describedby="choice-6-error"
+            />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label" class="required">I accept the terms of use</span>
+          </span>
+        </label>
+        <p id="choice-6-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Accept the terms of use to register.
+        </p>
+      </div>
+      <div class="choice" data-spec="checkbox.list.disabled">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input
+              id="choice-7"
+              type="checkbox"
+              data-slot="control"
+              disabled
+              aria-describedby="choice-7-description"
+            />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">All workshops</span>
+            <span id="choice-7-description" data-slot="description"
+              >Vue in practice and accessibility, on May 12.</span
+            >
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.disabled">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input
+              id="choice-8"
+              type="checkbox"
+              data-slot="control"
+              checked
+              disabled
+              aria-describedby="choice-8-description"
+            />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">All workshops</span>
+            <span id="choice-8-description" data-slot="description"
+              >Vue in practice and accessibility, on May 12.</span
+            >
+          </span>
+        </label>
+      </div>
+    </section>
+    <section>
+      <h2>checkbox sizes</h2>
+      <div class="choice" data-spec="checkbox.list.rest.xs" data-size="xs">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-9" type="checkbox" data-slot="control" />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.checked.xs" data-size="xs">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-10" type="checkbox" data-slot="control" checked />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.rest.sm" data-size="sm">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-11" type="checkbox" data-slot="control" />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.checked.sm" data-size="sm">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-12" type="checkbox" data-slot="control" checked />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.rest.lg" data-size="lg">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-13" type="checkbox" data-slot="control" />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.checked.lg" data-size="lg">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-14" type="checkbox" data-slot="control" checked />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.rest.xl" data-size="xl">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-15" type="checkbox" data-slot="control" />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+      <div class="choice" data-spec="checkbox.list.checked.xl" data-size="xl">
+        <label class="choice__option" data-slot="root">
+          <span class="choice__box">
+            <input id="choice-16" type="checkbox" data-slot="control" checked />
+            <span data-slot="indicator" aria-hidden="true">
+              <svg data-slot="icon" viewBox="0 0 24 24">
+                <path class="tick" d="M20 6 9 17l-5-5" />
+                <path class="dash" d="M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Send me news</span>
+          </span>
+        </label>
+      </div>
+    </section>
+    <section>
+      <h2>radio group</h2>
+      <fieldset class="choice" data-spec="radio-group.list.rest" data-slot="root">
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-17-0"
+              type="radio"
+              name="choice-17"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-17-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-17-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-17-1"
+              type="radio"
+              name="choice-17"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-17-1-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-17-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        class="choice"
+        data-spec="radio-group.list.hover"
+        data-slot="root"
+        data-demo="hover"
+      >
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-18-0"
+              type="radio"
+              name="choice-18"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-18-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-18-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        class="choice"
+        data-spec="radio-group.list.focus"
+        data-slot="root"
+        data-demo="focus"
+      >
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-19-0"
+              type="radio"
+              name="choice-19"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-19-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-19-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset class="choice" data-spec="radio-group.list.checked" data-slot="root">
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-20-0"
+              type="radio"
+              name="choice-20"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-20-0-description"
+              checked
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-20-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-20-1"
+              type="radio"
+              name="choice-20"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-20-1-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-20-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        class="choice"
+        data-spec="radio-group.list.invalid"
+        data-slot="root"
+        role="radiogroup"
+        aria-invalid="true"
+        aria-required="true"
+        aria-describedby="choice-21-error"
+      >
+        <legend data-slot="legend" class="required">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-21-0"
+              type="radio"
+              name="choice-21"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-21-0-description"
+              required
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-21-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-21-1"
+              type="radio"
+              name="choice-21"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-21-1-description"
+              required
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-21-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+        <p id="choice-21-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Choose a ticket.
+        </p>
+      </fieldset>
+      <fieldset class="choice" data-spec="radio-group.list.disabled" data-slot="root" disabled>
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-22-0"
+              type="radio"
+              name="choice-22"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-22-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-22-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-22-1"
+              type="radio"
+              name="choice-22"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-22-1-description"
+              checked
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-22-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+    </section>
+    <section>
+      <h2>radio group sizes</h2>
+      <fieldset class="choice" data-spec="radio-group.list.rest.xs" data-slot="root" data-size="xs">
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-23-0"
+              type="radio"
+              name="choice-23"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-23-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-23-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-23-1"
+              type="radio"
+              name="choice-23"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-23-1-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-23-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        class="choice"
+        data-spec="radio-group.list.checked.xs"
+        data-slot="root"
+        data-size="xs"
+      >
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-24-0"
+              type="radio"
+              name="choice-24"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-24-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-24-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-24-1"
+              type="radio"
+              name="choice-24"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-24-1-description"
+              checked
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-24-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset class="choice" data-spec="radio-group.list.rest.sm" data-slot="root" data-size="sm">
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-25-0"
+              type="radio"
+              name="choice-25"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-25-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-25-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-25-1"
+              type="radio"
+              name="choice-25"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-25-1-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-25-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        class="choice"
+        data-spec="radio-group.list.checked.sm"
+        data-slot="root"
+        data-size="sm"
+      >
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-26-0"
+              type="radio"
+              name="choice-26"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-26-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-26-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-26-1"
+              type="radio"
+              name="choice-26"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-26-1-description"
+              checked
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-26-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset class="choice" data-spec="radio-group.list.rest.lg" data-slot="root" data-size="lg">
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-27-0"
+              type="radio"
+              name="choice-27"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-27-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-27-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-27-1"
+              type="radio"
+              name="choice-27"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-27-1-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-27-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        class="choice"
+        data-spec="radio-group.list.checked.lg"
+        data-slot="root"
+        data-size="lg"
+      >
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-28-0"
+              type="radio"
+              name="choice-28"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-28-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-28-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-28-1"
+              type="radio"
+              name="choice-28"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-28-1-description"
+              checked
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-28-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset class="choice" data-spec="radio-group.list.rest.xl" data-slot="root" data-size="xl">
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-29-0"
+              type="radio"
+              name="choice-29"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-29-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-29-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-29-1"
+              type="radio"
+              name="choice-29"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-29-1-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-29-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        class="choice"
+        data-spec="radio-group.list.checked.xl"
+        data-slot="root"
+        data-size="xl"
+      >
+        <legend data-slot="legend">Ticket</legend>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-30-0"
+              type="radio"
+              name="choice-30"
+              value="0"
+              data-slot="control"
+              aria-describedby="choice-30-0-description"
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">One day</span>
+            <span id="choice-30-0-description" data-slot="description">May 12.</span>
+          </span>
+        </label>
+        <label class="choice__option" data-slot="item">
+          <span class="choice__box">
+            <input
+              id="choice-30-1"
+              type="radio"
+              name="choice-30"
+              value="1"
+              data-slot="control"
+              aria-describedby="choice-30-1-description"
+              checked
+            />
+            <span data-slot="indicator" aria-hidden="true"><span data-slot="dot"></span></span>
+          </span>
+          <span class="choice__text">
+            <span data-slot="label">Two days</span>
+            <span id="choice-30-1-description" data-slot="description">May 12 and 13.</span>
+          </span>
+        </label>
+      </fieldset>
+    </section>
+    <script>
+      // an indeterminate box is set by script, as HTML has no attribute for it
+      for (const box of document.querySelectorAll('[data-indeterminate]')) box.indeterminate = true
+    </script>
   </body>
 </html>

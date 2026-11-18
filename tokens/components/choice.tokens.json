@@ -1,0 +1,57 @@
+{
+  "choice": {
+    "$description": "What a checkbox and a radio group share: the box or the circle and its edge, its fill and its mark when checked, and the label and description of each option. Five sizes, Nuxt UI's xs to xl, as ui-vue draws them; md is the default.",
+    "control": {
+      "$description": "The box of a checkbox, the circle of a radio.",
+      "size": {
+        "$type": "dimension",
+        "$description": "The side of the box or the circle: 14, 16, 20, 22 and 24 px, as ui-vue draws them. Nuxt UI's own are 12 to 20 px.",
+        "xs": { "$value": "{size.check-xs}" },
+        "sm": { "$value": "{size.check-sm}" },
+        "md": { "$value": "{size.check}" },
+        "lg": { "$value": "{size.check-lg}" },
+        "xl": { "$value": "{size.check-xl}" }
+      },
+      "bg": { "$type": "color", "$value": "{color.bg}" },
+      "border": {
+        "$type": "color",
+        "$description": "The edge: the field border, lighter under the pointer, the danger color with an error and faint when disabled.",
+        "rest": { "$value": "{color.field-border}" },
+        "hover": { "$value": "{color.text-secondary}" },
+        "invalid": { "$value": "{color.danger}" },
+        "disabled": { "$value": "{color.text-faint}" }
+      }
+    },
+    "indicator": {
+      "$description": "The fill of a checked or an indeterminate control, and the mark on it: a checkbox's tick or dash, a radio's dot.",
+      "bg": {
+        "$type": "color",
+        "checked": { "$value": "{color.interactive}" },
+        "indeterminate": { "$value": "{color.interactive}" },
+        "disabled": { "$value": "{color.text-faint}" }
+      },
+      "icon": {
+        "$type": "color",
+        "checked": { "$value": "{color.on-interactive}" },
+        "indeterminate": { "$value": "{color.on-interactive}" },
+        "disabled": { "$value": "{color.bg}" }
+      }
+    },
+    "label": {
+      "$description": "The option's name, beside the control.",
+      "text": {
+        "$type": "color",
+        "rest": { "$value": "{color.text}" },
+        "disabled": { "$value": "{color.text-faint}" }
+      }
+    },
+    "description": {
+      "$description": "A line about the option, under its label.",
+      "text": {
+        "$type": "color",
+        "rest": { "$value": "{color.text-secondary}" },
+        "disabled": { "$value": "{color.text-faint}" }
+      }
+    }
+  }
+}

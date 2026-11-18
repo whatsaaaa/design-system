@@ -1,0 +1,624 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "checkbox",
+  "title": "Checkbox",
+  "status": "draft",
+  "changed": "0.13.0",
+  "summary": "A box beside its label, for an on and off choice or one of several from a short list: an edge in the field border, the interactive fill and a tick when checked, the label in Inter on the line the box sits on.",
+  "use": [
+    "An on and off choice that takes effect when the form is sent: I accept the terms of use.",
+    "Several choices from a short list, all of them shown, in a fieldset whose legend asks the question.",
+    "A box that checks or unchecks a list of others, indeterminate while only some of them are checked."
+  ],
+  "notFor": [
+    "A setting that takes effect at once: that is a switch.",
+    "One choice from a list: that is a radio group, or a select for a long list.",
+    "An action: that is a button."
+  ],
+  "parts": {
+    "root": "The option: the box and its label, which take the pointer as one.",
+    "control": "The box: the native checkbox, or the element with its role.",
+    "indicator": "The fill of a checked or an indeterminate box, which covers the box, its edge too.",
+    "icon": "The tick of a checked box, or the dash of an indeterminate one, on the fill.",
+    "label": "The option's name, beside the box.",
+    "required": "The asterisk after the label of a box that must be checked, such as the terms of use.",
+    "description": "A line about the option, under its label.",
+    "error": "The error under the box: what is wrong and how to fix it.",
+    "error-icon": "The danger icon before the error."
+  },
+  "variants": {
+    "list": "The one look the spec covers: the box beside its label, the options one under the other."
+  },
+  "sizes": {
+    "xs": "A dense row, such as a filter in a table's head.",
+    "sm": "A bar or a toolbar, or a dense list of options.",
+    "md": "Every other one: a form, a dialog.",
+    "lg": "A form of one or two fields that a page leads to, such as a sign-up.",
+    "xl": "Beside the fields of a landing page, which are xl too."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Unchecked, and nothing is on it.",
+    "hover": "The pointer is on the box or its label.",
+    "focus": "The box has the focus from the keyboard, as `:focus-visible` says.",
+    "checked": "It is checked.",
+    "indeterminate": "It stands for several boxes, some of them checked and some not.",
+    "invalid": "It must be checked and is not: `aria-invalid` is true, and the error is under it.",
+    "disabled": "It cannot be changed now, checked or not."
+  },
+  "icons": {
+    "checked": "check",
+    "indeterminate": "minus",
+    "error": "octagon-alert"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "background-color",
+      "token": "choice.control.bg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-width",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "border-radius",
+      "token": "radius.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "color",
+      "token": "choice.label.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "description",
+      "property": "color",
+      "token": "choice.description.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "description",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "description",
+      "property": "font-size",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "required",
+      "property": "color",
+      "token": "field.required.text"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.hover"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "control",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": "*",
+      "state": "checked",
+      "part": "indicator",
+      "property": "background-color",
+      "token": "choice.indicator.bg.checked"
+    },
+    {
+      "variant": "*",
+      "state": "checked",
+      "part": "icon",
+      "property": "color",
+      "token": "choice.indicator.icon.checked"
+    },
+    {
+      "variant": "*",
+      "state": "indeterminate",
+      "part": "indicator",
+      "property": "background-color",
+      "token": "choice.indicator.bg.indeterminate"
+    },
+    {
+      "variant": "*",
+      "state": "indeterminate",
+      "part": "icon",
+      "property": "color",
+      "token": "choice.indicator.icon.indeterminate"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "color",
+      "token": "field.error.text"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-weight",
+      "token": "field.error.font-weight"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "color",
+      "token": "field.error.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "width",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "height",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "control",
+      "property": "border-color",
+      "token": "choice.control.border.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "indicator",
+      "property": "background-color",
+      "token": "choice.indicator.bg.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "icon",
+      "property": "color",
+      "token": "choice.indicator.icon.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "label",
+      "property": "color",
+      "token": "choice.label.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "description",
+      "property": "color",
+      "token": "choice.description.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.xs",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.xs",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "width",
+      "token": "size.tick-sm",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "height",
+      "token": "size.tick-sm",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.body-sm",
+      "size": "xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "width",
+      "token": "size.tick-sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "height",
+      "token": "size.tick-sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.body-sm",
+      "size": "sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.md",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.md",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "width",
+      "token": "size.icon",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "height",
+      "token": "size.icon",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.body",
+      "size": "md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.lg",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.lg",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "width",
+      "token": "size.tick-lg",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "height",
+      "token": "size.tick-lg",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.lead",
+      "size": "lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "width",
+      "token": "choice.control.size.xl",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "control",
+      "property": "height",
+      "token": "choice.control.size.xl",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "width",
+      "token": "size.icon-lg",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "icon",
+      "property": "height",
+      "token": "size.icon-lg",
+      "size": "xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "token": "text.lead",
+      "size": "xl"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus to the box and on to the next or the previous control. A disabled box is skipped."
+    },
+    {
+      "keys": ["Space"],
+      "effect": "Checks the box, or unchecks it. An indeterminate box becomes checked."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/",
+    "rules": [
+      "It is a native checkbox, or an element with the role checkbox and `aria-checked`, which is `mixed` while it is indeterminate.",
+      "The label is its accessible name: a label element for it, or `aria-labelledby`. The description is its description, by `aria-describedby`, and so is the error while it shows.",
+      "A box that must be checked has the required attribute, or `aria-required` with the role; the asterisk shows it.",
+      "A box in error has `aria-invalid` true. Its error says how to fix it, and is never a color alone: it has its word and its icon.",
+      "Several boxes for one question are in a fieldset, whose legend asks it.",
+      "A disabled box is the native disabled attribute, or `aria-disabled` with the role."
+    ]
+  },
+  "forcedColors": [
+    "The edge of the box is a real border, which forced colors keep in the system's colors, and in `GrayText` when the box is disabled.",
+    "A checked or an indeterminate box keeps its fill and its mark: the fill in `Highlight` and the mark in `HighlightText`, with `forced-color-adjust: none`, and in `GrayText` and `Canvas` when it is disabled. Without them the fill is painted as the page, and a checked box looks like an unchecked one.",
+    "The tick and the dash take the color of the mark, as a stroke or a mask in `currentcolor`, so they stay on the fill.",
+    "The focus ring is an outline, which forced colors keep."
+  ],
+  "motion": [
+    "The edge and the fill change color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` they change at once.",
+    "The mark does not draw itself in: it shows at once."
+  ],
+  "content": [
+    "The label says what checking it means, in sentence case and with no period: I accept the terms of use, Send me news.",
+    "It says it the positive way, so a checked box means yes: Send me news, not Do not send me news.",
+    "A description adds what the reader needs to choose, in a sentence: We will get back to you with hotels nearby.",
+    "An error says what to do: Accept the terms of use to register."
+  ],
+  "notes": [
+    "The card variant, the whole option as a bordered panel, is not specced yet: its edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and its hover fill is the raised color at half, which the system has no token for.",
+    "A checked box is the interactive color. The colors of Nuxt UI other than primary are not part of the spec.",
+    "The box sits centered on the first line of its label, and the label starts `space.10` past it. That is the implementation's layout, not a row of the table.",
+    "The tick is the system's icon size, 16 px, in the 20 px box of md, and four fifths of the box at the other sizes, to the even pixel, so it stays centered: 12, 12, 18 and 20 px. At 12 px it is just over a pixel wide, so the small sizes are for dense rows only."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["UCheckbox", "UFormField"],
+      "today": "The list variant in Nuxt UI's five sizes, in a form field for its error. Its boxes, ticks at the icon size, fills, labels, descriptions, focus ring and required mark already match the spec at every size, and in forced colors its edge is a border and a checked or an indeterminate box keeps its fill and its mark. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
+      "parts": {
+        "root": "root",
+        "control": "base",
+        "indicator": "indicator",
+        "icon": "icon",
+        "label": "label",
+        "required": "label::after",
+        "description": "description",
+        "error": "error",
+        "error-icon": "error::before"
+      },
+      "variants": {
+        "list": {
+          "variant": "list"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "The edge of the box is an inset ring, a box shadow, and a border only in forced colors. So the rows for its `border-color`, `border-style` and `border-width` do not hold."
+        },
+        {
+          "summary": "A disabled box that is checked or indeterminate keeps the interactive fill of an enabled one. Its theme gives it the faint fill in a compound variant on `checked`, which UCheckbox never passes to its theme, so the rows for `choice.indicator.bg.disabled` and `choice.indicator.icon.disabled` do not hold. Its radio group draws the faint fill."
+        },
+        {
+          "summary": "The error icon is the system's own danger glyph, drawn as a mask that fills its background with `field.error.icon` while its color is the error's. The spec names Lucide's `octagon-alert` in `currentcolor`."
+        },
+        {
+          "summary": "It reads the roles by their Tailwind utilities, such as `ring-field-border`, not the component tokens, such as `ring-(--ws-choice-control-border-rest)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its gallery shows the states and the sizes of the contract but marks none of them with `data-spec`, so no test can find them by id yet. It shows each size checked only, so the sizes at rest are missing, and none of its examples of a state has a description."
+        }
+      ],
+      "beyond": [
+        "The card variant, the whole option as a bordered panel, checked on the interactive tint.",
+        "The colors success, info, warning, error and neutral for a checked box.",
+        "The box at the end of its label, or hidden in a card.",
+        "The highlight prop, which outlines a box in a color."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "checkbox.list.rest",
+    "checkbox.list.hover",
+    "checkbox.list.focus",
+    "checkbox.list.checked",
+    "checkbox.list.indeterminate",
+    "checkbox.list.invalid",
+    "checkbox.list.disabled",
+    "checkbox.list.rest.xs",
+    "checkbox.list.rest.sm",
+    "checkbox.list.rest.lg",
+    "checkbox.list.rest.xl",
+    "checkbox.list.checked.xs",
+    "checkbox.list.checked.sm",
+    "checkbox.list.checked.lg",
+    "checkbox.list.checked.xl"
+  ]
+}

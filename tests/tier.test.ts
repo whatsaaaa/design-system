@@ -36,6 +36,8 @@ const sizes = ['xs', 'sm', 'md', 'lg', 'xl']
 const properties = [
   ...tierColors,
   'height',
+  // the side of a square part, such as a checkbox's box
+  'size',
   'padding-inline',
   'padding-block',
   'gap',
@@ -48,7 +50,7 @@ const properties = [
 
 describe('the component tier', () => {
   it('has its groups, and every token of them is built', () => {
-    expect(tierGroups).toEqual(['button', 'control', 'field'])
+    expect(tierGroups).toEqual(['button', 'choice', 'control', 'field'])
     for (const [id] of all) expect(ids, id).toContain(id)
     expect(ids.filter(inTier)).toHaveLength(all.length)
   })
@@ -124,6 +126,13 @@ describe('the component tier', () => {
       'field.error.text on color.bg',
       'field.error.icon on color.bg',
       'field.required.text on color.bg',
+      'choice.control.border.rest on color.bg',
+      'choice.control.border.hover on color.bg',
+      'choice.control.border.invalid on color.bg',
+      'choice.indicator.icon.checked on choice.indicator.bg.checked',
+      'choice.indicator.icon.indeterminate on choice.indicator.bg.indeterminate',
+      'choice.label.text.rest on color.bg',
+      'choice.description.text.rest on color.bg',
     ])
       expect(measured, pair).toContain(pair)
     // disabled is exempt, as WCAG exempts an inactive control

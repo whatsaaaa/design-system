@@ -16,7 +16,9 @@ const styles = [
     items: [
       { text: 'Specs', link: '/components/' },
       { text: 'Button', link: '/components/button' },
+      { text: 'Checkbox', link: '/components/checkbox' },
       { text: 'Input', link: '/components/input' },
+      { text: 'Radio group', link: '/components/radio-group' },
     ],
   },
 ]

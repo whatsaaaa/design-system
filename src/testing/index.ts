@@ -7,14 +7,14 @@
  *   draws the part of its condition, or does not, where it has one;
  * - tokens: each property of each part of each example is the token's value, resolved next to
  *   the part, so a part of the page held in the other theme is measured in it;
- * - forced colors: each part with an edge keeps a border or an outline, and a checked, current or
- *   selected example still looks unlike the example of its kind at rest.
+ * - forced colors: each part with an edge keeps a border or an outline, and a checked,
+ *   indeterminate, current or selected example still looks unlike the example of its kind at rest.
  *
  * A state a pointer or the keyboard causes is forced as the gallery contract says, with
  * `data-demo`, never with the pointer: the helper adds `data-demo="hover"` to the example of a
  * hover state while it measures, and the gallery draws it as hover.
  */
-import { type Page, expect, test } from '@playwright/test'
+import { type Locator, type Page, expect, test } from '@playwright/test'
 import {
   type Expectation,
   type Spec,
@@ -63,7 +63,7 @@ interface SpecReport {
 const demoStates = ['hover', 'active', 'focus']
 
 /** The states that the forced-colors check compares with rest. */
-const markedStates = ['checked', 'current', 'selected']
+const markedStates = ['checked', 'indeterminate', 'current', 'selected']
 
 /** Where a part is drawn: the element with its `data-slot`, or a pseudo-element of it. */
 interface Target {
@@ -283,9 +283,11 @@ function edgesOf(expected: Expectation[], results: Measured[]): { part: string; 
 }
 
 /**
- * In forced colors, each checked, current or selected example still looks unlike the example of
- * its kind and size at rest: an image of at least one part its state changes differs. The two
- * examples show the same content, as the gallery contract says, so only the state can differ.
+ * In forced colors, each checked, indeterminate, current or selected example still looks unlike
+ * the example of its kind and size at rest: an image of at least one part its state changes
+ * differs. Where the state draws a part the example at rest does not, such as a checked box's
+ * fill, the two examples are compared whole. They show the same content, as the gallery contract
+ * says, so only the state can differ.
  */
 async function marksDiffer(
   page: Page,
@@ -299,6 +301,7 @@ async function marksDiffer(
     const [example, slot] = [`[data-spec="${id}"]`, `[data-slot="${targets[name]!.slot}"]`]
     return page.locator(`${example}${slot}:visible, ${example} ${slot}:visible`).first()
   }
+  const whole = (id: string) => page.locator(`[data-spec="${id}"]:visible`).first()
   for (const id of shown) {
     const { variant, state, size } = example(spec, id)
     if (!markedStates.includes(state)) continue
@@ -313,9 +316,8 @@ async function marksDiffer(
       .map((expectation) => expectation.part)
     let compared = 0
     let differs = false
-    for (const name of new Set(parts.length ? parts : ['root'])) {
-      const [marked, resting] = [part(id, name), part(restId, name)]
-      if (!(await marked.count()) || !(await resting.count())) continue
+    let onlyMarked = false
+    const compare = async (marked: Locator, resting: Locator) => {
       compared++
       const images = await Promise.all(
         [marked, resting].map(async (locator) =>
@@ -324,6 +326,13 @@ async function marksDiffer(
       )
       if (!(await page.evaluate(looksAlike, images))) differs = true
     }
+    for (const name of new Set(parts.length ? parts : ['root'])) {
+      const [marked, resting] = [part(id, name), part(restId, name)]
+      const [drawn, drawnAtRest] = [await marked.count(), await resting.count()]
+      if (drawn && !drawnAtRest) onlyMarked = true
+      if (drawn && drawnAtRest) await compare(marked, resting)
+    }
+    if (onlyMarked && !differs) await compare(whole(id), whole(restId))
     if (!compared)
       failures.push({ id, message: `${id} and ${restId} do not both draw ${parts.join(', ')}` })
     else if (!differs)
@@ -433,20 +442,24 @@ function measureInPage(examples: { id: string; measures: Measure[] }[]): Measure
   const read = (element: Element, pseudo: string | undefined, property: string) =>
     getComputedStyle(element, pseudo).getPropertyValue(property).trim()
 
-  // the part, where the example draws it
+  // the part, where the example draws it: the first element of its slot that does, such as the
+  // checked one of a group's options
+  const draws = (element: Element, pseudo: string | undefined) => {
+    if (!element.checkVisibility()) return false
+    if (pseudo === '::before' || pseudo === '::after')
+      return !['none', 'normal'].includes(read(element, pseudo, 'content'))
+    if (pseudo === '::placeholder')
+      return (
+        (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) &&
+        !!element.placeholder &&
+        !element.value
+      )
+    return true
+  }
   const find = (root: Element, { slot, pseudo }: Target) => {
     const selector = `[data-slot="${CSS.escape(slot)}"]`
-    const element = root.matches(selector) ? root : root.querySelector(selector)
-    if (!element?.checkVisibility()) return undefined
-    if (pseudo === '::before' || pseudo === '::after')
-      return ['none', 'normal'].includes(read(element, pseudo, 'content')) ? undefined : element
-    if (pseudo === '::placeholder')
-      return (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) &&
-        element.placeholder &&
-        !element.value
-        ? element
-        : undefined
-    return element
+    const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
+    return elements.find((element) => draws(element, pseudo))
   }
 
   // where the probe goes: in the part, so it sees the variables the part sees, or next to it
@@ -557,8 +570,9 @@ function edgesInPage(
   for (const { id, part, target, edge } of edges)
     for (const root of document.querySelectorAll(`[data-spec="${CSS.escape(id)}"]`)) {
       const selector = `[data-slot="${CSS.escape(target.slot)}"]`
-      const element = root.matches(selector) ? root : root.querySelector(selector)
-      if (!element?.checkVisibility()) continue
+      const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
+      const element = elements.find((each) => each.checkVisibility())
+      if (!element) continue
       const style = getComputedStyle(element, target.pseudo)
       const outline = line(style, 'outline', element)
       const border = ['top', 'right', 'bottom', 'left'].every((side) =>
