@@ -1262,7 +1262,7 @@ svg {
 }
 
 /* a row that can be chosen, by the checkbox in its first cell: raised under the pointer, in the
-   selection color once chosen */
+   selection color once chosen, with the line under it in the selection's own border color */
 .table .table__check {
   width: 1px;
 }
@@ -1278,6 +1278,7 @@ svg {
 }
 
 .table tbody tr:has(input:checked) {
+  border-block-end-color: var(--ws-color-selection-border);
   background-color: var(--ws-table-row-bg-selected);
 }
 

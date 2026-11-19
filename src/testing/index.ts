@@ -294,9 +294,9 @@ function edgesOf(expected: Expectation[], results: Measured[]): { part: string; 
  * In forced colors, each checked, indeterminate, current or selected example still looks unlike
  * the example of its kind and size at rest: an image of at least one part its state changes
  * differs. Where the state draws a part the example at rest does not, such as a checked box's
- * fill, or a part at another size than at rest, such as the bar under another tab, the two
- * examples are compared whole. They show the same content, as the gallery contract says, so only
- * the state can differ.
+ * fill, or a part at another size or place than at rest, such as the bar under another tab, the
+ * two examples are compared whole. They show the same content, as the gallery contract says, so
+ * only the state can differ.
  */
 async function marksDiffer(
   page: Page,
@@ -330,8 +330,8 @@ async function marksDiffer(
     const compare = async (marked: Locator, resting: Locator) => {
       const images = await Promise.all([marked, resting].map(shot))
       const alike = await page.evaluate(looksAlike, images)
-      // a part of another size is not the same part in another state, such as the bar under
-      // another tab
+      // a part of another size, or at another place in its example, is not the same part in
+      // another state, such as the bar under another tab
       if (alike === undefined) {
         skipped = true
         return
@@ -349,7 +349,7 @@ async function marksDiffer(
     if (!compared)
       failures.push({
         id,
-        message: `${id} and ${restId} do not both draw ${parts.join(', ')} at one size`,
+        message: `${id} and ${restId} do not both draw ${parts.join(', ')} at one size and place`,
       })
     else if (!differs)
       failures.push({
@@ -365,14 +365,15 @@ async function marksDiffer(
  * least half of. The image takes in every pixel the element touches, so of an element at a
  * fraction of a pixel and the same element at a whole one, only the first would take in a line
  * of its neighbor, such as the line under a row of a table: only the pixels it covers are
- * compared.
+ * compared. With them, where the element is in its example, from the example's corner.
  */
 interface Shot {
   png: string
   covered: { x: number; y: number; width: number; height: number }
+  at: { x: number; y: number }
 }
 
-/** The image of an element, and the pixels of it the element covers at least half of. */
+/** The image of an element, the pixels of it the element covers, and where it is in its example. */
 async function shot(locator: Locator): Promise<Shot> {
   // in CSS pixels, as the box is, whatever the device's pixel ratio
   const png = (await locator.screenshot({ animations: 'disabled', scale: 'css' })).toString(
@@ -380,16 +381,19 @@ async function shot(locator: Locator): Promise<Shot> {
   )
   const box = await locator.evaluate((element) => {
     const { left, top, right, bottom } = element.getBoundingClientRect()
+    const example = element.closest('[data-spec]')!.getBoundingClientRect()
     return {
       left: left + scrollX,
       top: top + scrollY,
       right: right + scrollX,
       bottom: bottom + scrollY,
+      at: { x: left - example.left, y: top - example.top },
     }
   })
   const [left, top] = [Math.round(box.left), Math.round(box.top)]
   return {
     png,
+    at: box.at,
     covered: {
       x: left - Math.floor(box.left),
       y: top - Math.floor(box.top),
@@ -406,9 +410,12 @@ async function shot(locator: Locator): Promise<Shot> {
  * pixels around, every pixel of either is within a quarter of each channel of a pixel of the
  * other at most a pixel away. Text drawn at another fraction of a pixel, and an image cut a pixel
  * apart, look alike, while a line of a pixel in a color of its own does not. Images more than a
- * pixel apart in size are of two parts, not of one in two states: nothing, for them.
+ * pixel apart in size, or in where they are in their examples, are of two parts, not of one in two
+ * states: nothing, for them.
  */
 async function looksAlike(images: Shot[]): Promise<boolean | undefined> {
+  const [here, there] = images.map(({ at }) => at)
+  if (Math.abs(here!.x - there!.x) > 1 || Math.abs(here!.y - there!.y) > 1) return undefined
   const decode = async ({ png, covered }: Shot) => {
     const bytes = Uint8Array.from(atob(png), (char) => char.charCodeAt(0))
     const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }))

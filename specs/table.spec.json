@@ -298,6 +298,13 @@
       "token": "table.row.bg.selected"
     },
     {
+      "variant": "selectable",
+      "state": "selected",
+      "part": "tr",
+      "property": "border-block-end-color",
+      "token": "color.selection-border"
+    },
+    {
       "variant": "plain",
       "state": "loading",
       "part": "loading-bar",
@@ -352,7 +359,7 @@
   "notes": [
     "A table has one size, the prose table's: cells of small body text with 10 px above and below them and 16 px to their sides. The prose table narrows the cells below 64rem, the system's compact width, and a gallery's test runs at a desktop width, so the state table holds the wide one.",
     "The prose table reads the head's colors and the cells' padding from the same tokens, `--ws-table-head-bg`, `--ws-table-head-text`, `--ws-table-cell-padding-inline` and `--ws-table-cell-padding-block`. It draws no rows to choose and no loading line, and lies on whatever is under it.",
-    "The edge of the frame and the lines are `color.border`, which is decorative and has no contrast bar: the head's case and the column of each cell carry the shape, and forced colors keep the lines. The last row has no line under it, where the frame's edge closes the table.",
+    "The edge of the frame and the lines are `color.border`, which is decorative and has no contrast bar: the head's case and the column of each cell carry the shape, and forced colors keep the lines. The line under a chosen row is `color.selection-border`, decorative too: in the light theme the border color is the selection color itself, so it would vanish in the chosen row's fill and run two chosen rows into one, and the line is a step darker there. In the dark theme it is the border color. The last row has no line under it, where the frame's edge closes the table.",
     "A row under the pointer is raised, as everything under the pointer is in the system, and a chosen row takes the selection color, the background of selected text, so the two stand apart in both themes. The text of a row keeps its color on both, at 4.5:1 or more.",
     "The focus ring of a row is drawn inside it while its checkbox has the focus, as a tab's is in the frame: a row fills its frame from edge to edge, which would clip a ring outside it.",
     "An example's rows are its own: the row the helper measures is the first of the body, so a gallery's selected example chooses its first row, and its example at rest chooses none."
@@ -391,7 +398,7 @@
           "summary": "A chosen row has no mark in forced colors: its fill, `bg-raised`, is painted in the page's color there, so it looks like every other row."
         },
         {
-          "summary": "A row under the pointer is raised at half its strength and a chosen row raised, which the light theme barely tells apart: the two fills differ by 1.05:1 there, and by a color difference of 1.5, under what most readers see. The spec takes the raised color under the pointer, `table.row.bg.hover`, and the selection color once chosen, `table.row.bg.selected`, 1.15:1 and a difference of 4.9 apart in the light theme."
+          "summary": "A row under the pointer is raised at half its strength and a chosen row raised, which the light theme barely tells apart: the two fills differ by 1.05:1 there, and by a color difference of 1.5, under what most readers see. The spec takes the raised color under the pointer, `table.row.bg.hover`, and the selection color once chosen, `table.row.bg.selected`, 1.15:1 and a difference of 4.9 apart in the light theme. It draws the line under a chosen row in the border color, where the spec takes `color.selection-border`, a step darker in the light theme, whose border color is the selection color."
         },
         {
           "summary": "The line under the head is Nuxt UI's separator, a row of its own filled with the border color, which forced colors paint in the page's color, where the spec draws it as the head's border."

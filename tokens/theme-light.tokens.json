@@ -25,6 +25,10 @@
       "$value": "{palette.dawn.highlight-med}",
       "$description": "Background of selected text."
     },
+    "selection-border": {
+      "$value": "{palette.dawn.highlight-high}",
+      "$description": "Dividers on the selection color, as under a chosen row. Decorative, no contrast bar."
+    },
     "field-border": {
       "$value": "{palette.dawn.subtle}",
       "$description": "Input and button outlines. At least 3:1 on surface."
