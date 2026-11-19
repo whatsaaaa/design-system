@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The system's tags</title>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <!--
+      The system's own tag, as the badge spec's gallery marks its kinds: .ws-tag is the primary
+      kind at md, and .ws-tag with --outline the outline kind. The second pair is in a part of the
+      page held in the light theme.
+    -->
+    <ul>
+      <li class="ws-tag" data-spec="badge.primary.rest" data-slot="root">Vue</li>
+      <li class="ws-tag ws-tag--outline" data-spec="badge.outline.rest" data-slot="root">Nix</li>
+    </ul>
+    <ul data-theme="light">
+      <li class="ws-tag" data-spec="badge.primary.rest" data-slot="root">TypeScript</li>
+      <li class="ws-tag ws-tag--outline" data-spec="badge.outline.rest" data-slot="root">C#</li>
+    </ul>
+  </body>
+</html>

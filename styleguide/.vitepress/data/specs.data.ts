@@ -63,7 +63,10 @@ export interface SizeRow {
   targets: { part: string; property: string; condition?: string }[]
   state: string
   variants?: string[]
-  /** The token at every size, where it is one name with the size last: `control.height.<size>`. */
+  /**
+   * The token at every size, where it is one name with the size last: `control.height.<size>`.
+   * A size written as a value has no token, and its cell says so.
+   */
   pattern?: string
   /**
    * For a sum of tokens, the terms the same at every size or that follow that pattern,
@@ -281,8 +284,9 @@ function page(spec: Spec): SpecPage {
     })),
   ].filter((group) => group.rows.length > 0)
 
-  // a row of the matrix for each part and property in a state, then one for those that take
-  // the same tokens in it, such as the width and the height of both icons
+  // a row of the matrix for each part and property in a state, then one for those that show the
+  // same at every size, such as the width and the height of both icons, though not a text
+  // style's size and line height
   const bySize: SizeRow[] = []
   for (const row of stateTable.filter((row) => row.size)) {
     const variants = variantsOf(row)
@@ -312,18 +316,13 @@ function page(spec: Spec): SpecPage {
       throw new Error(`${spec.component}: ${JSON.stringify(row)} is a second row for its size`)
     target.cells[row.size!] = value
   }
-  const sameTokens = (a: SizeRow, b: SizeRow) =>
+  const sameCells = (a: SizeRow, b: SizeRow) =>
     a.state === b.state &&
     String(a.variants) === String(b.variants) &&
-    JSON.stringify(
-      Object.entries(a.cells).map(([size, value]) => [size, value.token ?? value.value]),
-    ) ===
-      JSON.stringify(
-        Object.entries(b.cells).map(([size, value]) => [size, value.token ?? value.value]),
-      )
+    JSON.stringify(Object.entries(a.cells)) === JSON.stringify(Object.entries(b.cells))
   const sizeRows: SizeRow[] = []
   for (const row of bySize) {
-    const same = sizeRows.find((entry) => sameTokens(entry, row))
+    const same = sizeRows.find((entry) => sameCells(entry, row))
     if (same) same.targets.push(...row.targets)
     else sizeRows.push(row)
   }
@@ -336,7 +335,10 @@ function page(spec: Spec): SpecPage {
   }
   for (const row of sizeRows) {
     const cells = Object.entries(row.cells)
-    row.pattern = patternOf(cells.map(([size, value]) => [size, value.token]))
+    // a size written as a value, such as an xs tag's padding of none, leaves the others' pattern
+    const tokened = cells.filter(([, value]) => value.token !== undefined)
+    if (tokened.length > 1)
+      row.pattern = patternOf(tokened.map(([size, value]) => [size, value.token]))
     const terms = cells.map(([, value]) => (value.value ? calcTerms(value.value) : undefined))
     const first = terms[0]
     if (!first || terms.some((each) => each?.length !== first.length)) continue

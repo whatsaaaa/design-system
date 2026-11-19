@@ -18,7 +18,7 @@ import {
 } from '../scripts/lib/specs.ts'
 import { inTier } from '../scripts/lib/tier.ts'
 import { type TokenId, tokens } from '../scripts/lib/tokens.ts'
-import specPages from '../styleguide/.vitepress/data/specs.data.ts'
+import specPages, { type SizeRow } from '../styleguide/.vitepress/data/specs.data.ts'
 
 const schema = JSON.parse(readFileSync(join(specDirectory, 'spec.schema.json'), 'utf8'))
 const validate = new Ajv2020({ allErrors: true }).compile(schema)
@@ -211,6 +211,34 @@ describe('the component pages', () => {
     expect([cell.dark.text, cell.light.text]).toEqual(['512px', '512px'])
   })
 
+  it('names a token of each size once, past a size written as a value', () => {
+    const row = pages.badge!.sizeRows.find(
+      (entry) =>
+        entry.variants?.includes('primary') &&
+        entry.targets.some((target) => target.property === 'padding-block'),
+    )!
+    // an xs tag has no padding, and no token for it
+    expect(row.pattern).toBe('tag.padding-block.<size>')
+    expect(row.cells.xs!.token).toBeUndefined()
+    expect(row.cells.xs!.value).toBe('0px')
+    expect(row.cells.sm!.token).toBe('tag.padding-block.sm')
+  })
+
+  it("shows a text style's line height apart from its size, though both name the style", () => {
+    const rowOf = (property: string) =>
+      pages.badge!.sizeRows.find((entry) =>
+        entry.targets.some((target) => target.part === 'root' && target.property === property),
+      )!
+    const [size, height] = [rowOf('font-size'), rowOf('line-height')]
+    expect(size).not.toBe(height)
+    const texts = (row: SizeRow) =>
+      Object.fromEntries(Object.entries(row.cells).map(([at, cell]) => [at, cell.dark.text]))
+    // the caption, the small label and the label: 12px, 13px and 14px, each at 1.5
+    expect(texts(size)).toEqual({ xs: '12px', sm: '12px', md: '13px', lg: '14px', xl: '14px' })
+    expect(texts(height)).toEqual({ xs: '1.5', sm: '1.5', md: '1.5', lg: '1.5', xl: '1.5' })
+    expect(height.cells.xs!.cssVar).toBe('--ws-text-caption-line-height')
+  })
+
   it('shows a sum of lengths by its total, and the tokens it reads', () => {
     const row = pages.input!.sizeRows.find((entry) =>
       entry.targets.some(
@@ -263,7 +291,9 @@ describe('the component pages', () => {
 describe('the specs and the component tier', () => {
   it('has a spec for each component it ships', () => {
     expect(all.map((spec) => spec.component)).toEqual([
+      'badge',
       'button',
+      'card',
       'checkbox',
       'input',
       'modal',

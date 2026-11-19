@@ -51,7 +51,7 @@ const properties = [
 
 describe('the component tier', () => {
   it('has its groups, and every token of them is built', () => {
-    expect(tierGroups).toEqual(['button', 'choice', 'control', 'field', 'overlay'])
+    expect(tierGroups).toEqual(['button', 'choice', 'control', 'field', 'overlay', 'tag'])
     for (const [id] of all) expect(ids, id).toContain(id)
     expect(ids.filter(inTier)).toHaveLength(all.length)
   })
@@ -134,6 +134,13 @@ describe('the component tier', () => {
       'choice.indicator.icon.indeterminate on choice.indicator.bg.indeterminate',
       'choice.label.text.rest on color.bg',
       'choice.description.text.rest on color.bg',
+      'tag.primary.text on tag.primary.bg',
+      'tag.success.text on tag.success.bg',
+      'tag.info.text on tag.info.bg',
+      'tag.warning.text on tag.warning.bg',
+      'tag.danger.text on tag.danger.bg',
+      'tag.neutral.text on tag.neutral.bg',
+      'tag.outline.text on color.bg',
     ])
       expect(measured, pair).toContain(pair)
     // disabled is exempt, as WCAG exempts an inactive control
