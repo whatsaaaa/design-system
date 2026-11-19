@@ -186,16 +186,7 @@
       "state": "rest",
       "part": "body",
       "property": "border-block-end-style",
-      "with": "footer",
       "value": "solid"
-    },
-    {
-      "variant": "*",
-      "state": "rest",
-      "part": "body",
-      "property": "border-block-end-style",
-      "without": "footer",
-      "value": "none"
     },
     {
       "variant": "*",
@@ -218,16 +209,7 @@
       "state": "rest",
       "part": "body",
       "property": "border-block-end-color",
-      "with": "footer",
       "token": "color.border"
-    },
-    {
-      "variant": "*",
-      "state": "rest",
-      "part": "body",
-      "property": "border-block-end-color",
-      "without": "footer",
-      "value": "currentcolor"
     },
     {
       "variant": "*",
@@ -267,7 +249,7 @@
     "The kind is the one in use, Nuxt UI's outline. Its soft and subtle cards are on the raised color, without and with an edge, and its solid one inverts the panel into the text color, for which the system has no role: they are left out.",
     "The edge is `color.border`, as the frame's window's is, not the field border of an overlay: a card frames content in the page, while an overlay lies over other content and is told apart from it by its edge, at 3:1.",
     "The paddings are those from 64rem up. Below it, the system's compact width, every part's `padding-inline` and the body's `padding-block` are `space.16`, and the header's and the footer's `padding-block` `space.12`, as the frame's paddings narrow there too; a gallery's test runs at a desktop width, so the state table holds the wide card.",
-    "The line under the body is there only when a footer follows it, as its rows with and without a footer say. A card without a header or a footer has only its body, the same distance from its edges.",
+    "The line under the body is there only when a footer follows it, as its width with and without a footer says; its style and its color are the header's line's either way. A card without a header or a footer has only its body, the same distance from its edges.",
     "A footer of actions lays them out at its end, `space.12` apart, as a modal's footer does. The footer is a box around them, so the spec checks its padding and not their place."
   ],
   "implementations": {
@@ -297,6 +279,9 @@
         },
         {
           "summary": "Its title is a `div`, not a heading, so the card is not a section of the page's outline. A heading has to be passed in its `title` slot."
+        },
+        {
+          "summary": "It draws its lines with `divide-y`, which colors only a part that is not the last, so a body without a footer keeps Tailwind's preflight `currentcolor` on the line it does not draw. So the row for the body's `border-block-end-color` does not hold there."
         },
         {
           "summary": "Its gallery marks no example with `data-spec`."

@@ -1153,15 +1153,12 @@ svg {
   }
 }
 
-.card__header,
-.card__body {
+.card__header {
+  padding: var(--card-padding-bar) var(--card-padding);
+
   &:not(:last-child) {
     border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
   }
-}
-
-.card__header {
-  padding: var(--card-padding-bar) var(--card-padding);
 }
 
 .card [data-slot='title'] {
@@ -1182,7 +1179,12 @@ svg {
 
 .card__body {
   padding: var(--card-padding);
+  border-block-end: 0 solid var(--ws-color-border);
   font-size: var(--ws-text-body-sm-font-size);
+
+  &:not(:last-child) {
+    border-block-end-width: var(--ws-border-width-thin);
+  }
 
   & p {
     margin: 0;
