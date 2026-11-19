@@ -1210,7 +1210,8 @@ svg {
   background-color: var(--ws-color-bg);
 }
 
-.table:is(:focus-visible, [data-demo~='focus']) {
+/* the frame's ring: a focus forced on a table whose rows can be chosen is a row's */
+.table:is(:focus-visible, [data-demo~='focus']:not(:has(.table__check))) {
   outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
   outline-offset: 3px;
 }

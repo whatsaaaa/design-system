@@ -33,7 +33,7 @@
   "states": {
     "rest": "Its rows are there, none under the pointer, chosen or with the focus.",
     "hover": "The pointer is on a row that can be chosen.",
-    "focus": "The keyboard's focus is on the frame of a table that scrolls, or on the checkbox of a row that can be chosen.",
+    "focus": "The keyboard's focus is on the frame of a table that scrolls, or on the checkbox of a row that can be chosen, one at a time. The state table rings the frame of a plain table and a row of one whose rows can be chosen; such a table that scrolls rings its frame as a plain one does while the frame has the focus.",
     "selected": "A row is chosen.",
     "loading": "Its rows are on their way: the table shows those it has, or none."
   },
@@ -235,28 +235,28 @@
       "token": "table.row.bg.hover"
     },
     {
-      "variant": "*",
+      "variant": "plain",
       "state": "focus",
       "part": "root",
       "property": "outline-color",
       "token": "color.interactive"
     },
     {
-      "variant": "*",
+      "variant": "plain",
       "state": "focus",
       "part": "root",
       "property": "outline-style",
       "value": "solid"
     },
     {
-      "variant": "*",
+      "variant": "plain",
       "state": "focus",
       "part": "root",
       "property": "outline-width",
       "token": "border-width.medium"
     },
     {
-      "variant": "*",
+      "variant": "plain",
       "state": "focus",
       "part": "root",
       "property": "outline-offset",
