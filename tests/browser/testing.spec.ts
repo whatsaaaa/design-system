@@ -531,48 +531,64 @@ test('a current tab whose bar forced colors hide fails', async () => {
 /**
  * The tabs' gallery drawn as Nuxt UI draws its link tabs: one bar for the row, a child of the
  * list under the current tab, on the row's line under a padded list, so the bar is outside the
- * tab's box. With `equal`, each tab takes an equal share of the row, as two labels of as many
- * letters in mono with an icon each would, so the bar under the current tab of each example is
- * as wide as the other.
+ * tab's box, and under the row the current tab's panel, so the panel of each example is another
+ * tab's. With `equal`, each tab takes an equal share of the row, as two labels of as many letters
+ * in mono with an icon each would, so the bar under the current tab of each example is as wide
+ * as the other. With `taller`, the first tab's panel has a line more than the second's.
  */
-async function tabsWithTheBarInTheList(page: Page, { equal = false } = {}) {
-  await page.evaluate((equal) => {
-    for (const list of document.querySelectorAll<HTMLElement>('.tabs__list')) {
-      Object.assign(list.style, { position: 'relative', padding: '4px' })
-      if (equal)
-        for (const tab of list.querySelectorAll<HTMLElement>('[data-slot="trigger"]'))
-          tab.style.flex = '1 1 0'
-      const bar = list.querySelector<HTMLElement>('[data-slot="indicator"]')!
-      const tab = bar.closest<HTMLElement>('[data-slot="trigger"]')!
-      list.append(bar)
-      Object.assign(bar.style, {
-        insetInline: 'auto',
-        left: `${tab.offsetLeft}px`,
-        width: `${tab.offsetWidth}px`,
-      })
-    }
-  }, equal)
+async function tabsWithTheBarInTheList(page: Page, { equal = false, taller = false } = {}) {
+  await page.evaluate(
+    ({ equal, taller }) => {
+      const panels = [
+        ['The overview of the event.', ...(taller ? ['Where it is, and when.'] : [])],
+        ['The settings of the event.'],
+      ]
+      for (const list of document.querySelectorAll<HTMLElement>('.tabs__list')) {
+        Object.assign(list.style, { position: 'relative', padding: '4px' })
+        const tabs = [...list.querySelectorAll<HTMLElement>('[data-slot="trigger"]')]
+        if (equal) for (const tab of tabs) tab.style.flex = '1 1 0'
+        const bar = list.querySelector<HTMLElement>('[data-slot="indicator"]')!
+        const tab = bar.closest<HTMLElement>('[data-slot="trigger"]')!
+        list.append(bar)
+        Object.assign(bar.style, {
+          insetInline: 'auto',
+          left: `${tab.offsetLeft}px`,
+          width: `${tab.offsetWidth}px`,
+        })
+        const panel = list.parentElement!.appendChild(document.createElement('div'))
+        panel.setAttribute('role', 'tabpanel')
+        panel.dataset.slot = 'content'
+        for (const line of panels[tabs.indexOf(tab)]!)
+          panel.appendChild(document.createElement('p')).textContent = line
+      }
+    },
+    { equal, taller },
+  )
 }
 
 for (const [tabs, equal] of [
   ['as wide as their labels', false],
   ['of one width', true],
 ] as const)
-  test(`a current tab whose bar is outside its box passes, and fails once forced colors hide it, with tabs ${tabs}`, async () => {
-    await tabsWithTheBarInTheList(page, { equal })
-    await expectSpec(page, fixture('tabs'), { implementation })
+  for (const [panels, taller] of [
+    ['of one height', false],
+    ['of two heights', true],
+  ] as const)
+    test(`a current tab whose bar is outside its box passes, and fails once forced colors hide it, with tabs ${tabs} and panels ${panels}`, async () => {
+      await tabsWithTheBarInTheList(page, { equal, taller })
+      await expectSpec(page, fixture('tabs'), { implementation })
 
-    await page.addStyleTag({
-      content: `@media (forced-colors: active) {
-        .tabs [data-slot='indicator'] {
-          forced-color-adjust: auto !important;
-          background-color: var(--ws-color-brand) !important;
-        }
-      }`,
+      await page.addStyleTag({
+        content: `@media (forced-colors: active) {
+          .tabs [data-slot='indicator'] {
+            forced-color-adjust: auto !important;
+            background-color: var(--ws-color-brand) !important;
+          }
+        }`,
+      })
+      const { failures } = await checkSpec(page, fixture('tabs'), { implementation })
+      expect(where(failures)).toEqual([
+        ['forced-colors', 'dark', 'tabs.link.current'],
+        ['forced-colors', 'light', 'tabs.link.current'],
+      ])
     })
-    const { failures } = await checkSpec(page, fixture('tabs'), { implementation })
-    expect(where(failures)).toEqual([
-      ['forced-colors', 'dark', 'tabs.link.current'],
-      ['forced-colors', 'light', 'tabs.link.current'],
-    ])
-  })

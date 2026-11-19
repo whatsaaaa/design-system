@@ -293,10 +293,12 @@ function edgesOf(expected: Expectation[], results: Measured[]): { part: string; 
 /**
  * In forced colors, each checked, indeterminate, current or selected example still looks unlike
  * the example of its kind and size at rest: an image of at least one part its state changes
- * differs. Where the state draws a part the example at rest does not, such as a checked box's
- * fill, or a part at another size or place than at rest, such as the bar under another tab, the
- * two examples are compared whole. They show the same content, as the gallery contract says, so
- * only the state can differ.
+ * differs. Of a part at another size or place than at rest, such as the bar under another tab,
+ * the closest elements around it in the two that are at one size and place are compared, such
+ * as the row of tabs, and not the panel under it, which is another tab's at rest. Where the state
+ * draws a part the example at rest does not, such as a checked box's fill, the two examples are
+ * compared whole. They show the same content, as the gallery contract says, so only the state
+ * can differ.
  */
 async function marksDiffer(
   page: Page,
@@ -326,18 +328,17 @@ async function marksDiffer(
     let compared = 0
     let differs = false
     let onlyMarked = false
-    let skipped = false
-    const compare = async (marked: Locator, resting: Locator) => {
+    const compare = async (marked: Locator, resting: Locator): Promise<void> => {
       const images = await Promise.all([marked, resting].map(shot))
       const alike = await page.evaluate(looksAlike, images)
-      // a part of another size, or at another place in its example, is not the same part in
-      // another state, such as the bar under another tab
-      if (alike === undefined) {
-        skipped = true
-        return
-      }
-      compared++
-      if (!alike) differs = true
+      if (alike !== undefined) {
+        compared++
+        if (!alike) differs = true
+      } else if (!images.some((image) => image.outermost))
+        // a part of another size, or at another place in its example, is not the same part in
+        // another state, such as the bar under another tab: the elements around the two are
+        // compared in its place
+        await compare(marked.locator('..'), resting.locator('..'))
     }
     for (const name of new Set(parts.length ? parts : ['root'])) {
       const [marked, resting] = [part(id, name), part(restId, name)]
@@ -345,7 +346,7 @@ async function marksDiffer(
       if (drawn && !drawnAtRest) onlyMarked = true
       if (drawn && drawnAtRest) await compare(marked, resting)
     }
-    if ((onlyMarked || skipped || !compared) && !differs) await compare(whole(id), whole(restId))
+    if ((onlyMarked || !compared) && !differs) await compare(whole(id), whole(restId))
     if (!compared)
       failures.push({
         id,
@@ -365,12 +366,14 @@ async function marksDiffer(
  * least half of. The image takes in every pixel the element touches, so of an element at a
  * fraction of a pixel and the same element at a whole one, only the first would take in a line
  * of its neighbor, such as the line under a row of a table: only the pixels it covers are
- * compared. With them, where the element is in its example, from the example's corner.
+ * compared. With them, where the element is in its example, from the example's corner, and
+ * whether it is the example itself, with nothing of the example around it.
  */
 interface Shot {
   png: string
   covered: { x: number; y: number; width: number; height: number }
   at: { x: number; y: number }
+  outermost: boolean
 }
 
 /** The image of an element, the pixels of it the element covers, and where it is in its example. */
@@ -381,19 +384,22 @@ async function shot(locator: Locator): Promise<Shot> {
   )
   const box = await locator.evaluate((element) => {
     const { left, top, right, bottom } = element.getBoundingClientRect()
-    const example = element.closest('[data-spec]')!.getBoundingClientRect()
+    const outer = element.closest('[data-spec]')!
+    const example = outer.getBoundingClientRect()
     return {
       left: left + scrollX,
       top: top + scrollY,
       right: right + scrollX,
       bottom: bottom + scrollY,
       at: { x: left - example.left, y: top - example.top },
+      outermost: element === outer,
     }
   })
   const [left, top] = [Math.round(box.left), Math.round(box.top)]
   return {
     png,
     at: box.at,
+    outermost: box.outermost,
     covered: {
       x: left - Math.floor(box.left),
       y: top - Math.floor(box.top),
