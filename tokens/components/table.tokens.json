@@ -1,0 +1,25 @@
+{
+  "table": {
+    "$description": "The table of records: the prose table and every implementation's. The head on the surface in the secondary text color, cells apart by the same padding, and a row that can be chosen raised under the pointer and in the selection color once chosen.",
+    "head": {
+      "$description": "The row of column names, on the surface, so it stands out from the rows on the page color.",
+      "bg": { "$type": "color", "$value": "{color.surface}" },
+      "text": { "$type": "color", "$value": "{color.text-secondary}" }
+    },
+    "row": {
+      "$description": "A row of the body: its text, and its fill under the pointer and once chosen. A row at rest has no fill of its own.",
+      "bg": {
+        "$type": "color",
+        "hover": { "$value": "{color.raised}" },
+        "selected": { "$value": "{color.selection}" }
+      },
+      "text": { "$type": "color", "$value": "{color.text}" }
+    },
+    "cell": {
+      "$type": "dimension",
+      "$description": "The room around the text of every cell, a head's too.",
+      "padding-inline": { "$value": "{space.16}" },
+      "padding-block": { "$value": "{space.10}" }
+    }
+  }
+}

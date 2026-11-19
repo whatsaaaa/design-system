@@ -35,6 +35,7 @@ const pseudoParts: Record<string, Record<string, string>> = {
   'radio-group': { required: 'legend::after' },
   select: { 'item-highlight': 'item::before' },
   'select-menu': { 'item-highlight': 'item::before' },
+  table: { 'loading-bar': 'thead::after' },
 }
 function fixture(name: string): Spec {
   const spec = loadSpec(name)
@@ -48,8 +49,8 @@ function fixture(name: string): Spec {
   }
 }
 
-async function gallery(browser: Browser) {
-  const context = await browser.newContext()
+async function gallery(browser: Browser, options: { deviceScaleFactor?: number } = {}) {
+  const context = await browser.newContext(options)
   await context.route(`${ORIGIN}/**`, (route) => {
     const file = files[new URL(route.request().url()).pathname]
     return file ? route.fulfill({ path: join(root, file) }) : route.fulfill({ status: 404 })
@@ -80,6 +81,8 @@ test('the specs it checks are the published ones', () => {
     'radio-group',
     'select',
     'select-menu',
+    'table',
+    'tabs',
   ])
   expect(loadSpec('button').component).toBe('button')
   expect(() => loadSpec('../package')).toThrow(/no spec named/)
@@ -96,6 +99,8 @@ const leastChecks: Record<string, number> = {
   'radio-group': 300,
   select: 1100,
   'select-menu': 1100,
+  table: 350,
+  tabs: 200,
 }
 
 for (const name of specNames()) {
@@ -117,6 +122,14 @@ test("the system's tag meets the badge spec as its primary and outline kinds at 
   const shown = ['badge.primary.rest', 'badge.outline.rest']
   expect(failures.filter(({ id }) => id && shown.includes(id))).toEqual([])
   expect(checks).toBeGreaterThan(90)
+})
+
+test('a gallery on a screen of two device pixels to a CSS pixel passes', async ({ browser }) => {
+  // the images of the forced-colors check in device pixels would be cut to their top-left quarter,
+  // without the bar along the current tab's foot
+  const { context, page } = await gallery(browser, { deviceScaleFactor: 2 })
+  for (const name of ['table', 'tabs']) await expectSpec(page, fixture(name), { implementation })
+  await context.close()
 })
 
 test('it reads the parts an implementation maps in the spec', async () => {
@@ -465,80 +478,117 @@ test('a checked box that loses its fill and its mark in forced colors fails', as
   )
 })
 
-test('a selected example that looks the same as the one at rest in forced colors fails', async () => {
-  // a spec with a selected state, which no published spec has yet
-  const tab: Spec = {
-    ...loadSpec('button'),
-    component: 'tab',
-    parts: { root: 'The tab, with its label.' },
-    variants: { default: 'The one kind.' },
-    sizes: { md: 'Every tab.' },
-    defaultSize: 'md',
-    states: { rest: 'Not chosen.', selected: 'The one shown.' },
-    stateTable: [
-      {
-        variant: '*',
-        state: 'rest',
-        part: 'root',
-        property: 'background-color',
-        token: 'field.bg',
-      },
-      { variant: '*', state: 'rest', part: 'root', property: 'color', token: 'color.text' },
-      {
-        variant: '*',
-        state: 'selected',
-        part: 'root',
-        property: 'background-color',
-        token: 'color.interactive',
-      },
-      { variant: '*', state: 'selected', part: 'root', property: 'color', token: 'color.bg' },
-    ],
-    implementations: {},
-    gallery: ['tab.default.rest', 'tab.default.selected'],
-  }
-  await page.evaluate(() =>
-    document.body.insertAdjacentHTML(
-      'beforeend',
-      `<section class="tabs">
-        <div data-spec="tab.default.rest"><span class="tab" data-slot="root">Overview</span></div>
-        <div data-spec="tab.default.selected">
-          <span class="tab" data-slot="root" aria-selected="true">Overview</span>
-        </div>
-      </section>`,
-    ),
-  )
-  // the selected tab half a pixel off the one at rest, so its label is drawn at another fraction
-  // of a pixel and its image is cut a pixel apart
+test('a selected row that looks the same as the one at rest in forced colors fails', async () => {
+  // the selected table half a pixel off the one at rest, so its text is drawn at another fraction
+  // of a pixel and its image is cut a pixel apart: it still passes
   await page.addStyleTag({
-    content: `.tabs { flex-direction: column; }
-    .tab {
-      display: block;
-      padding: 0.5rem 0.75rem;
-      background-color: var(--ws-field-bg);
-      color: var(--ws-color-text);
-      font-size: var(--ws-text-label-font-size);
-    }
-    .tab[aria-selected='true'] {
-      background-color: var(--ws-color-interactive);
-      color: var(--ws-color-bg);
-    }
-    [data-spec='tab.default.selected'] { margin-inline-start: 0.5px; }`,
+    content: `[data-spec='table.selectable.selected'] { margin-inline-start: 0.5px; }`,
   })
-  // forced colors paint every background in the page's color and every label in its text color,
-  // so the two look alike
-  expect(where((await checkSpec(page, tab)).failures)).toEqual([
-    ['forced-colors', 'dark', 'tab.default.selected'],
-    ['forced-colors', 'light', 'tab.default.selected'],
-  ])
+  await expectSpec(page, fixture('table'), { implementation })
 
+  // the chosen row drawn as ui-vue draws it: its fill only, with no checkbox, which forced colors
+  // paint in the page's color, as they paint every row
+  await page.addStyleTag({
+    content: `.table .table__check input { visibility: hidden; }
+    @media (forced-colors: active) {
+      .table tbody tr:has(input:checked) {
+        forced-color-adjust: auto !important;
+        background-color: var(--ws-table-row-bg-selected) !important;
+      }
+      .table tbody tr:has(input:checked) td { color: var(--ws-table-row-text) !important; }
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('table'), { implementation })
+  expect(where(failures)).toEqual([
+    ['forced-colors', 'dark', 'table.selectable.selected'],
+    ['forced-colors', 'light', 'table.selectable.selected'],
+  ])
+  expect(failures[0]!.message).toBe(
+    'table.selectable.selected looks the same as table.selectable.rest in forced colors: tr',
+  )
+})
+
+test('a current tab whose bar forced colors hide fails', async () => {
+  // the bar a fill of the brand color, which forced colors paint in the page's color
   await page.addStyleTag({
     content: `@media (forced-colors: active) {
-      .tab[aria-selected='true'] {
-        forced-color-adjust: none;
-        background-color: Highlight;
-        color: HighlightText;
+      .tabs [data-slot='indicator'] {
+        forced-color-adjust: auto !important;
+        background-color: var(--ws-color-brand) !important;
       }
     }`,
   })
-  await expectSpec(page, tab)
+  const { failures } = await checkSpec(page, 'tabs')
+  expect(where(failures)).toEqual([
+    ['forced-colors', 'dark', 'tabs.link.current'],
+    ['forced-colors', 'light', 'tabs.link.current'],
+  ])
+  expect(failures[0]!.message).toBe(
+    'tabs.link.current looks the same as tabs.link.rest in forced colors: trigger, indicator',
+  )
 })
+
+/**
+ * The tabs' gallery drawn as Nuxt UI draws its link tabs: one bar for the row, a child of the
+ * list under the current tab, on the row's line under a padded list, so the bar is outside the
+ * tab's box, and under the row the current tab's panel, so the panel of each example is another
+ * tab's. With `equal`, each tab takes an equal share of the row, as two labels of as many letters
+ * in mono with an icon each would, so the bar under the current tab of each example is as wide
+ * as the other. With `taller`, the first tab's panel has a line more than the second's.
+ */
+async function tabsWithTheBarInTheList(page: Page, { equal = false, taller = false } = {}) {
+  await page.evaluate(
+    ({ equal, taller }) => {
+      const panels = [
+        ['The overview of the event.', ...(taller ? ['Where it is, and when.'] : [])],
+        ['The settings of the event.'],
+      ]
+      for (const list of document.querySelectorAll<HTMLElement>('.tabs__list')) {
+        Object.assign(list.style, { position: 'relative', padding: '4px' })
+        const tabs = [...list.querySelectorAll<HTMLElement>('[data-slot="trigger"]')]
+        if (equal) for (const tab of tabs) tab.style.flex = '1 1 0'
+        const bar = list.querySelector<HTMLElement>('[data-slot="indicator"]')!
+        const tab = bar.closest<HTMLElement>('[data-slot="trigger"]')!
+        list.append(bar)
+        Object.assign(bar.style, {
+          insetInline: 'auto',
+          left: `${tab.offsetLeft}px`,
+          width: `${tab.offsetWidth}px`,
+        })
+        const panel = list.parentElement!.appendChild(document.createElement('div'))
+        panel.setAttribute('role', 'tabpanel')
+        panel.dataset.slot = 'content'
+        for (const line of panels[tabs.indexOf(tab)]!)
+          panel.appendChild(document.createElement('p')).textContent = line
+      }
+    },
+    { equal, taller },
+  )
+}
+
+for (const [tabs, equal] of [
+  ['as wide as their labels', false],
+  ['of one width', true],
+] as const)
+  for (const [panels, taller] of [
+    ['of one height', false],
+    ['of two heights', true],
+  ] as const)
+    test(`a current tab whose bar is outside its box passes, and fails once forced colors hide it, with tabs ${tabs} and panels ${panels}`, async () => {
+      await tabsWithTheBarInTheList(page, { equal, taller })
+      await expectSpec(page, fixture('tabs'), { implementation })
+
+      await page.addStyleTag({
+        content: `@media (forced-colors: active) {
+          .tabs [data-slot='indicator'] {
+            forced-color-adjust: auto !important;
+            background-color: var(--ws-color-brand) !important;
+          }
+        }`,
+      })
+      const { failures } = await checkSpec(page, fixture('tabs'), { implementation })
+      expect(where(failures)).toEqual([
+        ['forced-colors', 'dark', 'tabs.link.current'],
+        ['forced-colors', 'light', 'tabs.link.current'],
+      ])
+    })

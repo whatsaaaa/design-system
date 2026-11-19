@@ -1,9 +1,9 @@
 /*
  * A gallery of plain HTML that meets the badge, button, card, checkbox, input, modal, radio group,
- * select and select menu specs, as an implementation's would: every value from a component token
- * or a role, by name. A hover, a pressed state or the focus is drawn by the pointer or the
- * keyboard, or by data-demo on the example, as the gallery contract says. An open list or modal is
- * drawn in place.
+ * select, select menu, table and tabs specs, as an implementation's would: every value from a
+ * component token or a role, by name. A hover, a pressed state or the focus is drawn by the pointer
+ * or the keyboard, or by data-demo on the example, as the gallery contract says. An open list or
+ * modal is drawn in place.
  */
 body {
   margin: 0;
@@ -1198,4 +1198,239 @@ svg {
   column-gap: var(--ws-space-12);
   row-gap: var(--ws-space-12);
   padding: var(--card-padding-bar) var(--card-padding);
+}
+
+/* the table: a frame it scrolls in, the head on the surface, rows apart by lines */
+
+.table {
+  flex-basis: 100%;
+  overflow-x: auto;
+  border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-lg);
+  background-color: var(--ws-color-bg);
+}
+
+/* the frame's ring: a focus forced on a table whose rows can be chosen is a row's */
+.table:is(:focus-visible, [data-demo~='focus']:not(:has(.table__check))) {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: 3px;
+}
+
+.table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  position: relative;
+}
+
+.table :is(th, td) {
+  padding: var(--ws-table-cell-padding-block) var(--ws-table-cell-padding-inline);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table th {
+  border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+  background-color: var(--ws-table-head-bg);
+  color: var(--ws-table-head-text);
+  font-family: var(--ws-text-overline-font-family);
+  font-size: var(--ws-text-overline-font-size);
+  font-weight: var(--ws-text-overline-font-weight);
+  line-height: var(--ws-text-overline-line-height);
+  letter-spacing: var(--ws-text-overline-letter-spacing);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table td {
+  color: var(--ws-table-row-text);
+  font-family: var(--ws-text-body-sm-font-family);
+  font-size: var(--ws-text-body-sm-font-size);
+  line-height: var(--ws-text-body-sm-line-height);
+}
+
+/* the last row closes on the frame's edge */
+.table tbody tr:not(:last-child) {
+  border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+}
+
+/* an amount, and its column's name, at the end in figures of one width */
+.table .table__amount {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+/* a row that can be chosen, by the checkbox in its first cell: raised under the pointer, in the
+   selection color once chosen, with the line under it in the selection's own border color */
+.table .table__check {
+  width: 1px;
+}
+
+.table .table__check input {
+  margin: 0;
+  accent-color: var(--ws-color-interactive);
+  vertical-align: middle;
+}
+
+.table tbody tr:has(.table__check):not(:has(input:checked)):is(:hover, [data-demo~='hover'] *) {
+  background-color: var(--ws-table-row-bg-hover);
+}
+
+.table tbody tr:has(input:checked) {
+  border-block-end-color: var(--ws-color-selection-border);
+  background-color: var(--ws-table-row-bg-selected);
+}
+
+/* the ring inside the row while its checkbox has the focus, as the row fills the frame from edge
+   to edge */
+.table tbody tr:has(.table__check):is(:has(:focus-visible), [data-demo~='focus'] *) {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
+.table [aria-busy='true'] thead::after {
+  position: absolute;
+  z-index: 1;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: var(--ws-border-width-thin);
+  background-color: var(--ws-color-interactive);
+  content: '';
+}
+
+/* a chosen row keeps its mark when the system's colors replace the page's, and the loading line
+   takes the text color */
+@media (forced-colors: active) {
+  .table tbody tr:has(input:checked) {
+    forced-color-adjust: none;
+    background-color: Highlight;
+
+    & td {
+      color: HighlightText;
+    }
+  }
+
+  .table [aria-busy='true'] thead::after {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}
+
+/* the tabs: a row of labels over a line, the current one marked by a bar of the brand color */
+
+.tabs {
+  --tab-height: var(--ws-control-height-md);
+  --tab-padding: var(--ws-space-14);
+  --tab-gap: var(--ws-control-gap-md);
+  --tab-icon: var(--ws-control-icon-size-md);
+  --tab-font-size: var(--ws-text-label-font-size);
+
+  flex-basis: 100%;
+}
+
+.tabs[data-size='xs'] {
+  --tab-height: var(--ws-control-height-xs);
+  --tab-padding: var(--ws-space-8);
+  --tab-gap: var(--ws-control-gap-xs);
+  --tab-icon: var(--ws-control-icon-size-xs);
+  --tab-font-size: var(--ws-text-label-sm-font-size);
+}
+
+.tabs[data-size='sm'] {
+  --tab-height: var(--ws-control-height-sm);
+  --tab-padding: var(--ws-space-10);
+  --tab-gap: var(--ws-control-gap-sm);
+  --tab-icon: var(--ws-control-icon-size-sm);
+  --tab-font-size: var(--ws-text-label-sm-font-size);
+}
+
+.tabs[data-size='lg'] {
+  --tab-height: var(--ws-control-height-lg);
+  --tab-padding: var(--ws-space-16);
+  --tab-gap: var(--ws-control-gap-lg);
+  --tab-icon: var(--ws-control-icon-size-lg);
+}
+
+.tabs[data-size='xl'] {
+  --tab-height: var(--ws-control-height-xl);
+  --tab-padding: var(--ws-space-16);
+  --tab-gap: var(--ws-control-gap-xl);
+  --tab-icon: var(--ws-control-icon-size-xl);
+}
+
+/* a row that does not fit scrolls inside itself */
+.tabs__list {
+  display: flex;
+  overflow-x: auto;
+  border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
+}
+
+.tabs__trigger {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--tab-height);
+  padding-block: 0;
+  padding-inline: var(--tab-padding);
+  column-gap: var(--tab-gap);
+  border: 0;
+  background-color: transparent;
+  color: var(--ws-color-text-secondary);
+  font-family: var(--ws-text-label-font-family);
+  font-size: var(--tab-font-size);
+  font-weight: var(--ws-text-label-font-weight);
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
+}
+
+.tabs__trigger svg {
+  width: var(--tab-icon);
+  height: var(--tab-icon);
+}
+
+.tabs__trigger:enabled:not([aria-selected='true']):is(:hover, [data-demo~='hover'] *) {
+  color: var(--ws-color-text);
+}
+
+/* the ring inside the tab, as the frame draws it */
+.tabs__trigger:is(:focus-visible, [data-demo~='focus'] *) {
+  outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
+  outline-offset: calc(-1 * var(--ws-border-width-medium));
+}
+
+.tabs__trigger[aria-selected='true'] {
+  color: var(--ws-color-text);
+}
+
+.tabs__trigger:disabled {
+  color: var(--ws-color-text-faint);
+  cursor: not-allowed;
+}
+
+/* along the current tab's foot, over the row's line */
+.tabs [data-slot='indicator'] {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: var(--ws-border-width-medium);
+  background-color: var(--ws-color-brand);
+}
+
+/* the current tab keeps its bar when the system's colors replace the page's */
+@media (forced-colors: active) {
+  .tabs [data-slot='indicator'] {
+    forced-color-adjust: none;
+    background-color: Highlight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabs__trigger {
+    transition: none;
+  }
 }

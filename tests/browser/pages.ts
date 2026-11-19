@@ -29,6 +29,8 @@ export const PAGES = [
   { name: 'components-radio-group', path: '/components/radio-group', shots: 'desktop' },
   { name: 'components-select', path: '/components/select', shots: 'desktop' },
   { name: 'components-select-menu', path: '/components/select-menu', shots: 'desktop' },
+  { name: 'components-table', path: '/components/table', shots: 'desktop' },
+  { name: 'components-tabs', path: '/components/tabs', shots: 'desktop' },
   { name: 'docs-theme', path: '/docs/', shots: 'desktop' },
   { name: 'docs-usage', path: '/docs/usage', shots: 'none' },
   { name: 'docs-sample', path: '/docs/sample/conditions', shots: 'all' },

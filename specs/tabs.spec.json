@@ -1,0 +1,513 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "tabs",
+  "title": "Tabs",
+  "status": "draft",
+  "changed": "0.14.0",
+  "summary": "Views of one thing, a tab each, switched in place: a row of mono labels over a line, the frame's tabs in look, whose current tab is marked by a bar of the brand color.",
+  "use": [
+    "Views of one thing that a reader switches between in place, such as the overview, the settings and the history of one event."
+  ],
+  "notFor": [
+    "Moving between pages: that is the frame's tab bar, whose tabs are links.",
+    "A choice of one value from a few, such as a ticket or a view's density: that is a segmented control, which also stands in for Nuxt UI's pill tabs.",
+    "Steps of a task that follow each other: that is a form of steps."
+  ],
+  "parts": {
+    "root": "The tabs and the panel of the current one.",
+    "list": "The row of tabs, over a line along its foot.",
+    "trigger": "A tab: its label, and an icon before it.",
+    "indicator": "The bar of the brand color along the foot of the current tab, over the row's line.",
+    "leading-icon": "An icon before a tab's label.",
+    "label": "A tab's label.",
+    "content": "The panel of the current tab."
+  },
+  "variants": {
+    "link": "The one look: the frame's tabs, a row of labels over a line, the current one marked by a bar of the brand color, as the system marks where you are."
+  },
+  "sizes": {
+    "xs": "A dense bar, such as a panel's own tabs: 28 px tall, a small label.",
+    "sm": "A tight row: 32 px tall, a small label.",
+    "md": "Every row of tabs over a view: 40 px tall, the control height.",
+    "lg": "A larger row: 44 px tall.",
+    "xl": "The largest row: 48 px tall."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "A tab that is not the current one, nor under the pointer, focused or disabled.",
+    "hover": "The pointer is on a tab that is not the current one.",
+    "focus": "A tab has the keyboard's focus.",
+    "current": "The tab whose panel shows.",
+    "disabled": "A tab that cannot be chosen."
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "list",
+      "property": "border-block-end-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "list",
+      "property": "border-block-end-width",
+      "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "list",
+      "property": "border-block-end-color",
+      "token": "color.border"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "font-family",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "font-weight",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "trigger",
+      "property": "color",
+      "token": "color.text"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "trigger",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "trigger",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "trigger",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "trigger",
+      "property": "outline-offset",
+      "value": "calc(-1 * var(--ws-border-width-medium))"
+    },
+    {
+      "variant": "*",
+      "state": "current",
+      "part": "trigger",
+      "property": "color",
+      "token": "color.text"
+    },
+    {
+      "variant": "*",
+      "state": "current",
+      "part": "indicator",
+      "property": "background-color",
+      "token": "color.brand"
+    },
+    {
+      "variant": "*",
+      "state": "current",
+      "part": "indicator",
+      "property": "height",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "trigger",
+      "property": "color",
+      "token": "color.text-faint"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "height",
+      "size": "xs",
+      "token": "control.height.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "padding-inline",
+      "size": "xs",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "column-gap",
+      "size": "xs",
+      "token": "control.gap.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "height",
+      "size": "sm",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "padding-inline",
+      "size": "sm",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "column-gap",
+      "size": "sm",
+      "token": "control.gap.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "height",
+      "size": "md",
+      "token": "control.height.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "padding-inline",
+      "size": "md",
+      "token": "space.14"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "column-gap",
+      "size": "md",
+      "token": "control.gap.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "height",
+      "size": "lg",
+      "token": "control.height.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "padding-inline",
+      "size": "lg",
+      "token": "space.16"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "column-gap",
+      "size": "lg",
+      "token": "control.gap.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "height",
+      "size": "xl",
+      "token": "control.height.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "padding-inline",
+      "size": "xl",
+      "token": "space.16"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "column-gap",
+      "size": "xl",
+      "token": "control.gap.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "trigger",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "leading-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["ArrowLeft", "ArrowRight"],
+      "effect": "Moves the focus to the previous or the next tab, from the last back to the first, and shows its panel. A disabled tab is passed over."
+    },
+    {
+      "keys": ["Home", "End"],
+      "effect": "Moves the focus to the first or the last tab, and shows its panel."
+    },
+    {
+      "keys": ["Tab"],
+      "effect": "Moves the focus from the current tab into its panel, or to the panel itself when nothing in it takes the focus."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+    "rules": [
+      "The row is a `tablist`, named for what its tabs switch when the page has more than one row. Each tab is a `tab`, and the current one has `aria-selected` true; each panel is a `tabpanel`, named by its tab.",
+      "Only the current tab is in the page's tab order: the arrow keys move between the tabs.",
+      "A tab with only an icon has an accessible name. The icon before a label is hidden from assistive technology.",
+      "The current tab is marked by more than its color: the bar along its foot, which the frame's tab bar also draws."
+    ]
+  },
+  "forcedColors": [
+    "The current tab's bar takes the system's selection color, `Highlight`, kept as it is, as the frame's tab bar keeps its own: forced colors would paint a fill in the page's color, and every tab would look alike.",
+    "The line along the row's foot is a border, which forced colors keep. The focus ring is an outline, inside the tab. A disabled tab's label takes `GrayText`."
+  ],
+  "motion": [
+    "A label changes color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` it changes at once.",
+    "The bar slides to the new current tab in `motion.duration.base` with `motion.easing.standard`, only with `prefers-reduced-motion: no-preference`. With less motion it moves at once."
+  ],
+  "content": [
+    "A tab's label is a noun or two in sentence case, which names its view: Overview, Settings, History.",
+    "Keep the labels short, so the row fits; a row that does not fit scrolls inside itself and keeps every label whole."
+  ],
+  "notes": [
+    "Only the frame's look is specified. Nuxt UI's pill tabs, a bar whose current tab is raised, have no spec: a choice that looks like one is a segmented control, which the system draws, `ws-segmented`.",
+    "The tabs have no group of component tokens: each state of a tab is a role that names its use already, the secondary text color for idle navigation and the brand color for a marker of where you are, and its measures are the control's. The frame's tab bar draws its tabs from the same roles.",
+    "The frame's tab bar marks its current tab with a bar along its top, a fill and its sides, as a window's tab is drawn; a row of tabs inside a page has its bar along its foot, over the row's line, as a page has no window around it.",
+    "The icons are the control's at each size: 16 px up to md, 20 px at lg and xl.",
+    "Tabs stacked in a column, with the bar along their side, keep working in an implementation but are not specified.",
+    "An example's tabs are its own: the tab the helper measures is the first, so a gallery's current example makes its first tab the current one, and every other example another tab."
+  ],
+  "implementations": {
+    "ui-vue": {
+      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
+      "status": "shipped",
+      "parity": "none",
+      "components": ["UTabs"],
+      "today": "A row of mono labels over a line in the border color, the idle ones in the secondary text color and the current one in the text color with a 2 px bar of the brand color along its foot, the focus ring inside the tab and a disabled tab in the faint text color. The tabs are as tall as a control at each size, and a row that does not fit scrolls. In forced colors the current tab's bar, once lost, takes the selection color.",
+      "parts": {
+        "root": "root",
+        "list": "list",
+        "trigger": "trigger",
+        "indicator": "indicator",
+        "leading-icon": "leadingIcon",
+        "label": "label",
+        "content": "content"
+      },
+      "variants": {
+        "link": {
+          "variant": "link"
+        }
+      },
+      "sizes": {
+        "xs": {
+          "size": "xs"
+        },
+        "sm": {
+          "size": "sm"
+        },
+        "md": {
+          "size": "md"
+        },
+        "lg": {
+          "size": "lg"
+        },
+        "xl": {
+          "size": "xl"
+        }
+      },
+      "deviations": [
+        {
+          "summary": "Its icons are 14, 16, 16, 16 and 18 px from xs to xl, where the spec takes the control's, `control.icon-size.<size>`: 16 px up to md, 20 px at lg and xl."
+        },
+        {
+          "summary": "It reads the roles and measures by their Tailwind utilities, such as `h-10`, `px-3.5` and `text-text-secondary`, not the control tokens, such as `h-(--ws-control-height-md)`, so a change of the tier does not reach it."
+        },
+        {
+          "summary": "Its tabs are pills unless `variant=\"link\"` is set, as in Nuxt UI, where the spec's one look is the link."
+        },
+        {
+          "summary": "Its gallery marks no example with `data-spec`, and shows the hover, the disabled tab and the sizes on pill tabs only, where the spec's examples are link tabs."
+        }
+      ],
+      "beyond": [
+        "The pill tabs, tabs stacked in a column, the status colors, and an avatar or a badge in a tab."
+      ]
+    },
+    "ui-react": {
+      "library": "shadcn/ui on Radix",
+      "status": "planned",
+      "parity": "none"
+    }
+  },
+  "gallery": [
+    "tabs.link.rest",
+    "tabs.link.hover",
+    "tabs.link.focus",
+    "tabs.link.current",
+    "tabs.link.disabled",
+    "tabs.link.rest.xs",
+    "tabs.link.rest.sm",
+    "tabs.link.rest.lg",
+    "tabs.link.rest.xl"
+  ]
+}
