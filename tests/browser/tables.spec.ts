@@ -179,3 +179,39 @@ test.describe('tables in a desktop window', () => {
     })
   }
 })
+
+test.describe('a sum in the table of sizes', () => {
+  /** The row of a sum, by a term it names: its label's lines, and what each size's cell holds. */
+  const sumRow = async (page: import('@playwright/test').Page, path: string, term: string) => {
+    await open(page, path)
+    return page
+      .locator('h2:has-text("Sizes") ~ .ws-table tbody tr', { hasText: term })
+      .first()
+      .evaluate((row: HTMLTableRowElement) => {
+        const text = (element: Element) => element.textContent!.replace(/\s+/g, ' ').trim()
+        const [label, ...sizes] = [...row.cells]
+        return {
+          uses: [...label!.querySelectorAll('.use')].map(text),
+          cells: sizes.map((cell) => [...cell.children].map((child) => child.className)),
+        }
+      })
+  }
+
+  test("names what each size adds in its cell, and the row's terms after plus", async ({
+    page,
+  }) => {
+    const { uses, cells } = await sumRow(page, '/components/input', 'control.icon-size.')
+    expect(uses[0]).toBe('plus control.icon-size.<size> and control.gap.<size>')
+    for (const cell of cells) expect(cell).toEqual(['value', 'use'])
+  })
+
+  test('with nothing of a size its own, names the terms alone and its cells their totals', async ({
+    page,
+  }) => {
+    const { uses, cells } = await sumRow(page, '/components/badge', 'tag.outline.padding-block.')
+    // the outlined tag's padding inside its edge: the padding of its size, less the edge
+    expect(uses.slice(0, 2)).toEqual(['tag.outline.padding-block.<size>', 'less border-width.thin'])
+    expect(cells).toHaveLength(5)
+    for (const cell of cells) expect(cell).toEqual(['value'])
+  })
+})

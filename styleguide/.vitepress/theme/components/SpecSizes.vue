@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { data } from '../../data/specs.data.ts'
+import { type SizeRow, data } from '../../data/specs.data.ts'
 import InlineCode from './InlineCode.vue'
 import SpecToken from './SpecToken.vue'
 
@@ -14,6 +14,8 @@ const sizes = computed(() => Object.keys(spec.value.sizes) as (keyof typeof spec
 /** A token as two halves a line can break between: `control.border-width.` and `invalid`. */
 const head = (word: string) => word.slice(0, word.lastIndexOf('.') + 1)
 const tail = (word: string) => word.slice(word.lastIndexOf('.') + 1)
+/** Whether a sum has terms of each size's own, which its cells name before the row's. */
+const owns = (row: SizeRow) => Object.values(row.sum!.own).some((terms) => terms!.length)
 /** The kinds a row holds for, the shorter way: `primary, secondary` or `not quiet`. */
 function kinds(variants: string[]) {
   const others = Object.keys(spec.value.variants).filter((kind) => !variants.includes(kind))
@@ -56,9 +58,9 @@ function kinds(variants: string[]) {
                 tail(row.pattern)
               }}</span></span
             >
-            <!-- a sum: the tokens of each cell, then these -->
+            <!-- a sum: the tokens of each cell, then these, or these alone where no cell has any -->
             <span v-if="row.sum?.plus.length" class="use">
-              plus
+              {{ owns(row) ? 'plus' : '' }}
               <template v-for="(term, index) in row.sum.plus" :key="term">
                 {{ index ? ' and ' : '' }}<span class="pattern">{{ head(term) }}</span><wbr /><span
                   class="pattern"
@@ -85,7 +87,9 @@ function kinds(variants: string[]) {
           <td v-for="size in sizes" :key="size">
             <template v-if="row.cells[size]">
               <span class="value">{{ row.cells[size].dark.text }}</span>
-              <span v-if="row.sum" class="use">{{ row.sum.own[size]!.join(' + ') }}</span>
+              <template v-if="row.sum">
+                <span v-if="owns(row)" class="use">{{ row.sum.own[size]!.join(' + ') }}</span>
+              </template>
               <SpecToken
                 v-else-if="!row.pattern || row.cells[size].token === undefined"
                 :cell="row.cells[size]"
