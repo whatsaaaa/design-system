@@ -24,7 +24,7 @@
   },
   "variants": {
     "plain": "Records to read: no row is chosen.",
-    "selectable": "Records to choose from: a row is chosen by a click, Enter or Space, and chosen again to let it go."
+    "selectable": "Records to choose from: a row is chosen by the checkbox in its first cell, and let go by it again, and a checkbox in the head chooses every row or lets them all go."
   },
   "sizes": {
     "md": "Every table: the cells of the prose table, in small body text."
@@ -33,7 +33,7 @@
   "states": {
     "rest": "Its rows are there, none under the pointer, chosen or with the focus.",
     "hover": "The pointer is on a row that can be chosen.",
-    "focus": "The keyboard's focus is on the frame of a table that scrolls, or on a row that can be chosen.",
+    "focus": "The keyboard's focus is on the frame of a table that scrolls, or on the checkbox of a row that can be chosen.",
     "selected": "A row is chosen.",
     "loading": "Its rows are on their way: the table shows those it has, or none."
   },
@@ -315,11 +315,11 @@
   "keyboard": [
     {
       "keys": ["Tab", "Shift+Tab"],
-      "effect": "Moves the focus to the next or the previous row that can be chosen, and to the frame of a table that scrolls."
+      "effect": "Moves the focus to the next or the previous checkbox, the head's and then each row's, and to the frame of a table that scrolls. A row is not a stop of its own."
     },
     {
-      "keys": ["Enter", "Space"],
-      "effect": "Chooses the row with the focus, or lets it go when it is chosen."
+      "keys": ["Space"],
+      "effect": "Checks or clears the checkbox with the focus: chooses its row or lets it go, or, in the head, chooses every row or lets them all go."
     },
     {
       "keys": ["ArrowLeft", "ArrowRight"],
@@ -331,7 +331,7 @@
     "rules": [
       "A table of records is a `table` with its column names in `th` cells, so assistive technology reads a cell with the name of its column.",
       "A table that is wider than its frame can take the focus as its frame, so a keyboard can scroll it.",
-      "A row that can be chosen says whether it is to assistive technology, not only by its color: a checkbox in its first cell, named for the row, or a `grid` whose rows take `aria-selected`.",
+      "A table whose rows can be chosen is still a `table`, not a `grid`: a checkbox in each row's first cell, named for the row, says to assistive technology whether the row is chosen, not only its color, and a checkbox in the head chooses every row. The rows take no `aria-selected`.",
       "A table whose rows are on their way says so: `aria-busy` on the table while it loads."
     ]
   },
@@ -354,7 +354,7 @@
     "The prose table reads the head's colors and the cells' padding from the same tokens, `--ws-table-head-bg`, `--ws-table-head-text`, `--ws-table-cell-padding-inline` and `--ws-table-cell-padding-block`. It draws no rows to choose and no loading line, and lies on whatever is under it.",
     "The edge of the frame and the lines are `color.border`, which is decorative and has no contrast bar: the head's case and the column of each cell carry the shape, and forced colors keep the lines. The last row has no line under it, where the frame's edge closes the table.",
     "A row under the pointer is raised, as everything under the pointer is in the system, and a chosen row takes the selection color, the background of selected text, so the two stand apart in both themes. The text of a row keeps its color on both, at 4.5:1 or more.",
-    "The focus ring of a row is drawn inside it, as a tab's is in the frame: a row fills its frame from edge to edge, which would clip a ring outside it.",
+    "The focus ring of a row is drawn inside it while its checkbox has the focus, as a tab's is in the frame: a row fills its frame from edge to edge, which would clip a ring outside it.",
     "An example's rows are its own: the row the helper measures is the first of the body, so a gallery's selected example chooses its first row, and its example at rest chooses none."
   ],
   "implementations": {
@@ -397,7 +397,7 @@
           "summary": "The line under the head is Nuxt UI's separator, a row of its own filled with the border color, which forced colors paint in the page's color, where the spec draws it as the head's border."
         },
         {
-          "summary": "A chosen row says nothing of it to assistive technology: Nuxt UI marks it with `data-selected` only, with no `aria-selected` and no checkbox in the row."
+          "summary": "A row that can be chosen is chosen by the keyboard on the row, and a chosen row says nothing of it to assistive technology: Nuxt UI makes each such row a stop of the tab order that Enter and Space choose, and marks a chosen row with `data-selected` only, with no `aria-selected`. Its gallery has no column of checkboxes, where the spec chooses a row by the checkbox in its first cell."
         },
         {
           "summary": "Nuxt UI gives an amount no slot of its own: its gallery has to draw each amount in an element with `data-slot=\"amount\"`, inside a cell set `text-end tabular-nums`, which takes the cell's alignment and figures, and it does not yet."

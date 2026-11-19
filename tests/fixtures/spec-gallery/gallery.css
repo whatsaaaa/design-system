@@ -1261,21 +1261,29 @@ svg {
   text-align: end;
 }
 
-/* a row that can be chosen: raised under the pointer, in the selection color once chosen */
-.table tr[tabindex] {
-  cursor: pointer;
+/* a row that can be chosen, by the checkbox in its first cell: raised under the pointer, in the
+   selection color once chosen */
+.table .table__check {
+  width: 1px;
 }
 
-.table tr[tabindex]:not([aria-selected='true']):is(:hover, [data-demo~='hover'] *) {
+.table .table__check input {
+  margin: 0;
+  accent-color: var(--ws-color-interactive);
+  vertical-align: middle;
+}
+
+.table tbody tr:has(.table__check):not(:has(input:checked)):is(:hover, [data-demo~='hover'] *) {
   background-color: var(--ws-table-row-bg-hover);
 }
 
-.table tr[aria-selected='true'] {
+.table tbody tr:has(input:checked) {
   background-color: var(--ws-table-row-bg-selected);
 }
 
-/* the ring inside the row, which fills the frame from edge to edge */
-.table tr[tabindex]:is(:focus-visible, [data-demo~='focus'] *) {
+/* the ring inside the row while its checkbox has the focus, as the row fills the frame from edge
+   to edge */
+.table tbody tr:has(.table__check):is(:has(:focus-visible), [data-demo~='focus'] *) {
   outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
   outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
@@ -1293,7 +1301,7 @@ svg {
 /* a chosen row keeps its mark when the system's colors replace the page's, and the loading line
    takes the text color */
 @media (forced-colors: active) {
-  .table tr[aria-selected='true'] {
+  .table tbody tr:has(input:checked) {
     forced-color-adjust: none;
     background-color: Highlight;
 

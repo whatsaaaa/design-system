@@ -49,8 +49,8 @@ function fixture(name: string): Spec {
   }
 }
 
-async function gallery(browser: Browser) {
-  const context = await browser.newContext()
+async function gallery(browser: Browser, options: { deviceScaleFactor?: number } = {}) {
+  const context = await browser.newContext(options)
   await context.route(`${ORIGIN}/**`, (route) => {
     const file = files[new URL(route.request().url()).pathname]
     return file ? route.fulfill({ path: join(root, file) }) : route.fulfill({ status: 404 })
@@ -122,6 +122,14 @@ test("the system's tag meets the badge spec as its primary and outline kinds at 
   const shown = ['badge.primary.rest', 'badge.outline.rest']
   expect(failures.filter(({ id }) => id && shown.includes(id))).toEqual([])
   expect(checks).toBeGreaterThan(90)
+})
+
+test('a gallery on a screen of two device pixels to a CSS pixel passes', async ({ browser }) => {
+  // the images of the forced-colors check in device pixels would be cut to their top-left quarter,
+  // without the bar along the current tab's foot
+  const { context, page } = await gallery(browser, { deviceScaleFactor: 2 })
+  for (const name of ['table', 'tabs']) await expectSpec(page, fixture(name), { implementation })
+  await context.close()
 })
 
 test('it reads the parts an implementation maps in the spec', async () => {
@@ -478,15 +486,16 @@ test('a selected row that looks the same as the one at rest in forced colors fai
   })
   await expectSpec(page, fixture('table'), { implementation })
 
-  // the chosen row drawn as ui-vue draws it: its fill only, which forced colors paint in the
-  // page's color, as they paint every row
+  // the chosen row drawn as ui-vue draws it: its fill only, with no checkbox, which forced colors
+  // paint in the page's color, as they paint every row
   await page.addStyleTag({
-    content: `@media (forced-colors: active) {
-      .table tr[aria-selected='true'] {
+    content: `.table .table__check input { visibility: hidden; }
+    @media (forced-colors: active) {
+      .table tbody tr:has(input:checked) {
         forced-color-adjust: auto !important;
         background-color: var(--ws-table-row-bg-selected) !important;
       }
-      .table tr[aria-selected='true'] td { color: var(--ws-table-row-text) !important; }
+      .table tbody tr:has(input:checked) td { color: var(--ws-table-row-text) !important; }
     }`,
   })
   const { failures } = await checkSpec(page, fixture('table'), { implementation })
@@ -517,4 +526,44 @@ test('a current tab whose bar forced colors hide fails', async () => {
   expect(failures[0]!.message).toBe(
     'tabs.link.current looks the same as tabs.link.rest in forced colors: trigger, indicator',
   )
+})
+
+/**
+ * The tabs' gallery drawn as Nuxt UI draws its link tabs: one bar for the row, a child of the
+ * list under the current tab, on the row's line under a padded list, so the bar is outside the
+ * tab's box.
+ */
+async function tabsWithTheBarInTheList(page: Page) {
+  await page.evaluate(() => {
+    for (const list of document.querySelectorAll<HTMLElement>('.tabs__list')) {
+      Object.assign(list.style, { position: 'relative', padding: '4px' })
+      const bar = list.querySelector<HTMLElement>('[data-slot="indicator"]')!
+      const tab = bar.closest<HTMLElement>('[data-slot="trigger"]')!
+      list.append(bar)
+      Object.assign(bar.style, {
+        insetInline: 'auto',
+        left: `${tab.offsetLeft}px`,
+        width: `${tab.offsetWidth}px`,
+      })
+    }
+  })
+}
+
+test('a current tab whose bar is outside its box passes, and fails once forced colors hide it', async () => {
+  await tabsWithTheBarInTheList(page)
+  await expectSpec(page, fixture('tabs'), { implementation })
+
+  await page.addStyleTag({
+    content: `@media (forced-colors: active) {
+      .tabs [data-slot='indicator'] {
+        forced-color-adjust: auto !important;
+        background-color: var(--ws-color-brand) !important;
+      }
+    }`,
+  })
+  const { failures } = await checkSpec(page, fixture('tabs'), { implementation })
+  expect(where(failures)).toEqual([
+    ['forced-colors', 'dark', 'tabs.link.current'],
+    ['forced-colors', 'light', 'tabs.link.current'],
+  ])
 })

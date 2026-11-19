@@ -294,8 +294,9 @@ function edgesOf(expected: Expectation[], results: Measured[]): { part: string; 
  * In forced colors, each checked, indeterminate, current or selected example still looks unlike
  * the example of its kind and size at rest: an image of at least one part its state changes
  * differs. Where the state draws a part the example at rest does not, such as a checked box's
- * fill, or no part at the size it has at rest, the two examples are compared whole. They show the
- * same content, as the gallery contract says, so only the state can differ.
+ * fill, or a part at another size than at rest, such as the bar under another tab, the two
+ * examples are compared whole. They show the same content, as the gallery contract says, so only
+ * the state can differ.
  */
 async function marksDiffer(
   page: Page,
@@ -325,12 +326,16 @@ async function marksDiffer(
     let compared = 0
     let differs = false
     let onlyMarked = false
+    let skipped = false
     const compare = async (marked: Locator, resting: Locator) => {
       const images = await Promise.all([marked, resting].map(shot))
       const alike = await page.evaluate(looksAlike, images)
       // a part of another size is not the same part in another state, such as the bar under
       // another tab
-      if (alike === undefined) return
+      if (alike === undefined) {
+        skipped = true
+        return
+      }
       compared++
       if (!alike) differs = true
     }
@@ -340,7 +345,7 @@ async function marksDiffer(
       if (drawn && !drawnAtRest) onlyMarked = true
       if (drawn && drawnAtRest) await compare(marked, resting)
     }
-    if ((onlyMarked || !compared) && !differs) await compare(whole(id), whole(restId))
+    if ((onlyMarked || skipped || !compared) && !differs) await compare(whole(id), whole(restId))
     if (!compared)
       failures.push({
         id,
@@ -369,7 +374,10 @@ interface Shot {
 
 /** The image of an element, and the pixels of it the element covers at least half of. */
 async function shot(locator: Locator): Promise<Shot> {
-  const png = (await locator.screenshot({ animations: 'disabled' })).toString('base64')
+  // in CSS pixels, as the box is, whatever the device's pixel ratio
+  const png = (await locator.screenshot({ animations: 'disabled', scale: 'css' })).toString(
+    'base64',
+  )
   const box = await locator.evaluate((element) => {
     const { left, top, right, bottom } = element.getBoundingClientRect()
     return {
@@ -405,14 +413,7 @@ async function looksAlike(images: Shot[]): Promise<boolean | undefined> {
     const bytes = Uint8Array.from(atob(png), (char) => char.charCodeAt(0))
     const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }))
     // the pixels the element covers, where the image is of every pixel it touches
-    const fits =
-      covered.x + covered.width <= bitmap.width && covered.y + covered.height <= bitmap.height
-    const {
-      x: left,
-      y: top,
-      width,
-      height,
-    } = fits ? covered : { x: 0, y: 0, width: bitmap.width, height: bitmap.height }
+    const { x: left, y: top, width, height } = covered
     const context = new OffscreenCanvas(width, height).getContext('2d')!
     context.drawImage(bitmap, left, top, width, height, 0, 0, width, height)
     const { data } = context.getImageData(0, 0, width, height)

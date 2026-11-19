@@ -16,9 +16,9 @@
       A disabled checkbox shows twice: unchecked, and checked with its fill. A badge in the success
       and the outline kinds shows twice, with an icon and without one, and a card twice, whole and
       with only its body. An open list and an open modal are drawn in place, inside their
-      examples. A table's selected example chooses its first row, and a row of tabs' current
-      example makes its first tab the current one. The last fields and a badge are in a part of
-      the page held in the light theme.
+      examples. A table's selected example checks its first row's checkbox, and a row of tabs'
+      current example makes its first tab the current one. The last fields and a badge are in a
+      part of the page held in the light theme.
     -->
     <section>
       <h2>primary</h2>
@@ -2895,26 +2895,38 @@
         </table>
       </div>
       <div class="table" data-spec="table.selectable.rest" data-slot="root">
-        <table aria-label="Registrations" role="grid">
+        <table aria-label="Registrations">
           <thead data-slot="thead">
             <tr>
+              <th scope="col" class="table__check" data-slot="th">
+                <input type="checkbox" aria-label="Choose every registration" />
+              </th>
               <th scope="col" data-slot="th">Full name</th>
               <th scope="col" data-slot="th">Ticket</th>
               <th scope="col" class="table__amount" data-slot="th">Fee</th>
             </tr>
           </thead>
           <tbody>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Maya Collins" />
+              </td>
               <td data-slot="td">Maya Collins</td>
               <td data-slot="td">All three days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Daniel Brooks" />
+              </td>
               <td data-slot="td">Daniel Brooks</td>
               <td data-slot="td">Two days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Priya Shah" />
+              </td>
               <td data-slot="td">Priya Shah</td>
               <td data-slot="td">One day</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
@@ -2923,26 +2935,38 @@
         </table>
       </div>
       <div class="table" data-spec="table.selectable.hover" data-slot="root">
-        <table aria-label="Registrations" role="grid">
+        <table aria-label="Registrations">
           <thead data-slot="thead">
             <tr>
+              <th scope="col" class="table__check" data-slot="th">
+                <input type="checkbox" aria-label="Choose every registration" />
+              </th>
               <th scope="col" data-slot="th">Full name</th>
               <th scope="col" data-slot="th">Ticket</th>
               <th scope="col" class="table__amount" data-slot="th">Fee</th>
             </tr>
           </thead>
           <tbody>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Maya Collins" />
+              </td>
               <td data-slot="td">Maya Collins</td>
               <td data-slot="td">All three days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Daniel Brooks" />
+              </td>
               <td data-slot="td">Daniel Brooks</td>
               <td data-slot="td">Two days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Priya Shah" />
+              </td>
               <td data-slot="td">Priya Shah</td>
               <td data-slot="td">One day</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
@@ -2951,26 +2975,38 @@
         </table>
       </div>
       <div class="table" data-spec="table.selectable.focus" data-slot="root">
-        <table aria-label="Registrations" role="grid">
+        <table aria-label="Registrations">
           <thead data-slot="thead">
             <tr>
+              <th scope="col" class="table__check" data-slot="th">
+                <input type="checkbox" aria-label="Choose every registration" />
+              </th>
               <th scope="col" data-slot="th">Full name</th>
               <th scope="col" data-slot="th">Ticket</th>
               <th scope="col" class="table__amount" data-slot="th">Fee</th>
             </tr>
           </thead>
           <tbody>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Maya Collins" />
+              </td>
               <td data-slot="td">Maya Collins</td>
               <td data-slot="td">All three days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Daniel Brooks" />
+              </td>
               <td data-slot="td">Daniel Brooks</td>
               <td data-slot="td">Two days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Priya Shah" />
+              </td>
               <td data-slot="td">Priya Shah</td>
               <td data-slot="td">One day</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
@@ -2979,26 +3015,38 @@
         </table>
       </div>
       <div class="table" data-spec="table.selectable.selected" data-slot="root">
-        <table aria-label="Registrations" role="grid">
+        <table aria-label="Registrations">
           <thead data-slot="thead">
             <tr>
+              <th scope="col" class="table__check" data-slot="th">
+                <input type="checkbox" aria-label="Choose every registration" />
+              </th>
               <th scope="col" data-slot="th">Full name</th>
               <th scope="col" data-slot="th">Ticket</th>
               <th scope="col" class="table__amount" data-slot="th">Fee</th>
             </tr>
           </thead>
           <tbody>
-            <tr data-slot="tr" tabindex="0" aria-selected="true">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Maya Collins" checked />
+              </td>
               <td data-slot="td">Maya Collins</td>
               <td data-slot="td">All three days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€420.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Daniel Brooks" />
+              </td>
               <td data-slot="td">Daniel Brooks</td>
               <td data-slot="td">Two days</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€320.00</span></td>
             </tr>
-            <tr data-slot="tr" tabindex="0" aria-selected="false">
+            <tr data-slot="tr">
+              <td class="table__check" data-slot="td">
+                <input type="checkbox" aria-label="Choose Priya Shah" />
+              </td>
               <td data-slot="td">Priya Shah</td>
               <td data-slot="td">One day</td>
               <td class="table__amount" data-slot="td"><span data-slot="amount">€180.00</span></td>
