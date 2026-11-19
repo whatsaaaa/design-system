@@ -1,7 +1,0 @@
----
-'@whatsaaaa/design-system': minor
----
-
-Two more component specs, both drafts: `badge` and `card`, each with its page in the style guide. A badge is the system's tag, a short word next to what it describes, in Nuxt UI's five sizes: on a tint in `primary`, the tag, and in `success`, `info`, `warning`, `danger` and `neutral`, or outlined, the kinds in use. A card is a panel on the surface in an edge of the border color with the large radius, an optional header with its title and description, a body and an optional footer of actions, its parts apart by a line. Their implementations record what ui-vue draws today and where it does not meet them yet, such as an outlined badge drawn as a ring in the padding of a tint, and a card's title that is no heading.
-
-The component tier gains the `tag` group: the fill and the word of each kind on a tint, `--ws-tag-<kind>-bg` and `--ws-tag-<kind>-text`, the word of the outlined one, `--ws-tag-outline-text`, the radius `--ws-tag-radius`, and at each size the padding of a tag on a tint, `--ws-tag-padding-inline-<size>` and `--ws-tag-padding-block-<size>`, which an xs tag does not have, and of an outlined one, `--ws-tag-outline-padding-inline-<size>` and `--ws-tag-outline-padding-block-<size>`. Every pair of its colors reaches 4.5:1 in both themes. `.ws-tag` and `.ws-tag--outline` read it, and look as they did; a `.ws-tag` takes a gap of `space.6` for an icon beside its word. A card names its roles directly and has no group.
