@@ -349,7 +349,7 @@ async function marksDiffer(
     if (!compared)
       failures.push({
         id,
-        message: `${id} and ${restId} do not both draw ${parts.join(', ')} at one size and place`,
+        message: `${id} and ${restId} do not both draw ${[...new Set(parts)].join(', ')} at one size and place`,
       })
     else if (!differs)
       failures.push({
