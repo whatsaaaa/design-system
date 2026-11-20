@@ -268,8 +268,11 @@ test.describe('a mask icon in forced colors', () => {
   /** The window between the widths at which the docs theme has its links out in the bar and a phone. */
   const LAPTOP = { width: 1024, height: 800 }
 
-  /** The menu behind the three dots, open as under the pointer. */
-  const flyout = (page: Page) => page.locator('.VPNavBarExtra').hover()
+  /** The menu behind the three dots, open as under the pointer, once it has faded in. */
+  const flyout = async (page: Page) => {
+    await page.locator('.VPNavBarExtra').hover()
+    await expect(page.locator('.VPNavBarExtra > .menu')).toHaveCSS('opacity', '1')
+  }
 
   /** The phone's menu, open. */
   const menu = (page: Page) => page.locator('.VPNavBarHamburger').click()
