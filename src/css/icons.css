@@ -15,7 +15,7 @@
  * In forced colors the browser paints every fill in the page's color, the fill under a mask
  * too, so an icon would be gone. Each one is given the system's color of the text it stands
  * with: CanvasText in running text, LinkText and VisitedText in a link, ButtonText in a
- * button, GrayText where its control is disabled.
+ * button, GrayText where its control is disabled, HighlightText on a fill of Highlight.
  *
  *   @media (forced-colors: active) {
  *     .done::before {
