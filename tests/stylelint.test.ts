@@ -105,6 +105,7 @@ describe('the stylelint entry', () => {
 
   it('lets nothing but Tailwind CSS through with them: a query, a & and a declaration that are not valid CSS fail, once each', () => {
     expect(lint('tailwind-stray.css', tailwind)).toEqual([
+      '12 media-query-no-invalid',
       '2 media-query-no-invalid',
       '3 nesting-selector-no-missing-scoping-root',
       '8 media-query-no-invalid',

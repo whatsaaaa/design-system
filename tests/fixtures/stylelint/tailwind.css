@@ -57,3 +57,9 @@
     padding: --spacing(6);
   }
 }
+
+@media (width >= --theme(--breakpoint-xl)) {
+  .card {
+    padding: --spacing(8);
+  }
+}

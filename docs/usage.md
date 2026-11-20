@@ -156,7 +156,7 @@ export default {
 }
 ```
 
-A project on Tailwind CSS adds Tailwind's at-rules and functions, which `stylelint-config-standard` does not know. These are all of Tailwind CSS v4's. The token rules stay as they are, so a color in `@theme` or in a utility is still held to them:
+A project on Tailwind CSS adds Tailwind's at-rules and functions, which `stylelint-config-standard` does not know. The at-rules are all of Tailwind CSS v4's. The token rules stay as they are, so a color in `@theme` or in a utility is still held to them:
 
 ```js
 // stylelint.config.js
@@ -187,16 +187,18 @@ export default {
     ],
     // a declaration in an at-rule nested in a utility, such as @media or @supports
     'no-invalid-position-declaration': [true, { ignoreAtRules: ['utility'] }],
-    // --spacing(), --alpha() and theme() in a value
+    // --spacing(), --alpha(), theme() and --theme() in a value
     'declaration-property-value-no-unknown': [
       true,
       { ignoreProperties: { '/.+/': String.raw`/--(spacing|alpha)\(|theme\(/` } },
     ],
-    // theme() in a media query
-    'media-query-no-invalid': [true, { ignoreFunctions: ['theme'] }],
+    // theme() and --theme() in a media query
+    'media-query-no-invalid': [true, { ignoreFunctions: ['theme', '--theme'] }],
   },
 }
 ```
+
+These lines do not cover every form Tailwind takes. Of its functions, `--spacing()` and `--alpha()` lint, and `theme()` and `--theme()` lint with a variable name, as `theme(--breakpoint-xl)`, in a value and in a media query. That is the form Tailwind's upgrade guide asks for. A dotted path with a name in it does not lint, as it is no valid CSS value to stylelint: `theme(colors.red.500)` fails `value-no-invalid`. Nor does a camelCase key: `theme(lineHeight.6)` fails `value-keyword-case`, and `--fix` rewrites it to `lineheight.6`, a key Tailwind does not have. Only a path of a lower-case key and numbers passes, as `theme(spacing.4)`. Write the variable name in place of a path. A `theme()` or `--theme()` of a variable that the same file's `@theme` declares fails `custom-property-no-missing-var-function`: write `var()` there, as Tailwind recommends.
 
 ## 3. Theme
 
