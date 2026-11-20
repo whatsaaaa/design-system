@@ -3,7 +3,6 @@
   "component": "input",
   "title": "Input",
   "status": "draft",
-  "changed": "0.11.1",
   "summary": "One line of text, in a field with its label above it and its help or its error under it: the value in Inter, an edge in the field border, the control height.",
   "use": [
     "One line of text: a name, an email address, a number, a date typed out.",
@@ -1031,81 +1030,10 @@
   ],
   "notes": [
     "Read-only is not specced: a value that cannot be changed, as on a review step, is shown as a term and its value, with `ws-pairs`.",
-    "Nuxt UI's hint, beside the label, is not part of the spec: hints go under the field, as its help.",
+    "A hint beside the label is not part of the spec: hints go under the field, as its help.",
     "The value starts past an icon by the field's padding, the icon and the control's gap, so the padding on the side of an icon is the three together, as the rows with that icon say.",
     "The value and the icons keep their place when the edge widens: an invalid field's padding is its padding at rest less the extra edge, `control.border-width.invalid` less `control.border-width.rest`, so its edge grows inward over the padding and nothing in the box moves."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["UInput", "UFormField"],
-      "today": "The outline variant, inside a form field, in Nuxt UI's five sizes. Its heights, paddings, value sizes, edge colors, focus ring, label, help and error already match the spec, and its icons are 16 px up to md and 20 px above. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
-      "parts": {
-        "root": "base",
-        "placeholder": "base::placeholder",
-        "leading-icon": "leadingIcon",
-        "trailing-icon": "trailingIcon",
-        "label": "label",
-        "required": "label::after",
-        "help": "help",
-        "error": "error",
-        "error-icon": "error::before"
-      },
-      "variants": {
-        "outline": {
-          "variant": "outline"
-        }
-      },
-      "sizes": {
-        "xs": {
-          "size": "xs"
-        },
-        "sm": {
-          "size": "sm"
-        },
-        "md": {
-          "size": "md"
-        },
-        "lg": {
-          "size": "lg"
-        },
-        "xl": {
-          "size": "xl"
-        }
-      },
-      "deviations": [
-        {
-          "summary": "The edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for `border-color`, `border-style` and `border-width` do not hold."
-        },
-        {
-          "summary": "The required mark is `color.brand`, 3.84:1 on the light page, under the 4.5:1 of small text. The spec takes `field.required.text`, the darker red of the light theme, 4.73:1."
-        },
-        {
-          "summary": "A placeholder is `color.text-faint`, 3.42:1 in the dark theme and 4.02:1 in the light. The spec uses no placeholders, and gives one that an app passes anyway `color.text-secondary`."
-        },
-        {
-          "summary": "The error icon is the system's own danger glyph, drawn as a mask that fills its background with `field.error.icon` while its color is the error's. The spec names Lucide's `octagon-alert` in `currentcolor`."
-        },
-        {
-          "summary": "It reads the roles by their Tailwind utilities, such as `ring-field-border`, not the component tokens, such as `ring-(--ws-field-border-rest)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its gallery shows the states and the sizes of the contract, but marks none of them with `data-spec`, so no test can find them by id yet."
-        }
-      ],
-      "beyond": [
-        "The variants soft, subtle and ghost, and none, the bare field inside another control such as a select menu's search.",
-        "The highlight prop, which outlines a field in a color."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "input.outline.rest",
     "input.outline.hover",

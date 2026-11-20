@@ -3,7 +3,6 @@
   "component": "select",
   "title": "Select",
   "status": "draft",
-  "changed": "0.13.0",
   "summary": "One choice from a list: a field that shows the choice, with a chevron at its end, and the list of options that opens under it on a panel of the overlay.",
   "use": [
     "One choice from a list too long for radio buttons, more than about five options: a city, a day, a country.",
@@ -1218,73 +1217,6 @@
     "An option's leading icon and its description, under its label in the secondary text, are drawn as an implementation draws them and not checked yet. A disabled option is `color.text-faint`, exempt from contrast as WCAG exempts an inactive control.",
     "A gallery draws the open list in place, under its trigger and inside the example, not in a layer at the end of the page, so that a test finds it by the example's id. Its first option is the chosen one, which the list opens on and highlights. The element with the example's id wraps the select itself, its trigger and its list, and never its form field: the form field's label is a slot of its own, which an implementation's list may use for a group's name."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["USelect", "UFormField"],
-      "today": "The outline variant in Nuxt UI's five sizes, inside a form field. The trigger is the input's field: it reads `--ws-field-*` and `--ws-control-*`, its edge is a border, and its placeholder, once `color.text-faint` at 3.42:1, is the secondary text. The list is the surface in an edge of `color.border`, the highlighted option raised, the chosen one ticked in the interactive color, with the measures of this spec.",
-      "parts": {
-        "root": "base",
-        "placeholder": "base placeholder",
-        "leading-icon": "base leadingIcon",
-        "trailing-icon": "base trailingIcon",
-        "content": "content",
-        "group": "group",
-        "group-label": "content label",
-        "item": "item",
-        "item-highlight": "item::before",
-        "item-indicator": "itemTrailingIcon",
-        "separator": "separator"
-      },
-      "variants": {
-        "outline": {
-          "variant": "outline"
-        }
-      },
-      "sizes": {
-        "xs": {
-          "size": "xs"
-        },
-        "sm": {
-          "size": "sm"
-        },
-        "md": {
-          "size": "md"
-        },
-        "lg": {
-          "size": "lg"
-        },
-        "xl": {
-          "size": "xl"
-        }
-      },
-      "deviations": [
-        {
-          "summary": "The list's edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for the content's `border-color`, `border-style` and `border-width` do not hold, nor its `box-shadow` of none."
-        },
-        {
-          "summary": "The list's edge is `color.border`, 1.57:1 on the list in the dark theme and 1.33:1 in the light one, where the spec takes `overlay.border`, the field border, which reads at 3:1."
-        },
-        {
-          "summary": "The list reads the roles by their Tailwind utilities, such as `bg-surface`, and a size's paddings and icons by Tailwind's spacing, such as `size-5`, not the component tokens, such as `bg-(--ws-overlay-bg)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its gallery marks no example with `data-spec`, and draws no list open: a list opens in a layer at the end of the page, outside its example."
-        }
-      ],
-      "beyond": [
-        "The variants soft, subtle, ghost and none.",
-        "The item-aligned position, which lays the list over the trigger, and an option's avatar and chip."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "select.outline.rest",
     "select.outline.hover",

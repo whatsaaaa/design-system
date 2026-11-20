@@ -561,7 +561,7 @@ Draw a component the system specifies as its spec says, and read the spec in a t
 **Parity tests.** `@whatsaaaa/design-system/testing` is a helper for Playwright that holds an implementation's gallery to the specs. Install `@playwright/test` 1.50 or a later 1.x next to the package. Only this entry needs it. The gallery shows the examples of each spec's gallery contract, marked as the contract says:
 
 - Each example has its id in `data-spec`, on the component or on an element around it, and shows one component.
-- Each part has its name in `data-slot`, or the slot the spec's `implementations` maps it to: ui-vue's `root` is `base`. Where an example has several elements of one slot, such as the options of a radio group, the first that draws the part is measured, such as the fill of the option that is checked.
+- Each part has its name in `data-slot`, or the slot the implementation's own map of parts gives it, passed to the helper as below: a library's `base` for `root`. Where an example has several elements of one slot, such as the options of a radio group, the first that draws the part is measured, such as the fill of the option that is checked.
 - A hover, a pressed state and the focus are drawn when `data-demo` on the example or around it names them, `hover`, `active` or `focus`, as the pointer and the keyboard draw them. With Tailwind, a custom variant adds `[data-demo~='hover'], [data-demo~='hover'] *` to `hover`. The helper adds the attribute while it measures, and never moves the pointer. Every other state is the example's own markup: `disabled`, `aria-invalid="true"`, `aria-busy="true"`. An `open` example draws its list or its window in place, inside the example and not in a layer at the end of the page, so the helper finds its parts by the example's id: with Nuxt UI, `:portal="false"` and the list or the modal open. The element with a select's id wraps the select itself, its trigger and its list, never its form field, whose slots may share names with the list's: Nuxt UI's form field label and a list's group name are both `label`.
 - A checked, indeterminate, current or selected example shows the same content as the example of its kind at rest, so only the state differs. The first element of a slot is the one measured, so a table's selected example chooses its first row and the example at rest none, and a row of tabs' current example makes its first tab the current one and every other example another tab.
 
@@ -569,12 +569,27 @@ Draw a component the system specifies as its spec says, and read the spec in a t
 // tests/browser/spec.spec.ts
 import { test } from '@playwright/test'
 import { expectSpec, specNames } from '@whatsaaaa/design-system/testing'
+import { parts } from './spec-map.ts'
 
 for (const name of specNames())
   test(`the gallery meets the ${name} spec`, async ({ page }) => {
     await page.goto('/')
-    await expectSpec(page, name, { implementation: 'ui-vue' })
+    await expectSpec(page, name, { parts: parts[name] })
   })
+```
+
+```ts
+// tests/browser/spec-map.ts
+// For each spec, the parts this implementation draws under another name.
+export const parts: Record<string, Record<string, string>> = {
+  button: { root: 'base', 'leading-icon': 'leadingIcon' },
+  checkbox: { control: 'base', required: 'label::after' },
+  'select-menu': {
+    root: 'base',
+    'leading-icon': 'base leadingIcon',
+    'search-icon': 'input leadingIcon',
+  },
+}
 ```
 
 `expectSpec(page, spec, options)` takes a spec's name or its data, checks the gallery in both themes and fails the test with every failure listed:
@@ -583,7 +598,7 @@ for (const name of specNames())
 - **tokens**: each property of each part of each example is what its row says. An example takes the rows of its kind and size at rest, and over them the rows of its state. A token is resolved on a probe in the part, so a part of the page held in the other theme is measured in that theme. Colors are compared as colors, lengths to a 64th of a pixel.
 - **forced colors**: with `forcedColors: 'active'`, each part whose border or outline the spec gives a width keeps a border on every side or an outline, in a color other than the page's, and a focus ring stays an outline. An image of a checked, indeterminate, current or selected example differs from its example at rest by more than its text drawn at another fraction of a pixel or the image cut a pixel apart: a line of a pixel in a color of its own is enough. The images are of the parts its state changes, or of the two examples whole where the state draws a part the example at rest does not, such as a checked box's fill. Each image is of the pixels its part covers at least half of, so a part at a fraction of a pixel does not take in its neighbor's line, and where a part is drawn at another size or place in the two, such as the bar under another tab, the closest elements around it that are at one size and place are compared in its place, such as the row of tabs, and not the panel under it, which is another tab's at rest.
 
-Its one option, `implementation`, names the entry of the spec's `implementations` whose part map to read: a slot, a slot and a pseudo-element of it, such as `label::after`, or a slot inside another where the same slot draws two parts, such as `base leadingIcon`, the icon of a select menu's trigger and not of the search in its list. Without it, a part's slot is its name. The helper puts the page in each theme with `data-theme` on `<html>` and the system's color scheme to match. `checkSpec` takes the same and, in place of failing, returns a report: its `failures`, and `checks`, how many values it compared. `specNames()` and `loadSpec(name)` read the published specs. The helper checks what a spec says a part draws. Keys and accessibility stay with each implementation's own tests.
+Its one option, `parts`, is the implementation's map of the parts it draws under another name than the spec's. For each, it names a slot, a slot and a pseudo-element of it, such as `label::after`, or a slot inside another where the same slot draws two parts, such as `base leadingIcon`, the icon of a select menu's trigger and not of the search in its list. A part the map does not name is the slot of its own name. A map that names a part the spec does not have fails with an error that names it, so a part an update of the spec renamed is not left unchecked. The map is the implementation's own: a spec holds nothing about one implementation, so keep the map in the implementation's repository, next to its parity test, with whatever else it records about itself, such as the props that draw each kind and size and where it does not meet a spec yet. The helper puts the page in each theme with `data-theme` on `<html>` and the system's color scheme to match. `checkSpec` takes the same and, in place of failing, returns a report: its `failures`, and `checks`, how many values it compared. `specNames()` and `loadSpec(name)` read the published specs. The helper checks what a spec says a part draws. Keys and accessibility stay with each implementation's own tests.
 
 **The component tier.** Where every implementation has to make the same decision, a spec's row names a component token. Each is an alias of a role or a measure, and follows the theme as the roles do, in a part held in the other theme too. Seven groups so far:
 

@@ -29,7 +29,7 @@ Not part of it:
 - **A class, a variable or a module export that no document names**, and the selectors a stylesheet uses inside a documented piece.
 - **The value behind a name.** A color, a size or the look of a class can change in a minor, as below. What holds is the name and what it is for.
 - **A draft spec**, and a tier token only draft specs read. See [drafts](#draft-and-stable).
-- **What is recorded about one implementation of a spec**: the library it is built on, the slot that draws each part, its props, its deviations and the result of its parity test. Such an entry describes that implementation, belongs to it and changes when it does, in any release, wherever it is kept: in a spec's `implementations` or in the implementation's own repository. How the helper takes a part map is its API and is promised. What one implementation's map says is not.
+- **What an implementation records about itself**: the library it is built on, its map of the slot that draws each part, its props, its deviations and the result of its parity test. A spec holds none of it: it is kept in the implementation's own repository, belongs to it and changes when it does. How the helper takes a part map, its `parts` option and what a map can name, is its API and is promised. What one implementation's map says is not.
 - **The style guide, the repository's scripts and tests, and the generated text of a comment.**
 
 ## Major, minor, patch
@@ -75,7 +75,7 @@ Every spec says in its `status` whether it is a `draft` or `stable`.
 - **A spec turns stable in a minor, once an implementation passes it**: the implementation's gallery shows every example of the spec's gallery contract, and the testing helper passes it for the whole spec. From that release on the spec is held to the rules above.
 - **A tier token is promised from the release in which a stable spec reads it.** A token that a stable spec and a draft both read is promised.
 
-Each spec's page in the style guide, and the `status` in its file, say which it is in the version installed.
+Each spec's page in the style guide, and the `status` in its file, say which it is in the version installed. A spec carries no version of its own: the changelog of a release says which specs it changed.
 
 ## Deprecation and renames
 

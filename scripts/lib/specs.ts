@@ -7,7 +7,7 @@ import { type TokenId, tokens } from './tokens.ts'
 
 // the types, and the reading of a spec and of its rows, are the parity helper's, which
 // implementations run
-export type { Implementation, Size, Spec, SpecRow } from '../../src/testing/spec.ts'
+export type { Size, Spec, SpecRow } from '../../src/testing/spec.ts'
 export {
   cssVariable,
   describeCondition,

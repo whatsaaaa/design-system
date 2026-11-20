@@ -7,6 +7,7 @@ import {
   example,
   expectations,
   loadSpec,
+  partTargets,
 } from '../src/testing/spec.ts'
 import { importWithout, pkg } from './peers.ts'
 
@@ -126,6 +127,55 @@ describe('the parity helper reads a spec', () => {
     expect(cssVariable({ ...size!.row, token: 'button.primary.bg.rest' })).toBe(
       '--ws-button-primary-bg-rest',
     )
+  })
+})
+
+describe("the parity helper reads an implementation's map of parts", () => {
+  it('finds a part the map does not name in the slot of its own name', () => {
+    expect(partTargets(button)).toEqual({
+      root: { selector: '[data-slot="root"]' },
+      label: { selector: '[data-slot="label"]' },
+      'leading-icon': { selector: '[data-slot="leading-icon"]' },
+      'trailing-icon': { selector: '[data-slot="trailing-icon"]' },
+    })
+    expect(partTargets(button, { root: 'base' })).toEqual({
+      ...partTargets(button),
+      root: { selector: '[data-slot="base"]' },
+    })
+  })
+
+  it('finds a part in a slot, a pseudo-element of a slot, or a slot inside others', () => {
+    const targets = partTargets(input, {
+      root: 'base',
+      placeholder: 'base::placeholder',
+      'leading-icon': 'field base leadingIcon',
+      'error-icon': 'error-text::before',
+    })
+    expect(targets.root).toEqual({ selector: '[data-slot="base"]' })
+    expect(targets.placeholder).toEqual({ selector: '[data-slot="base"]', pseudo: '::placeholder' })
+    expect(targets['leading-icon']).toEqual({
+      selector: '[data-slot="field"] [data-slot="base"] [data-slot="leadingIcon"]',
+    })
+    expect(targets['error-icon']).toEqual({
+      selector: '[data-slot="error-text"]',
+      pseudo: '::before',
+    })
+  })
+
+  it('fails a map that names a part the spec does not have, and names it', () => {
+    expect(() => partTargets(button, { rooot: 'base' })).toThrow(
+      'the button spec has no part rooot. Its parts are: root, label, leading-icon, trailing-icon',
+    )
+    expect(() => partTargets(button, { root: 'base', icon: 'leadingIcon', text: 'label' })).toThrow(
+      'the button spec has no parts icon, text. Its parts are: root',
+    )
+  })
+
+  it('fails a map that draws a part as anything but slots and a pseudo-element', () => {
+    for (const as of ['.button', 'base > icon', 'label:after', 'base::', ' base', 'base  icon', ''])
+      expect(() => partTargets(button, { root: as }), as).toThrow(
+        `the part root of the button spec cannot be drawn as "${as}": a part map names a slot`,
+      )
   })
 })
 

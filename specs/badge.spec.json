@@ -3,7 +3,6 @@
   "component": "badge",
   "title": "Badge",
   "status": "draft",
-  "changed": "0.14.0",
   "summary": "A short word next to what it describes, the system's tag: a mono label on a tint of its color for a status or a category, or in an edge for a plain list.",
   "use": [
     "A status next to what it describes, such as paid, pending or cancelled in a table's cell.",
@@ -500,7 +499,7 @@
     ]
   },
   "forcedColors": [
-    "A tint is a background, which forced colors take away: a badge on a tint keeps its word, in the system's text color, and the word carries it alone, as it does in every theme. An implementation may draw an edge there, in `CanvasText`, as ui-vue does.",
+    "A tint is a background, which forced colors take away: a badge on a tint keeps its word, in the system's text color, and the word carries it alone, as it does in every theme. An implementation may draw an edge there, in `CanvasText`.",
     "The outlined badge's edge is a real border, which forced colors keep.",
     "An icon takes the system's text color. An icon drawn as an SVG in `currentcolor` does so by itself; an icon drawn as a mask needs its background set in forced colors, where every background is the page's."
   ],
@@ -511,99 +510,13 @@
     "A status badge says its status in its word, in every color: never a color alone, and never a color that says something else than its word."
   ],
   "notes": [
-    "The kinds are those in use: the soft variant in each color, and the outlined neutral one. Nuxt UI's solid and subtle variants, and the outline in another color, are left out.",
+    "The kinds are those in use: a badge on a tint in each color, and the outlined neutral one. A badge on a solid fill, one on a tint with an edge, and the outline in another color are left out.",
     "The outlined badge's edge is `color.border`, as a card's is, which reads at less than 3:1 on the page. It frames a word that carries the badge alone, as a card's edge frames its content, so the spec names the role and the tier has no edge for a tag: an edge of the tier has to reach 3:1.",
     "The outlined badge's edge is inside its `padding-block` and outside its `padding-inline`, as `.ws-tag--outline` draws it: at md it is 4 px taller and 6 px wider than a badge on a tint. Its `padding-block` is the token less the edge's width.",
     "An xs badge has no `padding-block`: its line is its height, 18 px.",
-    "Its icons are `size.icon`, 16 px, at every size, the icon of the system's text: the 12 px and 14 px icons of ui-vue's smaller badges are off its scale, and a badge does not grow its icon as a control does.",
+    "Its icons are `size.icon`, 16 px, at every size, the icon of the system's text: a 12 px or a 14 px icon in a smaller badge would be off its scale, and a badge does not grow its icon as a control does.",
     "`.ws-tag` and `.ws-tag--outline` read the tag group, and a browser test holds them to the primary and the outline kinds at md, so the system's own tag and every implementation's badge stay alike."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["UBadge"],
-      "today": "The soft variant is its default, in every color a tint under the color's text, and at md the primary one is `.ws-tag`: the small radius, the label in mono at its regular weight, 2 px by 8 px. Its paddings, gaps and text styles match the spec at every size. In forced colors every badge draws an edge in `CanvasText`.",
-      "parts": {
-        "root": "base",
-        "label": "label",
-        "leading-icon": "leadingIcon",
-        "trailing-icon": "trailingIcon"
-      },
-      "variants": {
-        "primary": {
-          "variant": "soft",
-          "color": "primary"
-        },
-        "success": {
-          "variant": "soft",
-          "color": "success"
-        },
-        "info": {
-          "variant": "soft",
-          "color": "info"
-        },
-        "warning": {
-          "variant": "soft",
-          "color": "warning"
-        },
-        "danger": {
-          "variant": "soft",
-          "color": "error"
-        },
-        "neutral": {
-          "variant": "soft",
-          "color": "neutral"
-        },
-        "outline": {
-          "variant": "outline",
-          "color": "neutral"
-        }
-      },
-      "sizes": {
-        "xs": {
-          "size": "xs"
-        },
-        "sm": {
-          "size": "sm"
-        },
-        "md": {
-          "size": "md"
-        },
-        "lg": {
-          "size": "lg"
-        },
-        "xl": {
-          "size": "xl"
-        }
-      },
-      "deviations": [
-        {
-          "summary": "The outlined badge's edge is an inset ring, a box shadow, and a border only in forced colors, and it keeps the padding of a badge on a tint, so at md it is 4 px shorter and 6 px narrower than `.ws-tag--outline`. So the outline's rows for `border-color`, `border-style`, `border-width`, `padding-inline` and `padding-block` do not hold."
-        },
-        {
-          "summary": "Its icons are 12 px at xs and sm and 14 px at md, where the spec takes `size.icon`, 16 px, at every size."
-        },
-        {
-          "summary": "It reads the roles and measures by their Tailwind utilities, such as `bg-tag-bg` and `px-2`, not the component tokens, such as `bg-(--ws-tag-primary-bg)` and `px-(--ws-tag-padding-inline-md)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its gallery marks no example with `data-spec`, and shows the sizes in the primary color only, so the outlined badge's sizes are missing."
-        }
-      ],
-      "beyond": [
-        "The solid and subtle variants, such as the subtle success badge, in stock, of its example of a part held in the other theme.",
-        "The outlined badge in a color other than neutral, its edge in that color.",
-        "A square badge of an icon alone, and a badge with an avatar."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "badge.primary.rest",
     "badge.success.rest",

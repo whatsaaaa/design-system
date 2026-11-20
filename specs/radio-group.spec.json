@@ -3,7 +3,6 @@
   "component": "radio-group",
   "title": "Radio group",
   "status": "draft",
-  "changed": "0.13.0",
   "summary": "One choice from a short list, all of it shown: a legend over circles beside their labels, the interactive fill and a dot on the one that is checked.",
   "use": [
     "One choice from a short list whose options all fit on the page: a ticket, a way to pay.",
@@ -582,82 +581,10 @@
   ],
   "notes": [
     "The card and table variants, an option as a bordered panel or as a row of one, are not specced yet: their edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and their hover fill is the raised color at half, which the system has no token for.",
-    "A checked circle is the interactive color, and its dot the color of a checkbox's tick, so a checked circle and a checked box read alike. The colors of Nuxt UI other than primary are not part of the spec.",
+    "A checked circle is the interactive color, and its dot the color of a checkbox's tick, so a checked circle and a checked box read alike. A circle checked in another color is not part of the spec.",
     "Options one under the other are `space.8` apart at xs and sm, `space.10` at md and lg and `space.12` at xl, options in a row `space.24` apart, the legend `space.8` to `space.12` above them, and each label starts `space.10` past its circle. That is the implementation's layout, not a row of the table.",
     "A disabled group that has an answer keeps it: the checked circle keeps its dot, on the faint fill."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["URadioGroup", "UFormField"],
-      "today": "The list variant in Nuxt UI's five sizes, one under the other or in a row, in a form field for its error. Its circles, fills, dots, legend, labels, descriptions, focus ring and required mark already match the spec at every size, its disabled checked circle is faint, and in forced colors its edge is a border and the checked circle keeps its fill and its dot. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
-      "parts": {
-        "root": "root",
-        "legend": "legend",
-        "required": "legend::after",
-        "item": "item",
-        "control": "base",
-        "indicator": "indicator",
-        "dot": "indicator::after",
-        "label": "label",
-        "description": "description",
-        "error": "error",
-        "error-icon": "error::before"
-      },
-      "variants": {
-        "list": {
-          "variant": "list"
-        }
-      },
-      "sizes": {
-        "xs": {
-          "size": "xs"
-        },
-        "sm": {
-          "size": "sm"
-        },
-        "md": {
-          "size": "md"
-        },
-        "lg": {
-          "size": "lg"
-        },
-        "xl": {
-          "size": "xl"
-        }
-      },
-      "deviations": [
-        {
-          "summary": "The edge of the circle is an inset ring, a box shadow, and a border only in forced colors. So the rows for its `border-color`, `border-style` and `border-width` do not hold."
-        },
-        {
-          "summary": "The circle is Tailwind's `rounded-full`, a radius of infinity, where the spec takes `radius.full`, 9999px. Both draw a circle, but the row for `border-radius` does not hold."
-        },
-        {
-          "summary": "The error icon is the system's own danger glyph, drawn as a mask that fills its background with `field.error.icon` while its color is the error's. The spec names Lucide's `octagon-alert` in `currentcolor`."
-        },
-        {
-          "summary": "It reads the roles by their Tailwind utilities, such as `ring-field-border`, not the component tokens, such as `ring-(--ws-choice-control-border-rest)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its gallery shows the states and the sizes of the contract but marks none of them with `data-spec`, so no test can find them by id yet. Every group in no other state has a checked option, so none is at rest, and its disabled group has no descriptions."
-        }
-      ],
-      "beyond": [
-        "The card variant, each option a bordered panel, and the table variant, each option a row of one panel, checked on the interactive tint.",
-        "The colors success, info, warning, error and neutral for a checked circle.",
-        "The circle at the end of its label, or hidden in a card.",
-        "The highlight prop, which outlines the circles in a color."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "radio-group.list.rest",
     "radio-group.list.hover",

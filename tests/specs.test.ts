@@ -25,6 +25,12 @@ const validate = new Ajv2020({ allErrors: true }).compile(schema)
 const all = specs()
 const ids = Object.keys(tokens('dark')) as TokenId[]
 
+/**
+ * The implementations and the libraries they are built on, by name. A spec is what all of them
+ * share, so it names none: what one of them draws, and on what, is its own to say.
+ */
+const implementationNames = /ui-vue|ui-react|nuxt ui|shadcn|radix|reka/i
+
 /** Every row of a spec once for each kind it holds for. */
 const expanded = (spec: Spec) =>
   spec.stateTable.flatMap((row) => rowVariants(spec, row).map((variant) => ({ ...row, variant })))
@@ -53,6 +59,19 @@ describe('the spec schema', () => {
     expect(validate({ ...spec, extra: true })).toBe(false)
   })
 
+  it('rejects what an implementation records about itself, and the version of a change', () => {
+    const [spec] = all
+    // an implementation keeps its part map, its props and its deviations in its own repository
+    const entry = { library: 'a component library', status: 'shipped', parity: 'passing' }
+    expect(validate({ ...spec, implementations: { 'ui-vue': entry } })).toBe(false)
+    // the changelog says which release changed a spec
+    expect(validate({ ...spec, changed: '0.14.0' })).toBe(false)
+  })
+
+  it('names no implementation and no component library', () => {
+    expect(JSON.stringify(schema)).not.toMatch(implementationNames)
+  })
+
   it('takes a row that holds with a part drawn, or without it, but not both', () => {
     const [spec] = all
     const row = {
@@ -75,6 +94,14 @@ describe.each(all.map((spec) => [spec.component, spec] as const))('the %s spec',
   it('is valid', () => {
     validate(spec)
     expect(validate.errors ?? []).toEqual([])
+  })
+
+  it('names no implementation and no component library', () => {
+    for (const text of Object.values(spec)
+      .flat()
+      .filter((value) => typeof value === 'string'))
+      expect(text).not.toMatch(implementationNames)
+    expect(JSON.stringify(spec)).not.toMatch(implementationNames)
   })
 
   it('is the file of its name', () => {
@@ -148,19 +175,6 @@ describe.each(all.map((spec) => [spec.component, spec] as const))('the %s spec',
         spec.gallery.some((id) => id.split('.')[2] === state),
         state,
       ).toBe(true)
-  })
-
-  it('maps every part, kind and size in each implementation that ships it', () => {
-    for (const [implementation, { status, parts, variants, sizes }] of Object.entries(
-      spec.implementations,
-    )) {
-      if (status !== 'shipped') continue
-      expect(Object.keys(parts!).sort(), implementation).toEqual(Object.keys(spec.parts).sort())
-      expect(Object.keys(variants!).sort(), implementation).toEqual(
-        Object.keys(spec.variants).sort(),
-      )
-      expect(Object.keys(sizes!).sort(), implementation).toEqual(Object.keys(spec.sizes).sort())
-    }
   })
 
   it('reads each token by the variable the build declares', () => {

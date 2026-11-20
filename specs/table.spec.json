@@ -3,7 +3,6 @@
   "component": "table",
   "title": "Table",
   "status": "draft",
-  "changed": "0.14.0",
   "summary": "Records with the same fields, a row each, read across: the table of the system's prose, in a frame with the large radius that it scrolls in, its head on the surface as an overline, and rows that can be chosen when the task needs it.",
   "use": [
     "Records with the same fields, compared or scanned down a column: the registrations of an event, with their names, tickets and fees.",
@@ -364,69 +363,6 @@
     "The focus ring of a row is drawn inside it while its checkbox has the focus, as a tab's is in the frame: a row fills its frame from edge to edge, which would clip a ring outside it.",
     "An example's rows are its own: the row the helper measures is the first of the body, so a gallery's selected example chooses its first row, and its example at rest chooses none."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["UTable"],
-      "today": "The prose table in Tailwind's classes: a frame with the large radius on the page color, the head on the surface as an overline in the secondary text color, cells of small body text with 10 px by 16 px around them, rows apart by lines, and the focus ring outside the frame. A row that can be chosen is raised at half its strength under the pointer, raised once chosen and ringed inside with the focus, and the loading line is the interactive color, the text color in forced colors. Its gallery shows a table whose rows can be chosen in each of those states, and amounts at the end of their column in figures of one width.",
-      "parts": {
-        "root": "root",
-        "th": "th",
-        "tr": "tbody tr",
-        "td": "tbody td",
-        "amount": "amount",
-        "loading-bar": "thead::after"
-      },
-      "variants": {
-        "plain": {
-          "on-select": false
-        },
-        "selectable": {
-          "on-select": "toggle",
-          "row-selection": "selection"
-        }
-      },
-      "sizes": {
-        "md": {
-          "size": false
-        }
-      },
-      "deviations": [
-        {
-          "summary": "A chosen row has no mark in forced colors: its fill, `bg-raised`, is painted in the page's color there, so it looks like every other row."
-        },
-        {
-          "summary": "A row under the pointer is raised at half its strength and a chosen row raised, which the light theme barely tells apart: the two fills differ by 1.05:1 there, and by a color difference of 1.5, under what most readers see. The spec takes the raised color under the pointer, `table.row.bg.hover`, and the selection color once chosen, `table.row.bg.selected`, 1.15:1 and a difference of 4.9 apart in the light theme. It draws the line under a chosen row in the border color, where the spec takes `color.selection-border`, a step darker in the light theme, whose border color is the selection color."
-        },
-        {
-          "summary": "The line under the head is Nuxt UI's separator, a row of its own filled with the border color, which forced colors paint in the page's color, where the spec draws it as the head's border."
-        },
-        {
-          "summary": "A row that can be chosen is chosen by the keyboard on the row, and a chosen row says nothing of it to assistive technology: Nuxt UI makes each such row a stop of the tab order that Enter and Space choose, and marks a chosen row with `data-selected` only, with no `aria-selected`. Its gallery has no column of checkboxes, where the spec chooses a row by the checkbox in its first cell."
-        },
-        {
-          "summary": "Nuxt UI gives an amount no slot of its own: its gallery has to draw each amount in an element with `data-slot=\"amount\"`, inside a cell set `text-end tabular-nums`, which takes the cell's alignment and figures, and it does not yet."
-        },
-        {
-          "summary": "It reads the roles and measures by their Tailwind utilities, such as `bg-surface`, `text-text-secondary`, `px-4` and `py-2.5`, not the component tokens, such as `bg-(--ws-table-head-bg)` and `px-(--ws-table-cell-padding-inline)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its gallery marks no example with `data-spec`, and draws the hover and the focus on one row each with `data-demo`, set by script once the rows are there."
-        }
-      ],
-      "beyond": [
-        "A sticky head and foot, pinned columns, rows that expand, a caption, a foot, and Nuxt UI's loading line in the neutral color.",
-        "A cell does not wrap, as in Nuxt UI, where the prose table wraps a cell of running text."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "table.plain.rest",
     "table.plain.focus",

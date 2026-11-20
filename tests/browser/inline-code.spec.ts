@@ -62,9 +62,11 @@ for (const [viewportName, viewport] of [
     test('a token pattern stays whole, and a package path breaks only after a slash', async ({
       page,
     }) => {
+      // the usage guide names the palette by its pattern in the middle of a sentence
+      await open(page, '/docs/usage')
+      expect(await page.evaluate(measure)).toContainEqual(['--ws-palette-*'])
       await open(page, '/components/select')
       const chips = await page.evaluate(measure)
-      expect(chips).toContainEqual(['--ws-field-*'])
       const path = chips.find((lines) => lines.join('').endsWith('/specs/select.spec.json'))!
       expect(path.join('')).toBe('@whatsaaaa/design-system/specs/select.spec.json')
       for (const line of path.slice(0, -1)) expect(line).toMatch(/\/$/)
@@ -74,9 +76,9 @@ for (const [viewportName, viewport] of [
 
 test('inline code copies as the code itself, where it wraps', async ({ page }) => {
   await page.setViewportSize(NARROWEST)
-  await open(page, '/components/select')
-  const copy = (text: string) =>
-    page.evaluate((text) => {
+  const copy = async (path: string, text: string) => {
+    await open(page, path)
+    return page.evaluate((text) => {
       const code = [...document.querySelectorAll('.vp-doc p > code')].find(
         (code) => code.textContent === text,
       )!
@@ -84,7 +86,11 @@ test('inline code copies as the code itself, where it wraps', async ({ page }) =
       selection.selectAllChildren(code)
       return selection.toString()
     }, text)
-  // the names as the spec and the package give them
-  for (const text of ['--ws-field-*', '@whatsaaaa/design-system/specs/select.spec.json'])
-    expect(await copy(text)).toBe(text)
+  }
+  // the names as the usage guide and the package give them
+  for (const [path, text] of [
+    ['/docs/usage', '--ws-palette-*'],
+    ['/components/select', '@whatsaaaa/design-system/specs/select.spec.json'],
+  ] as const)
+    expect(await copy(path, text)).toBe(text)
 })
