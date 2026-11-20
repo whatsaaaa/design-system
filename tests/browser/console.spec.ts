@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test'
-import { PAGES, open } from './pages.ts'
+import { PAGES, at, open } from './pages.ts'
 
 /**
  * Addresses with no page behind them. The server answers them with the 404 page, which knows
@@ -46,10 +46,11 @@ for (const colorScheme of ['dark', 'light'] as const) {
         // the browser itself reports that the address answered with 404. Nothing else may be.
         const errors = errorsOf(page, (text, url) => url.endsWith(path) && text.includes('404'))
         await open(page, path)
-        // the path the visitor asked for, on the page and in the status line
-        await expect(page.locator('.WsNotFound .ws-prompt').first()).toHaveText(`cat ${path}`)
+        // the path the visitor asked for, with the base the guide is served from, on the page and
+        // in the status line
+        await expect(page.locator('.WsNotFound .ws-prompt').first()).toHaveText(`cat ${at(path)}`)
         await expect(page.locator('.WsStatusLine .ws-status-line__file')).toHaveText(
-          `${path.slice(1)}.md`,
+          `${at(path).slice(1)}.md`,
         )
         expect(errors).toEqual([])
       })

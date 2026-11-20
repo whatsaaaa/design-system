@@ -27,10 +27,6 @@ Colors are Rosé Pine: the main variant for dark, which is the default, and Dawn
 
 A project takes the tokens and styles from the package, and its artwork from the asset kit. The [usage guide](/docs/usage) says how, in the order a coding agent needs it.
 
-::: warning Not deployed
-The package is on npm, but this guide is not deployed yet.
-:::
-
 ## Keys
 
 The hints in the status line are real. Press <kbd>t</kbd> to switch the theme, <kbd>j</kbd> and <kbd>k</kbd> to scroll, <kbd>/</kbd> to search, and a number to go to a tab. The status line shows `INSERT` while you type in a field, where single keys are just letters.

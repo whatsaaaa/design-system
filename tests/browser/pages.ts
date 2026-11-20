@@ -40,6 +40,12 @@ export const PAGES = [
   { name: 'example-form', path: '/examples/form.html', shots: 'all' },
 ] as const
 
+/** The path the style guide is served from: `base` in its VitePress config. */
+const BASE = '/design-system'
+
+/** The address of a page or a file of the style guide, from its path in the guide. */
+export const at = (path: string): string => `${BASE}${path}`
+
 export const PHONE = { width: 390, height: 844 }
 /** The narrowest phone a page is made for. */
 export const NARROWEST = { width: 320, height: 640 }
@@ -49,7 +55,7 @@ export const DESKTOP = { width: 1440, height: 900 }
 
 /** Opens a page and waits until it is settled: fonts, images and embedded examples. */
 export async function open(page: Page, path: string): Promise<void> {
-  await page.goto(path)
+  await page.goto(at(path))
   await settle(page)
 }
 

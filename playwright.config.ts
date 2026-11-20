@@ -27,7 +27,8 @@ export default defineConfig({
   },
   webServer: {
     command: 'pnpm exec vitepress preview styleguide --port 4173',
-    url: 'http://127.0.0.1:4173',
+    // the guide is served from its base path, as on GitHub Pages
+    url: 'http://127.0.0.1:4173/design-system/',
     reuseExistingServer: !process.env.CI,
   },
 })

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { wcagContrast } from 'culori'
-import { open } from './pages.ts'
+import { at, open } from './pages.ts'
 
 const color = (page: import('@playwright/test').Page, selector: string, property: string) =>
   page
@@ -61,7 +61,7 @@ test.describe('themes', () => {
     test('a plain page follows the system without any script', async ({ browser }) => {
       const context = await browser.newContext({ colorScheme: 'light', javaScriptEnabled: false })
       const page = await context.newPage()
-      await page.goto('/examples/prose.html')
+      await page.goto(at('/examples/prose.html'))
       expect(await color(page, 'body', 'backgroundColor')).toBe('rgb(250, 244, 237)')
       await context.close()
     })
@@ -171,7 +171,7 @@ test.describe('themes', () => {
         )
       const page = await context.newPage()
       await page.route('**/assets/**/*.js', (route) => route.abort())
-      await page.goto('/docs/sample/conditions')
+      await page.goto(at('/docs/sample/conditions'))
       return { context, page }
     }
 
@@ -223,7 +223,7 @@ test.describe('themes', () => {
     ) {
       const context = await browser.newContext({ colorScheme, javaScriptEnabled: false })
       const page = await context.newPage()
-      await page.goto('/examples/prose.html')
+      await page.goto(at('/examples/prose.html'))
       return { context, page }
     }
     /** Sets the class and data-theme of an element, as markup would have them. */
@@ -427,7 +427,7 @@ test.describe('an element for one theme only', () => {
         const tab = await context.newPage()
         await tab.route('**/example.js', (route) => route.abort())
         await tab.route('**/init.js', (route) => route.abort())
-        await tab.goto('/examples/terminal.html')
+        await tab.goto(at('/examples/terminal.html'))
         if (chosen)
           await tab.evaluate(
             ([way, theme]) => {
@@ -458,7 +458,7 @@ test.describe('an element for one theme only', () => {
     const tab = await context.newPage()
     await tab.route('**/example.js', (route) => route.abort())
     await tab.route('**/init.js', (route) => route.abort())
-    await tab.goto('/examples/terminal.html')
+    await tab.goto(at('/examples/terminal.html'))
     const root = (className: string, theme?: string) =>
       tab.evaluate(
         ([className, theme]) => {
@@ -511,7 +511,7 @@ test.describe("the color of the browser's own bars", () => {
       const context = await browser.newContext({ colorScheme, javaScriptEnabled: false })
       const page = await context.newPage()
       for (const path of ['/examples/terminal.html', '/docs/sample/conditions']) {
-        await page.goto(path)
+        await page.goto(at(path))
         const tags = await page
           .locator('meta[name="theme-color"]')
           .evaluateAll((elements) =>
@@ -571,7 +571,7 @@ test.describe("the color of the browser's own bars", () => {
     await context.addInitScript(() => localStorage.setItem('ws-theme', 'light'))
     const page = await context.newPage()
     await page.route('**/example.js', (route) => route.abort())
-    await page.goto('/examples/terminal.html')
+    await page.goto(at('/examples/terminal.html'))
     await expect.poll(() => themeColor(page)).toEqual([LIGHT, LIGHT])
     await context.close()
   })
@@ -584,7 +584,7 @@ test.describe("the color of the browser's own bars", () => {
       const context = await browser.newContext({ colorScheme })
       const page = await context.newPage()
       await page.route('**/example.js', (route) => route.abort())
-      await page.goto('/examples/terminal.html')
+      await page.goto(at('/examples/terminal.html'))
       await expect.poll(() => themeColor(page)).toEqual([system, system])
       // as a color mode library switches it, with no call to the theme module
       await page.evaluate((name) => document.documentElement.classList.add(name), className)

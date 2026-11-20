@@ -1,5 +1,5 @@
 import { type Locator, type Page, expect, test } from '@playwright/test'
-import { DESKTOP, NARROWEST, PHONE, open } from './pages.ts'
+import { DESKTOP, NARROWEST, PHONE, at, open } from './pages.ts'
 
 /**
  * Small pieces of the terminal frame: a state lines up with the text beside it, a prompt that
@@ -137,7 +137,7 @@ test.describe('the numbers of the tabs', () => {
     test(`are not drawn without JavaScript, in ${name}`, async ({ browser }) => {
       const context = await browser.newContext({ viewport: DESKTOP, javaScriptEnabled: false })
       const page = await context.newPage()
-      await page.goto(path)
+      await page.goto(at(path))
       const { drawn } = await tabs(page, selector)
       expect(drawn.length).toBeGreaterThan(1)
       expect(drawn).not.toContain(true)
@@ -149,7 +149,7 @@ test.describe('the numbers of the tabs', () => {
     }) => {
       // the page before its app runs: the head script has run, the module never arrives
       await page.route(scripts, (route) => route.abort())
-      await page.goto(path)
+      await page.goto(at(path))
       await expect(page.locator('html')).toHaveAttribute('data-ws-keys', 'pending')
       const before = await tabs(page, selector)
       expect(before.drawn).not.toContain(false)

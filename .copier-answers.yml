@@ -1,9 +1,10 @@
 # Written by Copier: never edit this file by hand. `copier update` reads it.
-_commit: v1.3.0
+_commit: v1.5.0
 _src_path: https://github.com/whatsaaaa/template.git
 agents_md: false
 brand_kit: whatsaaaa
 browser_tests: true
+ci: true
 copyright_year: 2026
 description: 'Whatsaaaa''s design system: brand identity, design tokens with a component
     tier, typography, component specs with a parity test helper, token lint rules,
@@ -13,7 +14,9 @@ framework: vue
 kind: library
 license: MIT
 name: design-system
-pages: false
+pages: true
+pages_artifact_path: styleguide/.vitepress/dist
+pages_build_script: styleguide:build
 publish: true
 stack: typescript
 starter: false
