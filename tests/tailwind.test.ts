@@ -228,6 +228,7 @@ describe("the tokens as Tailwind's theme, as Tailwind compiles an app on the ent
     await expectUtilities(removed.map((candidate) => [candidate, undefined]))
   })
 
+  // One compile of the entry for each of them: seconds beside other builds.
   it('fails the build on an @apply of a default it takes out', async () => {
     for (const candidate of removed)
       await expect(
@@ -236,7 +237,7 @@ describe("the tokens as Tailwind's theme, as Tailwind compiles an app on the ent
         }),
         candidate,
       ).rejects.toThrow(`Cannot apply unknown utility class \`${candidate}\``)
-  })
+  }, 30_000)
 
   describe('as the token build writes it', () => {
     /** A token as the CSS plugin hands it over. */
