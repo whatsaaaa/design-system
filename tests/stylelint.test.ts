@@ -1,10 +1,10 @@
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, rmSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { afterAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { importWithout, pkg, root } from './peers.ts'
 
 const fixtures = join(root, 'tests/fixtures/stylelint')
@@ -13,51 +13,36 @@ const elsewhere = mkdtempSync(join(tmpdir(), 'ws-stylelint-'))
 afterAll(() => rmSync(elsewhere, { recursive: true, force: true }))
 
 /**
- * What a project on Tailwind CSS adds to the entry, as docs/usage.md writes it: Tailwind's
- * at-rules and functions, and nothing of the entry's own.
+ * The config of a project on Tailwind CSS: the entry with Tailwind's at-rules and functions, and
+ * nothing of the entry's own. It is the block docs/usage.md gives for it, written to a file as it
+ * stands there and not copied here, so the lines a project takes from the documentation are the
+ * lines tested.
  */
-const tailwind = {
-  rules: {
-    'at-rule-no-unknown': [
-      true,
-      {
-        ignoreAtRules: [
-          'theme',
-          'source',
-          'utility',
-          'variant',
-          'custom-variant',
-          'reference',
-          'plugin',
-          'config',
-        ],
-      },
-    ],
-    'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['media', 'apply'] }],
-    'nesting-selector-no-missing-scoping-root': [
-      true,
-      { ignoreAtRules: ['utility', 'custom-variant'] },
-    ],
-    'no-invalid-position-declaration': [true, { ignoreAtRules: ['utility'] }],
-    'declaration-property-value-no-unknown': [
-      true,
-      { ignoreProperties: { '/.+/': String.raw`/--(spacing|alpha)\(|theme\(/` } },
-    ],
-    'media-query-no-invalid': [true, { ignoreFunctions: ['theme'] }],
-  },
-}
+const tailwind = join(elsewhere, 'stylelint.config.mjs')
+beforeAll(() => {
+  const blocks = [
+    ...readFileSync(join(root, 'docs/usage.md'), 'utf8').matchAll(/^```js\n(.+?)^```$/gms),
+  ]
+    .map(([, block]) => block!)
+    .filter((block) => block.includes("'at-rule-no-unknown'"))
+  expect(blocks, 'the js blocks of docs/usage.md that set at-rule-no-unknown').toHaveLength(1)
+  writeFileSync(tailwind, blocks[0]!)
+})
 
 /**
- * Lints a fixture as a project does, with a config that extends the entry and adds at most lines
- * of its own, in a Node process whose working directory is not this repository, so the tokens
- * are found wherever the linter runs.
+ * Lints a fixture as a project does, with a config that only extends the entry or with the config
+ * file given, in a Node process whose working directory is not this repository, so the tokens are
+ * found wherever the linter runs.
  */
-const lint = (fixture: string, additions: object = {}): string[] => {
+const lint = (fixture: string, configFile?: string): string[] => {
+  const config = configFile
+    ? `(await import(${JSON.stringify(pathToFileURL(configFile).href)})).default`
+    : JSON.stringify({ extends: ['@whatsaaaa/design-system/stylelint'] })
   const script = `
     const { default: stylelint } = await import(${JSON.stringify(stylelint)})
     const { results: [result] } = await stylelint.lint({
       files: ${JSON.stringify(join(fixtures, fixture))},
-      config: ${JSON.stringify({ extends: ['@whatsaaaa/design-system/stylelint'], ...additions })},
+      config: ${config},
       configBasedir: ${JSON.stringify(root)},
     })
     console.log(JSON.stringify(result.warnings.map(({ line, rule }) => line + ' ' + rule).sort()))
