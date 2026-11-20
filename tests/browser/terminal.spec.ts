@@ -265,7 +265,37 @@ test.describe('a mask icon in forced colors', () => {
     return count
   }
 
-  for (const [name, path, selector, pseudo, color] of [
+  /** The window between the widths at which the docs theme has its links out in the bar and a phone. */
+  const LAPTOP = { width: 1024, height: 800 }
+
+  /** The menu behind the three dots, open as under the pointer. */
+  const flyout = (page: Page) => page.locator('.VPNavBarExtra').hover()
+
+  /** The phone's menu, open. */
+  const menu = (page: Page) => page.locator('.VPNavBarHamburger').click()
+
+  /** A link of the sidebar that leaves the site, as the default theme renders one. */
+  const external = (page: Page) =>
+    page
+      .locator('.VPSidebar a.VPLink')
+      .first()
+      .evaluate((link: HTMLAnchorElement) => {
+        link.href = 'https://example.com/'
+        link.classList.add('vp-external-link-icon')
+      })
+
+  /** An icon: its name, its page, its element, the part of it drawn as a mask and its color. */
+  type Icon = [
+    name: string,
+    path: string,
+    selector: string,
+    pseudo: string,
+    color: string,
+    viewport?: { width: number; height: number },
+    prepare?: (page: Page) => Promise<unknown>,
+  ]
+
+  const icons: Icon[] = [
     ['the arrow of a link that leaves the site', TERMINAL, 'a.ws-arrow', '::after', 'LinkText'],
     ['the chevron of a prompt', TERMINAL, '.ws-prompt', '::before', 'CanvasText'],
     [
@@ -304,10 +334,49 @@ test.describe('a mask icon in forced colors', () => {
       '::before',
       'CanvasText',
     ],
-  ] as const)
+    // the default theme's own icons, which the docs theme keeps
+    [
+      "the docs theme's link out in the menu behind the three dots",
+      '/styles/prose',
+      '.VPNavBarExtra .VPSocialLink',
+      ' > [class*="vpi-social-"]',
+      'LinkText',
+      LAPTOP,
+      flyout,
+    ],
+    [
+      "the docs theme's three dots",
+      '/styles/prose',
+      '.VPNavBarExtra .button',
+      ' .vpi-more-horizontal',
+      'ButtonText',
+      LAPTOP,
+    ],
+    [
+      "the docs theme's link out in the phone's menu",
+      '/styles/prose',
+      '.VPNavScreen .VPSocialLink',
+      ' > [class*="vpi-social-"]',
+      'LinkText',
+      PHONE,
+      menu,
+    ],
+    [
+      "the arrow of the docs theme's link that leaves the site",
+      '/styles/prose',
+      '.VPSidebar a.vp-external-link-icon',
+      '::after',
+      'LinkText',
+      DESKTOP,
+      external,
+    ],
+  ]
+
+  for (const [name, path, selector, pseudo, color, viewport = DESKTOP, prepare] of icons)
     test(`${name} is drawn in the color of its text`, async ({ page }) => {
-      await page.setViewportSize(DESKTOP)
+      await page.setViewportSize(viewport)
       await open(page, path)
+      await prepare?.(page)
       const element = page.locator(selector).first()
       await element.scrollIntoViewIfNeeded()
       // out of forced colors the icon is there, which says the count below is of the icon
@@ -322,7 +391,7 @@ test.describe('a mask icon in forced colors', () => {
         (host, pseudo) =>
           pseudo.startsWith('::')
             ? getComputedStyle(host, pseudo).backgroundColor
-            : getComputedStyle(host.querySelector(pseudo)!).backgroundColor,
+            : getComputedStyle(host.querySelector(`:scope ${pseudo}`)!).backgroundColor,
         pseudo.trim(),
       )
       expect(fill).toBe(expected)

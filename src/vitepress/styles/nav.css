@@ -261,6 +261,40 @@
   }
 }
 
+/*
+ * Where the bar has no room for the links out, they are in the menu behind the three dots and
+ * in the phone's menu, as the default theme's icons, which are masks too, like the three dots
+ * and the arrow the default theme puts after a link that leaves the site. In forced colors
+ * each takes the system's color of the link or the button it is in. The arrow's rule is the
+ * default theme's selector as it is, to weigh as much.
+ */
+@media (forced-colors: active) {
+  .VPNav .VPNavBarExtra .button .vpi-more-horizontal {
+    background: ButtonText;
+  }
+
+  .VPNav :is(.VPNavBarExtra, .VPNavScreen) .VPSocialLink > [class*='vpi-social-'] {
+    background: LinkText;
+  }
+
+  .VPNav :is(.VPNavBarExtra, .VPNavScreen) .VPSocialLink:visited > [class*='vpi-social-'] {
+    background: VisitedText;
+  }
+
+  /* rules of their own: a browser that does not know :has() drops the whole of a rule with it */
+  :is(.vp-external-link-icon, .vp-doc a[href*='://'], .vp-doc a[target='_blank']):not(
+      :is(.no-icon, svg a, :has(img, svg))
+    )::after {
+    background: LinkText;
+  }
+
+  :is(.vp-external-link-icon, .vp-doc a[href*='://'], .vp-doc a[target='_blank']):visited:not(
+      :is(.no-icon, svg a, :has(img, svg))
+    )::after {
+    background: VisitedText;
+  }
+}
+
 /* the ghost at the end of the bar */
 .WsNavGhost {
   display: flex;
