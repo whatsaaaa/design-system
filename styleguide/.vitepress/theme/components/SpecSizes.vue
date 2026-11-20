@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { Size } from '../../../../scripts/lib/specs.ts'
 import { type SizeRow, data } from '../../data/specs.data.ts'
 import InlineCode from './InlineCode.vue'
 import SpecToken from './SpecToken.vue'
@@ -10,12 +11,20 @@ const props = defineProps<{
 }>()
 
 const spec = computed(() => data[props.of]!)
-const sizes = computed(() => Object.keys(spec.value.sizes) as (keyof typeof spec.value.sizes)[])
+const sizes = computed(() => Object.keys(spec.value.sizes) as Size[])
 /** A token as two halves a line can break between: `control.border-width.` and `invalid`. */
 const head = (word: string) => word.slice(0, word.lastIndexOf('.') + 1)
 const tail = (word: string) => word.slice(word.lastIndexOf('.') + 1)
 /** Whether a sum has terms of each size's own, which its cells name before the row's. */
-const owns = (row: SizeRow) => Object.values(row.sum!.own).some((terms) => terms!.length)
+const owns = (row: SizeRow) => Object.keys(row.sum!.own).length > 0
+/**
+ * What a cell names under its value: the terms of a sum that are its own, or its token where the
+ * row names none for every size.
+ */
+function named(row: SizeRow, size: Size) {
+  if (row.sum) return row.sum.own[size]
+  return !row.pattern || row.cells[size]!.token === undefined ? row.cells[size] : undefined
+}
 /** The kinds a row holds for, the shorter way: `primary, secondary` or `not quiet`. */
 function kinds(variants: string[]) {
   const others = Object.keys(spec.value.variants).filter((kind) => !variants.includes(kind))
@@ -87,14 +96,7 @@ function kinds(variants: string[]) {
           <td v-for="size in sizes" :key="size">
             <template v-if="row.cells[size]">
               <span class="value">{{ row.cells[size].dark.text }}</span>
-              <template v-if="row.sum">
-                <span v-if="owns(row)" class="use">{{ row.sum.own[size]!.join(' + ') }}</span>
-              </template>
-              <SpecToken
-                v-else-if="!row.pattern || row.cells[size].token === undefined"
-                :cell="row.cells[size]"
-                short
-              />
+              <SpecToken v-if="named(row, size)" :cell="named(row, size)!" short />
             </template>
           </td>
         </tr>
