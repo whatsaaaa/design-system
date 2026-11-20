@@ -33,12 +33,17 @@ const tailwind = {
         ],
       },
     ],
-    'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['apply'] }],
-    'nesting-selector-no-missing-scoping-root': [true, { ignoreAtRules: ['custom-variant'] }],
+    'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['media', 'apply'] }],
+    'nesting-selector-no-missing-scoping-root': [
+      true,
+      { ignoreAtRules: ['utility', 'custom-variant'] },
+    ],
+    'no-invalid-position-declaration': [true, { ignoreAtRules: ['utility'] }],
     'declaration-property-value-no-unknown': [
       true,
       { ignoreProperties: { '/.+/': String.raw`/--(spacing|alpha)\(|theme\(/` } },
     ],
+    'media-query-no-invalid': [true, { ignoreFunctions: ['theme'] }],
   },
 }
 
@@ -97,7 +102,9 @@ describe('the stylelint entry', () => {
         'at-rule-no-unknown',
         'at-rule-prelude-no-invalid',
         'nesting-selector-no-missing-scoping-root',
+        'no-invalid-position-declaration',
         'declaration-property-value-no-unknown',
+        'media-query-no-invalid',
       ]),
     )
   }, 30_000)
@@ -108,6 +115,15 @@ describe('the stylelint entry', () => {
       '3 function-disallowed-list',
       '4 color-no-hex',
       '8 csstools/value-no-unknown-custom-properties',
+    ])
+  }, 30_000)
+
+  it('lets nothing but Tailwind CSS through with them: a query, a & and a declaration that are not valid CSS fail, once each', () => {
+    expect(lint('tailwind-stray.css', tailwind)).toEqual([
+      '2 media-query-no-invalid',
+      '3 nesting-selector-no-missing-scoping-root',
+      '8 media-query-no-invalid',
+      '9 no-invalid-position-declaration',
     ])
   }, 30_000)
 

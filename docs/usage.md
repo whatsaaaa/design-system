@@ -178,15 +178,22 @@ export default {
         ],
       },
     ],
-    // the utilities @apply lists
-    'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['apply'] }],
-    // the & of a variant's selector, which stands for the utility's
-    'nesting-selector-no-missing-scoping-root': [true, { ignoreAtRules: ['custom-variant'] }],
+    // the utilities @apply lists, next to the config's own 'media'
+    'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['media', 'apply'] }],
+    // the & in a utility, and in a variant's selector, where it stands for the utility's
+    'nesting-selector-no-missing-scoping-root': [
+      true,
+      { ignoreAtRules: ['utility', 'custom-variant'] },
+    ],
+    // a declaration in an at-rule nested in a utility, such as @media or @supports
+    'no-invalid-position-declaration': [true, { ignoreAtRules: ['utility'] }],
     // --spacing(), --alpha() and theme() in a value
     'declaration-property-value-no-unknown': [
       true,
       { ignoreProperties: { '/.+/': String.raw`/--(spacing|alpha)\(|theme\(/` } },
     ],
+    // theme() in a media query
+    'media-query-no-invalid': [true, { ignoreFunctions: ['theme'] }],
   },
 }
 ```

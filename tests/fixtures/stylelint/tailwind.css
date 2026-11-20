@@ -25,14 +25,35 @@
   mask: var(--ws-icon-check) center / contain no-repeat;
 }
 
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility tab-wide {
+  tab-size: 4;
+
+  @media (width >= 40rem) {
+    tab-size: 8;
+  }
+}
+
 .card {
   @apply rounded-md bg-surface;
 
   padding: --spacing(4);
   margin: theme(spacing.4);
   border-color: --alpha(var(--ws-color-border) / 50%);
+  outline-color: --alpha(currentcolor / 50%);
 
   @variant dark {
     border-color: var(--ws-color-border-strong);
+  }
+}
+
+@media (width >= theme(--breakpoint-xl)) {
+  .card {
+    padding: --spacing(6);
   }
 }
