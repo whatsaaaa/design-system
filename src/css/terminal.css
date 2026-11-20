@@ -193,6 +193,17 @@
   mask: var(--ws-icon-arrow) center / contain no-repeat;
 }
 
+/* In forced colors the fill under a mask takes the page's color: the arrow takes its link's. */
+@media (forced-colors: active) {
+  .ws-arrow::after {
+    background: LinkText;
+  }
+
+  .ws-arrow:visited::after {
+    background: VisitedText;
+  }
+}
+
 /*
  * A prompt: the chevron, then a command. As a heading it names a section by the command
  * whose output the section is.
@@ -222,6 +233,13 @@
   background: var(--ws-color-brand);
   content: '';
   mask: var(--ws-icon-chevron) center / contain no-repeat;
+}
+
+/* In forced colors the fill under a mask takes the page's color: the chevron takes the text's. */
+@media (forced-colors: active) {
+  .ws-prompt::before {
+    background: CanvasText;
+  }
 }
 
 .ws-prompt a {

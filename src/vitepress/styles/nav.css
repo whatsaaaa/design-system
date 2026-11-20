@@ -250,6 +250,17 @@
   mask: var(--ws-icon-arrow) center / contain no-repeat;
 }
 
+/* In forced colors the fill under a mask takes the page's color: the arrow takes its link's. */
+@media (forced-colors: active) {
+  .VPNav .VPNavBarSocialLinks .VPSocialLink::after {
+    background: LinkText;
+  }
+
+  .VPNav .VPNavBarSocialLinks .VPSocialLink:visited::after {
+    background: VisitedText;
+  }
+}
+
 /* the ghost at the end of the bar */
 .WsNavGhost {
   display: flex;

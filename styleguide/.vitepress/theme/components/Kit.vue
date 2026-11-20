@@ -135,6 +135,13 @@ function surface(file: string) {
   mask-size: contain;
 }
 
+/* In forced colors the fill under a mask takes the page's color: the cut takes the text's. */
+@media (forced-colors: active) {
+  .mono {
+    background: CanvasText;
+  }
+}
+
 .note {
   color: var(--ws-color-text-secondary);
   font: var(--ws-text-caption);
