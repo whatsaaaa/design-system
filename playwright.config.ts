@@ -6,6 +6,12 @@ import { defineConfig, devices } from '@playwright/test'
  *
  * Screenshots are compared on Linux only, in the Playwright container, where they are taken.
  * On another system the screenshot tests skip and the rest runs.
+ *
+ * Every run serves the guide itself, on a port of its own, and never takes a server that is
+ * already running for its own: that could be another copy of the repository with another build.
+ * STYLEGUIDE_URL names a server to test instead, such as "pnpm styleguide:preview":
+ *
+ *   STYLEGUIDE_URL=http://127.0.0.1:4173 pnpm test:browser:run
  */
 export default defineConfig({
   testDir: 'tests/browser',
@@ -15,7 +21,8 @@ export default defineConfig({
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {
     ...devices['Desktop Chrome'],
-    baseURL: 'http://127.0.0.1:4173',
+    // set by then: every worker reads this file again, after the server below has started
+    baseURL: process.env.STYLEGUIDE_URL,
     colorScheme: 'dark',
   },
   expect: {
@@ -25,10 +32,12 @@ export default defineConfig({
       maxDiffPixels: 150,
     },
   },
-  webServer: {
-    command: 'pnpm exec vitepress preview styleguide --port 4173',
-    // the guide is served from its base path, as on GitHub Pages
-    url: 'http://127.0.0.1:4173/design-system/',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.STYLEGUIDE_URL
+    ? undefined
+    : {
+        // the guide is served from its base path, as on GitHub Pages
+        command: 'node scripts/serve-styleguide.ts',
+        // the address the server prints, which goes to the environment as STYLEGUIDE_URL
+        wait: { stdout: /style guide served at (?<styleguide_url>\S+)/ },
+      },
 })
