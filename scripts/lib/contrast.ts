@@ -13,7 +13,10 @@ export interface ContrastPair {
   min: number
   /** What the pair is used for. */
   use: string
-  /** The opaque color a translucent background sits on. Defaults to the page background. */
+  /**
+   * The opaque color a translucent background sits on. A translucent background has to name it, as
+   * its contrast depends on what lies under it. An opaque one is measured as it is.
+   */
   over?: TokenId
   /** Themes in which the pair is known to miss its bar, with how the meaning is carried instead. */
   below?: Partial<Record<Theme, string>>
@@ -54,8 +57,12 @@ export function readPairs(): ContrastPair[] {
 
 /** The contrast of one pair in one theme, rounded down so a pass is never an artifact of rounding. */
 export function measure(pair: ContrastPair, theme: Theme): Measured {
-  const under = rgb(pair.over ?? 'color.bg', theme)
-  const background = blend(rgb(pair.background, theme), under)
+  const fill = rgb(pair.background, theme)
+  if (fill.alpha < 1 && !pair.over)
+    throw new Error(
+      `${pair.foreground} on ${pair.background}: ${pair.background} is translucent in ${theme}, so the pair has to name \`over\`, the opaque color it lies on`,
+    )
+  const background = blend(fill, rgb(pair.over ?? 'color.bg', theme))
   const foreground = blend(rgb(pair.foreground, theme), background)
   const ratio =
     Math.floor(wcagContrast({ mode: 'rgb', ...foreground }, { mode: 'rgb', ...background }) * 100) /

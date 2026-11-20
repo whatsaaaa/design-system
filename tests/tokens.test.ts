@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { variants } from '@rose-pine/palette'
-import { clampChroma, formatHex, oklab } from 'culori'
+import { clampChroma, formatHex, oklab, rgb } from 'culori'
 import { describe, expect, it } from 'vitest'
 import { hex, tokens } from '../scripts/lib/tokens.ts'
 
@@ -50,18 +50,22 @@ describe('the color roles', () => {
     expect(roles('light')).toEqual(roles('dark'))
   })
 
-  // A tint is written out with its alpha, so nothing ties it to its hue but this test.
+  // A tint is written out as the opaque color its hue makes at its strength on the page, so a tag or
+  // a callout reads the same on every ground. Nothing ties it to its hue but this test.
   it.each([
-    ['color.tag-bg', 'color.interactive'],
-    ['color.tip-tint', 'color.tip'],
-    ['color.note-tint', 'color.note'],
-    ['color.warning-tint', 'color.warning'],
-    ['color.danger-tint', 'color.danger'],
-  ] as const)('%s is a tint of %s', (tint, hue) => {
+    ['color.tag-bg', 'color.interactive', { dark: 0.12, light: 0.1 }],
+    ['color.tip-tint', 'color.tip', { dark: 0.09, light: 0.09 }],
+    ['color.note-tint', 'color.note', { dark: 0.09, light: 0.09 }],
+    ['color.warning-tint', 'color.warning', { dark: 0.09, light: 0.09 }],
+    ['color.danger-tint', 'color.danger', { dark: 0.09, light: 0.09 }],
+  ] as const)('%s is %s at its strength over the page', (tint, hue, strength) => {
     for (const theme of ['dark', 'light'] as const) {
-      const of = (id: typeof tint | typeof hue) => tokens(theme)[id].$value
-      expect(of(tint).components, theme).toEqual(of(hue).components)
-      expect(of(tint).alpha, theme).toBeLessThan(1)
+      const top = rgb(hex(hue, theme))!
+      const page = rgb(hex('color.bg', theme))!
+      const over = (channel: 'r' | 'g' | 'b') =>
+        top[channel] * strength[theme] + page[channel] * (1 - strength[theme])
+      const expected = formatHex({ mode: 'rgb', r: over('r'), g: over('g'), b: over('b') })
+      expect(hex(tint, theme), theme).toBe(expected)
     }
   })
 

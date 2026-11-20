@@ -580,7 +580,7 @@
     "An error says what to do: Choose a ticket."
   ],
   "notes": [
-    "The card and table variants, an option as a bordered panel or as a row of one, are not specced yet: their edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and their hover fill is the raised color at half, which the system has no token for.",
+    "The card and table variants, an option as a bordered panel or as a row of one, are not specced yet: their edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and their hover fill is the raised color at half, which the system has no token for. Checked, an option lies on the interactive tint, `color.tag-bg`, and on that tint its description takes the text color, `color.text`, as text on every tint does: secondary text reads under 4.5:1 there in dark.",
     "A checked circle is the interactive color, and its dot the color of a checkbox's tick, so a checked circle and a checked box read alike. A circle checked in another color is not part of the spec.",
     "Options one under the other are `space.8` apart at xs and sm, `space.10` at md and lg and `space.12` at xl, options in a row `space.24` apart, the legend `space.8` to `space.12` above them, and each label starts `space.10` past its circle. That is the implementation's layout, not a row of the table.",
     "A disabled group that has an answer keeps it: the checked circle keeps its dot, on the faint fill."
