@@ -43,8 +43,8 @@ function verdict(row: ContrastRow, theme: 'dark' | 'light') {
           <td v-for="theme in themes" :key="theme">
             <span class="cell">
               <!--
-                Each sample is drawn in its own theme, whatever theme the page is in, and on
-                what the pair is measured on: the page, or the color the pair names as `over`.
+                Each sample is drawn in its own theme, whatever theme the page is in, and a
+                translucent background on the color the pair names as `over`, as it is measured.
               -->
               <span
                 class="sample"

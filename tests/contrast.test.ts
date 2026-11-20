@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { allPairs, measureAll, readPairs } from '../scripts/lib/contrast.ts'
+import { allPairs, measure, measureAll, readPairs } from '../scripts/lib/contrast.ts'
 
 describe('contrast of the role pairs', () => {
   const measured = measureAll()
@@ -45,5 +45,20 @@ describe('contrast of the role pairs', () => {
     // the required mark is red in both themes, and darker in light so it reads as small text
     expect(ratio('dark', 'color.brand-text', 'color.bg')).toBe(6.07)
     expect(ratio('light', 'color.brand-text', 'color.bg')).toBe(4.73)
+  })
+
+  // A translucent fill takes the color of what lies under it, so its pair has no ratio until it
+  // names that ground.
+  it('fails a pair on a translucent background that does not name what it lies over', () => {
+    const pair = {
+      foreground: 'code.text',
+      background: 'code.line-added',
+      min: 4.5,
+      use: 'Code on an added line',
+    } as const
+    expect(() => measure(pair, 'dark')).toThrow(
+      'code.line-added is translucent in dark, so the pair has to name `over`',
+    )
+    expect(measure({ ...pair, over: 'code.bg' }, 'dark').passes).toBe(true)
   })
 })

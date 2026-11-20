@@ -528,7 +528,7 @@
     "An error says what to do: Accept the terms of use to register."
   ],
   "notes": [
-    "The card variant, the whole option as a bordered panel, is not specced yet: its edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and its hover fill is the raised color at half, which the system has no token for.",
+    "The card variant, the whole option as a bordered panel, is not specced yet: its edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and its hover fill is the raised color at half, which the system has no token for. Checked, it lies on the interactive tint, `color.tag-bg`, and on that tint its description takes the text color, `color.text`, as a description on every tint does: secondary text reads under 4.5:1 there in dark.",
     "A checked box is the interactive color. A box checked in another color is not part of the spec.",
     "The box sits centered on the first line of its label, and the label starts `space.10` past it. That is the implementation's layout, not a row of the table.",
     "The tick is the system's icon size, 16 px, in the 20 px box of md, and four fifths of the box at the other sizes, to the even pixel, so it stays centered: 12, 12, 18 and 20 px. At 12 px it is just over a pixel wide, so the small sizes are for dense rows only."

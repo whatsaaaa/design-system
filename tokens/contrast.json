@@ -129,6 +129,12 @@
     },
     { "foreground": "color.tag-text", "background": "color.tag-bg", "min": 4.5, "use": "Tags" },
     {
+      "foreground": "color.text",
+      "background": "color.tag-bg",
+      "min": 4.5,
+      "use": "Text on the interactive tint, such as the description of a checked card"
+    },
+    {
       "foreground": "color.tip",
       "background": "color.bg",
       "min": 3,

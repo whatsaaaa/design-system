@@ -96,11 +96,10 @@
     "tag-bg": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.1569, 0.4118, 0.5137],
-        "alpha": 0.1,
-        "hex": "#286983"
+        "components": [0.8981, 0.9024, 0.8878],
+        "hex": "#e5e6e2"
       },
-      "$description": "Tag background: a tint of the interactive color."
+      "$description": "Tag background: the interactive color on the page, 12% of it in dark and 10% in light, as an opaque color."
     },
     "tip": {
       "$value": "{palette.dawn.pine}",
@@ -113,11 +112,10 @@
     "tip-tint": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.1569, 0.4118, 0.5137],
-        "alpha": 0.09,
-        "hex": "#286983"
+        "components": [0.9063, 0.9078, 0.892],
+        "hex": "#e7e7e3"
       },
-      "$description": "Status tip: block background."
+      "$description": "Status tip: block background, the tip color at 9% on the page, as an opaque color."
     },
     "note": {
       "$value": "{palette.dawn.iris}",
@@ -130,11 +128,10 @@
     "note-tint": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.5647, 0.4784, 0.6627],
-        "alpha": 0.09,
-        "hex": "#907aa9"
+        "components": [0.943, 0.9138, 0.9054],
+        "hex": "#f0e9e7"
       },
-      "$description": "Status note: block background."
+      "$description": "Status note: block background, the note color at 9% on the page, as an opaque color."
     },
     "warning": {
       "$value": "{palette.dawn.gold}",
@@ -147,11 +144,10 @@
     "warning-tint": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.9176, 0.6157, 0.2039],
-        "alpha": 0.09,
-        "hex": "#ea9d34"
+        "components": [0.9747, 0.9262, 0.8641],
+        "hex": "#f9ecdc"
       },
-      "$description": "Status warning: block background."
+      "$description": "Status warning: block background, the warning color at 9% on the page, as an opaque color."
     },
     "danger": {
       "$value": "{palette.dawn.love}",
@@ -164,11 +160,10 @@
     "danger-tint": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.7059, 0.3882, 0.4784],
-        "alpha": 0.09,
-        "hex": "#b4637a"
+        "components": [0.9557, 0.9057, 0.8888],
+        "hex": "#f4e7e3"
       },
-      "$description": "Status danger: block background."
+      "$description": "Status danger: block background, the danger color at 9% on the page, as an opaque color."
     }
   }
 }

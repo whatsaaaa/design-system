@@ -121,7 +121,7 @@ function tokenValue(row: SpecRow, theme: Theme): CellValue {
   switch (token.$type) {
     case 'color': {
       const hex = colorHex(token.$value)
-      // a tint as its color and how much of it: #eb6f92 at 9%
+      // a translucent color as its color and how much of it: #eb6f92 at 14%
       const alpha = token.$value.alpha ?? 1
       const text = alpha < 1 ? `${hex.slice(0, 7)} at ${Math.round(alpha * 100)}%` : hex
       return { text, color: hex }
@@ -198,7 +198,7 @@ function total(expression: string): number | undefined {
  */
 function valueText(row: SpecRow, theme: Theme): CellValue {
   const text = withTokens(row.value!, (token) => tokenValue({ ...row, token }, theme).text)
-  // a tint of a color, as a tint token shows: #191724 at 80%
+  // a tint of a color, as a translucent token shows: #191724 at 80%
   const tint = tintOf(text)
   if (tint) {
     const alpha = Math.round((tint.percent / 100) * 255)
