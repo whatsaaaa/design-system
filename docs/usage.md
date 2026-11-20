@@ -125,7 +125,7 @@ The pairs that are checked for contrast are in `tokens/contrast.json`, and those
 
 ### Lint
 
-`@whatsaaaa/design-system/stylelint` is a stylelint config that holds a project's stylesheets to these rules: a hex value, a named color or a color written with one of the functions `rgb`, `rgba`, `hsl`, `hsla`, `oklch`, `oklab`, `lab`, `lch` and `hwb` is an error, and so is a variable that nothing defines, so a token cannot be misspelled. It knows every token of the version installed, the component tier's too, wherever the project and the linter run. It extends `stylelint-config-standard`. Install `stylelint` 18, `stylelint-config-standard` 41 and `stylelint-value-no-unknown-custom-properties` 6.1.1 or later in their major next to the package. Only this entry needs them.
+`@whatsaaaa/design-system/stylelint` is a stylelint config that holds a project's stylesheets to these rules: a hex value, a named color or a color written with one of the functions `rgb`, `rgba`, `hsl`, `hsla`, `oklch`, `oklab`, `lab`, `lch`, `hwb` and `color` is an error, and so is a variable that nothing defines, so a token cannot be misspelled. `color-mix()` passes, as it mixes tokens. It knows every token of the version installed, the component tier's too, and the icons of `css/icons.css`, wherever the project and the linter run, so a config names no file of the package. It extends `stylelint-config-standard`. Install `stylelint` 18, `stylelint-config-standard` 41 and `stylelint-value-no-unknown-custom-properties` 6.1.1 or later in their major next to the package. Only this entry needs them.
 
 ```js
 // stylelint.config.js
@@ -134,7 +134,7 @@ export default {
 }
 ```
 
-Add the project's own lines after it: `ignoreFiles`, `customSyntax: 'postcss-html'` for `.vue` files in an override, or a rule it turns off. Options of a rule replace the config's, so a project whose stylesheets also read variables from elsewhere lists the tokens again with them:
+Add the project's own lines after it: `ignoreFiles`, `customSyntax: 'postcss-html'` for `.vue` files in an override, or a rule it turns off. Options of a rule replace the config's, so a project whose stylesheets also read variables from elsewhere lists the tokens and the icons again with them, by their exports:
 
 ```js
 import { fileURLToPath } from 'node:url'
@@ -147,10 +147,53 @@ export default {
       {
         importFrom: [
           fileURLToPath(import.meta.resolve('@whatsaaaa/design-system/tokens.css')),
+          fileURLToPath(import.meta.resolve('@whatsaaaa/design-system/css/icons.css')),
           'src/styles/app-vars.css',
         ],
       },
     ],
+  },
+}
+```
+
+A project on Tailwind CSS adds Tailwind's at-rules and functions, which `stylelint-config-standard` does not know. These are all of Tailwind CSS v4's. The token rules stay as they are, so a color in `@theme` or in a utility is still held to them:
+
+```js
+// stylelint.config.js
+export default {
+  extends: ['@whatsaaaa/design-system/stylelint'],
+  rules: {
+    'at-rule-no-unknown': [
+      true,
+      {
+        ignoreAtRules: [
+          'theme',
+          'source',
+          'utility',
+          'variant',
+          'custom-variant',
+          'reference',
+          'plugin',
+          'config',
+        ],
+      },
+    ],
+    // the utilities @apply lists, next to the config's own 'media'
+    'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['media', 'apply'] }],
+    // the & in a utility, and in a variant's selector, where it stands for the utility's
+    'nesting-selector-no-missing-scoping-root': [
+      true,
+      { ignoreAtRules: ['utility', 'custom-variant'] },
+    ],
+    // a declaration in an at-rule nested in a utility, such as @media or @supports
+    'no-invalid-position-declaration': [true, { ignoreAtRules: ['utility'] }],
+    // --spacing(), --alpha() and theme() in a value
+    'declaration-property-value-no-unknown': [
+      true,
+      { ignoreProperties: { '/.+/': String.raw`/--(spacing|alpha)\(|theme\(/` } },
+    ],
+    // theme() in a media query
+    'media-query-no-invalid': [true, { ignoreFunctions: ['theme'] }],
   },
 }
 ```

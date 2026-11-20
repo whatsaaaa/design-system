@@ -1,0 +1,10 @@
+/* What the lines for Tailwind CSS do not let through: a query, a & and a declaration that are not Tailwind's. */
+@media screen and print {
+  &:hover {
+    display: none;
+  }
+}
+
+@media (width >= bogus(1)) {
+  display: none;
+}
