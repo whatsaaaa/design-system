@@ -1,0 +1,9 @@
+/* The icons of css/icons.css, read by name as the tokens are. The last one is misspelled. */
+.done::before {
+  background: currentcolor;
+  mask: var(--ws-icon-check) center / contain no-repeat;
+}
+
+.next::after {
+  mask: var(--ws-icon-arorw) center / contain no-repeat;
+}

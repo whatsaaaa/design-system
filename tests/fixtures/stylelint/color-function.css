@@ -1,0 +1,6 @@
+/* A color() literal is a color written outside the tokens, whatever its space. color-mix() mixes tokens. */
+.card {
+  color: color(srgb 0.1 0.09 0.14);
+  background: color(display-p3 0.1 0.09 0.14);
+  border-color: color-mix(in oklab, var(--ws-color-text) 10%, transparent);
+}

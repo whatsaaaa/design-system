@@ -1,0 +1,9 @@
+/* What a project on Tailwind CSS is still held to: no color of its own, no variable nothing defines. */
+@theme {
+  --color-link: color(display-p3 0.2 0.4 0.8);
+  --color-muted: --alpha(#6e6a86 / 50%);
+}
+
+@utility icon-check {
+  mask: var(--ws-icon-chekc) center / contain no-repeat;
+}

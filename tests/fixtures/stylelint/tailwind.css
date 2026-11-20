@@ -1,0 +1,38 @@
+/* A stylesheet on Tailwind CSS v4: its at-rules and functions, as a project writes them. */
+@import '@whatsaaaa/design-system/tailwind.css';
+
+@reference './app.css';
+
+@plugin '@tailwindcss/typography';
+
+@config './tailwind.config.js';
+
+@source './theme';
+
+@theme inline {
+  --color-link: var(--ws-color-interactive);
+}
+
+@custom-variant hover {
+  &:hover,
+  &[data-demo~='hover'] {
+    @slot;
+  }
+}
+
+@utility icon-check {
+  background: currentcolor;
+  mask: var(--ws-icon-check) center / contain no-repeat;
+}
+
+.card {
+  @apply rounded-md bg-surface;
+
+  padding: --spacing(4);
+  margin: theme(spacing.4);
+  border-color: --alpha(var(--ws-color-border) / 50%);
+
+  @variant dark {
+    border-color: var(--ws-color-border-strong);
+  }
+}
