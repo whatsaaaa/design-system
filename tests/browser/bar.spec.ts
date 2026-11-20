@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test'
-import { open, settle } from './pages.ts'
+import { at, open, settle } from './pages.ts'
 
 /** The widths the sidebar is checked at: from just above where it shows to a wide screen. */
 const WIDTHS = [1024, 1280, 1440, 1728, 1920]
@@ -127,13 +127,13 @@ for (const colorScheme of ['dark', 'light'] as const) {
       await open(page, '/identity/')
       const { tabs } = await measure(page)
       // a docs site of a project: its mark as the logo, and its name
-      await page.locator(BRAND).evaluate((brand) => {
+      await page.locator(BRAND).evaluate((brand, mark) => {
         const logo = document.createElement('img')
         logo.className = 'VPImage logo'
-        logo.src = '/kit/building-blocks/mark-on-dark.svg'
+        logo.src = mark
         logo.alt = ''
         brand.prepend(logo)
-      })
+      }, at('/kit/building-blocks/mark-on-dark.svg'))
       await renameBrand(page, 'building-blocks')
       await settle(page)
       expect((await page.locator(`${BRAND} .logo`).boundingBox())!.width).toBe(32)

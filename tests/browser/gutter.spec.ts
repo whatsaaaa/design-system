@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { NARROWEST, PHONE, open } from './pages.ts'
+import { NARROWEST, PHONE, at, open } from './pages.ts'
 
 /**
  * The gutter of a phone: below 64rem the content of a window starts where the brand of the
@@ -118,12 +118,12 @@ for (const [name, viewport, edge] of [
       await page.setViewportSize(viewport)
       await open(page, '/docs/sample/conditions')
       const edges = await page.evaluate(
-        async ({ edge, title }) => {
+        async ({ edge, title, mark }) => {
           const brand = document.querySelector('.VPNavBarTitle .title')!
           const logo = document.createElement('img')
           logo.className = 'VPImage logo'
           logo.alt = ''
-          logo.src = '/kit/form-builder/mark-on-dark.svg'
+          logo.src = mark
           brand.prepend(logo)
           // themeConfig.siteTitle: false leaves the mark alone in the link
           if (!title) brand.querySelector(':scope > span')!.remove()
@@ -137,7 +137,7 @@ for (const [name, viewport, edge] of [
             content: content.getBoundingClientRect().left + parseFloat(style.paddingLeft),
           }
         },
-        { edge, title },
+        { edge, title, mark: at('/kit/form-builder/mark-on-dark.svg') },
       )
       expect(edges.size).toEqual({ width: 32, height: 32 })
       expect(edges.mark).toBe(edges.content)

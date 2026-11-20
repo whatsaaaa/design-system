@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test'
-import { NARROWEST, PHONE, open } from './pages.ts'
+import { NARROWEST, PHONE, at, open } from './pages.ts'
 
 const theme = (page: Page) => page.evaluate(() => document.documentElement.dataset.theme)
 const keySwitch = (page: Page) => page.getByRole('switch', { name: 'Shortcut keys' })
@@ -366,7 +366,7 @@ test.describe('on a plain page', () => {
     ] as const) {
       const context = await browser.newContext({ colorScheme, javaScriptEnabled: false })
       const page = await context.newPage()
-      await page.goto('/examples/terminal.html')
+      await page.goto(at('/examples/terminal.html'))
       const name = (theme: string) => page.locator(`.ws-status-line__theme .ws-theme-${theme}`)
       await expect(name(shown), colorScheme).toBeVisible()
       await expect(name(hidden), colorScheme).toBeHidden()

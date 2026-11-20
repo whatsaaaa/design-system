@@ -2,6 +2,9 @@ import { defineConfigWithTheme } from 'vitepress'
 import { specs } from '../../scripts/lib/specs.ts'
 import { type ThemeConfig, whatsaaaaConfig } from '../../src/vitepress-config/index.ts'
 
+/** GitHub Pages serves the style guide from https://whatsaaaa.github.io/design-system/ */
+const base = '/design-system/'
+
 /** The styles and the specs of the components drawn with them, one sidebar for both. */
 const styles = [
   {
@@ -28,11 +31,13 @@ export default defineConfigWithTheme<ThemeConfig>({
   description:
     "Whatsaaaa's design system: brand identity, design tokens, typography, docs theme and asset kit.",
   lang: 'en',
+  base,
   cleanUrls: true,
+  // VitePress writes the head as it is given, without the base
   head: [
-    ['link', { rel: 'icon', href: '/kit/whatsaaaa/favicon.ico', sizes: '48x48' }],
-    ['link', { rel: 'icon', href: '/kit/whatsaaaa/favicon.svg', type: 'image/svg+xml' }],
-    ['link', { rel: 'apple-touch-icon', href: '/kit/whatsaaaa/apple-touch-icon.png' }],
+    ['link', { rel: 'icon', href: `${base}kit/whatsaaaa/favicon.ico`, sizes: '48x48' }],
+    ['link', { rel: 'icon', href: `${base}kit/whatsaaaa/favicon.svg`, type: 'image/svg+xml' }],
+    ['link', { rel: 'apple-touch-icon', href: `${base}kit/whatsaaaa/apple-touch-icon.png` }],
   ],
   themeConfig: {
     nav: [

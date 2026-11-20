@@ -4,7 +4,7 @@
 
 Whatsaaaa's design system: one identity, one set of tokens and one voice for the personal site, the docs sites, the apps and the READMEs, and one spec for each component that a library on top of it draws.
 
-The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whatsaaaa/design-system) on npm. The style guide is built here but not deployed.
+The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whatsaaaa/design-system) on npm. The style guide is at https://whatsaaaa.github.io/design-system/.
 
 ## What is in it
 

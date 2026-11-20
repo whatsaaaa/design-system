@@ -1,5 +1,5 @@
 import { type Page, expect, test } from '@playwright/test'
-import { DESKTOP, NARROWEST, PHONE, open } from './pages.ts'
+import { DESKTOP, NARROWEST, PHONE, at, open } from './pages.ts'
 
 /**
  * The status line lies over the bottom of the window. A control that takes the focus has to
@@ -256,16 +256,19 @@ for (const [name, viewport] of [
       }) => {
         await open(page, '/docs/sample/conditions')
         const brand = page.locator('.VPNavBarTitle .title')
-        await brand.evaluate(async (link, title) => {
-          const logo = document.createElement('img')
-          logo.className = 'VPImage logo'
-          logo.alt = ''
-          logo.src = '/kit/form-builder/mark-on-dark.svg'
-          link.prepend(logo)
-          // themeConfig.siteTitle: false leaves the mark alone in the link
-          if (!title) link.querySelector(':scope > span')!.remove()
-          await logo.decode()
-        }, title)
+        await brand.evaluate(
+          async (link, { title, mark }) => {
+            const logo = document.createElement('img')
+            logo.className = 'VPImage logo'
+            logo.alt = ''
+            logo.src = mark
+            link.prepend(logo)
+            // themeConfig.siteTitle: false leaves the mark alone in the link
+            if (!title) link.querySelector(':scope > span')!.remove()
+            await logo.decode()
+          },
+          { title, mark: at('/kit/form-builder/mark-on-dark.svg') },
+        )
         // Tab comes to the brand from the control before it
         await brand.evaluate((link: HTMLElement) => link.focus())
         await page.keyboard.press('Shift+Tab')
@@ -304,13 +307,13 @@ test("a radius of the page's own wins over the focus ring's, wherever it is writ
       contentType: 'text/html',
       body: `<!doctype html>
         <style>.round { border-radius: 50%; }</style>
-        <link rel="stylesheet" href="/ds/index.css" />
+        <link rel="stylesheet" href="${at('/ds/index.css')}" />
         <button type="button" class="round">round</button>
         <button type="button">plain</button>
         <a href="#">a link</a>`,
     }),
   )
-  await page.goto('/fixtures/focus.html')
+  await page.goto(at('/fixtures/focus.html'))
   const radius = () =>
     page.evaluate(() => {
       const element = document.activeElement!
