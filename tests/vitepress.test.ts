@@ -13,13 +13,15 @@ const root = fileURLToPath(new URL('../styleguide', import.meta.url))
 const renderer = () => createMarkdownRenderer(root, whatsaaaaConfig().markdown)
 
 describe('markdown in the docs theme', () => {
+  // The first renderer of the file loads the highlighter with its languages: seconds beside
+  // other builds.
   it('shows the file name of a code block in its caption', async () => {
     const html = (await renderer()).render('```ts [conditions.ts]\nconst a = 1\n```')
     expect(html).toMatch(
       /^<div class="language-ts[^"]*"><span class="ws-code-title">conditions\.ts<\/span>/,
     )
     expect(html).toContain('<span class="lang">ts</span>')
-  })
+  }, 30_000)
 
   it('leaves a code block without a file name as it is', async () => {
     const html = (await renderer()).render('```ts\nconst a = [1]\n```')

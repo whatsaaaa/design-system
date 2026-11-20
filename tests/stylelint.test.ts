@@ -50,6 +50,7 @@ describe('the stylelint entry', () => {
     expect(lint('valid.css')).toEqual([])
   }, 30_000)
 
+  // As the lint above, a Node process of its own, here one that imports every entry.
   it('needs none of its optional peers to import, nor does any other entry', async () => {
     const peers = [
       'stylelint',
@@ -65,7 +66,7 @@ describe('the stylelint entry', () => {
       expect(pkg.peerDependenciesMeta[peer]).toEqual({ optional: true })
       expect(pkg.dependencies).not.toHaveProperty(peer)
     }
-  })
+  }, 30_000)
 
   it('reads the tokens of the same build, wherever it is installed', async () => {
     const { default: config } = await import('@whatsaaaa/design-system/stylelint')

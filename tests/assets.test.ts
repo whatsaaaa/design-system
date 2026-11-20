@@ -39,9 +39,11 @@ const sprite = [
 ]
 
 describe('the asset kit', () => {
+  // A Node process of its own that builds the whole kit, every PNG of it, to compare: seconds on
+  // a quiet machine, and several times that beside other builds.
   it('in assets/ is what the sources produce', () => {
     expect(generate('--check')).toContain('assets/ is up to date')
-  })
+  }, 30_000)
 
   it('has every kind of file for the handle and for each project', () => {
     const manifest = JSON.parse(readFileSync(join(root, 'assets/manifest.json'), 'utf8')).identities

@@ -130,9 +130,10 @@ describe('the parity helper reads a spec', () => {
 })
 
 describe('the testing entry', () => {
+  // A Node process of its own that imports every entry: several seconds beside other builds.
   it('is the only entry that needs Playwright, an optional peer', () => {
     expect(importWithout(['@playwright/test']).needing).toEqual([`${pkg.name}/testing`])
     expect(pkg.peerDependenciesMeta['@playwright/test']).toEqual({ optional: true })
     expect(pkg.dependencies).not.toHaveProperty('@playwright/test')
-  })
+  }, 30_000)
 })
