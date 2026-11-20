@@ -10,7 +10,6 @@ import Poses from './components/Poses.vue'
 import RoleTable from './components/RoleTable.vue'
 import Scale from './components/Scale.vue'
 import SpecGallery from './components/SpecGallery.vue'
-import SpecImplementations from './components/SpecImplementations.vue'
 import SpecIndex from './components/SpecIndex.vue'
 import SpecKeyboard from './components/SpecKeyboard.vue'
 import SpecList from './components/SpecList.vue'
@@ -36,7 +35,6 @@ export default {
       RoleTable,
       Scale,
       SpecGallery,
-      SpecImplementations,
       SpecIndex,
       SpecKeyboard,
       SpecList,

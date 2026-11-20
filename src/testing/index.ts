@@ -18,12 +18,14 @@ import { type Locator, type Page, expect, test } from '@playwright/test'
 import {
   type Expectation,
   type Spec,
+  type Target,
   cssVariable,
   describeCondition,
   describeRow,
   example,
   expectations,
   loadSpec,
+  partTargets,
   rowCondition,
 } from './spec.ts'
 
@@ -34,12 +36,15 @@ type Theme = 'dark' | 'light'
 
 export interface SpecOptions {
   /**
-   * The implementation in the spec whose part map names the `data-slot` that draws each part, a
-   * slot and a pseudo-element of it, or a slot inside another: in `ui-vue`, `root` is `base`,
-   * `required` is `label::after`, and a select menu's `leading-icon` is `base leadingIcon`, the
-   * icon of the trigger and not of the search in its list. Without one, a part's slot is its name.
+   * The implementation's map of the parts it draws under another name than the spec's: for each,
+   * the `data-slot` that draws it, a slot and a pseudo-element of it, or a slot inside another.
+   * With `{ root: 'base', required: 'label::after', 'leading-icon': 'base leadingIcon' }`, the
+   * root is the slot `base`, the required mark the label's `::after`, and the leading icon the
+   * `leadingIcon` inside `base`, the icon of a select menu's trigger and not of the search in its
+   * list. A part the map does not name is the slot of its own name. A map that names a part the
+   * spec does not have is an error.
    */
-  implementation?: string
+  parts?: Record<string, string>
 }
 
 type Check = 'coverage' | 'tokens' | 'forced-colors'
@@ -65,15 +70,6 @@ const demoStates = ['hover', 'active', 'focus']
 
 /** The states that the forced-colors check compares with rest. */
 const markedStates = ['checked', 'indeterminate', 'current', 'selected']
-
-/**
- * Where a part is drawn: the element with its `data-slot`, or the one inside an element of
- * another, `[data-slot="base"] [data-slot="leadingIcon"]`, or a pseudo-element of it.
- */
-interface Target {
-  selector: string
-  pseudo?: string
-}
 
 /**
  * One property of one part to measure, and the token or value it has to have, where the example
@@ -112,7 +108,15 @@ export async function checkSpec(
 ): Promise<SpecReport> {
   const data = typeof spec === 'string' ? loadSpec(spec) : spec
   const { component } = data
-  const targets = partTargets(data, options)
+  // an option it does not know, such as the `implementation` it once took, would be left unread
+  // and the gallery checked without its map
+  const unknown = Object.keys(options).filter((option) => option !== 'parts')
+  if (unknown.length)
+    throw new Error(
+      `the parity helper has no option ${unknown.join(', ')}: its one option is parts, ` +
+        "the implementation's own map of the parts it draws under another name",
+    )
+  const targets = partTargets(data, options.parts)
   const failures: Failure[] = []
   let checks = 0
 
@@ -218,22 +222,6 @@ export async function expectSpec(
 async function setTheme(page: Page, theme: Theme): Promise<void> {
   await page.emulateMedia({ colorScheme: theme })
   await page.evaluate((theme) => document.documentElement.setAttribute('data-theme', theme), theme)
-}
-
-/** Where each part of the spec is drawn, from the implementation's map. */
-function partTargets(spec: Spec, { implementation }: SpecOptions) {
-  const mapped = implementation ? spec.implementations[implementation]?.parts : {}
-  if (!mapped) throw new Error(`the ${spec.component} spec has no parts for ${implementation}`)
-  return Object.fromEntries(
-    Object.keys(spec.parts).map((part) => {
-      const [path = part, pseudo] = (mapped[part] ?? part).split(/(?=::)/)
-      const selector = path
-        .split(' ')
-        .map((slot) => `[data-slot="${slot}"]`)
-        .join(' ')
-      return [part, pseudo ? { selector, pseudo } : { selector }]
-    }),
-  ) as Record<string, Target>
 }
 
 function measure({ part, property, row }: Expectation, targets: Record<string, Target>): Measure {

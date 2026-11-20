@@ -3,7 +3,6 @@
   "component": "checkbox",
   "title": "Checkbox",
   "status": "draft",
-  "changed": "0.13.0",
   "summary": "A box beside its label, for an on and off choice or one of several from a short list: an edge in the field border, the interactive fill and a tick when checked, the label in Inter on the line the box sits on.",
   "use": [
     "An on and off choice that takes effect when the form is sent: I accept the terms of use.",
@@ -530,80 +529,10 @@
   ],
   "notes": [
     "The card variant, the whole option as a bordered panel, is not specced yet: its edge at rest is the divider color, `color.border`, under the 3:1 of an edge that shows a state, and its hover fill is the raised color at half, which the system has no token for.",
-    "A checked box is the interactive color. The colors of Nuxt UI other than primary are not part of the spec.",
+    "A checked box is the interactive color. A box checked in another color is not part of the spec.",
     "The box sits centered on the first line of its label, and the label starts `space.10` past it. That is the implementation's layout, not a row of the table.",
     "The tick is the system's icon size, 16 px, in the 20 px box of md, and four fifths of the box at the other sizes, to the even pixel, so it stays centered: 12, 12, 18 and 20 px. At 12 px it is just over a pixel wide, so the small sizes are for dense rows only."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["UCheckbox", "UFormField"],
-      "today": "The list variant in Nuxt UI's five sizes, in a form field for its error. Its boxes, ticks, fills, labels, descriptions, focus ring and required mark already match the spec at every size, and in forced colors its edge is a border and a checked or an indeterminate box keeps its fill and its mark. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
-      "parts": {
-        "root": "root",
-        "control": "base",
-        "indicator": "indicator",
-        "icon": "icon",
-        "label": "label",
-        "required": "label::after",
-        "description": "description",
-        "error": "error",
-        "error-icon": "error::before"
-      },
-      "variants": {
-        "list": {
-          "variant": "list"
-        }
-      },
-      "sizes": {
-        "xs": {
-          "size": "xs"
-        },
-        "sm": {
-          "size": "sm"
-        },
-        "md": {
-          "size": "md"
-        },
-        "lg": {
-          "size": "lg"
-        },
-        "xl": {
-          "size": "xl"
-        }
-      },
-      "deviations": [
-        {
-          "summary": "The edge of the box is an inset ring, a box shadow, and a border only in forced colors. So the rows for its `border-color`, `border-style` and `border-width` do not hold."
-        },
-        {
-          "summary": "A disabled box that is checked or indeterminate keeps the interactive fill of an enabled one. Its theme gives it the faint fill in a compound variant on `checked`, which UCheckbox never passes to its theme, so the rows for `choice.indicator.bg.disabled` and `choice.indicator.icon.disabled` do not hold. Its radio group draws the faint fill."
-        },
-        {
-          "summary": "The error icon is the system's own danger glyph, drawn as a mask that fills its background with `field.error.icon` while its color is the error's. The spec names Lucide's `octagon-alert` in `currentcolor`."
-        },
-        {
-          "summary": "It reads the roles by their Tailwind utilities, such as `ring-field-border`, not the component tokens, such as `ring-(--ws-choice-control-border-rest)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its gallery shows the states and the sizes of the contract but marks none of them with `data-spec`, so no test can find them by id yet. It shows each size checked only, so the sizes at rest are missing, and none of its examples of a state has a description."
-        }
-      ],
-      "beyond": [
-        "The card variant, the whole option as a bordered panel, checked on the interactive tint.",
-        "The colors success, info, warning, error and neutral for a checked box.",
-        "The box at the end of its label, or hidden in a card.",
-        "The highlight prop, which outlines a box in a color."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "checkbox.list.rest",
     "checkbox.list.hover",

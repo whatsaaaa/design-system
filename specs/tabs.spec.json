@@ -3,14 +3,13 @@
   "component": "tabs",
   "title": "Tabs",
   "status": "draft",
-  "changed": "0.14.0",
   "summary": "Views of one thing, a tab each, switched in place: a row of mono labels over a line, the frame's tabs in look, whose current tab is marked by a bar of the brand color.",
   "use": [
     "Views of one thing that a reader switches between in place, such as the overview, the settings and the history of one event."
   ],
   "notFor": [
     "Moving between pages: that is the frame's tab bar, whose tabs are links.",
-    "A choice of one value from a few, such as a ticket or a view's density: that is a segmented control, which also stands in for Nuxt UI's pill tabs.",
+    "A choice of one value from a few, such as a ticket or a view's density: that is a segmented control, which also stands in for pill tabs, a bar whose current tab is raised.",
     "Steps of a task that follow each other: that is a form of steps."
   ],
   "parts": {
@@ -430,75 +429,13 @@
     "Keep the labels short, so the row fits; a row that does not fit scrolls inside itself and keeps every label whole."
   ],
   "notes": [
-    "Only the frame's look is specified. Nuxt UI's pill tabs, a bar whose current tab is raised, have no spec: a choice that looks like one is a segmented control, which the system draws, `ws-segmented`.",
+    "Only the frame's look is specified. Pill tabs, a bar whose current tab is raised, have no spec: a choice that looks like one is a segmented control, which the system draws, `ws-segmented`.",
     "The tabs have no group of component tokens: each state of a tab is a role that names its use already, the secondary text color for idle navigation and the brand color for a marker of where you are, and its measures are the control's. The frame's tab bar draws its tabs from the same roles.",
     "The frame's tab bar marks its current tab with a bar along its top, a fill and its sides, as a window's tab is drawn; a row of tabs inside a page has its bar along its foot, over the row's line, as a page has no window around it.",
     "The icons are the control's at each size: 16 px up to md, 20 px at lg and xl.",
     "Tabs stacked in a column, with the bar along their side, keep working in an implementation but are not specified.",
     "An example's tabs are its own: the tab the helper measures is the first, so a gallery's current example makes its first tab the current one, and every other example another tab."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["UTabs"],
-      "today": "A row of mono labels over a line in the border color, the idle ones in the secondary text color and the current one in the text color with a 2 px bar of the brand color along its foot, the focus ring inside the tab and a disabled tab in the faint text color. The tabs are as tall as a control at each size, and a row that does not fit scrolls. In forced colors the current tab's bar, once lost, takes the selection color.",
-      "parts": {
-        "root": "root",
-        "list": "list",
-        "trigger": "trigger",
-        "indicator": "indicator",
-        "leading-icon": "leadingIcon",
-        "label": "label",
-        "content": "content"
-      },
-      "variants": {
-        "link": {
-          "variant": "link"
-        }
-      },
-      "sizes": {
-        "xs": {
-          "size": "xs"
-        },
-        "sm": {
-          "size": "sm"
-        },
-        "md": {
-          "size": "md"
-        },
-        "lg": {
-          "size": "lg"
-        },
-        "xl": {
-          "size": "xl"
-        }
-      },
-      "deviations": [
-        {
-          "summary": "Its icons are 14, 16, 16, 16 and 18 px from xs to xl, where the spec takes the control's, `control.icon-size.<size>`: 16 px up to md, 20 px at lg and xl."
-        },
-        {
-          "summary": "It reads the roles and measures by their Tailwind utilities, such as `h-10`, `px-3.5` and `text-text-secondary`, not the control tokens, such as `h-(--ws-control-height-md)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its tabs are pills unless `variant=\"link\"` is set, as in Nuxt UI, where the spec's one look is the link."
-        },
-        {
-          "summary": "Its gallery marks no example with `data-spec`, and shows the hover, the disabled tab and the sizes on pill tabs only, where the spec's examples are link tabs."
-        }
-      ],
-      "beyond": [
-        "The pill tabs, tabs stacked in a column, the status colors, and an avatar or a badge in a tab."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "tabs.link.rest",
     "tabs.link.hover",

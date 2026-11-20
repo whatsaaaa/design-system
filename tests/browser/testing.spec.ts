@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { type Browser, type Page, expect, test } from '@playwright/test'
 import {
   type Failure,
-  type Spec,
+  type SpecOptions,
   checkSpec,
   expectSpec,
   loadSpec,
@@ -25,10 +25,9 @@ const files: Record<string, string> = {
 }
 
 /**
- * A spec with the fixture as one of its implementations, whose part map names the parts a
- * pseudo-element draws, as an implementation's does.
+ * The fixture's own map of parts, passed to the helper as an implementation passes its own: it
+ * draws every part in the slot of the part's name, but for those a pseudo-element draws.
  */
-const implementation = 'fixture'
 const pseudoParts: Record<string, Record<string, string>> = {
   checkbox: { required: 'label::after' },
   input: { placeholder: 'root::placeholder', required: 'label::after' },
@@ -37,17 +36,7 @@ const pseudoParts: Record<string, Record<string, string>> = {
   'select-menu': { 'item-highlight': 'item::before' },
   table: { 'loading-bar': 'thead::after' },
 }
-function fixture(name: string): Spec {
-  const spec = loadSpec(name)
-  const parts = pseudoParts[name] ?? {}
-  return {
-    ...spec,
-    implementations: {
-      ...spec.implementations,
-      [implementation]: { library: 'plain HTML', status: 'shipped', parity: 'passing', parts },
-    },
-  }
-}
+const fixture = (name: string): SpecOptions => ({ parts: pseudoParts[name] ?? {} })
 
 async function gallery(browser: Browser, options: { deviceScaleFactor?: number } = {}) {
   const context = await browser.newContext(options)
@@ -105,7 +94,7 @@ const leastChecks: Record<string, number> = {
 
 for (const name of specNames()) {
   test(`a gallery that meets the ${name} spec passes it in both themes`, async () => {
-    const { failures, checks } = await checkSpec(page, fixture(name), { implementation })
+    const { failures, checks } = await checkSpec(page, name, fixture(name))
     expect(failures).toEqual([])
     // every row a gallery example holds for is measured in each theme, so a gallery that draws
     // less fails
@@ -128,32 +117,71 @@ test('a gallery on a screen of two device pixels to a CSS pixel passes', async (
   // the images of the forced-colors check in device pixels would be cut to their top-left quarter,
   // without the bar along the current tab's foot
   const { context, page } = await gallery(browser, { deviceScaleFactor: 2 })
-  for (const name of ['table', 'tabs']) await expectSpec(page, fixture(name), { implementation })
+  for (const name of ['table', 'tabs']) await expectSpec(page, name, fixture(name))
   await context.close()
 })
 
-test('it reads the parts an implementation maps in the spec', async () => {
-  // ui-vue draws the button's parts in Nuxt UI's slots: root is base, an icon leadingIcon
-  await page.evaluate(() => {
-    const slots: Record<string, string> = {
-      root: 'base',
-      'leading-icon': 'leadingIcon',
-      'trailing-icon': 'trailingIcon',
-    }
+test('it reads the parts an implementation draws under another name from its map', async () => {
+  // the button's parts drawn in a library's slots: root is base, an icon leadingIcon
+  const parts = { root: 'base', 'leading-icon': 'leadingIcon', 'trailing-icon': 'trailingIcon' }
+  await page.evaluate((slots: Record<string, string>) => {
     for (const element of document.querySelectorAll<HTMLElement>('[data-spec^="button."] *'))
       element.dataset.slot = slots[element.dataset.slot!] ?? element.dataset.slot
-  })
-  await expectSpec(page, 'button', { implementation: 'ui-vue' })
+  }, parts)
+  // the map does not name the label: a part it does not name stays the slot of its own name
+  await expectSpec(page, loadSpec('button'), { parts })
+  // without the map, the parts under another name are not found
   const { failures } = await checkSpec(page, 'button')
+  expect(failures.length).toBeGreaterThan(0)
   expect(failures.every(({ check }) => check === 'coverage')).toBe(true)
 })
 
+test('a map that names a part the spec does not have is an error that names it', async () => {
+  // a part an update of the spec renamed, or a slip of the hand: nothing is checked
+  await expect(checkSpec(page, 'button', { parts: { rooot: 'base' } })).rejects.toThrow(
+    'the button spec has no part rooot. Its parts are: root, label, leading-icon, trailing-icon',
+  )
+  await expect(
+    expectSpec(page, loadSpec('input'), { parts: { root: 'base', hint: 'hint', lable: 'label' } }),
+  ).rejects.toThrow(/^the input spec has no parts hint, lable\. Its parts are: root, /)
+})
+
+test('an option it does not have is an error, as the implementation it once took', async () => {
+  const options = { implementation: 'ui-vue' } as SpecOptions
+  await expect(checkSpec(page, 'button', options)).rejects.toThrow(
+    'the parity helper has no option implementation: its one option is parts, ' +
+      "the implementation's own map of the parts it draws under another name",
+  )
+  await expect(expectSpec(page, 'button', options)).rejects.toThrow(/has no option implementation/)
+})
+
+test('a map that draws a part as something other than slots and a pseudo-element is an error', async () => {
+  for (const as of ['.button', 'base > leadingIcon', 'label:after', 'base::', ''])
+    await expect(checkSpec(page, 'button', { parts: { root: as } }), as).rejects.toThrow(
+      `the part root of the button spec cannot be drawn as "${as}"`,
+    )
+})
+
 /**
- * The select menu's gallery drawn in ui-vue's slots: a select's trigger is `base` and its icons
- * `leadingIcon` and `trailingIcon`, as are the icon of the search in its list, and a group's name
- * is `label`, as is the form field's label around it.
+ * A map as an implementation on a component library writes it, where one slot draws two parts:
+ * the trigger is `base` and its icons `leadingIcon` and `trailingIcon`, as is the icon of the
+ * search in the list, and a group's name is `label`, as is the form field's label around it. So
+ * a part is named by the slot it is inside too.
  */
-async function selectMenuInUiVueSlots(page: Page) {
+const selectMenuParts = {
+  root: 'base',
+  placeholder: 'base placeholder',
+  'leading-icon': 'base leadingIcon',
+  'trailing-icon': 'base trailingIcon',
+  'group-label': 'content label',
+  'item-highlight': 'item::before',
+  'item-indicator': 'itemTrailingIcon',
+  search: 'input',
+  'search-icon': 'input leadingIcon',
+}
+
+/** The select menu's gallery drawn in the slots of that map. */
+async function selectMenuInLibrarySlots(page: Page) {
   await page.evaluate(() => {
     const slots: Record<string, string> = {
       root: 'base',
@@ -172,13 +200,13 @@ async function selectMenuInUiVueSlots(page: Page) {
 }
 
 test('it reads a part in a slot inside another, where one slot draws two parts', async () => {
-  await selectMenuInUiVueSlots(page)
+  await selectMenuInLibrarySlots(page)
   // `base leadingIcon` is the trigger's icon, never the search's in the open list
-  await expectSpec(page, 'select-menu', { implementation: 'ui-vue' })
+  await expectSpec(page, 'select-menu', { parts: selectMenuParts })
 })
 
 test('a slot that two parts share fails where the example wraps both', async () => {
-  await selectMenuInUiVueSlots(page)
+  await selectMenuInLibrarySlots(page)
   // the example's id around the form field too, and a part map of bare slots: the field's label
   // is the first `label`, and the search's icon the first `leadingIcon` of a trigger without one
   await page.evaluate(() => {
@@ -189,20 +217,10 @@ test('a slot that two parts share fails where the example wraps both', async () 
       delete control.dataset.spec
     }
   })
-  const spec = loadSpec('select-menu')
   const parts = Object.fromEntries(
-    Object.entries(spec.implementations['ui-vue']!.parts!).map(([part, slot]) => [
-      part,
-      slot.split(' ').at(-1)!,
-    ]),
+    Object.entries(selectMenuParts).map(([part, slot]) => [part, slot.split(' ').at(-1)!]),
   )
-  const flat: Spec = {
-    ...spec,
-    implementations: {
-      flat: { library: 'ui-vue, unscoped', status: 'shipped', parity: 'failing', parts },
-    },
-  }
-  const { failures } = await checkSpec(page, flat, { implementation: 'flat' })
+  const { failures } = await checkSpec(page, 'select-menu', { parts })
   const messages = failures.map(({ message }) => message)
   expect(messages).toContainEqual(
     expect.stringMatching(
@@ -244,7 +262,7 @@ test('a token is resolved where the part is, in a part of the page held in the o
       border-color: ${dark};
     }`,
   })
-  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  const { failures } = await checkSpec(page, 'input', fixture('input'))
   // in the light theme the edge is wrong wherever the token is resolved, in the dark one only
   // where the part is
   expect(where(failures)).toEqual([
@@ -262,7 +280,7 @@ test('a missing example fails, or one under an id the gallery does not have', as
       .querySelector('[data-spec="input.outline.hover"]')!
       .setAttribute('data-spec', 'input.outline.hovered')
   })
-  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  const { failures } = await checkSpec(page, 'input', fixture('input'))
   expect(failures).toEqual(
     ['input.outline.hover', 'input.outline.invalid'].map((id) => ({
       check: 'coverage',
@@ -280,7 +298,7 @@ test('a part that no example draws fails', async () => {
     ))
       help.remove()
   })
-  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  const { failures } = await checkSpec(page, 'input', fixture('input'))
   expect(failures.map(({ theme, message }) => `${theme}: ${message}`)).toEqual(
     ['dark', 'light'].map(
       (theme) =>
@@ -297,7 +315,7 @@ test('a row with a condition is held only where the example meets it', async () 
       padding-inline-start: var(--ws-space-12) !important;
     }`,
   })
-  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  const { failures } = await checkSpec(page, 'input', fixture('input'))
   expect(where(failures)).toEqual([
     ['tokens', 'dark', 'input.outline.loading'],
     ['tokens', 'light', 'input.outline.loading'],
@@ -313,7 +331,7 @@ test('a field whose value moves when its edge widens fails', async () => {
   await page.addStyleTag({
     content: `[data-spec^='input.outline.invalid'] input { --field-edge-extra: 0px !important; }`,
   })
-  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  const { failures } = await checkSpec(page, 'input', fixture('input'))
   const invalid = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `input.outline.invalid${size}`)
   expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
     new Set(['dark', 'light'].flatMap((theme) => invalid.map((id) => `tokens ${theme} ${id}`))),
@@ -340,7 +358,7 @@ test('a row with a condition that no example meets fails', async () => {
         .cloneNode(true),
     )
   })
-  const { failures } = await checkSpec(page, fixture('input'), { implementation })
+  const { failures } = await checkSpec(page, 'input', fixture('input'))
   expect(failures.map(({ theme, message }) => `${theme}: ${message}`)).toEqual(
     ['dark', 'light'].map(
       (theme) =>
@@ -359,7 +377,7 @@ test('a list whose edge is a ring, not a border, fails, and loses it in forced c
       box-shadow: inset 0 0 0 var(--ws-overlay-border-width) var(--ws-overlay-border);
     }`,
   })
-  const { failures } = await checkSpec(page, fixture('select'), { implementation })
+  const { failures } = await checkSpec(page, 'select', fixture('select'))
   const open = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `select.outline.open${size}`)
   expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
     new Set(
@@ -394,7 +412,7 @@ test('an outlined badge drawn as a ring, in the padding of a tint, fails', async
       box-shadow: inset 0 0 0 var(--ws-border-width-thin) var(--ws-color-border);
     }`,
   })
-  const { failures } = await checkSpec(page, fixture('badge'), { implementation })
+  const { failures } = await checkSpec(page, 'badge', fixture('badge'))
   const outlined = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `badge.outline.rest${size}`)
   expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
     new Set(
@@ -441,7 +459,7 @@ test('a part is measured where the example draws it, in the option that is check
       background-color: var(--ws-choice-indicator-bg-checked) !important;
     }`,
   })
-  const { failures } = await checkSpec(page, fixture('radio-group'), { implementation })
+  const { failures } = await checkSpec(page, 'radio-group', fixture('radio-group'))
   expect(where(failures)).toEqual([
     ['tokens', 'dark', 'radio-group.list.disabled'],
     ['tokens', 'light', 'radio-group.list.disabled'],
@@ -459,7 +477,7 @@ test('a checked box that loses its fill and its mark in forced colors fails', as
       .choice [data-slot='indicator'] { opacity: 0; }
     }`,
   })
-  const { failures } = await checkSpec(page, fixture('checkbox'), { implementation })
+  const { failures } = await checkSpec(page, 'checkbox', fixture('checkbox'))
   // the fill and the mark are drawn only once it is checked, so the examples are compared whole
   const marked = [
     'checked',
@@ -484,7 +502,7 @@ test('a selected row that looks the same as the one at rest in forced colors fai
   await page.addStyleTag({
     content: `[data-spec='table.selectable.selected'] { margin-inline-start: 0.5px; }`,
   })
-  await expectSpec(page, fixture('table'), { implementation })
+  await expectSpec(page, 'table', fixture('table'))
 
   // the chosen row drawn as ui-vue draws it: its fill only, with no checkbox, which forced colors
   // paint in the page's color, as they paint every row
@@ -498,7 +516,7 @@ test('a selected row that looks the same as the one at rest in forced colors fai
       .table tbody tr:has(input:checked) td { color: var(--ws-table-row-text) !important; }
     }`,
   })
-  const { failures } = await checkSpec(page, fixture('table'), { implementation })
+  const { failures } = await checkSpec(page, 'table', fixture('table'))
   expect(where(failures)).toEqual([
     ['forced-colors', 'dark', 'table.selectable.selected'],
     ['forced-colors', 'light', 'table.selectable.selected'],
@@ -576,7 +594,7 @@ for (const [tabs, equal] of [
   ] as const)
     test(`a current tab whose bar is outside its box passes, and fails once forced colors hide it, with tabs ${tabs} and panels ${panels}`, async () => {
       await tabsWithTheBarInTheList(page, { equal, taller })
-      await expectSpec(page, fixture('tabs'), { implementation })
+      await expectSpec(page, 'tabs', fixture('tabs'))
 
       await page.addStyleTag({
         content: `@media (forced-colors: active) {
@@ -586,7 +604,7 @@ for (const [tabs, equal] of [
           }
         }`,
       })
-      const { failures } = await checkSpec(page, fixture('tabs'), { implementation })
+      const { failures } = await checkSpec(page, 'tabs', fixture('tabs'))
       expect(where(failures)).toEqual([
         ['forced-colors', 'dark', 'tabs.link.current'],
         ['forced-colors', 'light', 'tabs.link.current'],

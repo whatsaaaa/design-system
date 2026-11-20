@@ -16,7 +16,7 @@ Not for:
 
 ## Anatomy
 
-Each part's name is its `data-slot` in an implementation, or the slot it maps to under [Implementations](#implementations).
+Each part's name is its `data-slot` in an implementation, or the slot the implementation's own map of parts gives it, which it passes to [the parity helper](/docs/usage#_12-components-specs-and-the-tier).
 
 <SpecTerms of="card" list="parts" />
 
@@ -61,10 +61,6 @@ In motion:
 The pairs of the colors the parts name, measured as WCAG 2 contrast in both themes and rounded down.
 
 <ContrastTable of="card" />
-
-## Implementations
-
-<SpecImplementations of="card" />
 
 ## Gallery contract
 

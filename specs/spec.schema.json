@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/whatsaaaa/design-system/blob/main/specs/spec.schema.json",
   "title": "Component spec",
-  "description": "What every implementation of a component has to draw alike, whatever its framework: its parts, kinds, sizes and states, the token each part takes in each state, its keyboard and accessibility rules, how each implementation maps onto it and the examples its gallery shows. The design system draws no component: it specifies them.",
+  "description": "What every implementation of a component has to draw alike, whatever its framework: its parts, kinds, sizes and states, the token each part takes in each state, its keyboard and accessibility rules and the examples its gallery shows. The design system draws no component: it specifies them.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -10,7 +10,6 @@
     "component",
     "title",
     "status",
-    "changed",
     "summary",
     "use",
     "notFor",
@@ -25,7 +24,6 @@
     "forcedColors",
     "motion",
     "content",
-    "implementations",
     "gallery"
   ],
   "properties": {
@@ -44,11 +42,6 @@
     "status": {
       "description": "A draft can still change in any release; a stable spec changes as the versioning policy says.",
       "enum": ["draft", "stable"]
-    },
-    "changed": {
-      "description": "The version of the package in which the spec last changed.",
-      "type": "string",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$"
     },
     "summary": {
       "description": "What the component is, in one sentence.",
@@ -149,13 +142,6 @@
       "description": "What the spec leaves out or decides against on purpose, and why.",
       "$ref": "#/$defs/sentences"
     },
-    "implementations": {
-      "description": "Each implementation, by its package's name.",
-      "type": "object",
-      "minProperties": 1,
-      "propertyNames": { "$ref": "#/$defs/name" },
-      "additionalProperties": { "$ref": "#/$defs/implementation" }
-    },
     "gallery": {
       "description": "The examples every implementation's gallery shows, each marked with its id in `data-spec`: `<component>.<variant>.<state>`, and `.<size>` at the end for a size other than the default.",
       "type": "array",
@@ -187,7 +173,7 @@
       "additionalProperties": { "$ref": "#/$defs/sentence" }
     },
     "size": {
-      "description": "Nuxt UI's five sizes, which every control of the system has.",
+      "description": "The five sizes every control of the system has.",
       "enum": ["xs", "sm", "md", "lg", "xl"]
     },
     "state": {
@@ -288,80 +274,6 @@
           "type": "string",
           "minLength": 1
         }
-      }
-    },
-    "implementation": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["library", "status", "parity"],
-      "properties": {
-        "library": {
-          "description": "The library the implementation is built on, and its version.",
-          "$ref": "#/$defs/sentence"
-        },
-        "status": {
-          "description": "Whether it ships the component yet.",
-          "enum": ["planned", "shipped"]
-        },
-        "parity": {
-          "description": "Whether its parity test reads this spec yet, and its result.",
-          "enum": ["none", "passing", "failing"]
-        },
-        "components": {
-          "description": "The library's components that make it up.",
-          "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/$defs/sentence" }
-        },
-        "today": {
-          "description": "What it draws today, in short.",
-          "$ref": "#/$defs/sentence"
-        },
-        "parts": {
-          "description": "Each part, as the library's slot that draws it, with a pseudo-element where the slot draws the part as one: `label::after`, and after the slots it is inside where the same slot draws another part too: `base leadingIcon`, the icon of a select menu's trigger and not of the search in its list.",
-          "type": "object",
-          "propertyNames": { "$ref": "#/$defs/name" },
-          "additionalProperties": {
-            "type": "string",
-            "pattern": "^[a-zA-Z][a-zA-Z0-9]*( [a-zA-Z][a-zA-Z0-9]*)*(::[a-z-]+)?$"
-          }
-        },
-        "variants": {
-          "description": "Each kind, as the props that draw it.",
-          "$ref": "#/$defs/props"
-        },
-        "sizes": {
-          "description": "Each size, as the props that draw it.",
-          "$ref": "#/$defs/props"
-        },
-        "deviations": {
-          "description": "Where it does not meet the spec yet, each with the issue that tracks it where there is one.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["summary"],
-            "properties": {
-              "summary": { "$ref": "#/$defs/sentence" },
-              "issue": { "type": "string", "pattern": "^https://" }
-            }
-          }
-        },
-        "beyond": {
-          "description": "What it draws that the spec does not cover, kept working but not checked.",
-          "$ref": "#/$defs/sentences"
-        }
-      },
-      "if": { "properties": { "status": { "const": "shipped" } } },
-      "then": { "required": ["components", "today", "parts", "variants", "sizes", "deviations"] }
-    },
-    "props": {
-      "type": "object",
-      "propertyNames": { "$ref": "#/$defs/name" },
-      "additionalProperties": {
-        "type": "object",
-        "minProperties": 1,
-        "additionalProperties": { "type": ["string", "boolean"] }
       }
     }
   }

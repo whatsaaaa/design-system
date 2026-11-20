@@ -16,7 +16,7 @@ Not for:
 
 ## Anatomy
 
-Each part's name is its `data-slot` in an implementation, or the slot it maps to under [Implementations](#implementations).
+Each part's name is its `data-slot` in an implementation, or the slot the implementation's own map of parts gives it, which it passes to [the parity helper](/docs/usage#_12-components-specs-and-the-tier).
 
 <SpecTerms of="checkbox" list="parts" />
 
@@ -67,10 +67,6 @@ In motion:
 The pairs of the colors the states name, measured as WCAG 2 contrast in both themes and rounded down. A disabled state is exempt.
 
 <ContrastTable of="checkbox" />
-
-## Implementations
-
-<SpecImplementations of="checkbox" />
 
 ## Gallery contract
 

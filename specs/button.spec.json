@@ -3,7 +3,6 @@
   "component": "button",
   "title": "Button",
   "status": "draft",
-  "changed": "0.9.0",
   "summary": "An action: a mono label in semibold, in a box of the control height, filled with the interactive color for the one action a view leads to and outlined for the rest.",
   "use": [
     "An action on the page: submit a form, save, open a dialog, delete.",
@@ -782,89 +781,6 @@
     "A square icon button, as wide as it is tall, is a button of any kind and size with only an icon and an `aria-label`. Its width is not checked yet.",
     "Danger has no fill in either theme: in the light theme no red of Rosé Pine Dawn carries small light text at 4.5:1, and a fill of the text color would look like a neutral button."
   ],
-  "implementations": {
-    "ui-vue": {
-      "library": "Nuxt UI 4.12, themed by ui-vue's app config",
-      "status": "shipped",
-      "parity": "none",
-      "components": ["UButton"],
-      "today": "Nuxt UI's six variants in six colors and five sizes. The five kinds of the spec are the ones its gallery uses in context; their colors, the focus ring, the disabled and loading looks, the heights, the paddings and the gaps already match the spec. It reads the system's roles through Tailwind utilities, not the component tokens yet.",
-      "parts": {
-        "root": "base",
-        "label": "label",
-        "leading-icon": "leadingIcon",
-        "trailing-icon": "trailingIcon"
-      },
-      "variants": {
-        "primary": {
-          "color": "primary",
-          "variant": "solid"
-        },
-        "secondary": {
-          "color": "neutral",
-          "variant": "outline"
-        },
-        "ghost": {
-          "color": "neutral",
-          "variant": "ghost"
-        },
-        "quiet": {
-          "color": "primary",
-          "variant": "link"
-        },
-        "danger": {
-          "color": "error",
-          "variant": "outline"
-        }
-      },
-      "sizes": {
-        "xs": {
-          "size": "xs"
-        },
-        "sm": {
-          "size": "sm"
-        },
-        "md": {
-          "size": "md"
-        },
-        "lg": {
-          "size": "lg"
-        },
-        "xl": {
-          "size": "xl"
-        }
-      },
-      "deviations": [
-        {
-          "summary": "The edge is an inset ring, a box shadow, and a border only in forced colors. So the rows for `border-color`, `border-style` and `border-width` do not hold, and a primary button has no border at all."
-        },
-        {
-          "summary": "Icons are 14 px at xs and 18 px at lg, off the system's scale. The spec takes `control.icon-size`: 16 px up to md, then 20 px."
-        },
-        {
-          "summary": "The danger button's hover and pressed fill is the danger color at 10%, where the spec has `color.danger-tint`, the same color at 9%."
-        },
-        {
-          "summary": "A secondary button pressed without the pointer on it, as Space presses it, draws its edge in the field border on the raised fill: 2.93:1 in the dark theme, under the 3:1 of an edge. The spec keeps the hover edge, `color.text-secondary`, while it is pressed."
-        },
-        {
-          "summary": "It reads the roles by their Tailwind utilities, such as `bg-interactive`, not the component tokens, such as `bg-(--ws-button-primary-bg-rest)`, so a change of the tier does not reach it."
-        },
-        {
-          "summary": "Its gallery shows every example of the contract, but marks none of them with `data-spec`, so no test can find them by id yet."
-        }
-      ],
-      "beyond": [
-        "The variants soft and subtle, and the colors success, info and warning in every variant, as well as error solid, which the gallery's matrix shows.",
-        "The block prop, which makes a button as wide as its container."
-      ]
-    },
-    "ui-react": {
-      "library": "shadcn/ui on Radix",
-      "status": "planned",
-      "parity": "none"
-    }
-  },
   "gallery": [
     "button.primary.rest",
     "button.primary.hover",

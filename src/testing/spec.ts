@@ -24,25 +24,11 @@ export interface SpecRow {
   value?: string
 }
 
-export interface Implementation {
-  library: string
-  status: 'planned' | 'shipped'
-  parity: 'none' | 'passing' | 'failing'
-  components?: string[]
-  today?: string
-  parts?: Record<string, string>
-  variants?: Record<string, Record<string, string | boolean>>
-  sizes?: Record<string, Record<string, string | boolean>>
-  deviations?: { summary: string; issue?: string }[]
-  beyond?: string[]
-}
-
 export interface Spec {
   $schema: string
   component: string
   title: string
   status: 'draft' | 'stable'
-  changed: string
   summary: string
   use: string[]
   notFor: string[]
@@ -59,7 +45,6 @@ export interface Spec {
   motion: string[]
   content: string[]
   notes?: string[]
-  implementations: Record<string, Implementation>
   gallery: string[]
 }
 
@@ -78,6 +63,56 @@ export function loadSpec(name: string): Spec {
   if (!specNames().includes(name))
     throw new Error(`there is no spec named ${name}. The specs are: ${specNames().join(', ')}`)
   return JSON.parse(readFileSync(new URL(`${name}.spec.json`, specDirectory), 'utf8'))
+}
+
+/**
+ * Where a part is drawn: the element with its `data-slot`, or the one inside an element of
+ * another, `[data-slot="base"] [data-slot="leadingIcon"]`, or a pseudo-element of it.
+ */
+export interface Target {
+  selector: string
+  pseudo?: string
+}
+
+/**
+ * What a part can be drawn as: a slot, `base` or `leading-icon`, a slot inside others,
+ * `base leadingIcon`, and a pseudo-element of it, `label::after`.
+ */
+const drawnAs = /^[a-zA-Z][a-zA-Z0-9-]*( [a-zA-Z][a-zA-Z0-9-]*)*(::[a-z-]+)?$/
+
+/**
+ * Where each part of the spec is drawn, from an implementation's map of the parts it draws under
+ * another name. A part the map does not name is the slot of its own name. A map that names a part
+ * the spec does not have, such as a part an update of the spec renamed, is an error.
+ */
+export function partTargets(
+  spec: Spec,
+  parts: Record<string, string> = {},
+): Record<string, Target> {
+  const names = Object.keys(spec.parts)
+  const unknown = Object.keys(parts).filter((part) => !names.includes(part))
+  if (unknown.length)
+    throw new Error(
+      `the ${spec.component} spec has no ${unknown.length > 1 ? 'parts' : 'part'} ${unknown.join(', ')}. ` +
+        `Its parts are: ${names.join(', ')}`,
+    )
+  return Object.fromEntries(
+    names.map((part) => {
+      const as = parts[part] ?? part
+      if (!drawnAs.test(as))
+        throw new Error(
+          `the part ${part} of the ${spec.component} spec cannot be drawn as "${as}": ` +
+            'a part map names a slot, a slot and a pseudo-element of it, or a slot inside ' +
+            'another, such as base, label::after or base leadingIcon',
+        )
+      const [path = part, pseudo] = as.split(/(?=::)/)
+      const selector = path
+        .split(' ')
+        .map((slot) => `[data-slot="${slot}"]`)
+        .join(' ')
+      return [part, pseudo ? { selector, pseudo } : { selector }]
+    }),
+  )
 }
 
 /** The kinds a row holds for. */
