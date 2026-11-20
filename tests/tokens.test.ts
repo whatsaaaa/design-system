@@ -44,9 +44,12 @@ describe('the palette', () => {
 })
 
 describe('the color roles', () => {
-  it('are the same set in both themes', () => {
+  // The style guide shows a role's description once, beside its value in both themes.
+  it('are the same set in both themes, with one description for both', () => {
     const roles = (theme: 'dark' | 'light') =>
-      Object.keys(tokens(theme)).filter((id) => id.startsWith('color.'))
+      Object.entries(tokens(theme))
+        .filter(([id]) => id.startsWith('color.'))
+        .map(([id, token]) => [id, token.$description])
     expect(roles('light')).toEqual(roles('dark'))
   })
 

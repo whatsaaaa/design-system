@@ -99,7 +99,7 @@
         "components": [0.8981, 0.9024, 0.8878],
         "hex": "#e5e6e2"
       },
-      "$description": "Tag background: the interactive color at 10% on the page, as an opaque color."
+      "$description": "Tag background: the interactive color on the page, 12% of it in dark and 10% in light, as an opaque color."
     },
     "tip": {
       "$value": "{palette.dawn.pine}",

@@ -95,7 +95,7 @@
         "components": [0.1597, 0.1768, 0.2259],
         "hex": "#292d3a"
       },
-      "$description": "Tag background: the interactive color at 12% on the page, as an opaque color."
+      "$description": "Tag background: the interactive color on the page, 12% of it in dark and 10% in light, as an opaque color."
     },
     "tip": {
       "$value": "{palette.main.foam}",

@@ -62,7 +62,7 @@ export function measure(pair: ContrastPair, theme: Theme): Measured {
     throw new Error(
       `${pair.foreground} on ${pair.background}: ${pair.background} is translucent in ${theme}, so the pair has to name \`over\`, the opaque color it lies on`,
     )
-  const background = blend(fill, rgb(pair.over ?? 'color.bg', theme))
+  const background = pair.over ? blend(fill, rgb(pair.over, theme)) : fill
   const foreground = blend(rgb(pair.foreground, theme), background)
   const ratio =
     Math.floor(wcagContrast({ mode: 'rgb', ...foreground }, { mode: 'rgb', ...background }) * 100) /
