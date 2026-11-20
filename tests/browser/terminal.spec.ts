@@ -165,6 +165,23 @@ test.describe('the numbers of the tabs', () => {
   }
 })
 
+/** A system color as the page draws it on its background, which the color may let through. */
+const system = (page: Page, color: string) =>
+  page.evaluate((color) => {
+    const context = document.createElement('canvas').getContext('2d')!
+    for (const fill of ['Canvas', color]) {
+      // as the page computes it: a canvas does not take the colors of forced colors
+      const probe = document.createElement('span')
+      probe.style.color = fill
+      document.body.append(probe)
+      context.fillStyle = getComputedStyle(probe).color
+      probe.remove()
+      context.fillRect(0, 0, 1, 1)
+    }
+    const [r, g, b] = context.getImageData(0, 0, 1, 1).data
+    return `rgb(${r}, ${g}, ${b})`
+  }, color)
+
 test.describe('the current tab in forced colors', () => {
   /** The color in the middle of an element's top edge, as the page draws it. */
   const top = async (tab: Locator) => {
@@ -172,23 +189,6 @@ test.describe('the current tab in forced colors', () => {
     const [r, g, b] = rgba.slice(Math.floor(width / 2) * 4)
     return `rgb(${r}, ${g}, ${b})`
   }
-
-  /** A system color as the page draws it on its background, which the color may let through. */
-  const system = (page: Page, color: string) =>
-    page.evaluate((color) => {
-      const context = document.createElement('canvas').getContext('2d')!
-      for (const fill of ['Canvas', color]) {
-        // as the page computes it: a canvas does not take the colors of forced colors
-        const probe = document.createElement('span')
-        probe.style.color = fill
-        document.body.append(probe)
-        context.fillStyle = getComputedStyle(probe).color
-        probe.remove()
-        context.fillRect(0, 0, 1, 1)
-      }
-      const [r, g, b] = context.getImageData(0, 0, 1, 1).data
-      return `rgb(${r}, ${g}, ${b})`
-    }, color)
 
   for (const [name, path, current, other, marked] of [
     [
@@ -243,4 +243,164 @@ test.describe('the current tab in forced colors', () => {
           expect(sides).toEqual([canvas, canvas])
         }
       })
+})
+
+test.describe('a mask icon in forced colors', () => {
+  /**
+   * How many pixels of an element its pseudo-element draws clearly apart from what is under
+   * it: the element as it is, next to the element with the pseudo-element hidden in its place.
+   */
+  const painted = async (page: Page, selector: string, pseudo: string) => {
+    const element = page.locator(selector).first()
+    const shown = await pixels(element)
+    const hidden = await page.addStyleTag({
+      content: `${selector}${pseudo} { visibility: hidden !important }`,
+    })
+    const bare = await pixels(element)
+    await hidden.evaluate((style: HTMLStyleElement) => style.remove())
+    expect([bare.width, bare.height]).toEqual([shown.width, shown.height])
+    let count = 0
+    for (let i = 0; i < shown.rgba.length; i += 4)
+      if ([0, 1, 2].some((c) => Math.abs(shown.rgba[i + c]! - bare.rgba[i + c]!) > 48)) count++
+    return count
+  }
+
+  /** The window between the widths at which the docs theme has its links out in the bar and a phone. */
+  const LAPTOP = { width: 1024, height: 800 }
+
+  /** The menu behind the three dots, open as under the pointer, once it has faded in. */
+  const flyout = async (page: Page) => {
+    await page.locator('.VPNavBarExtra').hover()
+    await expect(page.locator('.VPNavBarExtra > .menu')).toHaveCSS('opacity', '1')
+  }
+
+  /** The phone's menu, open. */
+  const menu = (page: Page) => page.locator('.VPNavBarHamburger').click()
+
+  /** A link of the sidebar that leaves the site, as the default theme renders one. */
+  const external = (page: Page) =>
+    page
+      .locator('.VPSidebar a.VPLink')
+      .first()
+      .evaluate((link: HTMLAnchorElement) => {
+        link.href = 'https://example.com/'
+        link.classList.add('vp-external-link-icon')
+      })
+
+  /** An icon: its name, its page, its element, the part of it drawn as a mask and its color. */
+  type Icon = [
+    name: string,
+    path: string,
+    selector: string,
+    pseudo: string,
+    color: string,
+    viewport?: { width: number; height: number },
+    prepare?: (page: Page) => Promise<unknown>,
+  ]
+
+  const icons: Icon[] = [
+    ['the arrow of a link that leaves the site', TERMINAL, 'a.ws-arrow', '::after', 'LinkText'],
+    ['the chevron of a prompt', TERMINAL, '.ws-prompt', '::before', 'CanvasText'],
+    [
+      'the icon of a callout',
+      '/examples/prose.html',
+      '.ws-callout__title',
+      '::before',
+      'CanvasText',
+    ],
+    [
+      "the icon of the docs theme's callout",
+      '/styles/prose',
+      '.vp-doc .custom-block .custom-block-title',
+      '::before',
+      'CanvasText',
+    ],
+    [
+      "the arrow of the docs theme's link out",
+      '/styles/prose',
+      '.VPNav .VPNavBarSocialLinks .VPSocialLink',
+      '::after',
+      'LinkText',
+    ],
+    ["an icon of the guide's grid", '/styles/forms', '.icons .icon', ' .drawn', 'CanvasText'],
+    [
+      "the guide's one-color cut of the ghost",
+      '/identity/',
+      '.kit .preview:has(.mono)',
+      ' .mono',
+      'CanvasText',
+    ],
+    [
+      'the tick of a done step in the form example',
+      '/examples/form.html',
+      '.steps__item--done .steps__number',
+      '::before',
+      'CanvasText',
+    ],
+    // the default theme's own icons, which the docs theme keeps
+    [
+      "the docs theme's link out in the menu behind the three dots",
+      '/styles/prose',
+      '.VPNavBarExtra .VPSocialLink',
+      ' > [class*="vpi-social-"]',
+      'LinkText',
+      LAPTOP,
+      flyout,
+    ],
+    [
+      "the docs theme's three dots",
+      '/styles/prose',
+      '.VPNavBarExtra .button',
+      ' .vpi-more-horizontal',
+      'ButtonText',
+      LAPTOP,
+    ],
+    [
+      "the docs theme's link out in the phone's menu",
+      '/styles/prose',
+      '.VPNavScreen .VPSocialLink',
+      ' > [class*="vpi-social-"]',
+      'LinkText',
+      PHONE,
+      menu,
+    ],
+    [
+      "the arrow of the docs theme's link that leaves the site",
+      '/styles/prose',
+      '.VPSidebar a.vp-external-link-icon',
+      '::after',
+      'LinkText',
+      DESKTOP,
+      external,
+    ],
+  ]
+
+  for (const [name, path, selector, pseudo, color, viewport = DESKTOP, prepare] of icons)
+    test(`${name} is drawn in the color of its text`, async ({ page }) => {
+      await page.setViewportSize(viewport)
+      await open(page, path)
+      await prepare?.(page)
+      const element = page.locator(selector).first()
+      await element.scrollIntoViewIfNeeded()
+      // out of forced colors the icon is there, which says the count below is of the icon
+      const themed = await painted(page, selector, pseudo)
+      expect(themed).toBeGreaterThan(0)
+
+      await page.emulateMedia({ forcedColors: 'active' })
+      const [expected, canvas] = [await system(page, color), await system(page, 'Canvas')]
+      expect(expected).not.toBe(canvas)
+      // its fill is the system's color of its text, which the browser leaves as it is
+      const fill = await element.evaluate(
+        (host, pseudo) =>
+          pseudo.startsWith('::')
+            ? getComputedStyle(host, pseudo).backgroundColor
+            : getComputedStyle(host.querySelector(`:scope ${pseudo}`)!).backgroundColor,
+        pseudo.trim(),
+      )
+      expect(fill).toBe(expected)
+      if (color !== 'CanvasText')
+        expect(await element.evaluate((host) => getComputedStyle(host).color)).toBe(expected)
+      // and it shows: as much of it stands apart from the page as in the theme
+      expect(await painted(page, selector, pseudo)).toBeGreaterThanOrEqual(themed / 2)
+    })
 })

@@ -37,6 +37,13 @@ import InlineCode from './InlineCode.vue'
   mask-repeat: no-repeat;
 }
 
+/* In forced colors the fill under a mask takes the page's color: the icon takes the text's. */
+@media (forced-colors: active) {
+  .drawn {
+    background: CanvasText;
+  }
+}
+
 .icon .name {
   padding: 0;
   background: none;

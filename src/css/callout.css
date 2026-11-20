@@ -63,6 +63,13 @@
   mask: var(--ws-callout-icon) center / contain no-repeat;
 }
 
+/* In forced colors the fill under a mask takes the page's color: the icon takes the text's. */
+@media (forced-colors: active) {
+  .ws-callout__title::before {
+    background: CanvasText;
+  }
+}
+
 .ws-callout > p {
   margin: var(--ws-space-6) 0 0;
   line-height: var(--ws-text-body-line-height);

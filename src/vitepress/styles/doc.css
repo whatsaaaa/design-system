@@ -287,6 +287,13 @@
   mask: var(--ws-callout-icon) center / contain no-repeat;
 }
 
+/* In forced colors the fill under a mask takes the page's color: the icon takes the text's. */
+@media (forced-colors: active) {
+  .vp-doc .custom-block .custom-block-title::before {
+    background: CanvasText;
+  }
+}
+
 .vp-doc .custom-block.details summary {
   margin: 0;
   color: var(--ws-color-text);
