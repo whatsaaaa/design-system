@@ -71,9 +71,9 @@ export interface SizeRow {
   /**
    * For a sum of tokens, the terms the same at every size or that follow that pattern,
    * `control.gap.<size>`, which the row names once, added or taken away, and each size's own
-   * others, which its cell names.
+   * others, which its cell names as it would a row's: a token, or a sum of several.
    */
-  sum?: { plus: string[]; less: string[]; own: Partial<Record<Size, string[]>> }
+  sum?: { plus: string[]; less: string[]; own: Partial<Record<Size, Cell>> }
   cells: Partial<Record<Size, Cell>>
 }
 
@@ -100,6 +100,16 @@ for (const file of tierFiles) {
   }
   walk(JSON.parse(readFileSync(join(tierDirectory, file), 'utf8')), [])
 }
+
+/** The role a tier token stands for, through every alias: `overlay.bg` is `color.surface`. */
+const roleOf = (id: string): string => (id in tierAliases ? roleOf(tierAliases[id]!) : id)
+
+/** Whether a token is a fill of the tier: `overlay.bg`, `button.primary.bg.hover`. */
+const isFill = (id: string) => inTier(id) && /\.bg(\.[a-z]+)?$/.test(id)
+
+/** Names as a sentence lists them: `a`, `a and b`, `a, b and c`. */
+const listed = (names: string[]) =>
+  names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names[0]!
 
 const dimension = ({ value, unit }: { value: number; unit: string }) =>
   unit === 'rem' ? `${value * 16}px` : `${value}${unit}`
@@ -205,26 +215,38 @@ function valueText(row: SpecRow, theme: Theme): CellValue {
   return { text: length === undefined ? text : `${length}px` }
 }
 
+/** A term of a calc: its sign, the term with its tokens by their ids, and as the CSS writes it. */
+interface Term {
+  sign: 1 | -1
+  term: string
+  css: string
+}
+
 /**
  * The terms of a calc, each with its sign and with its tokens by their ids:
  * `calc(var(--ws-space-12) - (var(--ws-a) - var(--ws-b)))` is `space.12` and less `(a - b)`.
  */
-function calcTerms(value: string): { sign: 1 | -1; term: string }[] | undefined {
-  const body = /^calc\((.+)\)$/.exec(withTokens(value, (token) => token))?.[1]
+function calcTerms(value: string): Term[] | undefined {
+  const body = /^calc\((.+)\)$/.exec(value)?.[1]
   if (body === undefined) return undefined
-  const terms: { sign: 1 | -1; term: string }[] = []
+  const terms: Term[] = []
   let [depth, start, sign] = [0, 0, 1 as 1 | -1]
+  const end = (at: number) => {
+    const css = body.slice(start, at)
+    terms.push({ sign, term: withTokens(css, (token) => token), css })
+  }
   for (let at = 0; at < body.length; at++) {
     if (body[at] === '(') depth++
     else if (body[at] === ')') depth--
     else if (depth === 0 && /^ [-+] $/.test(body.slice(at, at + 3))) {
-      terms.push({ sign, term: body.slice(start, at) })
+      end(at)
       sign = body[at + 1] === '+' ? 1 : -1
       start = at + 3
       at += 2
     }
   }
-  return [...terms, { sign, term: body.slice(start) }]
+  end(body.length)
+  return terms
 }
 
 function cell(row: SpecRow): Cell {
@@ -247,6 +269,21 @@ function cell(row: SpecRow): Cell {
     dark: tokenValue(row, 'dark'),
     light: tokenValue(row, 'light'),
   }
+}
+
+/**
+ * The terms of a sum that are a size's own, as a cell of their own: one token as a row's token,
+ * `space.12`, and several as a row's value, `space.12 + space.2`.
+ */
+function ownCell(row: SpecRow, terms: Term[]): Cell {
+  const [only] = terms
+  const token =
+    terms.length === 1 && tokenOfVariable(/^var\((--[a-z0-9-]+)\)$/.exec(only!.css)?.[1] ?? '')
+  return cell(
+    token
+      ? { ...row, token, value: undefined }
+      : { ...row, value: `calc(${terms.map(({ css }) => css).join(' + ')})` },
+  )
 }
 
 function page(spec: Spec): SpecPage {
@@ -288,6 +325,7 @@ function page(spec: Spec): SpecPage {
   // same at every size, such as the width and the height of both icons, though not a text
   // style's size and line height
   const bySize: SizeRow[] = []
+  const rowOf = new Map<Cell, SpecRow>()
   for (const row of stateTable.filter((row) => row.size)) {
     const variants = variantsOf(row)
     const condition = conditionOf(row)
@@ -309,6 +347,7 @@ function page(spec: Spec): SpecPage {
       bySize.push(target)
     }
     const value = cell(row)
+    rowOf.set(value, row)
     // a measure is the same in both themes, which the matrix shows once
     if (value.dark.text !== value.light.text)
       throw new Error(`${spec.component}: ${row.token} differs by theme, and a size row shows one`)
@@ -358,22 +397,29 @@ function page(spec: Spec): SpecPage {
       plus: signed(1),
       less: signed(-1),
       own: Object.fromEntries(
-        cells.map(([size], which) => [size, own[which]!.map(({ term }) => term)]),
+        cells.flatMap(([size, value], which) =>
+          own[which]!.length > 0 ? [[size, ownCell(rowOf.get(value)!, own[which]!)]] : [],
+        ),
       ),
     }
   }
 
-  // the measured pairs whose colors the table names, on a color it names or on the page
+  // the measured pairs whose colors the table names, on a color it names or on the page, and on
+  // the role behind a fill of the tier it names, as a list on overlay.bg has its text on
+  // color.surface
   const named = new Set(stateTable.flatMap(rowTokens))
+  const fillsOf = (role: string) => [...named].filter((id) => isFill(id) && roleOf(id) === role)
   const contrast = contrastRows(
     allPairs()
-      .filter(
-        (pair) =>
-          named.has(pair.foreground) &&
-          (named.has(pair.background) || pair.background === 'color.bg'),
-      )
-      // a pair of the tier says no more than its names
-      .map((pair) => (inTier(pair.foreground) ? { ...pair, use: '' } : pair)),
+      .filter((pair) => named.has(pair.foreground))
+      .flatMap((pair) => {
+        if (named.has(pair.background) || pair.background === 'color.bg')
+          // a pair of the tier says no more than its names
+          return [inTier(pair.foreground) ? { ...pair, use: '' } : pair]
+        // a pair of the roles says what it is for elsewhere: here it is for the fill
+        const fills = fillsOf(pair.background)
+        return fills.length > 0 ? [{ ...pair, use: `The color of ${listed(fills)}` }] : []
+      }),
   )
 
   return { ...rest, stateGroups, sizeRows, contrast }

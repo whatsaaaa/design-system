@@ -256,16 +256,20 @@ describe('the component pages', () => {
       'control.gap.md',
     ])
     // what follows the size is named once, and each size's padding in its cell
-    expect(row.sum).toEqual({
+    expect(row.sum).toMatchObject({
       plus: ['control.icon-size.<size>', 'control.gap.<size>'],
       less: [],
-      own: {
-        xs: ['space.8'],
-        sm: ['space.10'],
-        md: ['space.12'],
-        lg: ['space.14'],
-        xl: ['space.16'],
-      },
+    })
+    // a cell of its own, as a row of that one token has: its id, its variable and its value
+    expect(
+      Object.fromEntries(Object.entries(row.sum!.own).map(([size, own]) => [size, own.token])),
+    ).toEqual({ xs: 'space.8', sm: 'space.10', md: 'space.12', lg: 'space.14', xl: 'space.16' })
+    expect(row.sum!.own.md).toEqual({
+      token: 'space.12',
+      cssVar: '--ws-space-12',
+      aliasOf: undefined,
+      dark: { text: '12px' },
+      light: { text: '12px' },
     })
   })
 
