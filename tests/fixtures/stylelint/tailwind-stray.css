@@ -8,3 +8,9 @@
 @media (width >= bogus(1)) {
   display: none;
 }
+
+@media (width >= --bogus(1)) {
+  .card {
+    display: none;
+  }
+}
