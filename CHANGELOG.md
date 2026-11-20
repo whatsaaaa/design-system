@@ -1,5 +1,32 @@
 # @whatsaaaa/design-system
 
+## 0.15.0
+
+### Minor Changes
+
+- [#83](https://github.com/whatsaaaa/design-system/pull/83) [`82b2662`](https://github.com/whatsaaaa/design-system/commit/82b26624c1cce8b172276679f5782da188f175ec) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - The five tints, `color.tag-bg`, `color.tip-tint`, `color.note-tint`, `color.warning-tint` and `color.danger-tint`, are opaque in both themes: each is the color its hue made on the page at its strength, 12% or 10% for the tag and 9% for a status. On the page nothing changes. A tag, a callout or the danger button's hover fill now reads the same on every ground: a tag in a chosen table row read as low as 2.48:1 in dark and 3.89:1 in light, and now reads 4.87:1 or more everywhere. On a panel, and on the raised color in dark, a tint is a touch darker than before, and on the raised color in light a touch lighter. On a tint, body text and a description take `color.text`, never secondary text, and a tag's word and a status label keep their `-text` token: `docs/usage.md` says so, `tokens/contrast.json` checks `color.text` on `color.tag-bg`, and the checkbox and radio group specs say the description of a checked card takes the text color. The contrast check fails a pair whose background is translucent unless it names the color it lies `over`.
+
+- [#80](https://github.com/whatsaaaa/design-system/pull/80) [`5a08862`](https://github.com/whatsaaaa/design-system/commit/5a08862e2c645897ec9c20cbd0f4434f82d80d71) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - A component spec holds nothing about one implementation any more, and no version of its own. This breaks whatever read either from a spec, and every parity test that named an implementation.
+
+  What breaks:
+
+  - **The spec format loses `implementations`.** The field, its place among the required ones and the two definitions only it used, `implementation` and `props`, are gone from `specs/spec.schema.json`, and the entry is gone from all eleven specs: the library and its version, the slot that draws each part, the props of each kind and size, the deviations and the result of the parity test. A spec with the field no longer validates. An implementation keeps what it records about itself in its own repository.
+  - **The spec format loses `changed`**, the version a spec last changed in, from the schema and from all eleven specs. It was written by hand before a release knew its version. This changelog is where a change to a spec is recorded.
+  - **The `testing` helper's `implementation` option is replaced by `parts`.** `expectSpec(page, name, { implementation: 'ui-vue' })` read the part map of that entry in the spec. Now the implementation passes its own map: `expectSpec(page, name, { parts: { root: 'base', required: 'label::after', 'leading-icon': 'base leadingIcon' } })`. A value is what the spec's map held: a slot, a slot and a pseudo-element of it, or a slot inside another, and a slot's name can now hold a hyphen, as a part's own name does. A part the map does not name is still the slot of its own name. New: a map that names a part the spec does not have, or draws a part as anything else, fails with an error that names it, such as `the button spec has no part rooot`, so a part an update of the spec renamed is not left unchecked. An option the helper does not have, such as `implementation`, is an error too, where it used to be left unread.
+  - **The types of `@whatsaaaa/design-system/testing` follow**: `Spec` has no `implementations` and no `changed`, and `SpecOptions` has `parts` in place of `implementation`.
+
+  `expectSpec`, `checkSpec`, `loadSpec` and `specNames` keep their names and signatures. No part, kind, size, state, row or gallery id of any spec changes.
+
+  To follow, an implementation moves each map out of the specs into a file next to its parity test and passes it as `parts`, and keeps its props, its deviations and its parity result in its own docs. The entries as they were stay readable in 0.14.0: `node -p "require('@whatsaaaa/design-system/specs/button.spec.json').implementations"` with that version installed.
+
+  A spec's notes name no component library and no implementation any more, the schema's description of a size neither, and a test holds both to it. In the style guide, a component's page loses its table of implementations, its "Implementations" section and its "Last changed in" line.
+
+- [#75](https://github.com/whatsaaaa/design-system/pull/75) [`14031be`](https://github.com/whatsaaaa/design-system/commit/14031be5141e9d72d5b5c25542c8106b8531c9c2) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - The stylelint config rejects a `color()` literal, such as `color(srgb ...)` or `color(display-p3 ...)`, as it does the other color functions. `color-mix()` still passes. It now knows the `--ws-icon-*` variables of `css/icons.css` next to the tokens, so a project that extends `@whatsaaaa/design-system/stylelint` names no file of the package in its own config. `docs/usage.md` says what a project on Tailwind CSS adds for Tailwind's at-rules and functions.
+
+### Patch Changes
+
+- [#81](https://github.com/whatsaaaa/design-system/pull/81) [`87b1ad5`](https://github.com/whatsaaaa/design-system/commit/87b1ad567078fa97b98adcf8e353b351156548bc) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - The icons drawn as masks keep showing in forced colors, such as a Windows contrast theme. The browser paints every fill in the page's color there, the fill under a mask too, so the callout's icon, the arrow after a link that leaves the site, the prompt's chevron and the arrow of the docs theme's links out were gone. Each is now drawn in the system's color of the text it stands with: the callout's icon and the chevron in the text color, an arrow in its link's color. In the docs theme the same holds for the default theme's own icons of the links out, in the menu behind the three dots and in the phone's menu, for the three dots, and for the arrow after a link of the bar or the sidebar that leaves the site. Out of forced colors nothing changes. A page with these pieces or a site on the docs theme takes this with no change of its own. An icon you draw yourself from `css/icons.css` needs the same rule, which `docs/usage.md` and the file's comment give.
+
 ## 0.14.0
 
 ### Minor Changes
