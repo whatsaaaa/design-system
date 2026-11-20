@@ -5,7 +5,8 @@ agents_md: false
 brand_kit: whatsaaaa
 browser_tests: true
 copyright_year: 2026
-description: 'Whatsaaaa''s design system: brand identity, design tokens, typography,
+description: 'Whatsaaaa''s design system: brand identity, design tokens with a component
+    tier, typography, component specs with a parity test helper, token lint rules,
     docs theme and asset kit'
 design_system: true
 framework: vue

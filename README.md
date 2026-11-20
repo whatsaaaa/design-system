@@ -2,7 +2,7 @@
 
 # design-system
 
-Whatsaaaa's design system: one identity, one set of tokens and one voice for the personal site, the docs sites, the apps and the READMEs.
+Whatsaaaa's design system: one identity, one set of tokens and one voice for the personal site, the docs sites, the apps and the READMEs, and one spec for each component that a library on top of it draws.
 
 The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whatsaaaa/design-system) on npm. The style guide is built here but not deployed.
 
@@ -21,6 +21,8 @@ The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whats
 | Style guide             | A site that shows all of it with real content, in dark and light, and offers the assets for download                                                                                                                                  | `styleguide/`                             |
 
 To use it in another project, install it with `pnpm add @whatsaaaa/design-system` and read [docs/usage.md](./docs/usage.md). It is written for coding agents and is short.
+
+What a project can rely on from one version to the next is in [docs/versioning.md](./docs/versioning.md): the public surface, and what is a major, a minor and a patch. The promise starts with 1.0.0. Until then a minor of 0.x may break.
 
 ## Working on it
 
@@ -56,10 +58,11 @@ Every script builds what it needs first, so each one works on a fresh checkout.
 - **The ghost.** Edit `src/identity/ghost.ts`, then run `pnpm assets`. The kit, the element and the style guide all draw from that file.
 - **A new project.** Add `identity/projects/<name>.json` with its name, a line about it and its sprite, then run `pnpm assets`.
 - **A style.** The stylesheets in `src/css/` take every color from a token. Stylelint rejects a hex value.
+- **A component spec.** Edit `specs/<component>.spec.json`, or add one with its page in `styleguide/components/`. `tests/specs.test.ts` checks it against `specs/spec.schema.json` and the tokens, and the gallery in `tests/fixtures/spec-gallery/` has to meet it, as the browser tests check with the parity helper.
 
 Never edit a file in `assets/` or `dist/`. Both are generated, and `assets/` is checked against its sources in CI.
 
-A pull request that changes what the package ships adds a changeset with `pnpm changeset`. See [Releasing](#releasing).
+A pull request that changes what the package ships adds a changeset with `pnpm changeset`. Whether the change is a major, a minor or a patch is in [docs/versioning.md](./docs/versioning.md). See [Releasing](#releasing).
 
 ## Checks
 
@@ -81,7 +84,7 @@ That needs Docker. Review the changed images like any other change. The Playwrig
 
 ## Releasing
 
-1. A pull request that changes what the package ships adds a changeset with `pnpm changeset`.
+1. A pull request that changes what the package ships adds a changeset with `pnpm changeset`, with the bump [docs/versioning.md](./docs/versioning.md) gives the change.
 2. When it merges, the release workflow, `.github/workflows/release.yml`, opens a Version Packages pull request that bumps the version and writes the changelog.
 3. Merging that one starts the publish job. It waits for a reviewer to approve the `npm` environment.
 4. Once approved, it publishes to npm through trusted publishing, with provenance. No npm token is stored anywhere.
@@ -99,6 +102,7 @@ npm sets up a trusted publisher only for a package that exists, so the package w
 
 ```
 tokens/          the design tokens, the component tier in components/, and the contrast pairs
+specs/           the component specs, and the schema they are checked against
 identity/        the handle and one file per project: name, tagline, sprite
 src/identity/    the ghost, pixel by pixel, and how a sprite becomes a mark
 src/css/         the stylesheets
@@ -113,7 +117,7 @@ scripts/         the builds and the asset generator
 assets/          the generated asset kit
 styleguide/      the style guide
 tests/           unit tests, and browser tests in tests/browser/
-docs/            the usage guide, the decisions behind the build, and follow-ups
+docs/            the usage guide, the versioning policy, the decisions behind the build, and follow-ups
 licenses/        licenses of what the system builds on
 ```
 
@@ -127,6 +131,6 @@ The licenses are in [`licenses/`](./licenses/).
 
 ## License
 
-Everything made for Whatsaaaa here is [MIT](./LICENSE), the identity artwork included: the tokens, the stylesheets, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules, the docs theme, and the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons.
+Everything made for Whatsaaaa here is [MIT](./LICENSE), the identity artwork included: the tokens, the stylesheets, the component specs, the scripts, `<ws-ghost>`, the theme, shortcut and code-theme modules, the parity helper, the token lint rules, the docs theme, and the ghost, the wordmark, the lockups and marks, the sprite and mark of each project, the README headers, the social cards, the profile banner and the favicons.
 
 The third-party material in the [credits](#credits) keeps its own license: the Rosé Pine palette is MIT, and the Departure Mono glyph outlines and the JetBrains Mono and Inter fonts are under the SIL Open Font License 1.1.
