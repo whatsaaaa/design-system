@@ -245,6 +245,23 @@ test.describe('the current tab in forced colors', () => {
       })
 })
 
+/**
+ * The search dialog, open from the bar's search button with its field focused, and with the
+ * results of a query, if one is given, once they are there.
+ */
+const search = async (page: Page, query = '') => {
+  await page.locator('.VPNavBarSearch .DocSearch-Button').click()
+  const field = page.locator('.VPLocalSearchBox .search-input')
+  await expect(field).toBeFocused()
+  if (!query) return
+  await field.fill(query)
+  await expect(
+    page.locator('.VPLocalSearchBox .result .title > .local-search-icon').first(),
+  ).toBeVisible()
+}
+/** The search dialog with what "color" finds, which has results under a title of their own. */
+const found = (page: Page) => search(page, 'color')
+
 test.describe('an icon in forced colors', () => {
   /**
    * How many pixels of an element its pseudo-element draws clearly apart from what is under
@@ -449,6 +466,70 @@ test.describe('an icon in forced colors', () => {
       'ButtonText',
       PHONE,
     ],
+    // the search dialog's icons, masks too: three of them are a button's only content
+    [
+      "the back button of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .back-button',
+      ' > .local-search-icon',
+      'ButtonText',
+      PHONE,
+      search,
+    ],
+    [
+      "the layout toggle of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .toggle-layout-button',
+      ' > .local-search-icon',
+      'ButtonText',
+      DESKTOP,
+      search,
+    ],
+    [
+      "the reset button of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .clear-button',
+      ' > .local-search-icon',
+      'ButtonText',
+      DESKTOP,
+      found,
+    ],
+    [
+      "the disabled reset button of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .clear-button',
+      ' > .local-search-icon',
+      'GrayText',
+      DESKTOP,
+      search,
+    ],
+    [
+      "the magnifier of the field of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .search-bar label',
+      ' > .search-icon',
+      'CanvasText',
+      DESKTOP,
+      search,
+    ],
+    [
+      "a chevron between the titles of a result of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .result:has(.title > .local-search-icon)',
+      ' .title > .local-search-icon',
+      'LinkText',
+      DESKTOP,
+      found,
+    ],
+    [
+      "an arrow of a key under the results of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .search-keyboard-shortcuts',
+      ' kbd > .navigate-icon',
+      'CanvasText',
+      DESKTOP,
+      search,
+    ],
   ]
 
   for (const [name, path, selector, pseudo, color, viewport = DESKTOP, prepare] of icons)
@@ -500,12 +581,13 @@ test.describe('an icon in forced colors', () => {
   })
 
   /** A control on a phone: its name, its element, the part of the page its ring is drawn in. */
-  const controls: [
+  type Control = [
     name: string,
     selector: string,
     around: string,
     prepare?: (page: Page) => Promise<unknown>,
-  ][] = [
+  ]
+  const controls: Control[] = [
     [
       "the docs theme's theme switch",
       '.VPNavScreen .VPSwitchAppearance',
@@ -518,6 +600,23 @@ test.describe('an icon in forced colors', () => {
       '.VPNavBarSearch .DocSearch-Button',
       '.VPNavBarSearch .DocSearch-Button',
     ],
+    // in the search dialog, with something in the field, which the reset button needs to be
+    // enabled, and without the field's caret, which blinks
+    ...(
+      [
+        ['back button', 'back-button'],
+        ['layout toggle', 'toggle-layout-button'],
+        ['reset button', 'clear-button'],
+      ] as const
+    ).map(([name, button]): Control => [
+      `the ${name} of the docs theme's search dialog`,
+      `.VPLocalSearchBox .${button}`,
+      '.VPLocalSearchBox .search-bar',
+      async (page: Page) => {
+        await found(page)
+        await page.locator('.VPLocalSearchBox .search-input').blur()
+      },
+    ]),
   ]
 
   for (const [name, selector, around, prepare] of controls)
@@ -546,4 +645,117 @@ test.describe('an icon in forced colors', () => {
       const box = (await control.boundingBox())!
       expect(count).toBeGreaterThan(Math.min(box.width, box.height))
     })
+})
+
+test.describe("a state of the docs theme's search dialog in forced colors", () => {
+  test.use({ viewport: DESKTOP })
+
+  type Image = Awaited<ReturnType<typeof pixels>>
+
+  /** How many pixels of two images of one element differ clearly. */
+  const differ = (one: Image, other: Image) => {
+    expect([other.width, other.height]).toEqual([one.width, one.height])
+    let count = 0
+    for (let i = 0; i < one.rgba.length; i += 4)
+      if ([0, 1, 2].some((c) => Math.abs(one.rgba[i + c]! - other.rgba[i + c]!) > 48)) count++
+    return count
+  }
+
+  /** How many pixels of an image stand clearly apart from a color, as "rgb(r, g, b)". */
+  const ink = ({ rgba }: Image, color: string) => {
+    const rgb = color.match(/\d+/g)!.map(Number)
+    let count = 0
+    for (let i = 0; i < rgba.length; i += 4)
+      if ([0, 1, 2].some((c) => Math.abs(rgba[i + c]! - rgb[c]!) > 48)) count++
+    return count
+  }
+
+  /**
+   * A system color as the page computes it, as a style of the page takes it: unlike as the page
+   * draws it, without its background, which the system's color of a selection lets through.
+   */
+  const computed = (page: Page, color: string) =>
+    page.evaluate((color) => {
+      const probe = document.createElement('span')
+      probe.style.color = color
+      document.body.append(probe)
+      const value = getComputedStyle(probe).color
+      probe.remove()
+      return value
+    }, color)
+
+  /** The colors of an element's four edges, as the page computes them. */
+  const edges = (element: Locator) =>
+    element.evaluate((host) => {
+      const style = getComputedStyle(host)
+      return [
+        style.borderTopColor,
+        style.borderRightColor,
+        style.borderBottomColor,
+        style.borderLeftColor,
+      ]
+    })
+
+  test('the selected result, which the arrow keys move, has a heavier edge in the color of a selection', async ({
+    page,
+  }) => {
+    await open(page, '/styles/prose')
+    await found(page)
+    await page.emulateMedia({ forcedColors: 'active' })
+    const results = page.locator('.VPLocalSearchBox .result')
+    expect(await results.count()).toBeGreaterThan(1)
+    const [first, second] = [results.nth(0), results.nth(1)]
+    const canvas = await system(page, 'Canvas')
+    expect(await system(page, 'Highlight')).not.toBe(canvas)
+    const highlight = await computed(page, 'Highlight')
+    // the first result is selected as the results come
+    await expect(first).toHaveClass(/\bselected\b/)
+    expect(await edges(first)).toEqual(Array(4).fill(highlight))
+    expect(await edges(second)).not.toContain(highlight)
+    const selected = await pixels(first)
+
+    // the arrow key moves the selection while the field keeps the focus, so only the edge
+    // shows which result the enter key opens
+    await page.keyboard.press('ArrowDown')
+    await expect(second).toHaveClass(/\bselected\b/)
+    await expect(page.locator('.VPLocalSearchBox .search-input')).toBeFocused()
+    expect(await edges(second)).toEqual(Array(4).fill(highlight))
+    expect(await edges(first)).not.toContain(highlight)
+    // and the edge shows by its weight too, not by its color alone, which the other results'
+    // edges may come close to: selected, the result draws one more ring all around
+    const { width } = (await first.boundingBox())!
+    expect(ink(selected, canvas) - ink(await pixels(first), canvas)).toBeGreaterThan(2 * width)
+  })
+
+  test('the layout toggle, while it shows the excerpts, is drawn in the color of a selection', async ({
+    page,
+  }) => {
+    await open(page, '/styles/prose')
+    await found(page)
+    await page.emulateMedia({ forcedColors: 'active' })
+    const toggle = page.locator('.VPLocalSearchBox .toggle-layout-button')
+    const icon = toggle.locator('> .local-search-icon')
+    const colors = async () => [
+      await icon.evaluate((element) => getComputedStyle(element).backgroundColor),
+      await toggle.evaluate((element) => getComputedStyle(element).color),
+    ]
+    expect(await system(page, 'Highlight')).not.toBe(await system(page, 'ButtonText'))
+    const [highlight, text] = [
+      await computed(page, 'Highlight'),
+      await computed(page, 'ButtonText'),
+    ]
+    await expect(toggle).not.toHaveClass(/\bdetailed-list\b/)
+    expect(await colors()).toEqual([text, text])
+    const off = await pixels(toggle)
+
+    // on, and under the pointer, which the default theme colors too
+    await toggle.click()
+    await expect(toggle).toHaveClass(/\bdetailed-list\b/)
+    await expect(page.locator('.VPLocalSearchBox .excerpt').first()).toBeVisible()
+    expect(await toggle.evaluate((element) => element.matches(':hover'))).toBe(true)
+    expect(await colors()).toEqual([highlight, highlight])
+    // and its icon shows it: the toggle looks unlike itself off, across the icon
+    const { width } = (await icon.boundingBox())!
+    expect(differ(off, await pixels(toggle))).toBeGreaterThan(width)
+  })
 })
