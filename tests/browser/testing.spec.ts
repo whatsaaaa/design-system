@@ -458,6 +458,7 @@ const oneSided: [string, string][] = [
   ['card', 'body'],
   ['modal', 'header'],
   ['select', 'separator'],
+  ['select-menu', 'search'],
   ['select-menu', 'separator'],
   ['table', 'th'],
   ['table', 'tr'],

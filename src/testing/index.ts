@@ -253,19 +253,16 @@ function tokenFailure(id: string, { part, property, row }: Expectation, result: 
 }
 
 /**
- * An edge a part has by the spec: a border on every side, an outline, or a border on one side, such
- * as `border-block-end`, the line of a separator.
+ * An edge a part has by the spec: a border on every side, an outline, or the border of its block
+ * end, the line of a separator. The block end is the one side the spec format gives a line of its
+ * own: a side the schema adds later is added here in the same change.
  */
-type Edge = 'border' | 'outline' | `border-${Side}`
-type Side = 'block-start' | 'block-end' | 'inline-start' | 'inline-end'
-
-/** A row of one side's border width: `border-block-end-width`, and its side. */
-const sideWidth = /^border-((?:block|inline)-(?:start|end))-width$/
+type Edge = 'border' | 'outline' | 'border-block-end'
 
 /**
  * The edges an example's parts have by the spec: a border where its width is more than none, an
- * outline where the outline's is, and a border on a side where that side's is, read from the
- * values just measured. A focus ring is the outline, and a line on one side stays its own edge
+ * outline where the outline's is, and a border on the block end where that side's is, read from
+ * the values just measured. A focus ring is the outline, and a line on one side stays its own edge
  * beside it.
  */
 function edgesOf(expected: Expectation[], results: Measured[]): { part: string; edge: Edge }[] {
@@ -275,7 +272,7 @@ function edgesOf(expected: Expectation[], results: Measured[]): { part: string; 
       (result, index) =>
         result.drawn && expected[index]!.part === part && expected[index]!.property === property,
     )
-  const has = (part: string, line: string) => {
+  const has = (part: string, line: Edge) => {
     const width = value(part, `${line}-width`)
     const style = value(part, `${line}-style`)
     return (
@@ -285,21 +282,12 @@ function edgesOf(expected: Expectation[], results: Measured[]): { part: string; 
     )
   }
   return [...new Set(expected.map(({ part }) => part))].flatMap((part) => {
-    const edges: { part: string; edge: Edge }[] = []
-    if (has(part, 'outline')) edges.push({ part, edge: 'outline' })
-    else if (has(part, 'border')) edges.push({ part, edge: 'border' })
+    const edges: Edge[] = []
+    if (has(part, 'outline')) edges.push('outline')
+    else if (has(part, 'border')) edges.push('border')
     // a border on every side covers each side, so a part with one has no side of its own to check
-    if (has(part, 'border')) return edges
-    for (const { part: of, property } of expected) {
-      const side = of === part && (sideWidth.exec(property)?.[1] as Side | undefined)
-      if (
-        side &&
-        has(part, `border-${side}`) &&
-        !edges.some(({ edge }) => edge === `border-${side}`)
-      )
-        edges.push({ part, edge: `border-${side}` })
-    }
-    return edges
+    if (!has(part, 'border') && has(part, 'border-block-end')) edges.push('border-block-end')
+    return edges.map((edge) => ({ part, edge }))
   })
 }
 
@@ -675,7 +663,7 @@ function edgesInPage(
     if (!element) continue
     const style = getComputedStyle(element, target.pseudo)
     const loses = `${id}: ${part} loses its ${edge} in forced colors: `
-    if (edge !== 'border' && edge !== 'outline') {
+    if (edge === 'border-block-end') {
       // a line on one side: that side's border
       if (!line(style, edge, element))
         failures.push({
