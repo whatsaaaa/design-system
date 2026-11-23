@@ -1,5 +1,5 @@
 import { type Locator, type Page, expect, test } from '@playwright/test'
-import { DESKTOP, NARROWEST, PHONE, at, open } from './pages.ts'
+import { DESKTOP, NARROWEST, PHONE, TABLET, at, open } from './pages.ts'
 
 /**
  * Small pieces of the terminal frame: a state lines up with the text beside it, a prompt that
@@ -802,15 +802,31 @@ test.describe("the look of the docs theme's search dialog", () => {
       )
     })
 
-  test('on a phone the panel fills the window, without corners', async ({ page }) => {
-    await page.setViewportSize(PHONE)
+  // the default theme lays the panel out for a phone below the width of a tablet, and floats it
+  // from there, so the panel's corners come and go with its layout at that one width
+  for (const viewport of [PHONE, { ...TABLET, width: TABLET.width - 1 }])
+    test(`the panel fills the window, without corners, ${viewport.width} px wide`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport)
+      await open(page, '/styles/prose')
+      await found(page)
+      const panel = page.locator('.VPLocalSearchBox .shell')
+      expect(await styles(panel, ['border-top-left-radius'])).toEqual({
+        'border-top-left-radius': '0px',
+      })
+      expect(await panel.boundingBox()).toEqual({ x: 0, y: 0, ...viewport })
+    })
+
+  test(`the panel floats, with the theme's corners, ${TABLET.width} px wide`, async ({ page }) => {
+    await page.setViewportSize(TABLET)
     await open(page, '/styles/prose')
     await found(page)
     const panel = page.locator('.VPLocalSearchBox .shell')
-    expect(await panel.evaluate((element) => getComputedStyle(element).borderTopLeftRadius)).toBe(
-      '0px',
+    expect((await panel.boundingBox())!.x).toBeGreaterThan(0)
+    expect(await styles(panel, ['border-top-left-radius'])).toEqual(
+      await theme(page, { 'border-radius': 'var(--ws-radius-xl)' }, ['border-top-left-radius']),
     )
-    expect(await panel.boundingBox()).toEqual({ x: 0, y: 0, ...PHONE })
   })
 })
 

@@ -6,18 +6,27 @@
  * rule here names one more of the dialog's parts around the one it styles, to weigh more: the
  * panel the backdrop it follows, the field the search bar, a result the results.
  *
- * On a phone the panel fills the window, as the default theme lays it out, and has no corners:
- * its radius is for the floating panel alone.
+ * Some of the default theme's declarations are !important, which no weight wins over, so the
+ * theme leaves them: the selected result's mark keeps the interactive color, and everything in
+ * an excerpt of the detailed list the default theme's text size and line height. The page text
+ * of an excerpt takes its color and family from the prose styles, as .vp-doc does.
  */
 .VPLocalSearchBox .backdrop + .shell {
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
+  border-radius: var(--ws-radius-xl);
   box-shadow: none;
   font-family: var(--ws-font-family-mono);
 }
 
-@media (width >= 48rem) {
+/*
+ * On a phone the panel fills the window, as the default theme lays it out, and has no corners:
+ * its radius is for the floating panel alone. The query is the default theme's own, in px, on
+ * purpose, and not the theme's 48rem: a media query's rem is the browser's default font size,
+ * so 48rem would part from the default theme's switch wherever that size is not 16 px.
+ */
+@media (width <= 767px) {
   .VPLocalSearchBox .backdrop + .shell {
-    border-radius: var(--ws-radius-xl);
+    border-radius: 0;
   }
 }
 
@@ -48,11 +57,6 @@
 .VPLocalSearchBox .titles .title-icon {
   color: var(--ws-color-brand);
   opacity: 1;
-}
-
-.VPLocalSearchBox .excerpt-wrapper .excerpt {
-  color: var(--ws-color-text-secondary);
-  font: var(--ws-text-body-sm);
 }
 
 .VPLocalSearchBox .results .no-results,
