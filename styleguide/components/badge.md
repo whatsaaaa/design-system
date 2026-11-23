@@ -34,7 +34,7 @@ Each part's name is its `data-slot` in an implementation, or the slot the implem
 
 <SpecTerms of="badge" list="states" />
 
-What each part takes, at every size, and a row of every kind holds for each of them. A token is named by its id, which reads as its variable: `tag.primary.bg` is `--ws-tag-primary-bg`. Under a component token is the token it aliases, and its value is shown in the dark theme, then the light one.
+What each part takes, at every size, and a row of every kind holds for each of them. A token is named by its id, which reads as its variable: `tag.primary.bg.rest` is `--ws-tag-primary-bg-rest`. Under a component token is the token it aliases, and its value is shown in the dark theme, then the light one.
 
 <SpecStates of="badge" />
 

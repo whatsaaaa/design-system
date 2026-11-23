@@ -49,7 +49,7 @@
       "state": "open",
       "part": "content",
       "property": "background-color",
-      "token": "overlay.bg"
+      "token": "overlay.bg.rest"
     },
     {
       "variant": "*",
@@ -70,7 +70,7 @@
       "state": "open",
       "part": "content",
       "property": "border-color",
-      "token": "overlay.border"
+      "token": "overlay.border.rest"
     },
     {
       "variant": "*",

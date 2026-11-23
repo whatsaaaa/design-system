@@ -53,8 +53,8 @@ export function inEffect(theme: Theme): string[] {
 export const systemIs = (theme: Theme): string =>
   theme === 'light' ? '(prefers-color-scheme: light)' : 'not (prefers-color-scheme: light)'
 
-/** The classes of an element for one theme only. The status line's are older names of them. */
-const onlyIn = (theme: Theme) => `:is(.ws-theme-${theme}, .ws-status-line__item--${theme})`
+/** The class of an element for one theme only. */
+const onlyIn = (theme: Theme) => `.ws-theme-${theme}`
 
 /**
  * The rules that hide an element for one theme only where the other theme is in effect: chosen

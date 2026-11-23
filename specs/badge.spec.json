@@ -45,84 +45,84 @@
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "tag.primary.bg"
+      "token": "tag.primary.bg.rest"
     },
     {
       "variant": "primary",
       "state": "rest",
       "part": "root",
       "property": "color",
-      "token": "tag.primary.text"
+      "token": "tag.primary.text.rest"
     },
     {
       "variant": "success",
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "tag.success.bg"
+      "token": "tag.success.bg.rest"
     },
     {
       "variant": "success",
       "state": "rest",
       "part": "root",
       "property": "color",
-      "token": "tag.success.text"
+      "token": "tag.success.text.rest"
     },
     {
       "variant": "info",
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "tag.info.bg"
+      "token": "tag.info.bg.rest"
     },
     {
       "variant": "info",
       "state": "rest",
       "part": "root",
       "property": "color",
-      "token": "tag.info.text"
+      "token": "tag.info.text.rest"
     },
     {
       "variant": "warning",
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "tag.warning.bg"
+      "token": "tag.warning.bg.rest"
     },
     {
       "variant": "warning",
       "state": "rest",
       "part": "root",
       "property": "color",
-      "token": "tag.warning.text"
+      "token": "tag.warning.text.rest"
     },
     {
       "variant": "danger",
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "tag.danger.bg"
+      "token": "tag.danger.bg.rest"
     },
     {
       "variant": "danger",
       "state": "rest",
       "part": "root",
       "property": "color",
-      "token": "tag.danger.text"
+      "token": "tag.danger.text.rest"
     },
     {
       "variant": "neutral",
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "tag.neutral.bg"
+      "token": "tag.neutral.bg.rest"
     },
     {
       "variant": "neutral",
       "state": "rest",
       "part": "root",
       "property": "color",
-      "token": "tag.neutral.text"
+      "token": "tag.neutral.text.rest"
     },
     {
       "variant": "outline",
@@ -136,7 +136,7 @@
       "state": "rest",
       "part": "root",
       "property": "color",
-      "token": "tag.outline.text"
+      "token": "tag.outline.text.rest"
     },
     {
       "variant": "outline",

@@ -263,8 +263,8 @@
   }
 
   & th {
-    background: var(--ws-table-head-bg);
-    color: var(--ws-table-head-text);
+    background: var(--ws-table-head-bg-rest);
+    color: var(--ws-table-head-text-rest);
     font: var(--ws-text-overline);
     letter-spacing: var(--ws-text-overline-letter-spacing);
     text-transform: uppercase;

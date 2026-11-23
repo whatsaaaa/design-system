@@ -53,7 +53,7 @@
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "field.bg"
+      "token": "field.bg.rest"
     },
     {
       "variant": "*",
@@ -179,21 +179,21 @@
       "state": "rest",
       "part": "leading-icon",
       "property": "color",
-      "token": "field.icon"
+      "token": "field.icon.rest"
     },
     {
       "variant": "*",
       "state": "rest",
       "part": "trailing-icon",
       "property": "color",
-      "token": "field.icon"
+      "token": "field.icon.rest"
     },
     {
       "variant": "*",
       "state": "rest",
       "part": "label",
       "property": "color",
-      "token": "field.label.text"
+      "token": "field.label.text.rest"
     },
     {
       "variant": "*",
@@ -214,14 +214,14 @@
       "state": "rest",
       "part": "required",
       "property": "color",
-      "token": "field.required.text"
+      "token": "field.required.text.rest"
     },
     {
       "variant": "*",
       "state": "rest",
       "part": "help",
       "property": "color",
-      "token": "field.help.text"
+      "token": "field.help.text.rest"
     },
     {
       "variant": "*",
@@ -235,7 +235,7 @@
       "state": "invalid",
       "part": "error",
       "property": "color",
-      "token": "field.error.text"
+      "token": "field.error.text.rest"
     },
     {
       "variant": "*",
@@ -256,7 +256,7 @@
       "state": "invalid",
       "part": "error-icon",
       "property": "color",
-      "token": "field.error.icon"
+      "token": "field.error.icon.rest"
     },
     {
       "variant": "*",

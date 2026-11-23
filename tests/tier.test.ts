@@ -75,12 +75,18 @@ describe('the component tier', () => {
       const property = scaled ? segments.at(-2)! : last
       expect(properties, id).toContain(property)
       // a color is a fill or what is drawn on it, so its contrast follows from its name, and it
-      // takes a state or none: a size is for a measure
+      // ends in a state, `rest` where it has no other, so a later state joins it with no rename: a
+      // size is for a measure
       if (type === 'color') {
         expect(tierColors as readonly string[], id).toContain(property)
-        expect(sizes, id).not.toContain(last)
+        expect(tierStates, id).toContain(last)
       } else expect(tierColors as readonly string[], id).not.toContain(property)
     }
+  })
+
+  it('names no component library: what one draws is its own to say', () => {
+    for (const { file, source } of groups)
+      expect(JSON.stringify(source), file).not.toMatch(/ui-vue|ui-react|nuxt|shadcn|radix|reka/i)
   })
 
   it('keeps each group in a file of its name, and the resolver reads every one of them', () => {
@@ -119,14 +125,14 @@ describe('the component tier', () => {
   it('has the colors of its names measured for contrast', () => {
     const measured = new Set(allPairs().map((pair) => `${pair.foreground} on ${pair.background}`))
     for (const pair of [
-      'field.text.rest on field.bg',
+      'field.text.rest on field.bg.rest',
       'field.border.rest on color.bg',
       'field.border.invalid on color.bg',
-      'field.label.text on color.bg',
-      'field.help.text on color.bg',
-      'field.error.text on color.bg',
-      'field.error.icon on color.bg',
-      'field.required.text on color.bg',
+      'field.label.text.rest on color.bg',
+      'field.help.text.rest on color.bg',
+      'field.error.text.rest on color.bg',
+      'field.error.icon.rest on color.bg',
+      'field.required.text.rest on color.bg',
       'choice.control.border.rest on color.bg',
       'choice.control.border.hover on color.bg',
       'choice.control.border.invalid on color.bg',
@@ -134,17 +140,17 @@ describe('the component tier', () => {
       'choice.indicator.icon.indeterminate on choice.indicator.bg.indeterminate',
       'choice.label.text.rest on color.bg',
       'choice.description.text.rest on color.bg',
-      'table.head.text on table.head.bg',
-      'table.row.text on color.bg',
-      'table.row.text on table.row.bg.hover',
-      'table.row.text on table.row.bg.selected',
-      'tag.primary.text on tag.primary.bg',
-      'tag.success.text on tag.success.bg',
-      'tag.info.text on tag.info.bg',
-      'tag.warning.text on tag.warning.bg',
-      'tag.danger.text on tag.danger.bg',
-      'tag.neutral.text on tag.neutral.bg',
-      'tag.outline.text on color.bg',
+      'table.head.text.rest on table.head.bg.rest',
+      'table.row.text.rest on color.bg',
+      'table.row.text.rest on table.row.bg.hover',
+      'table.row.text.rest on table.row.bg.selected',
+      'tag.primary.text.rest on tag.primary.bg.rest',
+      'tag.success.text.rest on tag.success.bg.rest',
+      'tag.info.text.rest on tag.info.bg.rest',
+      'tag.warning.text.rest on tag.warning.bg.rest',
+      'tag.danger.text.rest on tag.danger.bg.rest',
+      'tag.neutral.text.rest on tag.neutral.bg.rest',
+      'tag.outline.text.rest on color.bg',
     ])
       expect(measured, pair).toContain(pair)
     // disabled is exempt, as WCAG exempts an inactive control
@@ -161,7 +167,7 @@ describe('the component tier', () => {
       'button.danger.bg.disabled',
       'button.danger.text.rest',
       'button.danger.border.rest',
-      'button.danger.icon',
+      'button.danger.icon.rest',
     ] as unknown as TokenId[]).map(
       (pair) => `${pair.foreground} on ${pair.background} at ${pair.min}`,
     )
@@ -169,8 +175,8 @@ describe('the component tier', () => {
       'button.danger.border.rest on button.danger.bg.hover at 3',
       'button.danger.border.rest on button.danger.bg.rest at 3',
       'button.danger.border.rest on color.bg at 3',
-      'button.danger.icon on button.danger.bg.hover at 3',
-      'button.danger.icon on button.danger.bg.rest at 3',
+      'button.danger.icon.rest on button.danger.bg.hover at 3',
+      'button.danger.icon.rest on button.danger.bg.rest at 3',
       'button.danger.text.rest on button.danger.bg.hover at 4.5',
       'button.danger.text.rest on button.danger.bg.rest at 4.5',
     ])
@@ -195,12 +201,12 @@ describe('the component tier', () => {
       'checkbox.border.checked',
       // the icon of a filled button is on its fill, never on the page
       'button.primary.bg.rest',
-      'button.primary.icon',
+      'button.primary.icon.rest',
     ] as unknown as TokenId[]).map(
       (pair) => `${pair.foreground} on ${pair.background} at ${pair.min}`,
     )
     expect(pairs.sort()).toEqual([
-      'button.primary.icon on button.primary.bg.rest at 3',
+      'button.primary.icon.rest on button.primary.bg.rest at 3',
       'checkbox.border.checked on checkbox.bg.checked at 3',
       'checkbox.border.checked on color.bg at 3',
       'checkbox.border.rest on checkbox.bg.rest at 3',

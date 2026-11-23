@@ -61,7 +61,7 @@
       "state": "rest",
       "part": "root",
       "property": "background-color",
-      "token": "field.bg"
+      "token": "field.bg.rest"
     },
     {
       "variant": "*",
@@ -187,21 +187,21 @@
       "state": "rest",
       "part": "leading-icon",
       "property": "color",
-      "token": "field.icon"
+      "token": "field.icon.rest"
     },
     {
       "variant": "*",
       "state": "rest",
       "part": "trailing-icon",
       "property": "color",
-      "token": "field.icon"
+      "token": "field.icon.rest"
     },
     {
       "variant": "*",
       "state": "open",
       "part": "content",
       "property": "background-color",
-      "token": "overlay.bg"
+      "token": "overlay.bg.rest"
     },
     {
       "variant": "*",
@@ -222,7 +222,7 @@
       "state": "open",
       "part": "content",
       "property": "border-color",
-      "token": "overlay.border"
+      "token": "overlay.border.rest"
     },
     {
       "variant": "*",
@@ -326,22 +326,29 @@
       "variant": "*",
       "state": "open",
       "part": "separator",
-      "property": "background-color",
-      "token": "color.border"
+      "property": "border-block-end-style",
+      "value": "solid"
     },
     {
       "variant": "*",
       "state": "open",
       "part": "separator",
-      "property": "height",
+      "property": "border-block-end-width",
       "token": "border-width.thin"
+    },
+    {
+      "variant": "*",
+      "state": "open",
+      "part": "separator",
+      "property": "border-block-end-color",
+      "token": "color.border"
     },
     {
       "variant": "*",
       "state": "open",
       "part": "search-icon",
       "property": "color",
-      "token": "field.icon"
+      "token": "field.icon.rest"
     },
     {
       "variant": "*",

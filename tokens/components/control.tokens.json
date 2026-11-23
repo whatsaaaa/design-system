@@ -1,9 +1,9 @@
 {
   "control": {
-    "$description": "Every one-line control: a button, a text field, a select's trigger, a segmented control, a link tab. Five sizes, Nuxt UI's xs to xl, as ui-vue draws them; md is the default.",
+    "$description": "Every one-line control: a button, a text field, a select's trigger, a segmented control, a link tab. Five sizes, xs to xl; md is the default.",
     "height": {
       "$type": "dimension",
-      "$description": "28, 32, 40, 44 and 48 px, as ui-vue draws them. Nuxt UI's own are 24 to 40 px; here md is the system's control height.",
+      "$description": "28, 32, 40, 44 and 48 px; md is the system's control height.",
       "xs": { "$value": "{size.control-xs}" },
       "sm": { "$value": "{size.control-sm}" },
       "md": { "$value": "{size.control}" },
@@ -12,7 +12,7 @@
     },
     "gap": {
       "$type": "dimension",
-      "$description": "Between an icon and the label or value: 6, 6, 8, 8 and 10 px, as ui-vue draws them. Nuxt UI's own are 4 to 8 px.",
+      "$description": "Between an icon and the label or value: 6, 6, 8, 8 and 10 px.",
       "xs": { "$value": "{space.6}" },
       "sm": { "$value": "{space.6}" },
       "md": { "$value": "{space.8}" },
@@ -21,7 +21,7 @@
     },
     "icon-size": {
       "$type": "dimension",
-      "$description": "16 px up to md, then 20 px, as ui-vue's fields draw them. Nuxt UI's own are 16, 16, 20, 20 and 24 px.",
+      "$description": "16 px up to md, then 20 px.",
       "xs": { "$value": "{size.icon}" },
       "sm": { "$value": "{size.icon}" },
       "md": { "$value": "{size.icon}" },
@@ -30,7 +30,7 @@
     },
     "radius": {
       "$type": "dimension",
-      "$description": "The same at every size, as in Nuxt UI.",
+      "$description": "The same at every size.",
       "$value": "{radius.md}"
     },
     "border-width": {

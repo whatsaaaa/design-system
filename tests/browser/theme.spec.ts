@@ -330,8 +330,8 @@ test.describe('themes', () => {
             }
             return [
               ['--ws-field-border-invalid', '--ws-color-danger'],
-              ['--ws-field-required-text', '--ws-color-brand-text'],
-              ['--ws-field-bg', '--ws-color-bg'],
+              ['--ws-field-required-text-rest', '--ws-color-brand-text'],
+              ['--ws-field-bg-rest', '--ws-color-bg'],
             ].map(([tier, role]) => [read(`var(${tier})`), read(`var(${role})`)])
           })
           for (const [tier, role] of pairs) expect(tier, selector).toBe(role)
@@ -339,7 +339,7 @@ test.describe('themes', () => {
         // and the two themes differ there, so a part that kept the page's theme would show
         const required = (selector: string) =>
           page.locator(selector).evaluate((element) => {
-            element.style.color = 'var(--ws-field-required-text)'
+            element.style.color = 'var(--ws-field-required-text-rest)'
             return getComputedStyle(element).color
           })
         expect(await required('#light')).not.toBe(await required('#dark'))
@@ -362,19 +362,17 @@ test.describe('themes', () => {
 test.describe('an element for one theme only', () => {
   /**
    * One element of each theme on the page, in a part of it held light, in a dark part inside
-   * that, and in a part held dark. The status line's older names for the classes are there too.
+   * that, and in a part held dark.
    */
   type Way = 'data-theme' | 'class'
   /** The markup that holds an element in a theme, one way or the other. */
   const held = (way: Way, theme: 'dark' | 'light') =>
     way === 'data-theme' ? `data-theme="${theme}"` : `class="${theme}"`
-  /** An element of each theme in a part of it held light, a dark part inside that, a light part inside that again, and a part held dark. The status line's older names for the classes are there too. */
+  /** An element of each theme in a part of it held light, a dark part inside that, a light part inside that again, and a part held dark. */
   const fixture = (way: Way) => `
     <div id="fixture">
       <span id="page-dark" class="ws-theme-dark"></span>
       <span id="page-light" class="ws-theme-light"></span>
-      <span id="old-dark" class="ws-status-line__item ws-status-line__item--dark"></span>
-      <span id="old-light" class="ws-status-line__item ws-status-line__item--light"></span>
       <div ${held(way, 'light')}>
         <span id="light-dark" class="ws-theme-dark"></span>
         <span id="light-light" class="ws-theme-light"></span>
@@ -439,7 +437,6 @@ test.describe('an element for one theme only', () => {
           )
         expect(await shown(tab, way)).toEqual([
           `page-${page}`,
-          `old-${page}`,
           'light-light',
           'nested-dark',
           'deeper-light',

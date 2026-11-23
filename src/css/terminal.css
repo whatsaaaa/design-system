@@ -305,8 +305,8 @@
   align-items: center;
   padding: var(--ws-tag-padding-block-md) var(--ws-tag-padding-inline-md);
   border-radius: var(--ws-tag-radius);
-  background: var(--ws-tag-primary-bg);
-  color: var(--ws-tag-primary-text);
+  background: var(--ws-tag-primary-bg-rest);
+  color: var(--ws-tag-primary-text-rest);
   font: var(--ws-text-label-sm);
   white-space: nowrap;
 }
@@ -316,7 +316,7 @@
     var(--ws-tag-outline-padding-inline-md);
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
   background: none;
-  color: var(--ws-tag-outline-text);
+  color: var(--ws-tag-outline-text-rest);
 }
 
 /*

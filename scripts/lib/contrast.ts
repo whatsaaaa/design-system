@@ -71,8 +71,8 @@ export function measure(pair: ContrastPair, theme: Theme): Measured {
 }
 
 /**
- * The states a tier token can name, last in its id: `field.border.hover`. A color without one is
- * the color at rest.
+ * The states a tier token can name, last in its id: `field.border.hover`. A color always names
+ * one, `rest` where it has no other.
  */
 export const tierStates = [
   'rest',
@@ -102,13 +102,14 @@ interface TierColor {
 
 function tierColor(id: TokenId): TierColor {
   const segments = id.split('.')
-  const last = segments.at(-1)!
-  const stated = (tierStates as readonly string[]).includes(last)
-  const property = stated ? segments.at(-2)! : last
-  const prefix = segments.slice(0, stated ? -2 : -1).join('.')
-  if (!(tierColors as readonly string[]).includes(property))
-    throw new Error(`${id} is a color, so it ends in ${tierColors.join(', ')} or a state of one`)
-  return { id, prefix, property, state: stated ? last : 'rest' }
+  const state = segments.at(-1)!
+  const property = segments.at(-2)!
+  if (
+    !(tierStates as readonly string[]).includes(state) ||
+    !(tierColors as readonly string[]).includes(property)
+  )
+    throw new Error(`${id} is a color, so it ends in ${tierColors.join(', ')} and a state`)
+  return { id, prefix: segments.slice(0, -2).join('.'), property, state }
 }
 
 /** The contrast each color drawn on a fill has to reach: 4.5 for text, 3 for an edge or an icon. */

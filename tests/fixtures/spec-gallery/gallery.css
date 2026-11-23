@@ -229,7 +229,7 @@ svg {
 }
 
 .field label {
-  color: var(--ws-field-label-text);
+  color: var(--ws-field-label-text-rest);
   font-family: var(--ws-font-family-mono);
   font-size: var(--ws-text-label-font-size);
   font-weight: var(--ws-font-weight-regular);
@@ -237,7 +237,7 @@ svg {
 
 .field label.required::after {
   content: ' *';
-  color: var(--ws-field-required-text);
+  color: var(--ws-field-required-text-rest);
 }
 
 .field__control {
@@ -250,7 +250,7 @@ svg {
   position: absolute;
   width: var(--field-icon-size);
   height: var(--field-icon-size);
-  color: var(--ws-field-icon);
+  color: var(--ws-field-icon-rest);
 }
 
 .field__control svg[data-slot='leading-icon'] {
@@ -271,7 +271,7 @@ svg {
   padding-inline: calc(var(--field-padding) - var(--field-edge-extra));
   border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
   border-radius: var(--ws-control-radius);
-  background-color: var(--ws-field-bg);
+  background-color: var(--ws-field-bg-rest);
   color: var(--ws-field-text-rest);
   font-family: var(--ws-font-family-sans);
   font-size: var(--ws-text-body-font-size);
@@ -330,12 +330,12 @@ svg {
 }
 
 .field [data-slot='help'] {
-  color: var(--ws-field-help-text);
+  color: var(--ws-field-help-text-rest);
 }
 
 :is(.field, .choice) [data-slot='error'] {
   align-items: start;
-  color: var(--ws-field-error-text);
+  color: var(--ws-field-error-text-rest);
   font-weight: var(--ws-field-error-font-weight);
 }
 
@@ -343,7 +343,7 @@ svg {
   margin-block-start: 0.125rem;
   width: var(--ws-size-icon);
   height: var(--ws-size-icon);
-  color: var(--ws-field-error-icon);
+  color: var(--ws-field-error-icon-rest);
 }
 
 .field[data-size='xs'] {
@@ -455,7 +455,7 @@ svg {
 .choice [data-slot='legend'] {
   margin-block-end: var(--ws-space-10);
   padding: 0;
-  color: var(--ws-field-label-text);
+  color: var(--ws-field-label-text-rest);
   font-family: var(--ws-font-family-mono);
   font-size: var(--choice-legend);
   font-weight: var(--ws-font-weight-regular);
@@ -486,7 +486,7 @@ svg {
   margin: 0;
   border: var(--ws-border-width-thin) solid var(--ws-choice-control-border-rest);
   border-radius: var(--ws-radius-xs);
-  background-color: var(--ws-choice-control-bg);
+  background-color: var(--ws-choice-control-bg-rest);
   appearance: none;
   cursor: inherit;
   transition: border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
@@ -586,7 +586,7 @@ svg {
 
 .choice .required::after {
   content: ' *';
-  color: var(--ws-field-required-text);
+  color: var(--ws-field-required-text-rest);
 }
 
 .choice__option:has(input:disabled) {
@@ -663,7 +663,7 @@ svg {
 }
 
 .select__label {
-  color: var(--ws-field-label-text);
+  color: var(--ws-field-label-text-rest);
   font-family: var(--ws-font-family-mono);
   font-size: var(--ws-text-label-font-size);
 }
@@ -685,7 +685,7 @@ svg {
   );
   border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
   border-radius: var(--ws-control-radius);
-  background-color: var(--ws-field-bg);
+  background-color: var(--ws-field-bg-rest);
   color: var(--ws-field-text-rest);
   font-family: var(--ws-font-family-sans);
   font-size: var(--ws-text-body-font-size);
@@ -705,7 +705,7 @@ svg {
   position: absolute;
   width: var(--field-icon-size);
   height: var(--field-icon-size);
-  color: var(--ws-field-icon);
+  color: var(--ws-field-icon-rest);
 }
 
 .select__leading {
@@ -752,19 +752,19 @@ svg {
 }
 
 .select [data-slot='help'] {
-  color: var(--ws-field-help-text);
+  color: var(--ws-field-help-text-rest);
 }
 
 .select [data-slot='error'] {
-  color: var(--ws-field-error-text);
+  color: var(--ws-field-error-text-rest);
   font-weight: var(--ws-field-error-font-weight);
 }
 
 .select__content {
   overflow: hidden;
-  border: var(--ws-overlay-border-width) solid var(--ws-overlay-border);
+  border: var(--ws-overlay-border-width) solid var(--ws-overlay-border-rest);
   border-radius: var(--ws-overlay-list-radius);
-  background-color: var(--ws-overlay-bg);
+  background-color: var(--ws-overlay-bg-rest);
 }
 
 .select__search {
@@ -778,7 +778,7 @@ svg {
     inset-inline-start: var(--field-padding);
     width: var(--field-icon-size);
     height: var(--field-icon-size);
-    color: var(--ws-field-icon);
+    color: var(--ws-field-icon-rest);
   }
 
   & input {
@@ -858,10 +858,10 @@ svg {
   color: var(--ws-color-interactive);
 }
 
+/* a border, not a fill: forced colors keep a border and paint a fill as the list */
 .select__separator {
-  height: var(--ws-border-width-thin);
   margin: var(--ws-overlay-list-padding) calc(-1 * var(--ws-overlay-list-padding));
-  background-color: var(--ws-color-border);
+  border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
 }
 
 @media (forced-colors: active) {
@@ -946,9 +946,9 @@ svg {
   width: calc(100vw - 2rem);
   max-width: 32rem;
   overflow: hidden;
-  border: var(--ws-overlay-border-width) solid var(--ws-overlay-border);
+  border: var(--ws-overlay-border-width) solid var(--ws-overlay-border-rest);
   border-radius: var(--ws-overlay-window-radius);
-  background-color: var(--ws-overlay-bg);
+  background-color: var(--ws-overlay-bg-rest);
 }
 
 /* the system's compact width */
@@ -1093,33 +1093,33 @@ svg {
 }
 
 .badge[data-variant='primary'] {
-  background-color: var(--ws-tag-primary-bg);
-  color: var(--ws-tag-primary-text);
+  background-color: var(--ws-tag-primary-bg-rest);
+  color: var(--ws-tag-primary-text-rest);
 }
 
 .badge[data-variant='success'] {
-  background-color: var(--ws-tag-success-bg);
-  color: var(--ws-tag-success-text);
+  background-color: var(--ws-tag-success-bg-rest);
+  color: var(--ws-tag-success-text-rest);
 }
 
 .badge[data-variant='info'] {
-  background-color: var(--ws-tag-info-bg);
-  color: var(--ws-tag-info-text);
+  background-color: var(--ws-tag-info-bg-rest);
+  color: var(--ws-tag-info-text-rest);
 }
 
 .badge[data-variant='warning'] {
-  background-color: var(--ws-tag-warning-bg);
-  color: var(--ws-tag-warning-text);
+  background-color: var(--ws-tag-warning-bg-rest);
+  color: var(--ws-tag-warning-text-rest);
 }
 
 .badge[data-variant='danger'] {
-  background-color: var(--ws-tag-danger-bg);
-  color: var(--ws-tag-danger-text);
+  background-color: var(--ws-tag-danger-bg-rest);
+  color: var(--ws-tag-danger-text-rest);
 }
 
 .badge[data-variant='neutral'] {
-  background-color: var(--ws-tag-neutral-bg);
-  color: var(--ws-tag-neutral-text);
+  background-color: var(--ws-tag-neutral-bg-rest);
+  color: var(--ws-tag-neutral-text-rest);
 }
 
 /* the edge is inside the padding of the block, and outside the padding of the line */
@@ -1127,7 +1127,7 @@ svg {
   padding: calc(var(--badge-outline-padding-block) - var(--ws-border-width-thin))
     var(--badge-outline-padding-inline);
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
-  color: var(--ws-tag-outline-text);
+  color: var(--ws-tag-outline-text-rest);
 }
 
 /* the card: the surface in its edge, its parts apart by a line */
@@ -1233,8 +1233,8 @@ svg {
 
 .table th {
   border-block-end: var(--ws-border-width-thin) solid var(--ws-color-border);
-  background-color: var(--ws-table-head-bg);
-  color: var(--ws-table-head-text);
+  background-color: var(--ws-table-head-bg-rest);
+  color: var(--ws-table-head-text-rest);
   font-family: var(--ws-text-overline-font-family);
   font-size: var(--ws-text-overline-font-size);
   font-weight: var(--ws-text-overline-font-weight);
@@ -1245,7 +1245,7 @@ svg {
 }
 
 .table td {
-  color: var(--ws-table-row-text);
+  color: var(--ws-table-row-text-rest);
   font-family: var(--ws-text-body-sm-font-family);
   font-size: var(--ws-text-body-sm-font-size);
   line-height: var(--ws-text-body-sm-line-height);

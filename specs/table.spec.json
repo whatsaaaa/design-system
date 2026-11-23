@@ -77,14 +77,14 @@
       "state": "rest",
       "part": "th",
       "property": "background-color",
-      "token": "table.head.bg"
+      "token": "table.head.bg.rest"
     },
     {
       "variant": "*",
       "state": "rest",
       "part": "th",
       "property": "color",
-      "token": "table.head.text"
+      "token": "table.head.text.rest"
     },
     {
       "variant": "*",
@@ -182,7 +182,7 @@
       "state": "rest",
       "part": "td",
       "property": "color",
-      "token": "table.row.text"
+      "token": "table.row.text.rest"
     },
     {
       "variant": "*",
@@ -357,7 +357,7 @@
   ],
   "notes": [
     "A table has one size, the prose table's: cells of small body text with 10 px above and below them and 16 px to their sides. The prose table narrows the cells below 64rem, the system's compact width, and a gallery's test runs at a desktop width, so the state table holds the wide one.",
-    "The prose table reads the head's colors and the cells' padding from the same tokens, `--ws-table-head-bg`, `--ws-table-head-text`, `--ws-table-cell-padding-inline` and `--ws-table-cell-padding-block`. It draws no rows to choose and no loading line, and lies on whatever is under it.",
+    "The prose table reads the head's colors and the cells' padding from the same tokens, `--ws-table-head-bg-rest`, `--ws-table-head-text-rest`, `--ws-table-cell-padding-inline` and `--ws-table-cell-padding-block`. It draws no rows to choose and no loading line, and lies on whatever is under it.",
     "The edge of the frame and the lines are `color.border`, which is decorative and has no contrast bar: the head's case and the column of each cell carry the shape, and forced colors keep the lines. The line under a chosen row is `color.selection-border`, decorative too: in the light theme the border color is the selection color itself, so it would vanish in the chosen row's fill and run two chosen rows into one, and the line is a step darker there. In the dark theme it is the border color. The last row has no line under it, where the frame's edge closes the table.",
     "A row under the pointer is raised, as everything under the pointer is in the system, and a chosen row takes the selection color, the background of selected text, so the two stand apart in both themes. The text of a row keeps its color on both, at 4.5:1 or more.",
     "The focus ring of a row is drawn inside it while its checkbox has the focus, as a tab's is in the frame: a row fills its frame from edge to edge, which would clip a ring outside it.",
