@@ -245,7 +245,7 @@ test.describe('the current tab in forced colors', () => {
       })
 })
 
-test.describe('a mask icon in forced colors', () => {
+test.describe('an icon in forced colors', () => {
   /**
    * How many pixels of an element its pseudo-element draws clearly apart from what is under
    * it: the element as it is, next to the element with the pseudo-element hidden in its place.
@@ -265,6 +265,15 @@ test.describe('a mask icon in forced colors', () => {
     return count
   }
 
+  /**
+   * Once what moves in an element has stopped, such as a fill of the default theme that takes
+   * half a second to come to the color of forced colors.
+   */
+  const still = (element: Locator) =>
+    element.evaluate((host) =>
+      Promise.all(host.getAnimations({ subtree: true }).map((motion) => motion.finished)),
+    )
+
   /** The window between the widths at which the docs theme has its links out in the bar and a phone. */
   const LAPTOP = { width: 1024, height: 800 }
 
@@ -274,8 +283,20 @@ test.describe('a mask icon in forced colors', () => {
     await expect(page.locator('.VPNavBarExtra > .menu')).toHaveCSS('opacity', '1')
   }
 
-  /** The phone's menu, open. */
-  const menu = (page: Page) => page.locator('.VPNavBarHamburger').click()
+  /** The phone's menu, open, once it has faded in. */
+  const menu = async (page: Page) => {
+    await page.locator('.VPNavBarHamburger').click()
+    await expect(page.locator('.VPNavScreen')).toHaveCSS('opacity', '1')
+  }
+
+  /** The theme switched to light by the switch of the phone's menu, once its knob has moved. */
+  const light = async (page: Page) => {
+    await menu(page)
+    const toggle = page.locator('.VPNavScreen .VPSwitchAppearance')
+    await toggle.click()
+    await expect(toggle).toHaveAttribute('aria-checked', 'false')
+    await still(toggle)
+  }
 
   /** A link of the sidebar that leaves the site, as the default theme renders one. */
   const external = (page: Page) =>
@@ -287,7 +308,7 @@ test.describe('a mask icon in forced colors', () => {
         link.classList.add('vp-external-link-icon')
       })
 
-  /** An icon: its name, its page, its element, the part of it drawn as a mask and its color. */
+  /** An icon: its name, its page, its element, the part of it that draws it and its color. */
   type Icon = [
     name: string,
     path: string,
@@ -373,6 +394,52 @@ test.describe('a mask icon in forced colors', () => {
       DESKTOP,
       external,
     ],
+    // the docs theme's controls drawn by an icon alone: the theme switch's sun and moon, which
+    // are masks, and the lines of the menu button, which are fills and go the same way
+    [
+      "the moon of the docs theme's theme switch in the menu behind the three dots",
+      '/styles/prose',
+      '.VPNavBarExtra .VPSwitchAppearance',
+      ' .moon',
+      'ButtonText',
+      LAPTOP,
+      flyout,
+    ],
+    [
+      "the moon of the docs theme's theme switch in the phone's menu",
+      '/styles/prose',
+      '.VPNavScreen .VPSwitchAppearance',
+      ' .moon',
+      'ButtonText',
+      PHONE,
+      menu,
+    ],
+    [
+      "the sun of the docs theme's theme switch",
+      '/styles/prose',
+      '.VPNavScreen .VPSwitchAppearance',
+      ' .sun',
+      'ButtonText',
+      PHONE,
+      light,
+    ],
+    [
+      "the docs theme's menu button",
+      '/styles/prose',
+      '.VPNavBarHamburger',
+      ' .container > span',
+      'ButtonText',
+      PHONE,
+    ],
+    [
+      "the docs theme's menu button, its menu open and under the pointer",
+      '/styles/prose',
+      '.VPNavBarHamburger',
+      ' .container > span',
+      'ButtonText',
+      PHONE,
+      menu,
+    ],
   ]
 
   for (const [name, path, selector, pseudo, color, viewport = DESKTOP, prepare] of icons)
@@ -387,6 +454,7 @@ test.describe('a mask icon in forced colors', () => {
       expect(themed).toBeGreaterThan(0)
 
       await page.emulateMedia({ forcedColors: 'active' })
+      await still(element)
       const [expected, canvas] = [await system(page, color), await system(page, 'Canvas')]
       expect(expected).not.toBe(canvas)
       // its fill is the system's color of its text, which the browser leaves as it is
@@ -402,5 +470,66 @@ test.describe('a mask icon in forced colors', () => {
         expect(await element.evaluate((host) => getComputedStyle(host).color)).toBe(expected)
       // and it shows: as much of it stands apart from the page as in the theme
       expect(await painted(page, selector, pseudo)).toBeGreaterThanOrEqual(themed / 2)
+    })
+
+  test("the knob of the docs theme's theme switch is drawn as a ring", async ({ page }) => {
+    await page.setViewportSize(PHONE)
+    await open(page, '/styles/prose')
+    await menu(page)
+    await page.emulateMedia({ forcedColors: 'active' })
+    const toggle = '.VPNavScreen .VPSwitchAppearance'
+    await still(page.locator(toggle))
+    // the knob alone, without its moon
+    await page.addStyleTag({ content: `${toggle} .icon { visibility: hidden }` })
+    const knob = page.locator(`${toggle} .check`)
+    const [ring, canvas] = [await system(page, 'ButtonText'), await system(page, 'Canvas')]
+    expect(ring).not.toBe(canvas)
+    expect(await knob.evaluate((check) => getComputedStyle(check).outlineColor)).toBe(ring)
+    // a ring all round the knob, at least as long as the knob is wide
+    const { width } = (await knob.boundingBox())!
+    expect(await painted(page, toggle, ' .check')).toBeGreaterThan(width)
+  })
+
+  /** A control on a phone: its name, its element, the part of the page its ring is drawn in. */
+  const controls: [
+    name: string,
+    selector: string,
+    around: string,
+    prepare?: (page: Page) => Promise<unknown>,
+  ][] = [
+    [
+      "the docs theme's theme switch",
+      '.VPNavScreen .VPSwitchAppearance',
+      '.VPNavScreenAppearance',
+      menu,
+    ],
+    ["the docs theme's menu button", '.VPNavBarHamburger', '.VPNavBarHamburger'],
+  ]
+
+  for (const [name, selector, around, prepare] of controls)
+    test(`${name} keeps its focus ring`, async ({ page }) => {
+      await page.setViewportSize(PHONE)
+      await open(page, '/styles/prose')
+      await prepare?.(page)
+      await page.emulateMedia({ forcedColors: 'active' })
+      const control = page.locator(selector)
+      const area = page.locator(around)
+      await control.blur()
+      await still(area)
+      const blurred = await pixels(area)
+      // from the keyboard, so the ring is the one a keyboard user sees
+      await control.focus()
+      await page.keyboard.press('Shift+Tab')
+      await page.keyboard.press('Tab')
+      await expect(control).toBeFocused()
+      expect(await control.evaluate((element) => element.matches(':focus-visible'))).toBe(true)
+      const focused = await pixels(area)
+      let count = 0
+      for (let i = 0; i < focused.rgba.length; i += 4)
+        if ([0, 1, 2].some((c) => Math.abs(focused.rgba[i + c]! - blurred.rgba[i + c]!) > 48))
+          count++
+      // a ring around the control, at least as long as one of its sides
+      const box = (await control.boundingBox())!
+      expect(count).toBeGreaterThan(Math.min(box.width, box.height))
     })
 })
