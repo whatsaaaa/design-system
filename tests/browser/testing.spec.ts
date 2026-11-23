@@ -452,6 +452,71 @@ test('a part that loses its edge in forced colors fails', async () => {
   expect(failures[0]!.message).toMatch(/^button\.secondary\.rest: root loses its border/)
 })
 
+/** Each part the specs give a line on one side, as `border-block-end`, by its spec. */
+const oneSided: [string, string][] = [
+  ['card', 'header'],
+  ['card', 'body'],
+  ['modal', 'header'],
+  ['select', 'separator'],
+  ['select-menu', 'separator'],
+  ['table', 'th'],
+  ['table', 'tr'],
+  ['tabs', 'list'],
+]
+
+for (const [name, part] of oneSided)
+  test(`a ${name}'s ${part} that loses its line on one side in forced colors fails`, async () => {
+    // the line kept everywhere but in forced colors, where it is gone
+    await page.addStyleTag({
+      content: `@media (forced-colors: active) {
+        [data-spec^='${name}.'] [data-slot='${part}'] { border-block-end-style: none !important; }
+      }`,
+    })
+    const { failures } = await checkSpec(page, name, fixture(name))
+    expect(failures.length).toBeGreaterThan(0)
+    expect(new Set(failures.map(({ check }) => check))).toEqual(new Set(['forced-colors']))
+    expect(new Set(failures.map(({ theme }) => theme))).toEqual(new Set(['dark', 'light']))
+    for (const { id, message } of failures)
+      expect(message).toMatch(
+        new RegExp(
+          `^${id!.replaceAll('.', '\\.')}: ${part} loses its border-block-end in forced colors: ` +
+            'border-block-end 0px none ',
+        ),
+      )
+  })
+
+for (const name of ['select', 'select-menu'])
+  test(`a separator of a ${name}'s list drawn as a fill, which forced colors paint in the list's color, fails`, async () => {
+    // the line as a fill of the edge's color, in place of the spec's border, which forced colors
+    // keep in the system's color for text
+    await page.addStyleTag({
+      content: `.select__separator {
+        border: none;
+        height: var(--ws-border-width-thin);
+        background-color: var(--ws-color-border);
+      }`,
+    })
+    const { failures } = await checkSpec(page, name, fixture(name))
+    const open = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `${name}.outline.open${size}`)
+    expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
+      new Set(
+        ['dark', 'light'].flatMap((theme) =>
+          open.flatMap((id) =>
+            ['tokens', 'forced-colors'].map((check) => `${check} ${theme} ${id}`),
+          ),
+        ),
+      ),
+    )
+    expect(failures.map(({ message }) => message)).toContainEqual(
+      expect.stringMatching(
+        new RegExp(
+          `^${name}\\.outline\\.open: separator loses its border-block-end in forced colors: ` +
+            'border-block-end 0px none ',
+        ),
+      ),
+    )
+  })
+
 test('a part is measured where the example draws it, in the option that is checked', async () => {
   // the checked option of a disabled group, its second, in the fill of an enabled one
   await page.addStyleTag({
@@ -545,39 +610,6 @@ test('a current tab whose bar forced colors hide fails', async () => {
     'tabs.link.current looks the same as tabs.link.rest in forced colors: trigger, indicator',
   )
 })
-
-for (const name of ['select', 'select-menu'])
-  test(`the separator of a ${name}'s list shows in forced colors, where a fill would not`, async () => {
-    await page.emulateMedia({ forcedColors: 'active' })
-    // the first separator shown, held as it is: once hidden, a locator of a visible one would move
-    // on to the next
-    const separator = (await page
-      .locator(`[data-spec^="${name}."] [data-slot='separator']:visible`)
-      .first()
-      .elementHandle())!
-    // whether the line looks different without the separator, in its own box: the list's corners
-    // are drawn again a level apart
-    const shows = async () => {
-      await separator.scrollIntoViewIfNeeded()
-      const clip = (await separator.boundingBox())!
-      const drawn = await page.screenshot({ clip })
-      await separator.evaluate((element: HTMLElement) => (element.style.visibility = 'hidden'))
-      const without = await page.screenshot({ clip })
-      await separator.evaluate((element: HTMLElement) => (element.style.visibility = ''))
-      return !drawn.equals(without)
-    }
-    // the spec's border: forced colors keep it, in the system's color for text
-    expect(await shows()).toBe(true)
-    // the same line as a fill, which forced colors paint in the list's color
-    await page.addStyleTag({
-      content: `.select__separator {
-        border: none;
-        height: var(--ws-border-width-thin);
-        background-color: var(--ws-color-border);
-      }`,
-    })
-    expect(await shows()).toBe(false)
-  })
 
 /**
  * The tabs' gallery drawn as Nuxt UI draws its link tabs: one bar for the row, a child of the
