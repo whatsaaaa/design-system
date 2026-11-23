@@ -1,18 +1,18 @@
 {
   "choice": {
-    "$description": "What a checkbox and a radio group share: the box or the circle and its edge, its fill and its mark when checked, and the label and description of each option. Five sizes, Nuxt UI's xs to xl, as ui-vue draws them; md is the default.",
+    "$description": "What a checkbox and a radio group share: the box or the circle and its edge, its fill and its mark when checked, and the label and description of each option. Five sizes, xs to xl; md is the default.",
     "control": {
       "$description": "The box of a checkbox, the circle of a radio.",
       "size": {
         "$type": "dimension",
-        "$description": "The side of the box or the circle: 14, 16, 20, 22 and 24 px, as ui-vue draws them. Nuxt UI's own are 12 to 20 px.",
+        "$description": "The side of the box or the circle: 14, 16, 20, 22 and 24 px.",
         "xs": { "$value": "{size.check-xs}" },
         "sm": { "$value": "{size.check-sm}" },
         "md": { "$value": "{size.check}" },
         "lg": { "$value": "{size.check-lg}" },
         "xl": { "$value": "{size.check-xl}" }
       },
-      "bg": { "$type": "color", "$value": "{color.bg}" },
+      "bg": { "rest": { "$type": "color", "$value": "{color.bg}" } },
       "border": {
         "$type": "color",
         "$description": "The edge: the field border, lighter under the pointer, the danger color with an error and faint when disabled.",

@@ -101,11 +101,11 @@ for (const file of tierFiles) {
   walk(JSON.parse(readFileSync(join(tierDirectory, file), 'utf8')), [])
 }
 
-/** The role a tier token stands for, through every alias: `overlay.bg` is `color.surface`. */
+/** The role a tier token stands for, through every alias: `overlay.bg.rest` is `color.surface`. */
 const roleOf = (id: string): string => (id in tierAliases ? roleOf(tierAliases[id]!) : id)
 
-/** Whether a token is a fill of the tier: `overlay.bg`, `button.primary.bg.hover`. */
-const isFill = (id: string) => inTier(id) && /\.bg(\.[a-z]+)?$/.test(id)
+/** Whether a token is a fill of the tier: `overlay.bg.rest`, `button.primary.bg.hover`. */
+const isFill = (id: string) => inTier(id) && /\.bg\.[a-z]+$/.test(id)
 
 /** Names as a sentence lists them: `a`, `a and b`, `a, b and c`. */
 const listed = (names: string[]) =>
@@ -405,7 +405,7 @@ function page(spec: Spec): SpecPage {
   }
 
   // the measured pairs whose colors the table names, on a color it names or on the page, and on
-  // the role behind a fill of the tier it names, as a list on overlay.bg has its text on
+  // the role behind a fill of the tier it names, as a list on overlay.bg.rest has its text on
   // color.surface
   const named = new Set(stateTable.flatMap(rowTokens))
   const fillsOf = (role: string) => [...named].filter((id) => isFill(id) && roleOf(id) === role)

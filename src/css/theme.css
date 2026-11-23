@@ -10,8 +10,7 @@
  * runs.
  *
  * It hides with !important because it has to win over whatever else gives the element a
- * display, such as a flex item of the status line. The status line's --dark and --light
- * items are older names of the same two classes.
+ * display, such as a flex item of the status line.
  */
 
 /*

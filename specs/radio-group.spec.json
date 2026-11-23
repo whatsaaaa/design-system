@@ -54,7 +54,7 @@
       "state": "rest",
       "part": "legend",
       "property": "color",
-      "token": "field.label.text"
+      "token": "field.label.text.rest"
     },
     {
       "variant": "*",
@@ -75,14 +75,14 @@
       "state": "rest",
       "part": "required",
       "property": "color",
-      "token": "field.required.text"
+      "token": "field.required.text.rest"
     },
     {
       "variant": "*",
       "state": "rest",
       "part": "control",
       "property": "background-color",
-      "token": "choice.control.bg"
+      "token": "choice.control.bg.rest"
     },
     {
       "variant": "*",
@@ -215,7 +215,7 @@
       "state": "invalid",
       "part": "error",
       "property": "color",
-      "token": "field.error.text"
+      "token": "field.error.text.rest"
     },
     {
       "variant": "*",
@@ -243,7 +243,7 @@
       "state": "invalid",
       "part": "error-icon",
       "property": "color",
-      "token": "field.error.icon"
+      "token": "field.error.icon.rest"
     },
     {
       "variant": "*",

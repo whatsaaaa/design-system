@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { variants } from '@rose-pine/palette'
 import { clampChroma, formatHex, oklab, rgb } from 'culori'
 import { describe, expect, it } from 'vitest'
@@ -132,5 +133,38 @@ describe('the stylesheet', () => {
     expect(css).toContain('--ws-palette-main-base: #191724;')
     expect(css).toContain('--ws-palette-dawn-base: #faf4ed;')
     expect(css).not.toMatch(/oklch|rgb\(/)
+  })
+})
+
+/** Every `$description` of a token file, of its groups and of its tokens, by the path to it. */
+function descriptions(node: Record<string, unknown>, path: string[] = []): [string, string][] {
+  const own: [string, string][] =
+    typeof node.$description === 'string' ? [[path.join('.'), node.$description]] : []
+  return [
+    ...own,
+    ...Object.entries(node)
+      .filter(([key, child]) => !key.startsWith('$') && typeof child === 'object' && child !== null)
+      .flatMap(([key, child]) => descriptions(child as Record<string, unknown>, [...path, key])),
+  ]
+}
+
+describe('the token files', () => {
+  // the implementations and libraries a description could name: what one draws is its own to say
+  const names = ['ui-vue', 'ui-react', 'Nuxt', 'shadcn', 'Radix', 'Reka']
+
+  it(`name none of ${names.join(', ')} in a description`, () => {
+    const files = readdirSync(new URL('../tokens', import.meta.url), {
+      encoding: 'utf8',
+      recursive: true,
+    }).filter((file) => file.endsWith('.tokens.json'))
+    expect(files).toContain('theme-dark.tokens.json')
+    expect(files).toContain(join('components', 'field.tokens.json'))
+    const named = new RegExp(names.join('|'), 'i')
+    for (const file of files) {
+      const found = descriptions(JSON.parse(read(`tokens/${file}`)))
+      expect(found, file).not.toHaveLength(0)
+      for (const [path, description] of found)
+        expect(description, `${file}: ${path}`).not.toMatch(named)
+    }
   })
 })

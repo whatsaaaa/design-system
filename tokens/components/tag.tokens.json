@@ -1,9 +1,9 @@
 {
   "tag": {
-    "$description": "A tag: a short word on a tint of its color, the system's `.ws-tag` and every implementation's badge, or outlined in a plain list. Five sizes, Nuxt UI's xs to xl, as ui-vue draws them; md is the default and the size of `.ws-tag`.",
+    "$description": "A tag: a short word on a tint of its color, the system's `.ws-tag` and every implementation's badge, or outlined in a plain list. Five sizes, xs to xl; md is the default and the size of `.ws-tag`.",
     "padding-inline": {
       "$type": "dimension",
-      "$description": "6, 6, 8, 10 and 12 px, as ui-vue draws them.",
+      "$description": "6, 6, 8, 10 and 12 px.",
       "xs": { "$value": "{space.6}" },
       "sm": { "$value": "{space.6}" },
       "md": { "$value": "{space.8}" },
@@ -12,7 +12,7 @@
     },
     "padding-block": {
       "$type": "dimension",
-      "$description": "2, 2, 4 and 6 px from sm up, as ui-vue draws them. An xs tag has none: its line is its height.",
+      "$description": "2, 2, 4 and 6 px from sm up. An xs tag has none: its line is its height.",
       "sm": { "$value": "{space.2}" },
       "md": { "$value": "{space.2}" },
       "lg": { "$value": "{space.4}" },
@@ -26,42 +26,42 @@
     "primary": {
       "$type": "color",
       "$description": "The tag: a tint of the interactive color.",
-      "bg": { "$value": "{color.tag-bg}" },
-      "text": { "$value": "{color.tag-text}" }
+      "bg": { "rest": { "$value": "{color.tag-bg}" } },
+      "text": { "rest": { "$value": "{color.tag-text}" } }
     },
     "success": {
       "$type": "color",
       "$description": "A status that went well, on the tint of a tip.",
-      "bg": { "$value": "{color.tip-tint}" },
-      "text": { "$value": "{color.tip-text}" }
+      "bg": { "rest": { "$value": "{color.tip-tint}" } },
+      "text": { "rest": { "$value": "{color.tip-text}" } }
     },
     "info": {
       "$type": "color",
       "$description": "A status that waits, on the tint of a note.",
-      "bg": { "$value": "{color.note-tint}" },
-      "text": { "$value": "{color.note-text}" }
+      "bg": { "rest": { "$value": "{color.note-tint}" } },
+      "text": { "rest": { "$value": "{color.note-text}" } }
     },
     "warning": {
       "$type": "color",
       "$description": "A status that needs attention soon, on the tint of a warning.",
-      "bg": { "$value": "{color.warning-tint}" },
-      "text": { "$value": "{color.warning-text}" }
+      "bg": { "rest": { "$value": "{color.warning-tint}" } },
+      "text": { "rest": { "$value": "{color.warning-text}" } }
     },
     "danger": {
       "$type": "color",
       "$description": "A status that failed or ended, on the tint of danger.",
-      "bg": { "$value": "{color.danger-tint}" },
-      "text": { "$value": "{color.danger-text}" }
+      "bg": { "rest": { "$value": "{color.danger-tint}" } },
+      "text": { "rest": { "$value": "{color.danger-text}" } }
     },
     "neutral": {
       "$type": "color",
       "$description": "A plain fact with no status, on the raised color.",
-      "bg": { "$value": "{color.raised}" },
-      "text": { "$value": "{color.text}" }
+      "bg": { "rest": { "$value": "{color.raised}" } },
+      "text": { "rest": { "$value": "{color.text}" } }
     },
     "outline": {
       "$description": "The outlined tag, for a plain list such as a stack: the text color, roomier than a tag on a tint. Its edge is the border color of a card, which the spec names: it frames the word, which carries the tag alone, so it is not an edge of the tier, which has to reach 3:1.",
-      "text": { "$type": "color", "$value": "{color.text}" },
+      "text": { "rest": { "$type": "color", "$value": "{color.text}" } },
       "padding-inline": {
         "$type": "dimension",
         "$description": "Inside the edge: 8, 8, 10, 12 and 14 px, 2 px more than a tag on a tint.",
