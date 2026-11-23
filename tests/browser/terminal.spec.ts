@@ -308,6 +308,23 @@ test.describe('an icon in forced colors', () => {
         link.classList.add('vp-external-link-icon')
       })
 
+  /**
+   * The search dialog, open from the bar's search button with its field focused, and with the
+   * results of a query, if one is given, once they are there.
+   */
+  const search = async (page: Page, query = '') => {
+    await page.locator('.VPNavBarSearch .DocSearch-Button').click()
+    const field = page.locator('.VPLocalSearchBox .search-input')
+    await expect(field).toBeFocused()
+    if (!query) return
+    await field.fill(query)
+    await expect(
+      page.locator('.VPLocalSearchBox .result .title > .local-search-icon').first(),
+    ).toBeVisible()
+  }
+  /** The search dialog with what "color" finds, which has results under a title of their own. */
+  const found = (page: Page) => search(page, 'color')
+
   /** An icon: its name, its page, its element, the part of it that draws it and its color. */
   type Icon = [
     name: string,
@@ -449,6 +466,70 @@ test.describe('an icon in forced colors', () => {
       'ButtonText',
       PHONE,
     ],
+    // the search dialog's icons, masks too: three of them are a button's only content
+    [
+      "the back button of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .back-button',
+      ' > .local-search-icon',
+      'ButtonText',
+      PHONE,
+      search,
+    ],
+    [
+      "the layout toggle of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .toggle-layout-button',
+      ' > .local-search-icon',
+      'ButtonText',
+      DESKTOP,
+      search,
+    ],
+    [
+      "the reset button of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .clear-button',
+      ' > .local-search-icon',
+      'ButtonText',
+      DESKTOP,
+      found,
+    ],
+    [
+      "the disabled reset button of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .clear-button',
+      ' > .local-search-icon',
+      'GrayText',
+      DESKTOP,
+      search,
+    ],
+    [
+      "the magnifier of the field of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .search-bar label',
+      ' > .search-icon',
+      'CanvasText',
+      DESKTOP,
+      search,
+    ],
+    [
+      "a chevron between the titles of a result of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .result:has(.title > .local-search-icon)',
+      ' .title > .local-search-icon',
+      'LinkText',
+      DESKTOP,
+      found,
+    ],
+    [
+      "an arrow of a key under the results of the docs theme's search dialog",
+      '/styles/prose',
+      '.VPLocalSearchBox .search-keyboard-shortcuts',
+      ' kbd > .navigate-icon',
+      'CanvasText',
+      DESKTOP,
+      search,
+    ],
   ]
 
   for (const [name, path, selector, pseudo, color, viewport = DESKTOP, prepare] of icons)
@@ -518,6 +599,26 @@ test.describe('an icon in forced colors', () => {
       '.VPNavBarSearch .DocSearch-Button',
       '.VPNavBarSearch .DocSearch-Button',
     ],
+    // in the search dialog, with something in the field, which the reset button needs to be
+    // enabled, and without the field's caret, which blinks
+    ...(
+      [
+        ['back button', 'back-button'],
+        ['layout toggle', 'toggle-layout-button'],
+        ['reset button', 'clear-button'],
+      ] as const
+    ).map(
+      ([name, button]) =>
+        [
+          `the ${name} of the docs theme's search dialog`,
+          `.VPLocalSearchBox .${button}`,
+          '.VPLocalSearchBox .search-bar',
+          async (page: Page) => {
+            await found(page)
+            await page.locator('.VPLocalSearchBox .search-input').blur()
+          },
+        ] as const,
+    ),
   ]
 
   for (const [name, selector, around, prepare] of controls)

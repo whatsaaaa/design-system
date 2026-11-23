@@ -53,3 +53,40 @@
   box-shadow: none;
   color: var(--ws-color-text);
 }
+
+/*
+ * In forced colors the browser paints every fill in the page's color, and the dialog's icons are
+ * masks of the current color: the back button's arrow on a phone, the layout toggle's list and
+ * the reset button's cross, which are those buttons' only content, the magnifier of the field,
+ * the chevrons between the titles of a result and the arrows of the keys under the results.
+ * Each takes the system's color of its text: a button's, a disabled button's, a link's or the
+ * page's. A disabled reset button, with nothing in the field, is drawn as the system draws
+ * disabled text, without the default theme's opacity on top of it: that rule names the button
+ * by its class, and this one by the search bar too, to weigh more.
+ */
+@media (forced-colors: active) {
+  .VPLocalSearchBox .search-actions button > .local-search-icon {
+    background: ButtonText;
+  }
+
+  .VPLocalSearchBox .search-bar .search-actions button.clear-button:disabled {
+    opacity: 1;
+  }
+
+  .VPLocalSearchBox .search-actions button:disabled > .local-search-icon {
+    background: GrayText;
+  }
+
+  .VPLocalSearchBox .search-bar label > .search-icon,
+  .VPLocalSearchBox .search-keyboard-shortcuts kbd > .navigate-icon {
+    background: CanvasText;
+  }
+
+  .VPLocalSearchBox .result .title > .local-search-icon {
+    background: LinkText;
+  }
+
+  .VPLocalSearchBox .result:visited .title > .local-search-icon {
+    background: VisitedText;
+  }
+}
