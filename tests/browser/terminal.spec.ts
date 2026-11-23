@@ -581,12 +581,13 @@ test.describe('an icon in forced colors', () => {
   })
 
   /** A control on a phone: its name, its element, the part of the page its ring is drawn in. */
-  const controls: [
+  type Control = [
     name: string,
     selector: string,
     around: string,
     prepare?: (page: Page) => Promise<unknown>,
-  ][] = [
+  ]
+  const controls: Control[] = [
     [
       "the docs theme's theme switch",
       '.VPNavScreen .VPSwitchAppearance',
@@ -607,18 +608,15 @@ test.describe('an icon in forced colors', () => {
         ['layout toggle', 'toggle-layout-button'],
         ['reset button', 'clear-button'],
       ] as const
-    ).map(
-      ([name, button]) =>
-        [
-          `the ${name} of the docs theme's search dialog`,
-          `.VPLocalSearchBox .${button}`,
-          '.VPLocalSearchBox .search-bar',
-          async (page: Page) => {
-            await found(page)
-            await page.locator('.VPLocalSearchBox .search-input').blur()
-          },
-        ] as const,
-    ),
+    ).map(([name, button]): Control => [
+      `the ${name} of the docs theme's search dialog`,
+      `.VPLocalSearchBox .${button}`,
+      '.VPLocalSearchBox .search-bar',
+      async (page: Page) => {
+        await found(page)
+        await page.locator('.VPLocalSearchBox .search-input').blur()
+      },
+    ]),
   ]
 
   for (const [name, selector, around, prepare] of controls)
