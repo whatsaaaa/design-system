@@ -334,6 +334,29 @@
   outline-offset: calc(-1 * var(--ws-border-width-medium));
 }
 
+/*
+ * In forced colors the browser paints every fill in the page's color: the lines of the menu
+ * button, which are fills, and the theme switch's knob, a fill with a shadow the browser drops,
+ * and its sun and moon, masks of the current color. Each takes the system's color of a
+ * button's text, the knob as a ring. The lines of an open menu's button under the pointer
+ * have a rule of their own, which weighs more than the default theme's for them.
+ */
+@media (forced-colors: active) {
+  .VPNav .VPNavBarHamburger .container > span,
+  .VPNav .VPNavBarHamburger.active:hover .container > span {
+    background-color: ButtonText;
+  }
+
+  .VPNav .VPSwitchAppearance .check {
+    outline: var(--ws-border-width-thin) solid ButtonText;
+    outline-offset: calc(-1 * var(--ws-border-width-thin));
+  }
+
+  .VPNav .VPSwitchAppearance :is(.sun, .moon) {
+    background: ButtonText;
+  }
+}
+
 @media (width >= 48rem) {
   .VPNav .VPNavBar .wrapper,
   .VPNav .VPNavBar.has-sidebar .wrapper {
