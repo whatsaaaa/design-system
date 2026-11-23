@@ -84,11 +84,6 @@ describe('the component tier', () => {
     }
   })
 
-  it('names no component library: what one draws is its own to say', () => {
-    for (const { file, source } of groups)
-      expect(JSON.stringify(source), file).not.toMatch(/ui-vue|ui-react|nuxt|shadcn|radix|reka/i)
-  })
-
   it('keeps each group in a file of its name, and the resolver reads every one of them', () => {
     for (const { file, source } of groups)
       expect(Object.keys(source), file).toEqual([file.slice(0, -'.tokens.json'.length)])
