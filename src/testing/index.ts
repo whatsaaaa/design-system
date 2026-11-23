@@ -7,7 +7,8 @@
  *   draws the part of its condition, or does not, where it has one;
  * - tokens: each property of each part of each example is the token's value, resolved next to
  *   the part, so a part of the page held in the other theme is measured in it;
- * - forced colors: each part with an edge keeps a border or an outline, and a checked,
+ * - forced colors: each part with an edge keeps a border or an outline, each part with a line on
+ *   one side, such as a separator's block-end border, keeps a border on that side, and a checked,
  *   indeterminate, current or selected example still looks unlike the example of its kind at rest.
  *
  * A state a pointer or the keyboard causes is forced as the gallery contract says, with
@@ -177,13 +178,18 @@ export async function checkSpec(
 
       await page.emulateMedia({ forcedColors: 'active' })
       try {
+        // of each element marked with the example's id, as the rows that hold differ between two,
+        // such as a card's body, whose line is drawn only above a footer
         const edges = examples.flatMap(({ id, held: expected }, which) =>
-          edgesOf(expected, results[which]![0] ?? []).map(({ part, edge }) => ({
-            id,
-            part,
-            target: targets[part]!,
-            edge,
-          })),
+          results[which]!.flatMap((elements, element) =>
+            edgesOf(expected, elements).map(({ part, edge }) => ({
+              id,
+              element,
+              part,
+              target: targets[part]!,
+              edge,
+            })),
+          ),
         )
         for (const { id, message } of await page.evaluate(edgesInPage, edges))
           failures.push({ check: 'forced-colors', theme, id, message })
@@ -247,11 +253,18 @@ function tokenFailure(id: string, { part, property, row }: Expectation, result: 
 }
 
 /**
- * The edges an example's parts have by the spec: a border where its width is more than none, an
- * outline where the outline's is, read from the values just measured.
+ * An edge a part has by the spec: a border on every side, an outline, or the border of its block
+ * end, the line of a separator. The block end is the one side the spec format gives a line of its
+ * own: a side the schema adds later is added here in the same change.
  */
-type Edge = 'border' | 'outline'
+type Edge = 'border' | 'outline' | 'border-block-end'
 
+/**
+ * The edges an example's parts have by the spec: a border where its width is more than none, an
+ * outline where the outline's is, and a border on the block end where that side's is, read from
+ * the values just measured. A focus ring is the outline, and a line on one side stays its own edge
+ * beside it.
+ */
 function edgesOf(expected: Expectation[], results: Measured[]): { part: string; edge: Edge }[] {
   // of the rows of a property, the one that holds where the example is
   const value = (part: string, property: string) =>
@@ -269,12 +282,12 @@ function edgesOf(expected: Expectation[], results: Measured[]): { part: string; 
     )
   }
   return [...new Set(expected.map(({ part }) => part))].flatMap((part) => {
-    const edge: Edge | undefined = has(part, 'outline')
-      ? 'outline'
-      : has(part, 'border')
-        ? 'border'
-        : undefined
-    return edge ? [{ part, edge }] : []
+    const edges: Edge[] = []
+    if (has(part, 'outline')) edges.push('outline')
+    else if (has(part, 'border')) edges.push('border')
+    // a border on every side covers each side, so a part with one has no side of its own to check
+    if (!has(part, 'border') && has(part, 'border-block-end')) edges.push('border-block-end')
+    return edges.map((edge) => ({ part, edge }))
   })
 }
 
@@ -606,19 +619,28 @@ function measureInPage(examples: { id: string; measures: Measure[] }[]): Measure
 
 /**
  * In forced colors, each part with an edge by the spec draws one: a border on every side, or an
- * outline, in a color that is not the page's. A focus ring has to stay an outline.
+ * outline, in a color that is not the page's. A focus ring has to stay an outline, and a line on
+ * one side, such as a separator's, a border on that side: an outline would draw a box.
  */
 function edgesInPage(
-  edges: { id: string; part: string; target: Target; edge: Edge }[],
+  edges: { id: string; element: number; part: string; target: Target; edge: Edge }[],
 ): { id: string; message: string }[] {
   for (const animation of document.getAnimations())
     if ('transitionProperty' in animation) animation.finish()
 
   const probe = document.createElement('ws-spec-probe')
   probe.style.cssText = 'position:absolute;visibility:hidden;forced-color-adjust:none'
+  // where the probe goes: next to the part, but out of a table, where an element among its rows or
+  // cells is drawn as one of them, and a table of collapsed borders goes on drawing the borders it
+  // drew around it once it is gone
+  const home = (near: Element) => {
+    let at = near.parentElement
+    while (at && getComputedStyle(at).display.includes('table')) at = at.parentElement
+    return at ?? document.body
+  }
   const seen = (color: string, near: Element) => {
     // the page's color where the part is, as the system paints it there
-    ;(near.parentElement ?? document.body).append(probe)
+    home(near).append(probe)
     probe.style.backgroundColor = 'Canvas'
     const canvas = getComputedStyle(probe).backgroundColor
     probe.style.backgroundColor = `color-mix(in srgb, ${color}, ${color})`
@@ -632,25 +654,40 @@ function edgesInPage(
     seen(style.getPropertyValue(`${prefix}-color`), near)
 
   const failures: { id: string; message: string }[] = []
-  for (const { id, part, target, edge } of edges)
-    for (const root of document.querySelectorAll(`[data-spec="${CSS.escape(id)}"]`)) {
-      const { selector } = target
-      const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
-      const element = elements.find((each) => each.checkVisibility())
-      if (!element) continue
-      const style = getComputedStyle(element, target.pseudo)
-      const outline = line(style, 'outline', element)
-      const border = ['top', 'right', 'bottom', 'left'].every((side) =>
-        line(style, `border-${side}`, element),
-      )
-      if (edge === 'outline' ? outline : border || outline) continue
-      failures.push({
-        id,
-        message:
-          `${id}: ${part} loses its ${edge} in forced colors: ` +
-          `border ${style.borderWidth} ${style.borderStyle} ${style.borderColor}, ` +
-          `outline ${style.outlineWidth} ${style.outlineStyle} ${style.outlineColor}`,
-      })
+  for (const { id, element: which, part, target, edge } of edges) {
+    const root = document.querySelectorAll(`[data-spec="${CSS.escape(id)}"]`)[which]
+    if (!root) continue
+    const { selector } = target
+    const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
+    const element = elements.find((each) => each.checkVisibility())
+    if (!element) continue
+    const style = getComputedStyle(element, target.pseudo)
+    const loses = `${id}: ${part} loses its ${edge} in forced colors: `
+    if (edge === 'border-block-end') {
+      // a line on one side: that side's border
+      if (!line(style, edge, element))
+        failures.push({
+          id,
+          message:
+            `${loses}${edge} ` +
+            ['width', 'style', 'color']
+              .map((property) => style.getPropertyValue(`${edge}-${property}`))
+              .join(' '),
+        })
+      continue
     }
+    const outline = line(style, 'outline', element)
+    const border = ['top', 'right', 'bottom', 'left'].every((side) =>
+      line(style, `border-${side}`, element),
+    )
+    if (edge === 'outline' ? outline : border || outline) continue
+    failures.push({
+      id,
+      message:
+        loses +
+        `border ${style.borderWidth} ${style.borderStyle} ${style.borderColor}, ` +
+        `outline ${style.outlineWidth} ${style.outlineStyle} ${style.outlineColor}`,
+    })
+  }
   return failures
 }
