@@ -440,6 +440,15 @@ test.describe('an icon in forced colors', () => {
       PHONE,
       menu,
     ],
+    // on a phone the search button is its magnifier alone, a mask like the sun and moon
+    [
+      "the magnifier of the docs theme's search button",
+      '/styles/prose',
+      '.VPNavBarSearch .DocSearch-Button',
+      ' .DocSearch-Search-Icon',
+      'ButtonText',
+      PHONE,
+    ],
   ]
 
   for (const [name, path, selector, pseudo, color, viewport = DESKTOP, prepare] of icons)
@@ -504,6 +513,11 @@ test.describe('an icon in forced colors', () => {
       menu,
     ],
     ["the docs theme's menu button", '.VPNavBarHamburger', '.VPNavBarHamburger'],
+    [
+      "the docs theme's search button",
+      '.VPNavBarSearch .DocSearch-Button',
+      '.VPNavBarSearch .DocSearch-Button',
+    ],
   ]
 
   for (const [name, selector, around, prepare] of controls)

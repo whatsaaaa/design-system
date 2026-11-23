@@ -336,10 +336,11 @@
 
 /*
  * In forced colors the browser paints every fill in the page's color: the lines of the menu
- * button, which are fills, and the theme switch's knob, a fill with a shadow the browser drops,
- * and its sun and moon, masks of the current color. Each takes the system's color of a
- * button's text, the knob as a ring. The lines of an open menu's button under the pointer
- * have a rule of their own, which weighs more than the default theme's for them.
+ * button, which are fills, the theme switch's knob, a fill with a shadow the browser drops,
+ * and its sun and moon and the magnifier of the phone's search button, masks of the current
+ * color. Each takes the system's color of a button's text, the knob as a ring. The lines of
+ * an open menu's button under the pointer have a rule of their own, which weighs more than
+ * the default theme's for them. From 48rem the search button shows no magnifier.
  */
 @media (forced-colors: active) {
   .VPNav .VPNavBarHamburger .container > span,
@@ -352,7 +353,8 @@
     outline-offset: calc(-1 * var(--ws-border-width-thin));
   }
 
-  .VPNav .VPSwitchAppearance :is(.sun, .moon) {
+  .VPNav .VPSwitchAppearance :is(.sun, .moon),
+  .VPNav .DocSearch-Button .DocSearch-Search-Icon {
     background: ButtonText;
   }
 }
