@@ -1,0 +1,5 @@
+---
+'@whatsaaaa/design-system': patch
+---
+
+The docs theme's search dialog takes the design system's look, as the theme meant it to. The default theme's rules for the dialog weighed as much as the theme's and came later, so most of the theme's never applied: the results had the default theme's heavier edge and smaller corners, the panel its small corners, the field its border, the keys under the results its fill, edge and shadow, and the field, the keys and the line shown when nothing is found its text sizes. Each of the theme's rules now weighs more. The panel, the field and the results take the theme's thin edges and its corners, the keys a thin edge with no fill or shadow, and the field, the keys and the line shown when nothing is found the theme's text sizes. The mark before a result's titles shows in full, in the brand color, and on the selected result in the interactive color the default theme gives it. On a phone the panel still fills the window, without corners. In forced colors the selected result's outline stays just inside its now thinner edge. A site on the docs theme takes this with no change of its own.

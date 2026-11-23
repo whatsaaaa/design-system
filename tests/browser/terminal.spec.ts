@@ -1,5 +1,5 @@
 import { type Locator, type Page, expect, test } from '@playwright/test'
-import { DESKTOP, NARROWEST, PHONE, at, open } from './pages.ts'
+import { DESKTOP, NARROWEST, PHONE, TABLET, at, open } from './pages.ts'
 
 /**
  * Small pieces of the terminal frame: a state lines up with the text beside it, a prompt that
@@ -647,6 +647,189 @@ test.describe('an icon in forced colors', () => {
     })
 })
 
+test.describe("the look of the docs theme's search dialog", () => {
+  /**
+   * The styles of an element, as the page computes them: the longhands named, for a part of the
+   * dialog, or for a probe on the page that takes the theme's declarations for it alone.
+   */
+  const styles = (element: Locator, properties: string[]) =>
+    element.evaluate(
+      (host, properties) =>
+        Object.fromEntries(
+          properties.map((property) => [
+            property,
+            getComputedStyle(host).getPropertyValue(property),
+          ]),
+        ),
+      properties,
+    )
+  const theme = (page: Page, declarations: Record<string, string>, properties: string[]) =>
+    page.evaluate(
+      ({ declarations, properties }) => {
+        const probe = document.createElement('div')
+        for (const [property, value] of Object.entries(declarations))
+          probe.style.setProperty(property, value)
+        document.body.append(probe)
+        const style = getComputedStyle(probe)
+        const values = Object.fromEntries(
+          properties.map((property) => [property, style.getPropertyValue(property)]),
+        )
+        probe.remove()
+        return values
+      },
+      { declarations, properties },
+    )
+
+  /** An edge: its weight and color, and its corner. */
+  const EDGE = ['border-top-width', 'border-top-color', 'border-top-left-radius']
+  const TEXT = ['font-size', 'line-height']
+
+  for (const scheme of ['dark', 'light'] as const)
+    test(`takes the theme's edges, corners, fills and text, over the default theme's, ${scheme}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(DESKTOP)
+      await page.emulateMedia({ colorScheme: scheme })
+      await open(page, '/styles/prose')
+      expect(await page.locator('html').evaluate((html) => html.classList.contains('dark'))).toBe(
+        scheme === 'dark',
+      )
+      await found(page)
+      const dialog = (selector: string) => page.locator(`.VPLocalSearchBox ${selector}`).first()
+      const thin = 'var(--ws-border-width-thin) solid'
+      const parts: [string, Locator, Record<string, string>, string[]][] = [
+        [
+          'the panel',
+          dialog('.shell'),
+          {
+            border: `${thin} var(--ws-color-border)`,
+            'border-radius': 'var(--ws-radius-xl)',
+            'box-shadow': 'none',
+          },
+          [...EDGE, 'box-shadow'],
+        ],
+        [
+          'the field, focused',
+          dialog('.search-bar'),
+          {
+            border: `${thin} var(--ws-color-interactive)`,
+            'border-radius': 'var(--ws-radius-md)',
+          },
+          EDGE,
+        ],
+        [
+          "the field's text",
+          dialog('.search-input'),
+          { color: 'var(--ws-color-text)', font: 'var(--ws-text-label)' },
+          ['color', ...TEXT],
+        ],
+        [
+          'a result',
+          dialog('.result:not(.selected)'),
+          { border: `${thin} transparent`, 'border-radius': 'var(--ws-radius-md)' },
+          ['border-top-width', 'border-top-left-radius'],
+        ],
+        ["a result's titles", dialog('.result .titles'), { font: 'var(--ws-text-label-sm)' }, TEXT],
+        [
+          "a result's mark",
+          dialog('.result:not(.selected) .title-icon'),
+          { color: 'var(--ws-color-brand)', opacity: '1' },
+          ['color', 'opacity'],
+        ],
+        [
+          'the keys under the results',
+          dialog('.search-keyboard-shortcuts'),
+          { color: 'var(--ws-color-text-secondary)', font: 'var(--ws-text-caption)' },
+          ['color', ...TEXT],
+        ],
+        [
+          'a key',
+          dialog('.search-keyboard-shortcuts kbd'),
+          {
+            border: `${thin} var(--ws-color-border-strong)`,
+            'border-radius': 'var(--ws-radius-xs)',
+            background: 'none',
+            'box-shadow': 'none',
+            color: 'var(--ws-color-text)',
+          },
+          [...EDGE, 'background-color', 'box-shadow', 'color'],
+        ],
+      ]
+      for (const [name, part, declarations, properties] of parts)
+        expect
+          .soft(await styles(part, properties), name)
+          .toEqual(await theme(page, declarations, properties))
+
+      // a key cap holds an arrow or a word, and each is as tall as the others, its top and
+      // bottom edges in line with theirs
+      const caps = await dialog('.search-keyboard-shortcuts')
+        .locator('kbd')
+        .evaluateAll((keys) =>
+          keys.map((key) => {
+            const { top, bottom } = key.getBoundingClientRect()
+            return { text: key.textContent!.trim(), top, bottom }
+          }),
+        )
+      expect(caps.map(({ text }) => text)).toContain('esc')
+      expect(caps.filter(({ text }) => !text).length).toBeGreaterThan(1)
+      for (const { text, top, bottom } of caps)
+        expect.soft({ top, bottom }, `the key cap ${text || 'of an arrow'}`).toEqual({
+          top: caps[0]!.top,
+          bottom: caps[0]!.bottom,
+        })
+
+      // the field without the focus
+      await dialog('.search-input').blur()
+      expect(await styles(dialog('.search-bar'), EDGE), 'the field').toEqual(
+        await theme(
+          page,
+          {
+            border: `${thin} var(--ws-color-field-border)`,
+            'border-radius': 'var(--ws-radius-md)',
+          },
+          EDGE,
+        ),
+      )
+
+      // and what the dialog says when nothing is found
+      await dialog('.search-input').fill('qqqzzzxxx')
+      expect(await styles(dialog('.no-results'), ['color', ...TEXT]), 'no results').toEqual(
+        await theme(
+          page,
+          { color: 'var(--ws-color-text-secondary)', font: 'var(--ws-text-caption)' },
+          ['color', ...TEXT],
+        ),
+      )
+    })
+
+  // the default theme lays the panel out for a phone below the width of a tablet, and floats it
+  // from there, so the panel's corners come and go with its layout at that one width
+  for (const viewport of [PHONE, { ...TABLET, width: TABLET.width - 1 }])
+    test(`the panel fills the window, without corners, ${viewport.width} px wide`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport)
+      await open(page, '/styles/prose')
+      await found(page)
+      const panel = page.locator('.VPLocalSearchBox .shell')
+      expect(await styles(panel, ['border-top-left-radius'])).toEqual({
+        'border-top-left-radius': '0px',
+      })
+      expect(await panel.boundingBox()).toEqual({ x: 0, y: 0, ...viewport })
+    })
+
+  test(`the panel floats, with the theme's corners, ${TABLET.width} px wide`, async ({ page }) => {
+    await page.setViewportSize(TABLET)
+    await open(page, '/styles/prose')
+    await found(page)
+    const panel = page.locator('.VPLocalSearchBox .shell')
+    expect((await panel.boundingBox())!.x).toBeGreaterThan(0)
+    expect(await styles(panel, ['border-top-left-radius'])).toEqual(
+      await theme(page, { 'border-radius': 'var(--ws-radius-xl)' }, ['border-top-left-radius']),
+    )
+  })
+})
+
 test.describe("a state of the docs theme's search dialog in forced colors", () => {
   test.use({ viewport: DESKTOP })
 
@@ -712,6 +895,13 @@ test.describe("a state of the docs theme's search dialog in forced colors", () =
     await expect(first).toHaveClass(/\bselected\b/)
     expect(await edges(first)).toEqual(Array(4).fill(highlight))
     expect(await edges(second)).not.toContain(highlight)
+    // its outline lies just inside its border, where it leaves the content where it is
+    expect(
+      await first.evaluate((element) => {
+        const style = getComputedStyle(element)
+        return parseFloat(style.outlineOffset) + parseFloat(style.borderTopWidth)
+      }),
+    ).toBe(-parseFloat(await first.evaluate((element) => getComputedStyle(element).outlineWidth)))
     const selected = await pixels(first)
 
     // the arrow key moves the selection while the field keeps the focus, so only the edge
