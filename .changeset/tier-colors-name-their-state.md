@@ -41,4 +41,4 @@ What breaks:
 
 To follow, replace each variable of the table's first column with the one beside it, and draw the separator as a border.
 
-`tests/tier.test.ts` holds the rule: a color of the tier ends in a state of the closed list, where it used to allow none, and the contrast pairs no longer read a color without a state as the color at rest. `docs/usage.md` and `docs/decisions.md` state the rule. The token descriptions of the control, choice and tag groups name no component library any more, and a test holds the tier to it.
+`tests/tier.test.ts` holds the rule: a color of the tier ends in a state of the closed list, where it used to allow none, and the contrast pairs no longer read a color without a state as the color at rest. `docs/usage.md` and `docs/decisions.md` state the rule. The token descriptions of the control, choice and tag groups name no component library any more, and a test holds every token file to it.
