@@ -1,52 +1,67 @@
-/* The local search dialog. */
-.VPLocalSearchBox .shell {
+/*
+ * The local search dialog.
+ *
+ * The default theme styles the dialog by scoped rules, a class and the component's attribute,
+ * which weigh as much as a rule of an ancestor's class and a class, and come later. So each
+ * rule here names one more of the dialog's parts around the one it styles, to weigh more: the
+ * panel the backdrop it follows, the field the search bar, a result the results.
+ *
+ * On a phone the panel fills the window, as the default theme lays it out, and has no corners:
+ * its radius is for the floating panel alone.
+ */
+.VPLocalSearchBox .backdrop + .shell {
   border: var(--ws-border-width-thin) solid var(--ws-color-border);
-  border-radius: var(--ws-radius-xl);
   box-shadow: none;
   font-family: var(--ws-font-family-mono);
 }
 
-.VPLocalSearchBox .search-bar {
+@media (width >= 48rem) {
+  .VPLocalSearchBox .backdrop + .shell {
+    border-radius: var(--ws-radius-xl);
+  }
+}
+
+.VPLocalSearchBox .shell .search-bar {
   border-color: var(--ws-color-field-border);
   border-radius: var(--ws-radius-md);
 }
 
-.VPLocalSearchBox .search-bar:focus-within {
+.VPLocalSearchBox .shell .search-bar:focus-within {
   border-color: var(--ws-color-interactive);
 }
 
-.VPLocalSearchBox .search-input {
+.VPLocalSearchBox .search-bar .search-input {
   color: var(--ws-color-text);
   font: var(--ws-text-label);
 }
 
-.VPLocalSearchBox .result {
+.VPLocalSearchBox .results .result {
   border-width: var(--ws-border-width-thin);
   border-radius: var(--ws-radius-md);
   transition: none;
 }
 
-.VPLocalSearchBox .titles {
+.VPLocalSearchBox .result .titles {
   font: var(--ws-text-label-sm);
 }
 
-.VPLocalSearchBox .title-icon {
+.VPLocalSearchBox .titles .title-icon {
   color: var(--ws-color-brand);
   opacity: 1;
 }
 
-.VPLocalSearchBox .excerpt {
+.VPLocalSearchBox .excerpt-wrapper .excerpt {
   color: var(--ws-color-text-secondary);
   font: var(--ws-text-body-sm);
 }
 
-.VPLocalSearchBox .no-results,
-.VPLocalSearchBox .search-keyboard-shortcuts {
+.VPLocalSearchBox .results .no-results,
+.VPLocalSearchBox .shell .search-keyboard-shortcuts {
   color: var(--ws-color-text-secondary);
   font: var(--ws-text-caption);
 }
 
-.VPLocalSearchBox .search-keyboard-shortcuts kbd {
+.VPLocalSearchBox .shell .search-keyboard-shortcuts kbd {
   border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
   border-radius: var(--ws-radius-xs);
   background: none;
@@ -68,9 +83,9 @@
  * toggle while it shows the excerpts are marked by a color alone, which the browser drops too:
  * the result's edge and the toggle with its icon take the system's color of a selection. The
  * other results keep an edge in a link's color, which some contrast themes make close to it, so
- * the selected result's edge is heavier too: an outline of the medium weight inside its border,
- * clear of a border of up to that weight, which leaves its content where it is. The toggle's rule
- * names the search bar too, to weigh more than the default theme's color under the pointer.
+ * the selected result's edge is heavier too: an outline of the medium weight just inside its
+ * thin border, which leaves its content where it is. The toggle's rule names the search bar
+ * too, to weigh more than the default theme's color under the pointer.
  */
 @media (forced-colors: active) {
   .VPLocalSearchBox .search-actions button > .local-search-icon {
@@ -101,7 +116,7 @@
   .VPLocalSearchBox .results .result.selected {
     border-color: Highlight;
     outline: var(--ws-border-width-medium) solid Highlight;
-    outline-offset: calc(-2 * var(--ws-border-width-medium));
+    outline-offset: calc(-1 * (var(--ws-border-width-thin) + var(--ws-border-width-medium)));
   }
 
   .VPLocalSearchBox .search-bar .search-actions .toggle-layout-button.detailed-list {
