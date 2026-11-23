@@ -63,6 +63,14 @@
  * page's. A disabled reset button, with nothing in the field, is drawn as the system draws
  * disabled text, without the default theme's opacity on top of it: that rule names the button
  * by its class, and this one by the search bar too, to weigh more.
+ *
+ * The selected result, which the arrow keys move while the field keeps the focus, and the layout
+ * toggle while it shows the excerpts are marked by a color alone, which the browser drops too:
+ * the result's edge and the toggle with its icon take the system's color of a selection. The
+ * other results keep an edge in a link's color, which some contrast themes make close to it, so
+ * the selected result's edge is heavier too: an outline of the medium weight inside its border,
+ * clear of a border of up to that weight, which leaves its content where it is. The toggle's rule
+ * names the search bar too, to weigh more than the default theme's color under the pointer.
  */
 @media (forced-colors: active) {
   .VPLocalSearchBox .search-actions button > .local-search-icon {
@@ -88,5 +96,19 @@
 
   .VPLocalSearchBox .result:visited .title > .local-search-icon {
     background: VisitedText;
+  }
+
+  .VPLocalSearchBox .results .result.selected {
+    border-color: Highlight;
+    outline: var(--ws-border-width-medium) solid Highlight;
+    outline-offset: calc(-2 * var(--ws-border-width-medium));
+  }
+
+  .VPLocalSearchBox .search-bar .search-actions .toggle-layout-button.detailed-list {
+    color: Highlight;
+  }
+
+  .VPLocalSearchBox .search-actions .toggle-layout-button.detailed-list > .local-search-icon {
+    background: Highlight;
   }
 }
