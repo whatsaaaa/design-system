@@ -340,7 +340,9 @@
  * and its sun and moon and the magnifier of the phone's search button, masks of the current
  * color. Each takes the system's color of a button's text, the knob as a ring. The lines of
  * an open menu's button under the pointer have a rule of their own, which weighs more than
- * the default theme's for them. From 48rem the search button shows no magnifier.
+ * the default theme's for them. From 48rem the search button shows no magnifier. The
+ * magnifier DocSearch draws itself for the Algolia provider is a stroke, not a mask: the
+ * browser keeps drawing it, and the rule for the magnifier leaves it alone.
  */
 @media (forced-colors: active) {
   .VPNav .VPNavBarHamburger .container > span,
@@ -354,7 +356,7 @@
   }
 
   .VPNav .VPSwitchAppearance :is(.sun, .moon),
-  .VPNav .DocSearch-Button .DocSearch-Search-Icon {
+  .VPNav .DocSearch-Button .vp-icon.DocSearch-Search-Icon {
     background: ButtonText;
   }
 }
