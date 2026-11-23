@@ -283,8 +283,11 @@ test.describe('an icon in forced colors', () => {
     await expect(page.locator('.VPNavBarExtra > .menu')).toHaveCSS('opacity', '1')
   }
 
-  /** The phone's menu, open. */
-  const menu = (page: Page) => page.locator('.VPNavBarHamburger').click()
+  /** The phone's menu, open, once it has faded in. */
+  const menu = async (page: Page) => {
+    await page.locator('.VPNavBarHamburger').click()
+    await expect(page.locator('.VPNavScreen')).toHaveCSS('opacity', '1')
+  }
 
   /** The theme switched to light by the switch of the phone's menu, once its knob has moved. */
   const light = async (page: Page) => {
@@ -475,16 +478,16 @@ test.describe('an icon in forced colors', () => {
     await menu(page)
     await page.emulateMedia({ forcedColors: 'active' })
     const toggle = '.VPNavScreen .VPSwitchAppearance'
+    await still(page.locator(toggle))
     // the knob alone, without its moon
     await page.addStyleTag({ content: `${toggle} .icon { visibility: hidden }` })
+    const knob = page.locator(`${toggle} .check`)
     const [ring, canvas] = [await system(page, 'ButtonText'), await system(page, 'Canvas')]
     expect(ring).not.toBe(canvas)
-    expect(
-      await page
-        .locator(`${toggle} .check`)
-        .evaluate((knob) => getComputedStyle(knob).outlineColor),
-    ).toBe(ring)
-    expect(await painted(page, toggle, ' .check')).toBeGreaterThan(0)
+    expect(await knob.evaluate((check) => getComputedStyle(check).outlineColor)).toBe(ring)
+    // a ring all round the knob, at least as long as the knob is wide
+    const { width } = (await knob.boundingBox())!
+    expect(await painted(page, toggle, ' .check')).toBeGreaterThan(width)
   })
 
   /** A control on a phone: its name, its element, the part of the page its ring is drawn in. */
