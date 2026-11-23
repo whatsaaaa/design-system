@@ -760,6 +760,24 @@ test.describe("the look of the docs theme's search dialog", () => {
           .soft(await styles(part, properties), name)
           .toEqual(await theme(page, declarations, properties))
 
+      // a key cap holds an arrow or a word, and each is as tall as the others, its top and
+      // bottom edges in line with theirs
+      const caps = await dialog('.search-keyboard-shortcuts')
+        .locator('kbd')
+        .evaluateAll((keys) =>
+          keys.map((key) => {
+            const { top, bottom } = key.getBoundingClientRect()
+            return { text: key.textContent!.trim(), top, bottom }
+          }),
+        )
+      expect(caps.map(({ text }) => text)).toContain('esc')
+      expect(caps.filter(({ text }) => !text).length).toBeGreaterThan(1)
+      for (const { text, top, bottom } of caps)
+        expect.soft({ top, bottom }, `the key cap ${text || 'of an arrow'}`).toEqual({
+          top: caps[0]!.top,
+          bottom: caps[0]!.bottom,
+        })
+
       // the field without the focus
       await dialog('.search-input').blur()
       expect(await styles(dialog('.search-bar'), EDGE), 'the field').toEqual(

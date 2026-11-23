@@ -61,12 +61,21 @@
   font: var(--ws-text-caption);
 }
 
+/*
+ * A key cap holds an arrow or a word, in the middle of a height of its own, as the theme's key
+ * caps do: the arrow's with the default theme's room around it. So a word's cap is as tall as
+ * an arrow's, not as tall as a line of the text under the results.
+ */
 .VPLocalSearchBox .shell .search-keyboard-shortcuts kbd {
+  display: inline-grid;
+  place-items: center;
+  height: 1.375rem;
   border: var(--ws-border-width-thin) solid var(--ws-color-border-strong);
   border-radius: var(--ws-radius-xs);
   background: none;
   box-shadow: none;
   color: var(--ws-color-text);
+  line-height: 1;
 }
 
 /*
