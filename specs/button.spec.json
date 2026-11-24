@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "button",
   "title": "Button",
-  "status": "draft",
+  "status": "stable",
   "summary": "An action: a mono label in semibold, in a box of the control height, filled with the interactive color for the one action a view leads to and outlined for the rest.",
   "use": [
     "An action on the page: submit a form, save, open a dialog, delete.",

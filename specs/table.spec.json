@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "table",
   "title": "Table",
-  "status": "draft",
+  "status": "stable",
   "summary": "Records with the same fields, a row each, read across: the table of the system's prose, in a frame with the large radius that it scrolls in, its head on the surface as an overline, and rows that can be chosen when the task needs it.",
   "use": [
     "Records with the same fields, compared or scanned down a column: the registrations of an event, with their names, tickets and fees.",

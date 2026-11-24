@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "tabs",
   "title": "Tabs",
-  "status": "draft",
+  "status": "stable",
   "summary": "Views of one thing, a tab each, switched in place: a row of mono labels over a line, the frame's tabs in look, whose current tab is marked by a bar of the brand color.",
   "use": [
     "Views of one thing that a reader switches between in place, such as the overview, the settings and the history of one event."

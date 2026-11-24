@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "input",
   "title": "Input",
-  "status": "draft",
+  "status": "stable",
   "summary": "One line of text, in a field with its label above it and its help or its error under it: the value in Inter, an edge in the field border, the control height.",
   "use": [
     "One line of text: a name, an email address, a number, a date typed out.",

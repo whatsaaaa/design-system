@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "select",
   "title": "Select",
-  "status": "draft",
+  "status": "stable",
   "summary": "One choice from a list: a field that shows the choice, with a chevron at its end, and the list of options that opens under it on a panel of the overlay.",
   "use": [
     "One choice from a list too long for radio buttons, more than about five options: a city, a day, a country.",

@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "card",
   "title": "Card",
-  "status": "draft",
+  "status": "stable",
   "summary": "A panel that groups content about one thing: the surface in an edge of the border color with the large radius, an optional header with a title and a description, a body and an optional footer of actions, its parts apart by a line.",
   "use": [
     "Content about one thing, set apart from the page: a registration, a delivery address.",

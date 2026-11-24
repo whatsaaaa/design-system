@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "radio-group",
   "title": "Radio group",
-  "status": "draft",
+  "status": "stable",
   "summary": "One choice from a short list, all of it shown: a legend over circles beside their labels, the interactive fill and a dot on the one that is checked.",
   "use": [
     "One choice from a short list whose options all fit on the page: a ticket, a way to pay.",
