@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "select-menu",
   "title": "Select menu",
-  "status": "draft",
+  "status": "stable",
   "summary": "One choice, or several, from a long list: a select whose list has a search field at its top, which narrows the options as the reader types.",
   "use": [
     "One choice from a list long enough that a reader would rather type than scroll, about fifteen options or more: a country, a time zone.",

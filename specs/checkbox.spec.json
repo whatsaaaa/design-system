@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "checkbox",
   "title": "Checkbox",
-  "status": "draft",
+  "status": "stable",
   "summary": "A box beside its label, for an on and off choice or one of several from a short list: an edge in the field border, the interactive fill and a tick when checked, the label in Inter on the line the box sits on.",
   "use": [
     "An on and off choice that takes effect when the form is sent: I accept the terms of use.",

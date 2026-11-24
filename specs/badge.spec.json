@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "badge",
   "title": "Badge",
-  "status": "draft",
+  "status": "stable",
   "summary": "A short word next to what it describes, the system's tag: a mono label on a tint of its color for a status or a category, or in an edge for a plain list.",
   "use": [
     "A status next to what it describes, such as paid, pending or cancelled in a table's cell.",

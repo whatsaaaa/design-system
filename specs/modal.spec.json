@@ -2,7 +2,7 @@
   "$schema": "./spec.schema.json",
   "component": "modal",
   "title": "Modal",
-  "status": "draft",
+  "status": "stable",
   "summary": "A window over the page, which waits for a task or a confirmation: a window of the terminal frame on the overlay's surface, with a header bar, a body and a footer of actions, over the page dimmed in its own color.",
   "use": [
     "A short task that the page waits for, such as editing one registration.",

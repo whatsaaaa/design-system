@@ -4,7 +4,7 @@ What `@whatsaaaa/design-system` promises from one version to the next: what coun
 
 The package follows [Semantic Versioning](https://semver.org). The promise starts with 1.0.0: from then on the public surface holds until the next major.
 
-**Before 1.0.0** nothing is promised yet. A minor of 0.x may break anything on this page, and its changelog says what. A patch of 0.x does not break. A caret range on 0.x, such as `^0.14.0`, holds a project on that minor for this reason, so each minor is a bump made by hand. Everything below is the rule from 1.0.0 on.
+**Before 1.0.0** nothing was promised. A minor of 0.x could break anything on this page, and its changelog says what. A patch of 0.x did not break. A caret range on 0.x, such as `^0.14.0`, held a project on that minor for this reason, so each minor was a bump made by hand. Everything below is the rule from 1.0.0 on.
 
 ## The public surface
 
@@ -92,4 +92,4 @@ Nothing public is removed without notice.
 
 ## Classifying a change
 
-A pull request that changes what the package ships adds a changeset, and its bump is the highest this page gives any part of the change. Before 1.0.0, a change this page calls a major is released as a minor of 0.x and says in its changeset what breaks.
+A pull request that changes what the package ships adds a changeset, and its bump is the highest this page gives any part of the change.

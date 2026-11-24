@@ -22,7 +22,7 @@ The package is [`@whatsaaaa/design-system`](https://www.npmjs.com/package/@whats
 
 To use it in another project, install it with `pnpm add @whatsaaaa/design-system` and read [docs/usage.md](./docs/usage.md). It is written for coding agents and is short.
 
-What a project can rely on from one version to the next is in [docs/versioning.md](./docs/versioning.md): the public surface, and what is a major, a minor and a patch. The promise starts with 1.0.0. Until then a minor of 0.x may break.
+What a project can rely on from one version to the next is in [docs/versioning.md](./docs/versioning.md): the public surface, and what is a major, a minor and a patch. The promise starts with 1.0.0.
 
 ## Working on it
 
