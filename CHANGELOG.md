@@ -1,5 +1,13 @@
 # @whatsaaaa/design-system
 
+## 1.0.0
+
+### Major Changes
+
+- [#92](https://github.com/whatsaaaa/design-system/pull/92) [`b49f6da`](https://github.com/whatsaaaa/design-system/commit/b49f6da68dbd7947d162d1a05a33541cd3bac1ee) Thanks [@whatsaaaa](https://github.com/whatsaaaa)! - 1.0.0 starts the promise of the [versioning policy](https://github.com/whatsaaaa/design-system/blob/main/docs/versioning.md): the public surface holds until the next major. The policy is the whole statement of the promise, and what follows is its outline. Among the public surface are every path of the `exports` map, what each module exports with its types, the name and meaning of every `--ws-*` variable, every `ws-` class with its documented markup, the Tailwind utility names, the token ids, the spec format and every stable spec's name, parts, kinds, sizes, states and gallery ids, the testing helper's API, the lint config, and the Node and peer ranges. A minor may, among other things, add to it, change a value on purpose, such as a color or a size, add or tighten a lint rule, deprecate what the next major removes, and turn a draft spec stable. A patch, among other things, brings the output back to what the documents and the specs already say, or fixes the testing helper so that it finds a difference from a spec it should have found. After a minor, or a patch that fixes the helper, an implementation's parity test can fail: that is the test at work, not a break.
+
+  The 11 specs are stable, as ui-vue passes each of them: `button`, `input`, `checkbox`, `radio-group`, `select`, `select-menu`, `modal`, `badge`, `card`, `table` and `tabs`. From this release on they are held to the policy, and a new spec enters as a draft. Nothing is removed or renamed in this release: a project on 0.15.0 moves to it by its range, `^1.0.0`.
+
 ## 0.15.1
 
 ### Patch Changes

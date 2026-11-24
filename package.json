@@ -1,6 +1,6 @@
 {
   "name": "@whatsaaaa/design-system",
-  "version": "0.15.1",
+  "version": "1.0.0",
   "description": "Whatsaaaa's design system: brand identity, design tokens with a component tier, typography, component specs with a parity test helper, token lint rules, docs theme and asset kit",
   "homepage": "https://whatsaaaa.github.io/design-system/",
   "bugs": "https://github.com/whatsaaaa/design-system/issues",
