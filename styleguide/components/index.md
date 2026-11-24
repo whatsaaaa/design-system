@@ -25,4 +25,4 @@ The tests hold the two together: every token a spec names exists and fits its pr
 
 ## Status
 
-A draft spec can still change in any release, and its implementations follow it. The [changelog](https://github.com/whatsaaaa/design-system/blob/main/CHANGELOG.md) says which release changed a spec. Whether an implementation ships a component, and whether its parity test passes, is for that implementation to say.
+A draft spec can still change in any release, and its implementations follow it. A stable spec is held to the [versioning policy](https://github.com/whatsaaaa/design-system/blob/main/docs/versioning.md#draft-and-stable): removing or renaming one of its parts, kinds, sizes, states or gallery ids waits for the next major. The [changelog](https://github.com/whatsaaaa/design-system/blob/main/CHANGELOG.md) says which release changed a spec. Whether an implementation ships a component, and whether its parity test passes, is for that implementation to say.
