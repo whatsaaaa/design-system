@@ -1,6 +1,4 @@
-import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { type Browser, type Page, expect, test } from '@playwright/test'
+import { type Page, expect, test } from '@playwright/test'
 import {
   type Failure,
   type SpecOptions,
@@ -9,21 +7,12 @@ import {
   loadSpec,
   specNames,
 } from '@whatsaaaa/design-system/testing'
+import { ORIGIN, gallery } from './spec-gallery.ts'
 
 /**
  * The parity helper, as an implementation runs it: the built entry, against a gallery of plain
  * HTML that meets the published specs, and against the same gallery with one thing wrong.
  */
-const ORIGIN = 'http://spec-gallery.test'
-const root = fileURLToPath(new URL('../..', import.meta.url))
-const files: Record<string, string> = {
-  '/': 'tests/fixtures/spec-gallery/index.html',
-  '/gallery.css': 'tests/fixtures/spec-gallery/gallery.css',
-  '/tokens.css': 'dist/tokens.css',
-  '/tags.html': 'tests/fixtures/spec-gallery/tags.html',
-  '/index.css': 'dist/index.css',
-}
-
 /**
  * The fixture's own map of parts, passed to the helper as an implementation passes its own: it
  * draws every part in the slot of the part's name, but for those a pseudo-element draws.
@@ -37,17 +26,6 @@ const pseudoParts: Record<string, Record<string, string>> = {
   table: { 'loading-bar': 'thead::after' },
 }
 const fixture = (name: string): SpecOptions => ({ parts: pseudoParts[name] ?? {} })
-
-async function gallery(browser: Browser, options: { deviceScaleFactor?: number } = {}) {
-  const context = await browser.newContext(options)
-  await context.route(`${ORIGIN}/**`, (route) => {
-    const file = files[new URL(route.request().url()).pathname]
-    return file ? route.fulfill({ path: join(root, file) }) : route.fulfill({ status: 404 })
-  })
-  const page = await context.newPage()
-  await page.goto(`${ORIGIN}/`)
-  return { context, page }
-}
 
 /** What failed, without the message: the check, the theme and the example. */
 const where = (failures: Failure[]) =>

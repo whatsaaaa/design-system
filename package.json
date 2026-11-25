@@ -120,6 +120,7 @@
     "@terrazzo/token-types": "2.10.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
     "@fontsource-variable/inter": "^5.3.0",
