@@ -6,7 +6,7 @@ export default defineConfig({
   ignorePatterns: [
     'pnpm-lock.yaml',
     '.github/assets',
-    // Copier writes it, and rewrites it on every update
+    // Copier writes it, wrapping a long answer at 80 columns, and rewrites it on every update
     '.copier-answers.yml',
     'assets',
     'dist',
