@@ -27,3 +27,13 @@ jobs:
       # job's test:browser builds the package and the style guide, then tests the built guide and
       # an app on tailwind.css.
       playwright-version: 1.65.0
+      # The files no browser test reads: a pull request that changes only these skips the browser
+      # job. Not docs/** or **/*.md, since the style guide renders styleguide/**/*.md and includes
+      # docs/usage.md, and the tests open tests/fixtures/**/*.md.
+      docs-paths: |
+        README.md
+        licenses/README.md
+        docs/decisions.md
+        docs/follow-ups.md
+        docs/versioning.md
+        .changeset/*.md
