@@ -1,4 +1,5 @@
 /**
+<<<<<<< before updating
  * The stylesheets follow the token lint rules the package publishes, from the build in dist/.
  * src/stylelint/index.ts says what they reject.
  */
@@ -35,6 +36,14 @@ export default {
     'no-descending-specificity': null,
     'custom-media-pattern': null,
   },
+=======
+ * The stylesheets take every color from a design system token: the design system's config makes a
+ * hex value, a named color or a color function an error, and a variable that nothing defines too.
+ */
+export default {
+  extends: ['@whatsaaaa/design-system/stylelint'],
+  ignoreFiles: ['**/dist/**', '**/coverage/**'],
+>>>>>>> after updating
   overrides: [
     {
       files: ['**/*.vue'],

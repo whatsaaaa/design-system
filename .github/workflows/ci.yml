@@ -18,6 +18,7 @@ jobs:
   ci:
     uses: whatsaaaa/template/.github/workflows/node-ci.yml@v1
     with:
+<<<<<<< before updating
       # Each script builds what it reads from dist/ first. The unit tests in `test` include the
       # contrast of every role pair and that assets/ is up to date.
       scripts: format:check lint type-check test styleguide:build
@@ -37,3 +38,8 @@ jobs:
         docs/follow-ups.md
         docs/versioning.md
         .changeset/*.md
+=======
+      # The version of @playwright/test installed, which is the tag of the Playwright image the
+      # browser job runs in. tests/playwright-version.test.ts holds the two together.
+      playwright-version: 1.65.1
+>>>>>>> after updating
