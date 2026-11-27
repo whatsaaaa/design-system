@@ -122,7 +122,7 @@ And with `ws-pairs--amounts`, what an order costs: each amount at the right edge
 
 ## Number fields
 
-A number field has no spin buttons: the page defaults hide the browser's own, and the arrow keys still step it.
+A number field has no spin buttons of the browser's: the page defaults hide them, and the arrow keys still step it. Its own two step buttons are not those: two named buttons inside its edge, as [its spec](/components/number-field) says.
 
 ## Code that wraps
 

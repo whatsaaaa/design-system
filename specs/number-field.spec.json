@@ -1,0 +1,1077 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "number-field",
+  "title": "Number field",
+  "status": "draft",
+  "summary": "A number, in a field with its label above it and its help or its error under it: the input's edge, height and value, with a named button inside the edge on each side that steps the value down or up.",
+  "use": [
+    "A quantity that is counted, and often changed by one: a number of tickets, of guests, of nights.",
+    "Always inside its form field: a number field is never shown without its label."
+  ],
+  "notFor": [
+    "A number that is not a quantity, such as a phone number, a postal code or a card number: that is an input, with the `inputmode` of its digits.",
+    "A value from a range where the exact number matters less than where it lies, such as a volume: that is a slider, which the system does not specify yet.",
+    "A value that cannot be changed, such as on a review step: that is a list of terms and values, `ws-pairs`."
+  ],
+  "parts": {
+    "root": "The box, and the number typed in it: the native input element.",
+    "placeholder": "Text in an empty box. The system uses none: a hint goes under the field.",
+    "decrement": "The button at the start of the box that steps the value down: a native button with its name.",
+    "decrement-icon": "The minus icon of the decrement button.",
+    "increment": "The button at the end of the box that steps the value up: a native button with its name.",
+    "increment-icon": "The plus icon of the increment button.",
+    "label": "The field's name, above the box.",
+    "required": "The asterisk after the label of a field that must be filled in.",
+    "help": "The help under the box: what to enter, or why.",
+    "error": "The error under the box, in place of the help: what is wrong and how to fix it.",
+    "error-icon": "The danger icon before the error."
+  },
+  "variants": {
+    "outline": "The one look of a field: an edge in the field border, on the page color."
+  },
+  "sizes": {
+    "xs": "A dense row, such as a quantity in a table's row.",
+    "sm": "A bar or a toolbar, such as how many rows a page shows.",
+    "md": "Every other number field: a form, a dialog.",
+    "lg": "A form of one or two fields that a page leads to, such as the number of tickets on a sign-up.",
+    "xl": "A landing page's one field, such as how many people are coming."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Nothing is on it.",
+    "hover": "The pointer is on it.",
+    "focus": "It has the focus, as `:focus-visible` says, which a text field has from a click too.",
+    "invalid": "Its value is wrong: `aria-invalid` is true, and the error is under it.",
+    "disabled": "It cannot be changed now."
+  },
+  "icons": {
+    "decrement": "minus",
+    "increment": "plus",
+    "error": "octagon-alert"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "field.bg.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.hover"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-variant-numeric",
+      "value": "tabular-nums"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "placeholder",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "color",
+      "token": "field.label.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-family",
+      "token": "font.family.mono"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "required",
+      "property": "color",
+      "token": "field.required.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "color",
+      "token": "field.help.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "color",
+      "token": "field.error.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-weight",
+      "token": "field.error.font-weight"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "color",
+      "token": "field.error.icon.rest"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "width",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "height",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "color",
+      "token": "field.icon.rest"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "decrement-icon",
+      "property": "color",
+      "token": "button.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "background-color",
+      "value": "transparent"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "color",
+      "token": "field.icon.rest"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "increment-icon",
+      "property": "color",
+      "token": "button.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xs",
+      "token": "control.height.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) + var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "width",
+      "size": "xs",
+      "value": "calc(var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "height",
+      "size": "xs",
+      "value": "calc(var(--ws-control-height-xs) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "width",
+      "size": "xs",
+      "value": "calc(var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) + var(--ws-control-gap-xs))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "height",
+      "size": "xs",
+      "value": "calc(var(--ws-control-height-xs) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "width",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "height",
+      "size": "xs",
+      "token": "control.icon-size.xs"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "sm",
+      "token": "control.height.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) + var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "width",
+      "size": "sm",
+      "value": "calc(var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "height",
+      "size": "sm",
+      "value": "calc(var(--ws-control-height-sm) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "width",
+      "size": "sm",
+      "value": "calc(var(--ws-control-icon-size-sm) + var(--ws-control-gap-sm) + var(--ws-control-gap-sm))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "height",
+      "size": "sm",
+      "value": "calc(var(--ws-control-height-sm) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "width",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "height",
+      "size": "sm",
+      "token": "control.icon-size.sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "md",
+      "token": "control.height.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) + var(--ws-control-icon-size-md) + var(--ws-control-gap-md) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "width",
+      "size": "md",
+      "value": "calc(var(--ws-control-icon-size-md) + var(--ws-control-gap-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "height",
+      "size": "md",
+      "value": "calc(var(--ws-control-height-md) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "width",
+      "size": "md",
+      "value": "calc(var(--ws-control-icon-size-md) + var(--ws-control-gap-md) + var(--ws-control-gap-md))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "height",
+      "size": "md",
+      "value": "calc(var(--ws-control-height-md) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "width",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "height",
+      "size": "md",
+      "token": "control.icon-size.md"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "lg",
+      "token": "control.height.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) + var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "width",
+      "size": "lg",
+      "value": "calc(var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "height",
+      "size": "lg",
+      "value": "calc(var(--ws-control-height-lg) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "width",
+      "size": "lg",
+      "value": "calc(var(--ws-control-icon-size-lg) + var(--ws-control-gap-lg) + var(--ws-control-gap-lg))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "height",
+      "size": "lg",
+      "value": "calc(var(--ws-control-height-lg) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "width",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "height",
+      "size": "lg",
+      "token": "control.icon-size.lg"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "height",
+      "size": "xl",
+      "token": "control.height.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) + var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "width",
+      "size": "xl",
+      "value": "calc(var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement",
+      "property": "height",
+      "size": "xl",
+      "value": "calc(var(--ws-control-height-xl) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "decrement-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "width",
+      "size": "xl",
+      "value": "calc(var(--ws-control-icon-size-xl) + var(--ws-control-gap-xl) + var(--ws-control-gap-xl))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment",
+      "property": "height",
+      "size": "xl",
+      "value": "calc(var(--ws-control-height-xl) - var(--ws-space-8))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "width",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "increment-icon",
+      "property": "height",
+      "size": "xl",
+      "token": "control.icon-size.xl"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus into the field and on to the next or the previous control. The step buttons are not stops, and a disabled field is skipped."
+    },
+    {
+      "keys": ["ArrowUp"],
+      "effect": "Steps the value up by its step, to no more than its maximum."
+    },
+    {
+      "keys": ["ArrowDown"],
+      "effect": "Steps the value down by its step, to no less than its minimum."
+    },
+    {
+      "keys": ["Enter"],
+      "effect": "Sends the form the field is in, where the form has a submit button, as the browser does."
+    }
+  ],
+  "aria": {
+    "pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/",
+    "rules": [
+      "It is a native input element: one with the type number and its `min`, `max` and `step`, whose own spin buttons the system hides, or a text input with the role `spinbutton` and its `aria-valuenow`, `aria-valuemin` and `aria-valuemax`.",
+      "The two step buttons are kept: they are two real buttons with names, not the browser's spin buttons. Each is a native button element of the type button, with an `aria-label` that says what it does to which field, such as Decrease Tickets and Increase Tickets, and its icon is hidden from assistive technology.",
+      "The step buttons are not stops of the tab order, `tabindex=\"-1\"`, as the spin button pattern says: the field is the one stop, and its arrow keys do what the buttons do.",
+      "A step button whose step would pass the minimum or the maximum is disabled, and so are both in a disabled field.",
+      "The label is a label element for the input: its accessible name.",
+      "The help and the error are its description, by `aria-describedby`. While the error shows it takes the help's place.",
+      "A field in error has `aria-invalid` true. Its error says how to fix it, and is never a color alone: it has its word and its icon.",
+      "A required field has the required attribute, which assistive technology reads; the asterisk shows it.",
+      "A disabled field is the native disabled attribute."
+    ]
+  },
+  "forcedColors": [
+    "The edge is a real border, which forced colors keep in the system's colors, and in `GrayText` when the field is disabled.",
+    "The focus ring is an outline, which forced colors keep.",
+    "A step button has no edge of its own, inside the field's: its icon takes the system's color of a button's text, and `GrayText` when it is disabled. An icon drawn as an SVG in `currentcolor` does so by itself.",
+    "The error icon takes the system's text color, as the error's word does, so both still say it is an error."
+  ],
+  "motion": [
+    "The edge changes color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` it changes at once."
+  ],
+  "content": [
+    "The label names what is counted, in sentence case and with no colon, and its unit where it has one: Tickets, Weight in kg.",
+    "No placeholders. The help under the field says the range: From 1 to 10.",
+    "An error says how to fix it, with the limits: Enter a number from 1 to 10."
+  ],
+  "notes": [
+    "The step buttons are kept, though the browser's spin buttons are hidden: they are two real buttons with names that the pointer and assistive technology both use, and they take the system's look. The browser's own have neither, so `base.css` hides them, as it does on every number field.",
+    "Each step button holds its icon where the input draws its icons, at the field's padding from the edge, with the control's gap on each side of it. So the value starts past a button by the input's padding past an icon: the padding, the icon and the gap, as the rows say.",
+    "A step button under the pointer, or pressed, is raised as a ghost button is: `button.ghost.bg.hover` and `button.ghost.bg.active`. The gallery contract has no example of it: the hover example is the pointer on the field.",
+    "The value is in figures of one width, `tabular-nums`, so its digits keep their place as it steps.",
+    "Read-only is not specced: a value that cannot be changed, as on a review step, is shown as a term and its value, with `ws-pairs`.",
+    "A hint beside the label is not part of the spec: hints go under the field, as its help.",
+    "The value and the buttons keep their place when the edge widens: an invalid field's padding is its padding at rest less the extra edge, `control.border-width.invalid` less `control.border-width.rest`, so its edge grows inward over the padding and nothing in the box moves."
+  ],
+  "gallery": [
+    "number-field.outline.rest",
+    "number-field.outline.hover",
+    "number-field.outline.focus",
+    "number-field.outline.invalid",
+    "number-field.outline.disabled",
+    "number-field.outline.rest.xs",
+    "number-field.outline.rest.sm",
+    "number-field.outline.rest.lg",
+    "number-field.outline.rest.xl",
+    "number-field.outline.invalid.xs",
+    "number-field.outline.invalid.sm",
+    "number-field.outline.invalid.lg",
+    "number-field.outline.invalid.xl"
+  ]
+}

@@ -20,10 +20,12 @@ import { ORIGIN, gallery } from './spec-gallery.ts'
 const pseudoParts: Record<string, Record<string, string>> = {
   checkbox: { required: 'label::after' },
   input: { placeholder: 'root::placeholder', required: 'label::after' },
+  'number-field': { placeholder: 'root::placeholder', required: 'label::after' },
   'radio-group': { required: 'legend::after' },
   select: { 'item-highlight': 'item::before' },
   'select-menu': { 'item-highlight': 'item::before' },
   table: { 'loading-bar': 'thead::after' },
+  textarea: { placeholder: 'root::placeholder', required: 'label::after' },
 }
 const fixture = (name: string): SpecOptions => ({ parts: pseudoParts[name] ?? {} })
 
@@ -45,11 +47,13 @@ test('the specs it checks are the published ones', () => {
     'checkbox',
     'input',
     'modal',
+    'number-field',
     'radio-group',
     'select',
     'select-menu',
     'table',
     'tabs',
+    'textarea',
   ])
   expect(loadSpec('button').component).toBe('button')
   expect(() => loadSpec('../package')).toThrow(/no spec named/)
@@ -63,11 +67,13 @@ const leastChecks: Record<string, number> = {
   checkbox: 300,
   input: 300,
   modal: 50,
+  'number-field': 850,
   'radio-group': 300,
   select: 1100,
   'select-menu': 1100,
   table: 350,
   tabs: 200,
+  textarea: 500,
 }
 
 for (const name of specNames()) {
@@ -320,6 +326,43 @@ test('a field whose value moves when its edge widens fails', async () => {
     'input.outline.invalid: root padding-inline-start is 12px, and the spec says ' +
       'calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - ' +
       'var(--ws-control-border-width-rest))) (11px)',
+  )
+})
+
+test('a text area whose text moves down when its edge widens fails', async () => {
+  // the padding above and below at rest kept in an error, so the text moves inward by the edge
+  await page.addStyleTag({
+    content: `[data-spec^='textarea.outline.invalid'] textarea {
+      padding-block: calc(var(--field-padding-block) - var(--ws-control-border-width-rest)) !important;
+    }`,
+  })
+  const { failures } = await checkSpec(page, 'textarea', fixture('textarea'))
+  const invalid = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `textarea.outline.invalid${size}`)
+  expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
+    new Set(['dark', 'light'].flatMap((theme) => invalid.map((id) => `tokens ${theme} ${id}`))),
+  )
+  expect(failures.map(({ message }) => message)).toContain(
+    'textarea.outline.invalid: root padding-block is 5px, and the spec says ' +
+      'calc(var(--ws-space-6) - var(--ws-control-border-width-invalid)) (4px)',
+  )
+})
+
+test("a number field whose step buttons draw their icons at a library's own size fails", async () => {
+  // the icons of the step buttons at 20px, where the field's are 16px up to md
+  await page.addStyleTag({
+    content: `[data-spec^='number-field.'] .field__step svg { width: 20px; height: 20px; }`,
+  })
+  const { failures } = await checkSpec(page, 'number-field', fixture('number-field'))
+  // the large and extra large fields draw 20px icons, so only the others fail
+  const failed = new Set(failures.map(({ id }) => id))
+  expect(failed).toContain('number-field.outline.rest')
+  expect(failed).toContain('number-field.outline.rest.xs')
+  expect(failed).not.toContain('number-field.outline.rest.lg')
+  expect(failed).not.toContain('number-field.outline.rest.xl')
+  expect(new Set(failures.map(({ check }) => check))).toEqual(new Set(['tokens']))
+  expect(failures.map(({ message }) => message)).toContain(
+    'number-field.outline.rest: increment-icon width is 20px, and control.icon-size.md ' +
+      '(--ws-control-icon-size-md) is 16px',
   )
 })
 

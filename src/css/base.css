@@ -63,8 +63,8 @@ pre {
 }
 
 /*
- * A number field is typed, and stepped with the arrow keys. The system draws no spin buttons,
- * and the browser's own have no look of its, so they go.
+ * A number field is typed, and stepped with the arrow keys and with its own two step buttons, as
+ * its spec says. The browser's spin buttons have no look of the system's, so they go.
  */
 input[type='number'] {
   appearance: textfield;

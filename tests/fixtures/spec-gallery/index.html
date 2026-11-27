@@ -9,10 +9,11 @@
   </head>
   <body>
     <!--
-      A gallery that meets the badge, button, card, checkbox, input, modal, radio group, select,
-      select menu, table and tabs specs, marked as the gallery contract says: each example with its
-      id in data-spec, each part with its name in data-slot. Each field with an error, and each
-      field at rest in a size other than the default, shows twice: with its icons and without them.
+      A gallery that meets the badge, button, card, checkbox, input, modal, number field, radio
+      group, select, select menu, table, tabs and text area specs, marked as the gallery contract
+      says: each example with its id in data-spec, each part with its name in data-slot. Each input
+      with an error, and each input at rest in a size other than the default, shows twice: with its
+      icons and without them. A number field draws its two step buttons in every example.
       A disabled checkbox shows twice: unchecked, and checked with its fill. A badge in the success
       and the outline kinds shows twice, with an icon and without one, and a card twice, whole and
       with only its body. An open list and an open modal are drawn in place, inside their
@@ -597,6 +598,711 @@
               d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
             /></svg
           >Enter an email address with a domain, such as maya@example.com.
+        </p>
+      </div>
+    </section>
+    <section>
+      <h2>text area</h2>
+      <div class="field" data-spec="textarea.outline.rest">
+        <label data-slot="label" for="textarea-1" class="required">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea
+            id="textarea-1"
+            data-slot="root"
+            rows="3"
+            placeholder="The doors open at nine."
+            aria-describedby="textarea-1-help"
+            required
+          ></textarea>
+        </div>
+        <p id="textarea-1-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+      <div class="field" data-spec="textarea.outline.hover">
+        <label data-slot="label" for="textarea-2">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea id="textarea-2" data-slot="root" rows="3" aria-describedby="textarea-2-help">
+Please seat us together.</textarea>
+        </div>
+        <p id="textarea-2-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+      <div class="field" data-spec="textarea.outline.focus">
+        <label data-slot="label" for="textarea-3">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea id="textarea-3" data-slot="root" rows="3" aria-describedby="textarea-3-help">
+Please seat us together.</textarea>
+        </div>
+        <p id="textarea-3-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+      <div class="field" data-spec="textarea.outline.invalid">
+        <label data-slot="label" for="textarea-4">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea
+            id="textarea-4"
+            data-slot="root"
+            rows="3"
+            aria-invalid="true"
+            aria-describedby="textarea-4-error"
+          >
+Please seat us together, near the stage.</textarea>
+        </div>
+        <p id="textarea-4-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Shorten the notes to 200 characters or fewer.
+        </p>
+      </div>
+      <div class="field" data-spec="textarea.outline.disabled">
+        <label data-slot="label" for="textarea-5">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea
+            id="textarea-5"
+            data-slot="root"
+            rows="3"
+            aria-describedby="textarea-5-help"
+            disabled
+          >
+Please seat us together.</textarea>
+        </div>
+        <p id="textarea-5-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+    </section>
+    <section>
+      <h2>text area sizes</h2>
+      <div class="field" data-spec="textarea.outline.rest.xs" data-size="xs">
+        <label data-slot="label" for="textarea-6">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea id="textarea-6" data-slot="root" rows="3" aria-describedby="textarea-6-help">
+Please seat us together.</textarea>
+        </div>
+        <p id="textarea-6-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+      <div class="field" data-spec="textarea.outline.rest.sm" data-size="sm">
+        <label data-slot="label" for="textarea-7">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea id="textarea-7" data-slot="root" rows="3" aria-describedby="textarea-7-help">
+Please seat us together.</textarea>
+        </div>
+        <p id="textarea-7-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+      <div class="field" data-spec="textarea.outline.rest.lg" data-size="lg">
+        <label data-slot="label" for="textarea-8">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea id="textarea-8" data-slot="root" rows="3" aria-describedby="textarea-8-help">
+Please seat us together.</textarea>
+        </div>
+        <p id="textarea-8-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+      <div class="field" data-spec="textarea.outline.rest.xl" data-size="xl">
+        <label data-slot="label" for="textarea-9">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea id="textarea-9" data-slot="root" rows="3" aria-describedby="textarea-9-help">
+Please seat us together.</textarea>
+        </div>
+        <p id="textarea-9-help" data-slot="help">Up to 200 characters.</p>
+      </div>
+      <div class="field" data-spec="textarea.outline.invalid.xs" data-size="xs">
+        <label data-slot="label" for="textarea-10">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea
+            id="textarea-10"
+            data-slot="root"
+            rows="3"
+            aria-invalid="true"
+            aria-describedby="textarea-10-error"
+          >
+Please seat us together, near the stage.</textarea>
+        </div>
+        <p id="textarea-10-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Shorten the notes to 200 characters or fewer.
+        </p>
+      </div>
+      <div class="field" data-spec="textarea.outline.invalid.sm" data-size="sm">
+        <label data-slot="label" for="textarea-11">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea
+            id="textarea-11"
+            data-slot="root"
+            rows="3"
+            aria-invalid="true"
+            aria-describedby="textarea-11-error"
+          >
+Please seat us together, near the stage.</textarea>
+        </div>
+        <p id="textarea-11-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Shorten the notes to 200 characters or fewer.
+        </p>
+      </div>
+      <div class="field" data-spec="textarea.outline.invalid.lg" data-size="lg">
+        <label data-slot="label" for="textarea-12">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea
+            id="textarea-12"
+            data-slot="root"
+            rows="3"
+            aria-invalid="true"
+            aria-describedby="textarea-12-error"
+          >
+Please seat us together, near the stage.</textarea>
+        </div>
+        <p id="textarea-12-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Shorten the notes to 200 characters or fewer.
+        </p>
+      </div>
+      <div class="field" data-spec="textarea.outline.invalid.xl" data-size="xl">
+        <label data-slot="label" for="textarea-13">Notes for the organizer</label>
+        <div class="field__control">
+          <textarea
+            id="textarea-13"
+            data-slot="root"
+            rows="3"
+            aria-invalid="true"
+            aria-describedby="textarea-13-error"
+          >
+Please seat us together, near the stage.</textarea>
+        </div>
+        <p id="textarea-13-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Shorten the notes to 200 characters or fewer.
+        </p>
+      </div>
+    </section>
+    <section>
+      <h2>number field</h2>
+      <div class="field" data-spec="number-field.outline.rest">
+        <label data-slot="label" for="number-1" class="required">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-1"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            placeholder="1"
+            aria-describedby="number-1-help"
+            required
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-1-help" data-slot="help">From 1 to 10.</p>
+      </div>
+      <div class="field" data-spec="number-field.outline.hover">
+        <label data-slot="label" for="number-2">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-2"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2"
+            aria-describedby="number-2-help"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-2-help" data-slot="help">From 1 to 10.</p>
+      </div>
+      <div class="field" data-spec="number-field.outline.focus">
+        <label data-slot="label" for="number-3">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-3"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2"
+            aria-describedby="number-3-help"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-3-help" data-slot="help">From 1 to 10.</p>
+      </div>
+      <div class="field" data-spec="number-field.outline.invalid">
+        <label data-slot="label" for="number-4">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-4"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2.5"
+            aria-invalid="true"
+            aria-describedby="number-4-error"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-4-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter a whole number from 1 to 10.
+        </p>
+      </div>
+      <div class="field" data-spec="number-field.outline.disabled">
+        <label data-slot="label" for="number-5">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+            disabled
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-5"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2"
+            aria-describedby="number-5-help"
+            disabled
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+            disabled
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-5-help" data-slot="help">From 1 to 10.</p>
+      </div>
+    </section>
+    <section>
+      <h2>number field sizes</h2>
+      <div class="field" data-spec="number-field.outline.rest.xs" data-size="xs">
+        <label data-slot="label" for="number-6">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-6"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2"
+            aria-describedby="number-6-help"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-6-help" data-slot="help">From 1 to 10.</p>
+      </div>
+      <div class="field" data-spec="number-field.outline.rest.sm" data-size="sm">
+        <label data-slot="label" for="number-7">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-7"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2"
+            aria-describedby="number-7-help"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-7-help" data-slot="help">From 1 to 10.</p>
+      </div>
+      <div class="field" data-spec="number-field.outline.rest.lg" data-size="lg">
+        <label data-slot="label" for="number-8">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-8"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2"
+            aria-describedby="number-8-help"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-8-help" data-slot="help">From 1 to 10.</p>
+      </div>
+      <div class="field" data-spec="number-field.outline.rest.xl" data-size="xl">
+        <label data-slot="label" for="number-9">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-9"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2"
+            aria-describedby="number-9-help"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-9-help" data-slot="help">From 1 to 10.</p>
+      </div>
+      <div class="field" data-spec="number-field.outline.invalid.xs" data-size="xs">
+        <label data-slot="label" for="number-10">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-10"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2.5"
+            aria-invalid="true"
+            aria-describedby="number-10-error"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-10-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter a whole number from 1 to 10.
+        </p>
+      </div>
+      <div class="field" data-spec="number-field.outline.invalid.sm" data-size="sm">
+        <label data-slot="label" for="number-11">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-11"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2.5"
+            aria-invalid="true"
+            aria-describedby="number-11-error"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-11-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter a whole number from 1 to 10.
+        </p>
+      </div>
+      <div class="field" data-spec="number-field.outline.invalid.lg" data-size="lg">
+        <label data-slot="label" for="number-12">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-12"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2.5"
+            aria-invalid="true"
+            aria-describedby="number-12-error"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-12-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter a whole number from 1 to 10.
+        </p>
+      </div>
+      <div class="field" data-spec="number-field.outline.invalid.xl" data-size="xl">
+        <label data-slot="label" for="number-13">Tickets</label>
+        <div class="field__control">
+          <button
+            type="button"
+            class="field__step"
+            data-slot="decrement"
+            tabindex="-1"
+            aria-label="Decrease Tickets"
+          >
+            <svg data-slot="decrement-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg></button
+          ><input
+            id="number-13"
+            type="number"
+            data-slot="root"
+            min="1"
+            max="10"
+            value="2.5"
+            aria-invalid="true"
+            aria-describedby="number-13-error"
+          /><button
+            type="button"
+            class="field__step"
+            data-slot="increment"
+            tabindex="-1"
+            aria-label="Increase Tickets"
+          >
+            <svg data-slot="increment-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+          </button>
+        </div>
+        <p id="number-13-error" data-slot="error">
+          <svg data-slot="error-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16h.01M12 8v4" />
+            <path
+              d="M15.31 2a2 2 0 0 1 1.41.59l4.7 4.7a2 2 0 0 1 .58 1.4v6.62a2 2 0 0 1-.59 1.41l-4.7 4.7a2 2 0 0 1-1.4.58H8.69a2 2 0 0 1-1.41-.59l-4.7-4.7A2 2 0 0 1 2 15.31V8.69a2 2 0 0 1 .59-1.41l4.7-4.7A2 2 0 0 1 8.69 2z"
+            /></svg
+          >Enter a whole number from 1 to 10.
         </p>
       </div>
     </section>
