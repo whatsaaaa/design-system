@@ -613,6 +613,50 @@ test('a selected row that looks the same as the one at rest in forced colors fai
   )
 })
 
+test('an error icon that keeps the color of an error in forced colors fails', async () => {
+  // the icon in the error's color, as the gallery once drew it: an SVG given a color keeps it in
+  // forced colors, where the spec says it takes the system's text color
+  await page.addStyleTag({
+    content: `@media (forced-colors: active) {
+      :is(.field, .choice) [data-slot='error-icon'] { color: var(--ws-field-error-icon-rest); }
+    }`,
+  })
+  const { failures } = await checkSpec(page, 'input', fixture('input'))
+  const invalid = ['', '.xs', '.sm', '.lg', '.xl'].map((size) => `input.outline.invalid${size}`)
+  expect(new Set(where(failures).map((each) => each.join(' ')))).toEqual(
+    new Set(
+      ['dark', 'light'].flatMap((theme) => invalid.map((id) => `forced-colors ${theme} ${id}`)),
+    ),
+  )
+  expect(failures[0]!.message).toMatch(
+    /^input\.outline\.invalid: error-icon keeps rgb\(\d+, \d+, \d+\) in forced colors, where an icon takes a system color$/,
+  )
+})
+
+test("a step button's icon whose shapes are given a color of their own in forced colors fails", async () => {
+  // the button in the system's color, but the strokes of its icon in the brand's
+  await page.addStyleTag({
+    content: `@media (forced-colors: active) {
+      [data-spec='number-field.outline.rest'] .field__step path { stroke: var(--ws-color-brand); }
+    }`,
+  })
+  const { failures } = await checkSpec(page, 'number-field', fixture('number-field'))
+  expect(where(failures)).toEqual(
+    ['dark', 'light'].flatMap((theme) =>
+      ['decrement-icon', 'increment-icon'].map(() => [
+        'forced-colors',
+        theme,
+        'number-field.outline.rest',
+      ]),
+    ),
+  )
+  expect(failures.map(({ message }) => message.split(' keeps ')[0])).toEqual(
+    ['dark', 'light'].flatMap(() =>
+      ['decrement-icon', 'increment-icon'].map((part) => `number-field.outline.rest: ${part}`),
+    ),
+  )
+})
+
 test('a current tab whose bar forced colors hide fails', async () => {
   // the bar a fill of the brand color, which forced colors paint in the page's color
   await page.addStyleTag({

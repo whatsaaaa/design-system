@@ -377,7 +377,7 @@
       "part": "decrement",
       "property": "width",
       "size": "xs",
-      "value": "calc(var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) + var(--ws-control-gap-xs))"
+      "value": "calc(var(--ws-control-icon-size-xs) + var(--ws-space-4) + var(--ws-space-4))"
     },
     {
       "variant": "*",
@@ -409,7 +409,7 @@
       "part": "increment",
       "property": "width",
       "size": "xs",
-      "value": "calc(var(--ws-control-icon-size-xs) + var(--ws-control-gap-xs) + var(--ws-control-gap-xs))"
+      "value": "calc(var(--ws-control-icon-size-xs) + var(--ws-space-4) + var(--ws-space-4))"
     },
     {
       "variant": "*",
@@ -1028,6 +1028,7 @@
       "It is a native input element: one with the type number and its `min`, `max` and `step`, whose own spin buttons the system hides, or a text input with the role `spinbutton` and its `aria-valuenow`, `aria-valuemin` and `aria-valuemax`.",
       "The two step buttons are kept: they are two real buttons with names, not the browser's spin buttons. Each is a native button element of the type button, with an `aria-label` that says what it does to which field, such as Decrease Tickets and Increase Tickets, and its icon is hidden from assistive technology.",
       "The step buttons are not stops of the tab order, `tabindex=\"-1\"`, as the spin button pattern says: the field is the one stop, and its arrow keys do what the buttons do.",
+      "A click on a step button leaves the focus in the field, so its arrow keys go on stepping the value and do not scroll the page. `tabindex=\"-1\"` only takes a button out of the tab order: a native button still takes the focus from a click, unless the default of the press, its `mousedown`, is prevented.",
       "A step button whose step would pass the minimum or the maximum is disabled, and so are both in a disabled field.",
       "The label is a label element for the input: its accessible name.",
       "The help and the error are its description, by `aria-describedby`. While the error shows it takes the help's place.",
@@ -1052,8 +1053,9 @@
   ],
   "notes": [
     "The step buttons are kept, though the browser's spin buttons are hidden: they are two real buttons with names that the pointer and assistive technology both use, and they take the system's look. The browser's own have neither, so `base.css` hides them, as it does on every number field.",
-    "Each step button holds its icon where the input draws its icons, at the field's padding from the edge, with the control's gap on each side of it. So the value starts past a button by the input's padding past an icon: the padding, the icon and the gap, as the rows say.",
+    "Each step button holds its icon where the input draws its icons, at the field's padding from the edge. Its fill reaches the control's gap past the icon on each side, and `space.4` at xs, where the padding of 8 px less the gap of 6 px would put the fill 2 px from the outside, on the 2 px error edge. So the fill is at least 2 px inside the edge at every size, in an error too, when a hover or a press raises it. The value starts past a button by the input's padding past an icon: the padding, the icon and the gap, as the rows say.",
     "A step button under the pointer, or pressed, is raised as a ghost button is: `button.ghost.bg.hover` and `button.ghost.bg.active`. The gallery contract has no example of it: the hover example is the pointer on the field.",
+    "The field's hover holds while the pointer is on a step button: the buttons are inside its edge, so the pointer on one is still on the field, and the edge stays in `field.border.hover`. A hover drawn on the input element alone drops back to rest when the pointer moves onto a button drawn over it, so it is drawn on an element that holds the input and both buttons.",
     "A step button at its limit is disabled, the decrement where a step down would pass the minimum and the increment where a step up would pass the maximum, and its icon takes `button.text.disabled`, as both do in a disabled field. The state table's states are the field's, so it has no row for one button disabled in a field at rest.",
     "The gallery's examples hold a value strictly inside the range, or no value, which is at neither limit, so neither step button is disabled and the rest rows hold for both: Tickets from 1 to 10 hold 2, not 1.",
     "The value is in figures of one width, `tabular-nums`, so its digits keep their place as it steps.",

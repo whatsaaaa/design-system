@@ -101,15 +101,38 @@
             </div>
             <div class="field">
               <label class="field__label" for="tickets">Tickets</label>
-              <input
-                class="input input--number"
-                id="tickets"
-                name="tickets"
-                type="number"
-                min="1"
-                max="8"
-                value="2"
-              />
+              <div class="number-field" data-number-field>
+                <button
+                  type="button"
+                  class="number-field__step"
+                  tabindex="-1"
+                  aria-label="Decrease Tickets"
+                  data-step="down"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12h14" />
+                  </svg></button
+                ><input
+                  class="input input--number"
+                  id="tickets"
+                  name="tickets"
+                  type="number"
+                  min="1"
+                  max="8"
+                  value="2"
+                /><button
+                  type="button"
+                  class="number-field__step"
+                  tabindex="-1"
+                  aria-label="Increase Tickets"
+                  data-step="up"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12h14" />
+                    <path d="M12 5v14" />
+                  </svg>
+                </button>
+              </div>
               <p class="field__hint">Up to eight. The arrow keys step the number.</p>
             </div>
             <label class="choice">

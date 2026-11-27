@@ -199,7 +199,7 @@ test('amounts line up at the right edge in figures of one width, under a total',
 
 test('a number field has no spin buttons, and the arrow keys step it', async ({ page }) => {
   await open(page, FORM)
-  const field = page.getByLabel('Tickets')
+  const field = page.getByLabel('Tickets', { exact: true })
   expect(await field.evaluate((element) => getComputedStyle(element).appearance)).toBe('textfield')
   await field.focus()
   await page.keyboard.press('ArrowUp')
@@ -208,6 +208,36 @@ test('a number field has no spin buttons, and the arrow keys step it', async ({ 
   await expect(page.locator('.ws-status-line__mode')).toHaveText('INSERT')
   // as tall as every other control, --ws-size-control
   expect((await field.boundingBox())!.height).toBe(40)
+})
+
+test("a number field's step buttons step it, leave the focus in it and stop at its limits", async ({
+  page,
+}) => {
+  await open(page, FORM)
+  const field = page.getByLabel('Tickets', { exact: true })
+  const decrease = page.getByRole('button', { name: 'Decrease Tickets' })
+  const increase = page.getByRole('button', { name: 'Increase Tickets' })
+  // the field is the one stop: the buttons are not in the tab order
+  for (const button of [decrease, increase]) await expect(button).toHaveAttribute('tabindex', '-1')
+  await field.click()
+  await increase.click()
+  await expect(field).toHaveValue('3')
+  // the click left the focus in the field, so its arrow keys go on stepping it
+  await expect(field).toBeFocused()
+  await page.keyboard.press('ArrowUp')
+  await expect(field).toHaveValue('4')
+  // the pointer on a button is on the field: its edge holds the hover
+  await increase.hover()
+  expect(await field.evaluate((element) => getComputedStyle(element).borderTopColor)).toBe(
+    await token(page, '--ws-color-text-secondary'),
+  )
+  // a button whose step would pass the limit is disabled
+  await field.fill('8')
+  await expect(increase).toBeDisabled()
+  await expect(decrease).toBeEnabled()
+  await field.fill('1')
+  await expect(decrease).toBeDisabled()
+  await expect(increase).toBeEnabled()
 })
 
 test.describe('on a phone', () => {
