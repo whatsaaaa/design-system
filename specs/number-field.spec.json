@@ -1029,7 +1029,7 @@
       "The two step buttons are kept: they are two real buttons with names, not the browser's spin buttons. Each is a native button element of the type button, with an `aria-label` that says what it does to which field, such as Decrease Tickets and Increase Tickets, and its icon is hidden from assistive technology.",
       "The step buttons are not stops of the tab order, `tabindex=\"-1\"`, as the spin button pattern says: the field is the one stop, and its arrow keys do what the buttons do.",
       "A click on a step button puts the focus in the field, or keeps it there, so its arrow keys go on stepping the value and do not scroll the page. `tabindex=\"-1\"` only takes a button out of the tab order: a native button still takes the focus from a click, unless the default of the press, its `mousedown`, is prevented. A touch on a step button leaves the focus where it is, so the system's keyboard does not open.",
-      "A step button whose step would pass the minimum or the maximum is disabled, and so are both in a disabled field.",
+      "A step button whose step would pass the minimum or the maximum is disabled by `aria-disabled=\"true\"`, not the native `disabled`, and a click on it does nothing: a native disabled button gets no `mousedown`, so a press on it would take the focus out of the field, where a press on one that is `aria-disabled` puts the focus in the field, or keeps it there, as on one at rest. Both are disabled in a disabled field, natively, as the field is.",
       "The label is a label element for the input: its accessible name.",
       "The help and the error are its description, by `aria-describedby`. While the error shows it takes the help's place.",
       "A field in error has `aria-invalid` true. Its error says how to fix it, and is never a color alone: it has its word and its icon.",
@@ -1040,7 +1040,7 @@
   "forcedColors": [
     "The edge is a real border, which forced colors keep in the system's colors, and in `GrayText` when the field is disabled.",
     "The focus ring is an outline, which forced colors keep.",
-    "A step button has no edge of its own, inside the field's: its icon takes the system's color of a button's text, and `GrayText` when it is disabled. An icon drawn as an SVG in `currentcolor` does so by itself.",
+    "A step button has no edge of its own, inside the field's: its icon takes the system's color of a button's text, and `GrayText` when it is disabled. An icon drawn as an SVG in `currentcolor` does so by itself, but forced colors give `GrayText` only to a native disabled button, so one at its limit, `aria-disabled`, is given it.",
     "The error icon takes the system's text color, as the error's word does, so both still say it is an error."
   ],
   "motion": [

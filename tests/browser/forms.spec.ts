@@ -260,6 +260,41 @@ test('a click on a step button puts the focus in a number field that did not hav
   await expect(field).toHaveValue('2')
 })
 
+test('a click on a step button at its limit keeps the focus in the field and the value', async ({
+  page,
+}) => {
+  await open(page, FORM)
+  const field = page.getByLabel('Tickets', { exact: true })
+  for (const [name, limit, key, next] of [
+    ['Increase Tickets', '8', 'ArrowDown', '7'],
+    ['Decrease Tickets', '1', 'ArrowUp', '2'],
+  ] as const) {
+    const button = page.getByRole('button', { name })
+    await field.fill(limit)
+    await expect(button).toBeDisabled()
+    // the pointer presses it as on any button: a disabled one fails Playwright's own check
+    await button.click({ force: true })
+    await expect(field).toHaveValue(limit)
+    await expect(field).toBeFocused()
+    await page.keyboard.press(key)
+    await expect(field).toHaveValue(next)
+  }
+  // in forced colors it is drawn in GrayText, as a native disabled button is
+  await field.fill('8')
+  await page.emulateMedia({ forcedColors: 'active' })
+  const [color, gray] = await page
+    .getByRole('button', { name: 'Increase Tickets' })
+    .evaluate((element) => {
+      const probe = document.createElement('span')
+      probe.style.cssText = 'forced-color-adjust: none; color: GrayText'
+      element.append(probe)
+      const value = getComputedStyle(probe).color
+      probe.remove()
+      return [getComputedStyle(element).color, value]
+    })
+  expect(color).toBe(gray)
+})
+
 test.describe('on a touch screen', () => {
   test.use({ hasTouch: true })
 

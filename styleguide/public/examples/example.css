@@ -407,11 +407,11 @@ body {
 }
 
 /* raised under the pointer and pressed, as a ghost button */
-.number-field__step:enabled:is(:hover, :active) {
+.number-field__step:not([aria-disabled='true']):is(:hover, :active) {
   background: var(--ws-color-raised);
 }
 
-.number-field__step:disabled {
+.number-field__step[aria-disabled='true'] {
   color: var(--ws-color-text-faint);
   cursor: not-allowed;
 }
@@ -505,6 +505,10 @@ body {
 
   .choice__input:checked::before {
     background: HighlightText;
+  }
+
+  .number-field__step[aria-disabled='true'] {
+    color: GrayText;
   }
 }
 
