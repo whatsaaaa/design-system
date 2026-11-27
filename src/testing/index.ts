@@ -8,9 +8,9 @@
  * - tokens: each property of each part of each example is the token's value, resolved next to
  *   the part, so a part of the page held in the other theme is measured in it;
  * - forced colors: each part with an edge keeps a border or an outline, each part with a line on
- *   one side, such as a separator's block-end border, keeps a border on that side, each icon
- *   drawn in SVG is drawn in a system color, and a checked, indeterminate, current or selected
- *   example still looks unlike the example of its kind at rest.
+ *   one side, such as a separator's block-end border, keeps a border on that side, each icon its
+ *   spec gives a system color is drawn in one where it is an SVG, and a checked, indeterminate,
+ *   current or selected example still looks unlike the example of its kind at rest.
  *
  * A state a pointer or the keyboard causes is forced as the gallery contract says, with
  * `data-demo`, never with the pointer: the helper adds `data-demo="hover"` to the example of a
@@ -73,8 +73,23 @@ const demoStates = ['hover', 'active', 'focus']
 /** The states that the forced-colors check compares with rest. */
 const markedStates = ['checked', 'indeterminate', 'current', 'selected']
 
-/** Whether a part is an icon, by its name: `icon`, or one that ends in it, such as `error-icon`. */
-const isIcon = (part: string): boolean => part === 'icon' || part.endsWith('-icon')
+/**
+ * The icons each spec's `forcedColors` gives a system color, by its component: "The error icon
+ * takes the system's text color" of the input, "The icons take the system's text color" of a
+ * select, a step button's icon in "the system's color of a button's text" and a checked box's
+ * tick in the mark's `HighlightText`. The forced-colors check holds these alone, so an icon a spec
+ * says nothing of there, such as a tab's or a checkbox's error icon, keeps the color it has.
+ */
+const systemColorIcons: Record<string, string[]> = {
+  badge: ['leading-icon', 'trailing-icon'],
+  button: ['leading-icon', 'trailing-icon'],
+  checkbox: ['icon'],
+  input: ['error-icon'],
+  'number-field': ['decrement-icon', 'increment-icon', 'error-icon'],
+  select: ['leading-icon', 'trailing-icon'],
+  'select-menu': ['leading-icon', 'trailing-icon', 'search-icon'],
+  textarea: ['error-icon'],
+}
 
 /**
  * One property of one part to measure, and the token or value it has to have, where the example
@@ -198,7 +213,7 @@ export async function checkSpec(
         for (const { id, message } of await page.evaluate(edgesInPage, edges))
           failures.push({ check: 'forced-colors', theme, id, message })
         const icons = Object.keys(data.parts)
-          .filter(isIcon)
+          .filter((part) => systemColorIcons[component]?.includes(part))
           .map((part) => ({ part, target: targets[part]! }))
         for (const { id, message } of await page.evaluate(iconsInPage, { ids: shown, icons }))
           failures.push({ check: 'forced-colors', theme, id, message })
@@ -702,11 +717,11 @@ function edgesInPage(
 }
 
 /**
- * In forced colors, each icon of each example is drawn in a system color, such as `CanvasText`
- * or `ButtonText`. The system's colors replace the page's on text, edges and fills, but an SVG
- * keeps a color it is given, or one its stroke or fill is given, as it keeps one under
- * `forced-color-adjust: none`: an icon in a color of the page's then says nothing of its state
- * against the system's, or cannot be seen on them. The check is of an icon drawn in SVG: its
+ * In forced colors, each icon its spec gives a system color is drawn in one in each example, such
+ * as `CanvasText` or `ButtonText`. The system's colors replace the page's on text, edges and
+ * fills, but an SVG keeps a color it is given, or one its stroke or fill is given, as it keeps one
+ * under `forced-color-adjust: none`: an icon in a color of the page's then says nothing of its
+ * state against the system's, or cannot be seen on them. The check is of an icon drawn in SVG: its
  * colors are the strokes and fills of its shapes.
  */
 function iconsInPage({

@@ -657,6 +657,27 @@ test("a step button's icon whose shapes are given a color of their own in forced
   )
 })
 
+test('an icon whose spec gives it no color in forced colors may keep its own there', async () => {
+  // the checkbox, radio group and tabs specs say nothing of the color of an error icon or a tab's
+  // icon in forced colors, so one in a color of the page's is no difference from them
+  const icons = ".choice [data-slot='error-icon'], .tabs [data-slot='leading-icon']"
+  await page.addStyleTag({
+    content: `@media (forced-colors: active) { ${icons} { color: rgb(200, 30, 90); } }`,
+  })
+  for (const name of ['checkbox', 'radio-group', 'tabs'])
+    expect((await checkSpec(page, name, fixture(name))).failures, name).toEqual([])
+  await page.emulateMedia({ forcedColors: 'active' })
+  const strokes = await page.evaluate(
+    (icons) =>
+      [...document.querySelectorAll(icons)].flatMap((icon) =>
+        [...icon.querySelectorAll('path')].map((path) => getComputedStyle(path).stroke),
+      ),
+    icons,
+  )
+  expect(strokes.length).toBeGreaterThan(0)
+  expect(new Set(strokes)).toEqual(new Set(['rgb(200, 30, 90)']))
+})
+
 test('a current tab whose bar forced colors hide fails', async () => {
   // the bar a fill of the brand color, which forced colors paint in the page's color
   await page.addStyleTag({
