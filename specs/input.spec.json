@@ -5,11 +5,12 @@
   "status": "stable",
   "summary": "One line of text, in a field with its label above it and its help or its error under it: the value in Inter, an edge in the field border, the control height.",
   "use": [
-    "One line of text: a name, an email address, a number, a date typed out.",
+    "One line of text: a name, an email address, a phone number or a postal code, a date typed out.",
     "Always inside its form field: an input is never shown without its label."
   ],
   "notFor": [
     "Text of more than one line: that is a text area.",
+    "A quantity that is counted and stepped, such as a number of tickets: that is a number field.",
     "One choice from a list: that is a select, or radio buttons for a few options.",
     "A value that cannot be changed, such as on a review step: that is a list of terms and values, `ws-pairs`."
   ],

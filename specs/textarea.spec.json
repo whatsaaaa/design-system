@@ -1,0 +1,755 @@
+{
+  "$schema": "./spec.schema.json",
+  "component": "textarea",
+  "title": "Text area",
+  "status": "draft",
+  "summary": "Text of several lines, in a field with its label above it and its help or its error under it: the input's edge, value and field, with rows of text in place of its one line and no height of its own.",
+  "use": [
+    "Text of more than one line: a message, a note to the organizer, a description.",
+    "Always inside its form field: a text area is never shown without its label."
+  ],
+  "notFor": [
+    "One line of text, such as a name or an email address: that is an input.",
+    "Text with formatting, such as headings and lists: that is an editor, which the system does not specify.",
+    "A value that cannot be changed, such as on a review step: that is a list of terms and values, `ws-pairs`."
+  ],
+  "parts": {
+    "root": "The box, and the text typed in it: the native textarea element.",
+    "placeholder": "Text in an empty box. The system uses none: a hint goes under the field.",
+    "label": "The field's name, above the box.",
+    "required": "The asterisk after the label of a field that must be filled in.",
+    "help": "The help under the box: what to enter, or why.",
+    "error": "The error under the box, in place of the help: what is wrong and how to fix it.",
+    "error-icon": "The danger icon before the error."
+  },
+  "variants": {
+    "outline": "The one look of a field: an edge in the field border, on the page color."
+  },
+  "sizes": {
+    "xs": "A dense panel, such as a note beside a table's row.",
+    "sm": "A bar or a side panel, such as a comment in a toolbar.",
+    "md": "Every other text area: a form, a dialog.",
+    "lg": "A form of one or two fields that a page leads to, such as a contact form's message.",
+    "xl": "A page whose one field is the text, such as a feedback page."
+  },
+  "defaultSize": "md",
+  "states": {
+    "rest": "Nothing is on it.",
+    "hover": "The pointer is on it.",
+    "focus": "It has the focus, as `:focus-visible` says, which a text field has from a click too.",
+    "invalid": "Its value is wrong: `aria-invalid` is true, and the error is under it.",
+    "disabled": "It cannot be changed now."
+  },
+  "icons": {
+    "error": "octagon-alert"
+  },
+  "stateTable": [
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "background-color",
+      "token": "field.bg.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "border-radius",
+      "token": "control.radius"
+    },
+    {
+      "variant": "*",
+      "state": "hover",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.hover"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.rest"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-color",
+      "token": "color.interactive"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-style",
+      "value": "solid"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-width",
+      "token": "border-width.medium"
+    },
+    {
+      "variant": "*",
+      "state": "focus",
+      "part": "root",
+      "property": "outline-offset",
+      "value": "3px"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "border-width",
+      "token": "control.border-width.invalid"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "border-color",
+      "token": "field.border.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "disabled",
+      "part": "root",
+      "property": "color",
+      "token": "field.text.disabled"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "placeholder",
+      "property": "color",
+      "token": "color.text-secondary"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "color",
+      "token": "field.label.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-family",
+      "token": "font.family.mono"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-weight",
+      "token": "font.weight.regular"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "required",
+      "property": "color",
+      "token": "field.required.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "color",
+      "token": "field.help.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "color",
+      "token": "field.error.text.rest"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-family",
+      "token": "font.family.sans"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-weight",
+      "token": "field.error.font-weight"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "color",
+      "token": "field.error.icon.rest"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "width",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error-icon",
+      "property": "height",
+      "token": "size.icon"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xs",
+      "value": "calc(var(--ws-space-2) - var(--ws-control-border-width-rest))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "token": "space.8"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xs",
+      "value": "calc(var(--ws-space-2) - var(--ws-control-border-width-invalid))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xs",
+      "value": "calc(var(--ws-space-8) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "xs",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "sm",
+      "value": "calc(var(--ws-space-4) - var(--ws-control-border-width-rest))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "token": "space.10"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-block",
+      "size": "sm",
+      "value": "calc(var(--ws-space-4) - var(--ws-control-border-width-invalid))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "sm",
+      "value": "calc(var(--ws-space-10) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.label-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "sm",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "md",
+      "value": "calc(var(--ws-space-6) - var(--ws-control-border-width-rest))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "token": "space.12"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-block",
+      "size": "md",
+      "value": "calc(var(--ws-space-6) - var(--ws-control-border-width-invalid))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "md",
+      "value": "calc(var(--ws-space-12) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "md",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "md",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "lg",
+      "value": "calc(var(--ws-space-8) - var(--ws-control-border-width-rest))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "token": "space.14"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "token": "space.14"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-block",
+      "size": "lg",
+      "value": "calc(var(--ws-space-8) - var(--ws-control-border-width-invalid))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "lg",
+      "value": "calc(var(--ws-space-14) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "lg",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "lg",
+      "token": "text.body-sm"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xl",
+      "value": "calc(var(--ws-space-10) - var(--ws-control-border-width-rest))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "token": "space.16"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "token": "space.16"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-block",
+      "size": "xl",
+      "value": "calc(var(--ws-space-10) - var(--ws-control-border-width-invalid))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-start",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "root",
+      "property": "padding-inline-end",
+      "size": "xl",
+      "value": "calc(var(--ws-space-16) - (var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)))"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "root",
+      "property": "line-height",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "label",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.label"
+    },
+    {
+      "variant": "*",
+      "state": "rest",
+      "part": "help",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    },
+    {
+      "variant": "*",
+      "state": "invalid",
+      "part": "error",
+      "property": "font-size",
+      "size": "xl",
+      "token": "text.body"
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": ["Tab", "Shift+Tab"],
+      "effect": "Moves the focus into the field and on to the next or the previous control. A disabled field is skipped."
+    },
+    {
+      "keys": ["Enter"],
+      "effect": "Starts a new line. It never sends the form: a text area's form is sent by its submit button."
+    }
+  ],
+  "aria": {
+    "pattern": "https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element",
+    "rules": [
+      "It is a native textarea element, with its `rows`, and an autocomplete where the browser can fill it in.",
+      "The label is a label element for the text area: its accessible name.",
+      "The help and the error are its description, by `aria-describedby`. While the error shows it takes the help's place.",
+      "A field in error has `aria-invalid` true. Its error says how to fix it, and is never a color alone: it has its word and its icon.",
+      "A required field has the required attribute, which assistive technology reads; the asterisk shows it.",
+      "A disabled field is the native disabled attribute."
+    ]
+  },
+  "forcedColors": [
+    "The edge is a real border, which forced colors keep in the system's colors, and in `GrayText` when the field is disabled.",
+    "The focus ring is an outline, which forced colors keep.",
+    "The error icon takes the system's text color, as the error's word does, so both still say it is an error."
+  ],
+  "motion": [
+    "The edge changes color in `motion.duration.fast`, with `motion.easing.standard`. With `prefers-reduced-motion: reduce` it changes at once."
+  ],
+  "content": [
+    "The label names the text, in sentence case and with no colon: Message, Notes for the organizer.",
+    "No placeholders. What to write goes in the help under the field: Up to 500 characters.",
+    "An error says how to fix it, not only what is wrong: Shorten the message to 500 characters or fewer."
+  ],
+  "notes": [
+    "Its height is not a row of the table: it is as tall as its rows of text, by the `rows` attribute, three unless the text is known to be longer, and an implementation may grow it as the reader types.",
+    "Its first line sits where an input's value does: the padding above and below the text is half of what the control's height leaves around a line, less the edge, so a text area of one row is as tall as the input of its size.",
+    "It has no icons and no loading state, unlike the input: an icon beside several lines of text has no one line to sit on.",
+    "Read-only is not specced: a value that cannot be changed, as on a review step, is shown as a term and its value, with `ws-pairs`.",
+    "A hint beside the label is not part of the spec: hints go under the field, as its help.",
+    "The text keeps its place when the edge widens: an invalid field's padding on every side is its padding at rest less the extra edge, `control.border-width.invalid` less `control.border-width.rest`, so its edge grows inward over the padding and nothing in the box moves."
+  ],
+  "gallery": [
+    "textarea.outline.rest",
+    "textarea.outline.hover",
+    "textarea.outline.focus",
+    "textarea.outline.invalid",
+    "textarea.outline.disabled",
+    "textarea.outline.rest.xs",
+    "textarea.outline.rest.sm",
+    "textarea.outline.rest.lg",
+    "textarea.outline.rest.xl",
+    "textarea.outline.invalid.xs",
+    "textarea.outline.invalid.sm",
+    "textarea.outline.invalid.lg",
+    "textarea.outline.invalid.xl"
+  ]
+}

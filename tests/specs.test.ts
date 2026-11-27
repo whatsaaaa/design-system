@@ -315,11 +315,13 @@ describe('the specs and the component tier', () => {
       'checkbox',
       'input',
       'modal',
+      'number-field',
       'radio-group',
       'select',
       'select-menu',
       'table',
       'tabs',
+      'textarea',
     ])
   })
 

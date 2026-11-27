@@ -1,6 +1,6 @@
 /*
- * A gallery of plain HTML that meets the badge, button, card, checkbox, input, modal, radio group,
- * select, select menu, table and tabs specs, as an implementation's would: every value from a
+ * A gallery of plain HTML that meets the badge, button, card, checkbox, input, modal, number field,
+ * radio group, select, select menu, table, tabs and text area specs, as an implementation's would: every value from a
  * component token or a role, by name. A hover, a pressed state or the focus is drawn by the pointer
  * or the keyboard, or by data-demo on the example, as the gallery contract says. An open list or
  * modal is drawn in place.
@@ -216,7 +216,7 @@ svg {
   }
 }
 
-/* the input, in its field */
+/* the input, the text area and the number field, each in its field */
 
 .field {
   --field-padding: var(--ws-space-12);
@@ -261,13 +261,12 @@ svg {
   inset-inline-end: var(--field-padding);
 }
 
-.field input {
+.field :is(input, textarea) {
   /* what an edge wider than at rest takes from the padding, so the value keeps its place */
   --field-edge-extra: 0px;
 
   box-sizing: border-box;
   width: 100%;
-  height: var(--ws-control-height-md);
   padding-inline: calc(var(--field-padding) - var(--field-edge-extra));
   border: var(--ws-control-border-width-rest) solid var(--ws-field-border-rest);
   border-radius: var(--ws-control-radius);
@@ -276,6 +275,10 @@ svg {
   font-family: var(--ws-font-family-sans);
   font-size: var(--ws-text-body-font-size);
   transition: border-color var(--ws-motion-duration-fast) var(--ws-motion-easing-standard);
+}
+
+.field input {
+  height: var(--ws-control-height-md);
 }
 
 /* the value starts past an icon by the padding, the icon and the gap */
@@ -291,21 +294,21 @@ svg {
   );
 }
 
-.field input::placeholder {
+.field :is(input, textarea)::placeholder {
   color: var(--ws-color-text-secondary);
 }
 
-.field input:enabled:is(:hover, [data-demo~='hover'] *) {
+.field :is(input, textarea):enabled:is(:hover, [data-demo~='hover'] *) {
   border-color: var(--ws-field-border-hover);
 }
 
-.field input:is(:focus-visible, [data-demo~='focus'] *) {
+.field :is(input, textarea):is(:focus-visible, [data-demo~='focus'] *) {
   border-color: var(--ws-field-border-rest);
   outline: var(--ws-border-width-medium) solid var(--ws-color-interactive);
   outline-offset: 3px;
 }
 
-.field input[aria-invalid='true'] {
+.field :is(input, textarea)[aria-invalid='true'] {
   --field-edge-extra: calc(
     var(--ws-control-border-width-invalid) - var(--ws-control-border-width-rest)
   );
@@ -314,7 +317,7 @@ svg {
   border-color: var(--ws-field-border-invalid);
 }
 
-.field input:disabled {
+.field :is(input, textarea):disabled {
   border-color: var(--ws-field-border-disabled);
   color: var(--ws-field-text-disabled);
 }
@@ -359,6 +362,13 @@ svg {
     height: var(--ws-control-height-xs);
     font-size: var(--ws-text-body-sm-font-size);
   }
+
+  & textarea {
+    --field-padding-block: var(--ws-space-2);
+
+    font-size: var(--ws-text-body-sm-font-size);
+    line-height: var(--ws-text-body-sm-line-height);
+  }
 }
 
 .field[data-size='sm'] {
@@ -374,6 +384,13 @@ svg {
     height: var(--ws-control-height-sm);
     font-size: var(--ws-text-body-sm-font-size);
   }
+
+  & textarea {
+    --field-padding-block: var(--ws-space-4);
+
+    font-size: var(--ws-text-body-sm-font-size);
+    line-height: var(--ws-text-body-sm-line-height);
+  }
 }
 
 .field[data-size='lg'] {
@@ -383,6 +400,10 @@ svg {
 
   & input {
     height: var(--ws-control-height-lg);
+  }
+
+  & textarea {
+    --field-padding-block: var(--ws-space-8);
   }
 }
 
@@ -395,9 +416,92 @@ svg {
     height: var(--ws-control-height-xl);
   }
 
+  & textarea {
+    --field-padding-block: var(--ws-space-10);
+  }
+
   & :is([data-slot='help'], [data-slot='error']) {
     font-size: var(--ws-text-body-font-size);
   }
+}
+
+/*
+ * A text area is as tall as its rows: its first line sits where an input's value does, half of
+ * what the control's height leaves around a line from the edge, so its padding above and below
+ * is that less the edge, and an error's wider edge grows inward over it
+ */
+.field textarea {
+  --field-padding-block: var(--ws-space-6);
+
+  display: block;
+  padding-block: calc(var(--field-padding-block) - var(--ws-control-border-width-rest));
+  line-height: var(--ws-text-body-line-height);
+  resize: vertical;
+}
+
+.field textarea[aria-invalid='true'] {
+  padding-block: calc(var(--field-padding-block) - var(--ws-control-border-width-invalid));
+}
+
+/*
+ * A number field: a step button at each end holds its icon where the input draws its icons, with
+ * the gap on each side of it, so the value starts past it as past an icon. The browser's own spin
+ * buttons are hidden, as base.css hides them.
+ */
+.field input[type='number'] {
+  appearance: textfield;
+  font-variant-numeric: tabular-nums;
+}
+
+.field input[type='number']::-webkit-inner-spin-button,
+.field input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.field__control:has(> [data-slot='decrement']) input {
+  padding-inline: calc(
+    var(--field-padding) + var(--field-icon-size) + var(--field-gap) - var(--field-edge-extra)
+  );
+}
+
+.field__step {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: calc(var(--field-icon-size) + 2 * var(--field-gap));
+  height: calc(100% - var(--ws-space-8));
+  padding: 0;
+  border: 0;
+  border-radius: var(--ws-control-radius);
+  background-color: transparent;
+  color: var(--ws-field-icon-rest);
+}
+
+.field__step[data-slot='decrement'] {
+  inset-inline-start: calc(var(--field-padding) - var(--field-gap));
+}
+
+.field__step[data-slot='increment'] {
+  inset-inline-end: calc(var(--field-padding) - var(--field-gap));
+}
+
+.field__step:enabled:hover {
+  background-color: var(--ws-button-ghost-bg-hover);
+}
+
+.field__step:enabled:active {
+  background-color: var(--ws-button-ghost-bg-active);
+}
+
+.field__step:disabled {
+  color: var(--ws-button-text-disabled);
+}
+
+.field__control .field__step svg {
+  position: static;
+  color: inherit;
 }
 
 /* the checkbox and the radio group: a control beside each label */
