@@ -355,11 +355,70 @@ body {
   font-size: var(--ws-font-size-16);
 }
 
-.input--number {
-  width: calc(8ch + 2 * var(--ws-space-12) + 2 * var(--ws-border-width-thin));
+/*
+ * A number field, as its spec draws it: a step button at each end holds its icon at the padding
+ * from the edge, with the gap on each side of it, so the value starts past it as past an icon.
+ * The browser's own spin buttons are hidden, as base.css hides them.
+ */
+.number-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  align-self: start;
 }
 
-.input:hover {
+.input--number {
+  width: calc(
+    8ch + 2 * (var(--ws-space-12) + var(--ws-size-icon) + var(--ws-space-8)) + 2 *
+      var(--ws-border-width-thin)
+  );
+  padding-inline: calc(var(--ws-space-12) + var(--ws-size-icon) + var(--ws-space-8));
+  font-variant-numeric: tabular-nums;
+}
+
+.number-field__step {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: calc(var(--ws-size-icon) + 2 * var(--ws-space-8));
+  height: calc(var(--ws-size-control) - var(--ws-space-8));
+  padding: 0;
+  border: 0;
+  border-radius: var(--ws-radius-md);
+  background: none;
+  color: var(--ws-color-text-secondary);
+  cursor: pointer;
+
+  & svg {
+    width: var(--ws-size-icon);
+    height: var(--ws-size-icon);
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 2;
+  }
+}
+
+.number-field__step[data-step='down'] {
+  inset-inline-start: calc(var(--ws-space-12) - var(--ws-space-8));
+}
+
+.number-field__step[data-step='up'] {
+  inset-inline-end: calc(var(--ws-space-12) - var(--ws-space-8));
+}
+
+/* raised under the pointer and pressed, as a ghost button */
+.number-field__step:not([aria-disabled='true']):is(:hover, :active) {
+  background: var(--ws-color-raised);
+}
+
+.number-field__step[aria-disabled='true'] {
+  color: var(--ws-color-text-faint);
+  cursor: not-allowed;
+}
+
+/* the pointer on a step button is on the field too */
+.input:hover,
+.number-field:hover > .input {
   border-color: var(--ws-color-text-secondary);
 }
 
@@ -446,6 +505,10 @@ body {
 
   .choice__input:checked::before {
     background: HighlightText;
+  }
+
+  .number-field__step[aria-disabled='true'] {
+    color: GrayText;
   }
 }
 

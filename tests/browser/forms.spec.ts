@@ -199,7 +199,7 @@ test('amounts line up at the right edge in figures of one width, under a total',
 
 test('a number field has no spin buttons, and the arrow keys step it', async ({ page }) => {
   await open(page, FORM)
-  const field = page.getByLabel('Tickets')
+  const field = page.getByLabel('Tickets', { exact: true })
   expect(await field.evaluate((element) => getComputedStyle(element).appearance)).toBe('textfield')
   await field.focus()
   await page.keyboard.press('ArrowUp')
@@ -208,6 +208,113 @@ test('a number field has no spin buttons, and the arrow keys step it', async ({ 
   await expect(page.locator('.ws-status-line__mode')).toHaveText('INSERT')
   // as tall as every other control, --ws-size-control
   expect((await field.boundingBox())!.height).toBe(40)
+})
+
+test("a number field's help is its description", async ({ page }) => {
+  await open(page, FORM)
+  await expect(page.getByLabel('Tickets', { exact: true })).toHaveAccessibleDescription(
+    'Up to eight. The arrow keys step the number.',
+  )
+})
+
+test("a number field's step buttons step it, leave the focus in it and stop at its limits", async ({
+  page,
+}) => {
+  await open(page, FORM)
+  const field = page.getByLabel('Tickets', { exact: true })
+  const decrease = page.getByRole('button', { name: 'Decrease Tickets' })
+  const increase = page.getByRole('button', { name: 'Increase Tickets' })
+  // the field is the one stop: the buttons are not in the tab order
+  for (const button of [decrease, increase]) await expect(button).toHaveAttribute('tabindex', '-1')
+  await field.click()
+  await increase.click()
+  await expect(field).toHaveValue('3')
+  // the click left the focus in the field, so its arrow keys go on stepping it
+  await expect(field).toBeFocused()
+  await page.keyboard.press('ArrowUp')
+  await expect(field).toHaveValue('4')
+  // the pointer on a button is on the field: its edge holds the hover
+  await increase.hover()
+  expect(await field.evaluate((element) => getComputedStyle(element).borderTopColor)).toBe(
+    await token(page, '--ws-color-text-secondary'),
+  )
+  // a button whose step would pass the limit is disabled
+  await field.fill('8')
+  await expect(increase).toBeDisabled()
+  await expect(decrease).toBeEnabled()
+  await field.fill('1')
+  await expect(decrease).toBeDisabled()
+  await expect(increase).toBeEnabled()
+})
+
+test('a click on a step button puts the focus in a number field that did not have it', async ({
+  page,
+}) => {
+  await open(page, FORM)
+  const field = page.getByLabel('Tickets', { exact: true })
+  // with the focus on no field, the arrow keys would scroll the page
+  await page.getByRole('button', { name: 'Increase Tickets' }).click()
+  await expect(field).toHaveValue('3')
+  await expect(field).toBeFocused()
+  await page.keyboard.press('ArrowUp')
+  await expect(field).toHaveValue('4')
+  // with the focus in another field, the arrow keys would move its caret
+  await page.getByLabel('Email', { exact: true }).click()
+  await page.getByRole('button', { name: 'Decrease Tickets' }).click()
+  await expect(field).toHaveValue('3')
+  await expect(field).toBeFocused()
+  await page.keyboard.press('ArrowDown')
+  await expect(field).toHaveValue('2')
+})
+
+test('a click on a step button at its limit keeps the focus in the field and the value', async ({
+  page,
+}) => {
+  await open(page, FORM)
+  const field = page.getByLabel('Tickets', { exact: true })
+  for (const [name, limit, key, next] of [
+    ['Increase Tickets', '8', 'ArrowDown', '7'],
+    ['Decrease Tickets', '1', 'ArrowUp', '2'],
+  ] as const) {
+    const button = page.getByRole('button', { name })
+    await field.fill(limit)
+    await expect(button).toBeDisabled()
+    // the pointer presses it as on any button: a disabled one fails Playwright's own check
+    await button.click({ force: true })
+    await expect(field).toHaveValue(limit)
+    await expect(field).toBeFocused()
+    await page.keyboard.press(key)
+    await expect(field).toHaveValue(next)
+  }
+  // in forced colors it is drawn in GrayText, as a native disabled button is
+  await field.fill('8')
+  await page.emulateMedia({ forcedColors: 'active' })
+  const [color, gray] = await page
+    .getByRole('button', { name: 'Increase Tickets' })
+    .evaluate((element) => {
+      const probe = document.createElement('span')
+      probe.style.cssText = 'forced-color-adjust: none; color: GrayText'
+      element.append(probe)
+      const value = getComputedStyle(probe).color
+      probe.remove()
+      return [getComputedStyle(element).color, value]
+    })
+  expect(color).toBe(gray)
+})
+
+test.describe('on a touch screen', () => {
+  test.use({ hasTouch: true })
+
+  test('a tap on a step button leaves the focus where it is, so no keyboard opens', async ({
+    page,
+  }) => {
+    await open(page, FORM)
+    const other = page.getByLabel('Email', { exact: true })
+    await other.focus()
+    await page.getByRole('button', { name: 'Increase Tickets' }).tap()
+    await expect(page.getByLabel('Tickets', { exact: true })).toHaveValue('3')
+    await expect(other).toBeFocused()
+  })
 })
 
 test.describe('on a phone', () => {

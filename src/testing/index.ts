@@ -8,8 +8,9 @@
  * - tokens: each property of each part of each example is the token's value, resolved next to
  *   the part, so a part of the page held in the other theme is measured in it;
  * - forced colors: each part with an edge keeps a border or an outline, each part with a line on
- *   one side, such as a separator's block-end border, keeps a border on that side, and a checked,
- *   indeterminate, current or selected example still looks unlike the example of its kind at rest.
+ *   one side, such as a separator's block-end border, keeps a border on that side, each icon its
+ *   spec gives a system color is drawn in one where it is an SVG, and a checked, indeterminate,
+ *   current or selected example still looks unlike the example of its kind at rest.
  *
  * A state a pointer or the keyboard causes is forced as the gallery contract says, with
  * `data-demo`, never with the pointer: the helper adds `data-demo="hover"` to the example of a
@@ -71,6 +72,24 @@ const demoStates = ['hover', 'active', 'focus']
 
 /** The states that the forced-colors check compares with rest. */
 const markedStates = ['checked', 'indeterminate', 'current', 'selected']
+
+/**
+ * The icons each spec's `forcedColors` gives a system color, by its component: "The error icon
+ * takes the system's text color" of the input, "The icons take the system's text color" of a
+ * select, a step button's icon in "the system's color of a button's text" and a checked box's
+ * tick in the mark's `HighlightText`. The forced-colors check holds these alone, so an icon a spec
+ * says nothing of there, such as a tab's or a checkbox's error icon, keeps the color it has.
+ */
+const systemColorIcons: Record<string, string[]> = {
+  badge: ['leading-icon', 'trailing-icon'],
+  button: ['leading-icon', 'trailing-icon'],
+  checkbox: ['icon'],
+  input: ['error-icon'],
+  'number-field': ['decrement-icon', 'increment-icon', 'error-icon'],
+  select: ['leading-icon', 'trailing-icon'],
+  'select-menu': ['leading-icon', 'trailing-icon', 'search-icon'],
+  textarea: ['error-icon'],
+}
 
 /**
  * One property of one part to measure, and the token or value it has to have, where the example
@@ -192,6 +211,11 @@ export async function checkSpec(
           ),
         )
         for (const { id, message } of await page.evaluate(edgesInPage, edges))
+          failures.push({ check: 'forced-colors', theme, id, message })
+        const icons = Object.keys(data.parts)
+          .filter((part) => systemColorIcons[component]?.includes(part))
+          .map((part) => ({ part, target: targets[part]! }))
+        for (const { id, message } of await page.evaluate(iconsInPage, { ids: shown, icons }))
           failures.push({ check: 'forced-colors', theme, id, message })
         for (const failure of await marksDiffer(page, data, targets, shown))
           failures.push({ ...failure, check: 'forced-colors', theme })
@@ -689,5 +713,86 @@ function edgesInPage(
         `outline ${style.outlineWidth} ${style.outlineStyle} ${style.outlineColor}`,
     })
   }
+  return failures
+}
+
+/**
+ * In forced colors, each icon its spec gives a system color is drawn in one in each example, such
+ * as `CanvasText` or `ButtonText`. The system's colors replace the page's on text, edges and
+ * fills, but an SVG keeps a color it is given, or one its stroke or fill is given, as it keeps one
+ * under `forced-color-adjust: none`: an icon in a color of the page's then says nothing of its
+ * state against the system's, or cannot be seen on them. The check is of an icon drawn in SVG: its
+ * colors are the strokes and fills of its shapes.
+ */
+function iconsInPage({
+  ids,
+  icons,
+}: {
+  ids: string[]
+  icons: { part: string; target: Target }[]
+}): { id: string; message: string }[] {
+  const probe = document.createElement('ws-spec-probe')
+  probe.style.cssText = 'position:absolute;visibility:hidden;forced-color-adjust:none'
+  document.body.append(probe)
+  // a color as the browser computes it, so two of the same compare alike
+  const computed = (color: string) => {
+    probe.style.color = ''
+    probe.style.color = color
+    return getComputedStyle(probe).color
+  }
+  const system = new Set(
+    [
+      'AccentColor',
+      'AccentColorText',
+      'ActiveText',
+      'ButtonBorder',
+      'ButtonFace',
+      'ButtonText',
+      'Canvas',
+      'CanvasText',
+      'Field',
+      'FieldText',
+      'GrayText',
+      'Highlight',
+      'HighlightText',
+      'LinkText',
+      'Mark',
+      'MarkText',
+      'SelectedItem',
+      'SelectedItemText',
+      'VisitedText',
+    ]
+      .filter((name) => CSS.supports('color', name))
+      .map(computed),
+  )
+  const shapes = 'circle, ellipse, line, path, polygon, polyline, rect, text, use'
+
+  const failures: { id: string; message: string }[] = []
+  for (const id of ids)
+    for (const root of document.querySelectorAll(`[data-spec="${CSS.escape(id)}"]`))
+      for (const { part, target } of icons) {
+        const { selector, pseudo } = target
+        if (pseudo) continue
+        const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
+        for (const element of elements.filter((each) => each.checkVisibility())) {
+          const colors = [element, ...element.querySelectorAll(shapes)]
+            .filter((each) => each.matches(shapes))
+            .flatMap((shape) => {
+              const style = getComputedStyle(shape)
+              return [style.fill, style.stroke].filter(
+                (paint) => paint !== 'none' && !paint.startsWith('url('),
+              )
+            })
+          const kept = [...new Set(colors.map(computed))].filter((color) => !system.has(color))
+          if (kept.length)
+            failures.push({
+              id,
+              message:
+                `${id}: ${part} keeps ${kept.join(' and ')} in forced colors, ` +
+                'where an icon takes a system color',
+            })
+        }
+      }
+  probe.remove()
   return failures
 }

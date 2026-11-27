@@ -298,7 +298,8 @@ svg {
   color: var(--ws-color-text-secondary);
 }
 
-.field :is(input, textarea):enabled:is(:hover, [data-demo~='hover'] *) {
+/* the pointer on anything inside the edge, such as a step button, is on the field */
+.field :is(input, textarea):enabled:is(:hover, .field__control:hover *, [data-demo~='hover'] *) {
   border-color: var(--ws-field-border-hover);
 }
 
@@ -347,6 +348,15 @@ svg {
   width: var(--ws-size-icon);
   height: var(--ws-size-icon);
   color: var(--ws-field-error-icon-rest);
+}
+
+/* an SVG keeps a color of its own in forced colors: an icon in the box, and the error's, take the
+   system's text color, as the error's word does */
+@media (forced-colors: active) {
+  .field__control > svg,
+  :is(.field, .choice) [data-slot='error-icon'] {
+    color: CanvasText;
+  }
 }
 
 .field[data-size='xs'] {
@@ -465,12 +475,18 @@ svg {
   );
 }
 
+/*
+ * The fill reaches the gap past the icon, and at xs a smaller space, where the gap would bring it
+ * onto the error's edge
+ */
 .field__step {
+  --field-step-reach: var(--field-gap);
+
   position: absolute;
   z-index: 1;
   display: grid;
   place-items: center;
-  width: calc(var(--field-icon-size) + 2 * var(--field-gap));
+  width: calc(var(--field-icon-size) + 2 * var(--field-step-reach));
   height: calc(100% - var(--ws-space-8));
   padding: 0;
   border: 0;
@@ -479,12 +495,16 @@ svg {
   color: var(--ws-field-icon-rest);
 }
 
+.field[data-size='xs'] .field__step {
+  --field-step-reach: var(--ws-space-4);
+}
+
 .field__step[data-slot='decrement'] {
-  inset-inline-start: calc(var(--field-padding) - var(--field-gap));
+  inset-inline-start: calc(var(--field-padding) - var(--field-step-reach));
 }
 
 .field__step[data-slot='increment'] {
-  inset-inline-end: calc(var(--field-padding) - var(--field-gap));
+  inset-inline-end: calc(var(--field-padding) - var(--field-step-reach));
 }
 
 .field__step:enabled:hover {
@@ -904,6 +924,14 @@ svg {
 
   & input:focus-visible {
     outline: none;
+  }
+}
+
+/* an SVG keeps a color of its own in forced colors: the icons take the system's text color */
+@media (forced-colors: active) {
+  .select__trigger svg,
+  .select__search .select__search-icon {
+    color: CanvasText;
   }
 }
 
