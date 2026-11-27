@@ -120,6 +120,7 @@
                   min="1"
                   max="8"
                   value="2"
+                  aria-describedby="tickets-hint"
                 /><button
                   type="button"
                   class="number-field__step"
@@ -133,7 +134,9 @@
                   </svg>
                 </button>
               </div>
-              <p class="field__hint">Up to eight. The arrow keys step the number.</p>
+              <p class="field__hint" id="tickets-hint">
+                Up to eight. The arrow keys step the number.
+              </p>
             </div>
             <label class="choice">
               <input class="choice__input" type="checkbox" name="receipt" checked />

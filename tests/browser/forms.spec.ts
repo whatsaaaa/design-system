@@ -210,6 +210,13 @@ test('a number field has no spin buttons, and the arrow keys step it', async ({ 
   expect((await field.boundingBox())!.height).toBe(40)
 })
 
+test("a number field's help is its description", async ({ page }) => {
+  await open(page, FORM)
+  await expect(page.getByLabel('Tickets', { exact: true })).toHaveAccessibleDescription(
+    'Up to eight. The arrow keys step the number.',
+  )
+})
+
 test("a number field's step buttons step it, leave the focus in it and stop at its limits", async ({
   page,
 }) => {
