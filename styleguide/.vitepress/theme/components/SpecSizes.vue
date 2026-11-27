@@ -96,7 +96,17 @@ function kinds(variants: string[]) {
           <td v-for="size in sizes" :key="size">
             <template v-if="row.cells[size]">
               <span class="value">{{ row.cells[size].dark.text }}</span>
-              <SpecToken v-if="named(row, size)" :cell="named(row, size)!" short />
+              <!-- a sum of several tokens breaks as a row's does: between them, or a token before
+                   its last name -->
+              <span v-if="named(row, size)?.formula" class="use" :title="named(row, size)!.value">
+                <template v-for="(word, at) in named(row, size)!.formula!.split(' ')" :key="at"
+                  >{{ at ? ' ' : '' }}<span class="pattern">{{ head(word) }}</span><wbr /><span
+                    class="pattern"
+                    >{{ tail(word) }}</span
+                  ></template
+                >
+              </span>
+              <SpecToken v-else-if="named(row, size)" :cell="named(row, size)!" short />
             </template>
           </td>
         </tr>
