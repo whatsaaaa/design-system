@@ -240,6 +240,41 @@ test("a number field's step buttons step it, leave the focus in it and stop at i
   await expect(increase).toBeEnabled()
 })
 
+test('a click on a step button puts the focus in a number field that did not have it', async ({
+  page,
+}) => {
+  await open(page, FORM)
+  const field = page.getByLabel('Tickets', { exact: true })
+  // with the focus on no field, the arrow keys would scroll the page
+  await page.getByRole('button', { name: 'Increase Tickets' }).click()
+  await expect(field).toHaveValue('3')
+  await expect(field).toBeFocused()
+  await page.keyboard.press('ArrowUp')
+  await expect(field).toHaveValue('4')
+  // with the focus in another field, the arrow keys would move its caret
+  await page.getByLabel('Email', { exact: true }).click()
+  await page.getByRole('button', { name: 'Decrease Tickets' }).click()
+  await expect(field).toHaveValue('3')
+  await expect(field).toBeFocused()
+  await page.keyboard.press('ArrowDown')
+  await expect(field).toHaveValue('2')
+})
+
+test.describe('on a touch screen', () => {
+  test.use({ hasTouch: true })
+
+  test('a tap on a step button leaves the focus where it is, so no keyboard opens', async ({
+    page,
+  }) => {
+    await open(page, FORM)
+    const other = page.getByLabel('Email', { exact: true })
+    await other.focus()
+    await page.getByRole('button', { name: 'Increase Tickets' }).tap()
+    await expect(page.getByLabel('Tickets', { exact: true })).toHaveValue('3')
+    await expect(other).toBeFocused()
+  })
+})
+
 test.describe('on a phone', () => {
   test.use({ viewport: PHONE })
 

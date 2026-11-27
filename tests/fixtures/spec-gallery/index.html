@@ -5113,10 +5113,16 @@ Please seat us together, near the stage.</textarea>
     <script>
       // an indeterminate box is set by script, as HTML has no attribute for it
       for (const box of document.querySelectorAll('[data-indeterminate]')) box.indeterminate = true
-      // a click on a step button leaves the focus in the field: a native button takes it from a
-      // click, tabindex="-1" or not, unless the default of the press is prevented
-      for (const step of document.querySelectorAll('.field__step'))
+      // a click on a step button puts the focus in the field, or keeps it there: a native button
+      // takes it from a click, tabindex="-1" or not, unless the default of the press is
+      // prevented. A touch leaves it where it is, so the system's keyboard does not open
+      for (const step of document.querySelectorAll('.field__step')) {
+        const input = step.parentElement.querySelector('input')
+        step.addEventListener('pointerdown', (event) => {
+          if (event.pointerType === 'mouse') input.focus({ preventScroll: true })
+        })
         step.addEventListener('mousedown', (event) => event.preventDefault())
+      }
     </script>
   </body>
 </html>

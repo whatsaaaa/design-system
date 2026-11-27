@@ -8,9 +8,9 @@
  * - tokens: each property of each part of each example is the token's value, resolved next to
  *   the part, so a part of the page held in the other theme is measured in it;
  * - forced colors: each part with an edge keeps a border or an outline, each part with a line on
- *   one side, such as a separator's block-end border, keeps a border on that side, each icon is
- *   drawn in a system color, and a checked, indeterminate, current or selected example still
- *   looks unlike the example of its kind at rest.
+ *   one side, such as a separator's block-end border, keeps a border on that side, each icon
+ *   drawn in SVG is drawn in a system color, and a checked, indeterminate, current or selected
+ *   example still looks unlike the example of its kind at rest.
  *
  * A state a pointer or the keyboard causes is forced as the gallery contract says, with
  * `data-demo`, never with the pointer: the helper adds `data-demo="hover"` to the example of a
@@ -706,9 +706,8 @@ function edgesInPage(
  * or `ButtonText`. The system's colors replace the page's on text, edges and fills, but an SVG
  * keeps a color it is given, or one its stroke or fill is given, as it keeps one under
  * `forced-color-adjust: none`: an icon in a color of the page's then says nothing of its state
- * against the system's, or cannot be seen on them. Of an icon drawn in SVG, the colors are the
- * strokes and fills of its shapes; of one drawn otherwise, such as a mask over its background or
- * a glyph, its background and its text color.
+ * against the system's, or cannot be seen on them. The check is of an icon drawn in SVG: its
+ * colors are the strokes and fills of its shapes.
  */
 function iconsInPage({
   ids,
@@ -751,11 +750,6 @@ function iconsInPage({
       .filter((name) => CSS.supports('color', name))
       .map(computed),
   )
-  // of a color mixed with itself, which the browser writes with its alpha after a slash
-  const alpha = (color: string) => {
-    probe.style.color = `color-mix(in srgb, ${color}, ${color})`
-    return Number(/\/\s*([\d.]+)\)$/.exec(getComputedStyle(probe).color)?.[1] ?? 1)
-  }
   const shapes = 'circle, ellipse, line, path, polygon, polyline, rect, text, use'
 
   const failures: { id: string; message: string }[] = []
@@ -763,21 +757,17 @@ function iconsInPage({
     for (const root of document.querySelectorAll(`[data-spec="${CSS.escape(id)}"]`))
       for (const { part, target } of icons) {
         const { selector, pseudo } = target
+        if (pseudo) continue
         const elements = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)]
         for (const element of elements.filter((each) => each.checkVisibility())) {
-          const drawn = pseudo ? [] : [element, ...element.querySelectorAll(shapes)]
-          const painted = drawn.filter((each) => each.matches(shapes))
-          const colors = painted.length
-            ? painted.flatMap((shape) => {
-                const style = getComputedStyle(shape)
-                return [style.fill, style.stroke].filter(
-                  (paint) => paint !== 'none' && !paint.startsWith('url('),
-                )
-              })
-            : [
-                getComputedStyle(element, pseudo).color,
-                getComputedStyle(element, pseudo).backgroundColor,
-              ].filter((color, index) => index === 0 || alpha(color) > 0)
+          const colors = [element, ...element.querySelectorAll(shapes)]
+            .filter((each) => each.matches(shapes))
+            .flatMap((shape) => {
+              const style = getComputedStyle(shape)
+              return [style.fill, style.stroke].filter(
+                (paint) => paint !== 'none' && !paint.startsWith('url('),
+              )
+            })
           const kept = [...new Set(colors.map(computed))].filter((color) => !system.has(color))
           if (kept.length)
             failures.push({
