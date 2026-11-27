@@ -1054,6 +1054,8 @@
     "The step buttons are kept, though the browser's spin buttons are hidden: they are two real buttons with names that the pointer and assistive technology both use, and they take the system's look. The browser's own have neither, so `base.css` hides them, as it does on every number field.",
     "Each step button holds its icon where the input draws its icons, at the field's padding from the edge, with the control's gap on each side of it. So the value starts past a button by the input's padding past an icon: the padding, the icon and the gap, as the rows say.",
     "A step button under the pointer, or pressed, is raised as a ghost button is: `button.ghost.bg.hover` and `button.ghost.bg.active`. The gallery contract has no example of it: the hover example is the pointer on the field.",
+    "A step button at its limit is disabled, the decrement where a step down would pass the minimum and the increment where a step up would pass the maximum, and its icon takes `button.text.disabled`, as both do in a disabled field. The state table's states are the field's, so it has no row for one button disabled in a field at rest.",
+    "The gallery's examples hold a value strictly inside the range, or no value, which is at neither limit, so neither step button is disabled and the rest rows hold for both: Tickets from 1 to 10 hold 2, not 1.",
     "The value is in figures of one width, `tabular-nums`, so its digits keep their place as it steps.",
     "Read-only is not specced: a value that cannot be changed, as on a review step, is shown as a term and its value, with `ws-pairs`.",
     "A hint beside the label is not part of the spec: hints go under the field, as its help.",
